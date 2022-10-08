@@ -4,8 +4,6 @@
     <FontFamily x:Key="Bold">pack://application;,,,/Font/#HelveticaNeue-Bold</FontFamily>
     <FontFamily x:Key="Light">pack://application;,,,/Font/#Helvetica Neue Light</FontFamily>
     <FontFamily x:Key="Medium">pack://application;,,,/Font/#HelveticaNeue-Medium</FontFamily>
-    <FontFamily x:Key="FontAwesomeRegular">pack://application;,,,/Font/#Font Awesome 6 Free Regular</FontFamily>
-    <FontFamily x:Key="FontAwesomeSolid">pack://application;,,,/Font/#Font Awesome 6 Free Regular</FontFamily>
     <FontFamily x:Key="FontAwesome">/Fonts/fontawesome-webfont.ttf#FontAwesome</FontFamily>
 
     <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
