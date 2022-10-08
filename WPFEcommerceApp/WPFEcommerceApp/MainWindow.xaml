@@ -4,10 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFEcommerceApp"
-        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:fa= "http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <WrapPanel>
+        <Button />
+        <Button IsEnabled="False"/>
+        <Button Style="{StaticResource WhiteButton}"/>
+        <Button Style="{StaticResource WhiteButton}" IsEnabled="False"/>
+        <Button Style="{StaticResource OutLineBlackButton}"/>
+        <Button Style="{StaticResource OutLineBlackButton}" IsEnabled="False"/>
+        <Button Style="{StaticResource TransparentButton}">
+            <fa:ImageAwesome Icon="Brands_AmazonPay" Height="40"/>
+        </Button>
+        <Button Style="{StaticResource TextButtonInWhite}"/>
+        <Grid Background="{StaticResource BlackColorBrush}">
+            <Button Style="{StaticResource TextButtonInBlack}"/>
+        </Grid>
+        <TabControl>
+            <TabItem Header="Home">
+                <Button/>
+            </TabItem>
+            <TabItem Header="Home1">
+                <Button Content="Hello"/>
+            </TabItem>
+            <TabItem Header="Home2">
+                <Button Content="Hello"/>
+            </TabItem>
+        </TabControl>
+    </WrapPanel>
 </Window>
