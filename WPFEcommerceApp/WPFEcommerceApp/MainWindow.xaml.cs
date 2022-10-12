@@ -23,6 +23,7 @@ namespace WPFEcommerceApp
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
     }
 }

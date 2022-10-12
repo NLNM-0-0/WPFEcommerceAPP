@@ -4,6 +4,7 @@
     <FontFamily x:Key="Bold">pack://application;,,,/Font/#HelveticaNeue-Bold</FontFamily>
     <FontFamily x:Key="Light">pack://application;,,,/Font/#Helvetica Neue Light</FontFamily>
     <FontFamily x:Key="Medium">pack://application;,,,/Font/#HelveticaNeue-Medium</FontFamily>
+    <FontFamily x:Key="FontAwesome">/Fonts/fontawesome-webfont.ttf#FontAwesome</FontFamily>
 
     <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
         <Setter Property="FontFamily" Value="{StaticResource Light}"/>
@@ -13,7 +14,6 @@
         <Setter Property="FontFamily" Value="{StaticResource Light}"/>
     </Style>
 
-    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
     <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseStyle}"/>
     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}"/>
     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}"/>

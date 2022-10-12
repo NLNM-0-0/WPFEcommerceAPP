@@ -1,4 +1,30 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local ="clr-namespace:WPFEcommerceApp">
+    <Color x:Key="Black">#222222</Color>
+    <SolidColorBrush x:Key="BlackColorBrush" Color="{StaticResource Black}"/>
+
+    <Color x:Key="NotAvailable">#757575</Color>
+    <SolidColorBrush x:Key="NotAvailableColorBrush" Color="{StaticResource NotAvailable}"/>
+
+    <Color x:Key="BoxShadow">#E5E5E5</Color>
+    <SolidColorBrush x:Key="BoxShadowColorBrush" Color="{StaticResource BoxShadow}"/>
+
+    <Color x:Key="Background">#F9F9F9</Color>
+    <SolidColorBrush x:Key="BackgroundColorBrush" Color="{StaticResource Background}"/>
+
+    <Color x:Key="White">#FFFFFF</Color>
+    <SolidColorBrush x:Key="WhiteColorBrush" Color="{StaticResource White}"/>
+
+    <Color x:Key="Error">#DB3022</Color>
+    <SolidColorBrush x:Key="ErrorColorBrush" Color="{StaticResource Error}"/>
+
+    <Color x:Key="Success">#2AA952</Color>
+    <SolidColorBrush x:Key="SuccessColorBrush" Color="{StaticResource Success}"/>
+
+    <Color x:Key="BoxLine">#C8C8C8</Color>
+    <SolidColorBrush x:Key="BoxLineColorBrush" Color="{StaticResource BoxLine}"/>
+
+    <Color x:Key="Blur">#757575</Color>
+    <SolidColorBrush x:Key="BlurColorBrush" Color="{StaticResource Blur}" Opacity="10"/>
 </ResourceDictionary>
