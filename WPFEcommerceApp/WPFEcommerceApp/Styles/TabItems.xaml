@@ -181,6 +181,10 @@
                                             Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
                                             To ="Transparent" 
                                             Duration="0:0:0.2"/>
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                            To ="{StaticResource NotAvailable}" 
+                                            Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </MultiDataTrigger.EnterActions>
@@ -190,6 +194,10 @@
                                         <ColorAnimation
                                             Storyboard.TargetName="mainBorder"
                                             Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                            To ="{StaticResource Black}" 
+                                            Duration="0:0:0.2"/>
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                                             To ="{StaticResource Black}" 
                                             Duration="0:0:0.2"/>
                                     </Storyboard>
@@ -211,6 +219,10 @@
                                             Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
                                             To ="Transparent" 
                                             Duration="0:0:0.2"/>
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                            To ="{StaticResource NotAvailable}" 
+                                            Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </MultiDataTrigger.EnterActions>
@@ -220,6 +232,10 @@
                                         <ColorAnimation
                                             Storyboard.TargetName="mainBorder"
                                             Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                            To ="{StaticResource Black}" 
+                                            Duration="0:0:0.2"/>
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                                             To ="{StaticResource Black}" 
                                             Duration="0:0:0.2"/>
                                     </Storyboard>
