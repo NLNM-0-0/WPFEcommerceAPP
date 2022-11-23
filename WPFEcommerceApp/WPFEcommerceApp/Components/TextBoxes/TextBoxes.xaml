@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TextBoxHintBlackBorder.xaml"/>
+        <ResourceDictionary Source="TextBoxHintTransparentBorder.xaml"/>
+        <ResourceDictionary Source="TextBoxHintWrapText.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

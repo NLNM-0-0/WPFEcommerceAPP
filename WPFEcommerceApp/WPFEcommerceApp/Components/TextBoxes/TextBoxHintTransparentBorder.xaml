@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Constants/Colors.xaml" />
+        <ResourceDictionary Source="/Constants/Fonts.xaml" />
+        <ResourceDictionary Source="/Components/TextBoxes/TextBoxHintBlackBorder.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="TextBoxHintTransparentBorder" BasedOn="{StaticResource TextBoxHintBlackBorder}" TargetType="{x:Type TextBox}">
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+</ResourceDictionary>
