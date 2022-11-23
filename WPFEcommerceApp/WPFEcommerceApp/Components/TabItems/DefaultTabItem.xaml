@@ -3,8 +3,8 @@
                     xmlns:local ="clr-namespace:WPFEcommerceApp">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Colors.xaml"/>
-        <ResourceDictionary Source="Fonts.xaml"/>
+        <ResourceDictionary Source="/Constants/Colors.xaml" />
+        <ResourceDictionary Source="/Constants/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="FocusVisual">
