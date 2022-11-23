@@ -1,0 +1,342 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ShopProduct"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
+             d:DesignHeight="800" d:DesignWidth="1340">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="RoundButtonAdd" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="{StaticResource BlackColorBrush}"/>
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border 
+                        x:Name="border" 
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="30" 
+                        SnapsToDevicePixels="true">
+                            <Grid x:Name="Icon">
+                                <fa:ImageAwesome
+                                Visibility="Visible"
+                                x:Name="ActiveIcon"
+                                Icon="Plus"
+                                Margin="10"
+                                Foreground="{StaticResource WhiteColorBrush}"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0:0:0.1" To="{StaticResource Black}" Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0:0:0.1" To="{StaticResource NotAvailable}" Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="ActiveIcon" Property="Rotation" Value="45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="{StaticResource BlackColorBrush}"/>
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="{i:Binding Path=Height * 0.5, RelativeSource={RelativeSource Mode=Self}}"/>
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
+            <Setter Property="Template" Value="{StaticResource OurButtonControlTemplateBase}"/>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel Background="Transparent">
+        <Border Padding="50 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                x:Name="Header"
+                Grid.ColumnSpan="2"
+                Text="Product"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                FontSize="{StaticResource FontSizeHeadline}"
+                Margin="0 30"/>
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                            Visibility="{Binding ElementName=Extent, 
+                                                Path=IsChecked,
+                                                Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                        <Button
+                            Margin="0 0 10 0"
+                            Style="{StaticResource RoundButton}"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                            ToolTip="Add new Product">
+                            <Button.CommandParameter>
+                                <local:AddProductDialog/>
+                            </Button.CommandParameter>
+                            <materialDesign:PackIcon
+                                Foreground="{StaticResource WhiteColorBrush}"
+                                Kind="Archive"
+                                Height="30"
+                                Width="30" />        
+                        </Button>
+
+                        <Button
+                            Style="{StaticResource RoundButton}"
+                            Margin="0 0 10 0"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                            ToolTip="Add new category">
+                            <Button.CommandParameter>
+                                <local:AddCategoryDialog/>
+                            </Button.CommandParameter>
+                            <materialDesign:PackIcon
+                                Foreground="{StaticResource WhiteColorBrush}"
+                                Kind="Shape"
+                                Height="30"
+                                Width="30" />
+                        </Button>
+                        <Button
+                            Style="{StaticResource RoundButton}"
+                            Margin="0 0 10 0"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                            ToolTip="Add new brand">
+                            <Button.CommandParameter>
+                                <local:AddBrandDialog/>
+                            </Button.CommandParameter>
+                            <materialDesign:PackIcon
+                                Foreground="{StaticResource WhiteColorBrush}"
+                                Kind="Watermark"
+                                Height="30"
+                                Width="30" />
+                        </Button>
+                    </StackPanel>
+                    <ToggleButton 
+                        x:Name="Extent"
+                        Grid.Column="1"
+                        IsChecked="False"
+                        Style="{DynamicResource RoundButtonAdd}"/>
+                </Grid>
+            </Grid>
+        </Border>
+        <Border Background="{StaticResource BackgroundColorBrush}"
+                Padding="50 30"
+                Margin="0 0 0 30">
+            <Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- SearchFilter1-->
+                    <Grid 
+                        Grid.Column="0"
+                        Grid.Row="0" 
+                        Margin="0 0 0 30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox
+                                Grid.Column="0"
+                                IsEditable="True"
+                                materialDesign:HintAssist.Hint="SortBy">
+
+                            </ComboBox>
+                            <Grid Grid.Column="1">
+                                <TextBox 
+                                    Width="auto"
+                                    Style="{StaticResource TextBoxHintBlackBorder}"
+                                    MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                    materialDesign:HintAssist.Hint="Product Name"/>
+                            </Grid>
+                        </Grid>
+
+                        <Grid 
+                            Grid.Column="1"
+                            VerticalAlignment="Stretch"
+                            Margin="30 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="Price"
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeText}"/>
+                            <Grid Grid.Column="1">
+                                <TextBox 
+                                Style="{StaticResource TextBoxHintBlackBorder}"
+                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                materialDesign:HintAssist.Hint="Min"/>
+                            </Grid>
+
+                            <TextBlock
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Text="-"
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                FontSize="{StaticResource FontSizeHeadline}"/>
+
+                            <Grid Grid.Column="3">
+                                <TextBox 
+                                Style="{StaticResource TextBoxHintBlackBorder}"
+                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                materialDesign:HintAssist.Hint="Max"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid 
+                        Grid.Column="0"
+                        Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox
+                            materialDesign:HintAssist.Hint="Category"
+
+                            Grid.Column="0">
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                            <ComboBoxItem>hello</ComboBoxItem>
+                        </ComboBox>
+                        <ComboBox
+                            materialDesign:HintAssist.Hint="Brand"
+                            Margin="30 0 0 0"
+                            Grid.Column="1"/>
+                        <Grid 
+                            Grid.Column="2"
+                            VerticalAlignment="Stretch"
+                            Margin="30 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="Stock"
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeText}"/>
+                            <Grid Grid.Column="1">
+                                <TextBox 
+                                Style="{StaticResource TextBoxHintBlackBorder}"
+                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                materialDesign:HintAssist.Hint="Min"/>
+                            </Grid>
+
+                            <TextBlock
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Text="-"
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                FontSize="{StaticResource FontSizeHeadline}"/>
+
+                            <Grid Grid.Column="3">
+                                <TextBox 
+                                Style="{StaticResource TextBoxHintBlackBorder}"
+                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                materialDesign:HintAssist.Hint="Max"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid 
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Margin="20 0 0 30">
+                        <Button Content="Search"/>
+                    </Grid>
+                    <Grid 
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Margin="20 0 0 0">
+                        <Button Content="Reset"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+        <Border
+            Margin="0 0 0 30"
+            Padding="50 0">
+            <Grid>
+                <UniformGrid Columns="4">
+                    <FrameworkElement x:Name="temp"/>
+                </UniformGrid>
+                <TabControl>
+                    <TabItem Header="All" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                    <TabItem Header="On Sale" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                    <TabItem Header="Out Of Stock" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                    <TabItem Header="Banned" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                </TabControl>
+            </Grid>
+        </Border>
+        <Popup Height="10" Width="10">
+            <ContentControl>
+                <Grid>
+                    <Button Content="Hell"/>
+                </Grid>
+            </ContentControl>
+        </Popup>
+    </StackPanel>
+</UserControl>
