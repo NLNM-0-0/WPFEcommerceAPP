@@ -1,0 +1,152 @@
+﻿<UserControl x:Class="WPFEcommerceApp.Header"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="IconButton">
+            <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+            <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate  TargetType="{x:Type ButtonBase}">
+                        <Border x:Name="border"
+                            CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            SnapsToDevicePixels="true">
+                            <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource BoxShadowColorBrush}"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource NotAvailableColorBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Style search bar animation to be wider when it's keyboard focused and normal when not -->
+        <Style TargetType="local:SearchBar" x:Key="HeaderSearchBar">
+            <Setter Property="Width" Value="200"/>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                  To="550" Duration="0:0:0.3" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                 To="200" Duration="0:0:0.3" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- The header itself -->
+    <Grid Height="60">
+        <Border BorderThickness="0 0 0 2"
+                    Background="{StaticResource WhiteColorBrush}"
+                    BorderBrush="{StaticResource BlackColorBrush}"/>
+
+        <DockPanel LastChildFill="{Binding ElementName=bar, Path=IsKeyboardFocusWithin}">
+
+            <!-- The WANO icon -->
+            <Button Style="{StaticResource IconButton}"
+                    Height="50"
+                    DockPanel.Dock="Left" Margin="40 0"/>
+
+            <!-- Cart and heart icon -->
+            <Button Style="{StaticResource IconButton}" 
+                    Margin="10 0 40 0" DockPanel.Dock="Right"
+                    Background="{StaticResource WhiteColorBrush}">
+                <fa:FontAwesome Icon="ShoppingBag"/>
+            </Button>
+
+            <Button Style="{StaticResource IconButton}" 
+                    Margin="10" DockPanel.Dock="Right"
+                    Background="{StaticResource WhiteColorBrush}">
+                <fa:FontAwesome Icon="HeartOutline"/>
+            </Button>
+
+            <TabControl  Margin="400 0 0 0"
+                             x:Name="tab"
+                             DockPanel.Dock="Left"
+                             >
+                <TabControl.Style>
+                    <Style TargetType="{x:Type TabControl}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=bar, Path=IsKeyboardFocusWithin}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames  
+                                                        Storyboard.TargetProperty="(UIElement.Visibility)">
+                                                <DiscreteObjectKeyFrame KeyTime="00:00:0.02" Value="{x:Static Visibility.Collapsed}"/>
+
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames  
+                                                        Storyboard.TargetProperty="(UIElement.Visibility)">
+                                                <DiscreteObjectKeyFrame KeyTime="00:00:0.23" Value="{x:Static Visibility.Visible}"/>
+
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabControl.Style>
+
+                <TabItem Header="Men"></TabItem>
+                <TabItem Header="Men"></TabItem>
+                <TabItem Header="Men"></TabItem>
+                <TabItem Header="Men"></TabItem>
+                <TabItem Header="Men"></TabItem>
+                <TabItem Header="Men"></TabItem>
+            </TabControl>
+
+
+            <local:SearchBar Style="{StaticResource HeaderSearchBar}" 
+                             Margin="10 0" 
+                             Width="200"
+                             DockPanel.Dock="Right"                             
+                             x:Name="bar"/>
+
+
+        </DockPanel>
+
+    </Grid>
+</UserControl>

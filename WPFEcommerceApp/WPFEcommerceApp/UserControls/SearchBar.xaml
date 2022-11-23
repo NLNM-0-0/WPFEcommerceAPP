@@ -10,6 +10,42 @@
              Height="40" Width="250"
              d:DesignHeight="40" d:DesignWidth="250">
     <UserControl.Resources>
+        <!-- Icon Button -->
+        <Style TargetType="{x:Type Button}" x:Key="IconButton">
+            <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+            <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate  TargetType="{x:Type ButtonBase}">
+                        <Border x:Name="border"
+                            CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            SnapsToDevicePixels="true">
+                            <ContentPresenter VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource BoxShadowColorBrush}"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource NotAvailableColorBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <!-- The search box style -->
         <Style x:Key="SearchBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
