@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFEcommerceApp"
-        xmlns:fa= "http://schemas.fontawesome.com/icons/"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="900" Width="1440">
+    <StackPanel>
+        <local:SearchBar/>
+        <local:Header/>
+    </StackPanel>
 </Window>
