@@ -1,10 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local ="clr-namespace:WPFEcommerceApp">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Colors.xaml"/>
-        <ResourceDictionary Source="Fonts.xaml"/>
-        <ResourceDictionary Source="TabItems.xaml"/>
+        <ResourceDictionary Source="/Constants/Colors.xaml" />
+        <ResourceDictionary Source="/Constants/Fonts.xaml" />
+        <ResourceDictionary Source="/Components/TabItems/TabItems.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!--Default Tab Control-->
