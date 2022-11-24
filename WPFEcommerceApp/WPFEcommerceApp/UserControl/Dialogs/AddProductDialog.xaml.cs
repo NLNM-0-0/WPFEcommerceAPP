@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AddProductDialog.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AddProductDialog : UserControl
     {
-        public MainWindow()
+        public AddProductDialog()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
     }
 }

@@ -1,0 +1,163 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ShopMain"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d" 
+             xmlns:fa= "http://schemas.fontawesome.io/icons/"
+             xmlns:maerialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="800" d:DesignWidth="1380">
+    <StackPanel>
+        <Grid
+            Margin="0 0 0 30"
+            Height="140">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border
+                x:Name="MainBorder"
+                CornerRadius="0 0 50 0"
+                Background="{StaticResource BoxShadowColorBrush}"/>
+            <Border>
+                <Border.OpacityMask>
+                    <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
+                </Border.OpacityMask>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <Image
+                        Stretch="Fill"
+                        Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
+                        Source="{Binding SourceImageBackground}"
+                        ScrollViewer.CanContentScroll="True">
+                        <Image.OpacityMask>
+                            <VisualBrush Visual="{Binding ElementName=MainBorder}" 
+                                     RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Image.OpacityMask>
+                    </Image>
+                </ScrollViewer>
+            </Border>
+            <DockPanel LastChildFill="False" Margin="50 20">
+                <Border
+                        Background="White"
+                        CornerRadius="50"
+                        Width="100"
+                        Height="100">
+                    <Image
+                            Height="100"
+                            Width="100"
+                            Stretch="Fill"
+                            Source="{Binding SourceImageAva}">
+                        <Image.Clip>
+                            <EllipseGeometry
+                                    Center="50 50"
+                                    RadiusX="50"
+                                    RadiusY="50"/>
+                        </Image.Clip>
+                    </Image>
+                </Border>
+                <StackPanel Margin="30 0 0 0" MaxWidth="700">
+                    <TextBlock
+                        Text="{Binding Name}"
+                        Margin="0 0 0 20"
+                        FontFamily="{StaticResource Bold}"
+                        FontSize="{StaticResource FontSizeHeadline}"/>
+                    <TextBlock
+                        Text="{Binding Description}"
+                        TextWrapping="Wrap"/>
+                </StackPanel>
+                <Button 
+                        Command="{x:Static maerialDesign:DialogHost.OpenDialogCommand}"
+                        DockPanel.Dock="Right"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource TransparentButton}"
+                        Foreground="#1290FF"
+                        FontSize="{StaticResource FontSizeHeadline2}">
+                    <StackPanel 
+                            VerticalAlignment="Stretch"
+                            Orientation="Horizontal">
+                        <fa:FontAwesome Icon="Edit"
+                                            Margin="5 0"/>
+                        <TextBlock
+                                Text="Edit"/>
+                    </StackPanel>
+                    <Button.CommandParameter>
+                        <local:ProfileShopDialog/>
+                    </Button.CommandParameter>
+                </Button>
+            </DockPanel>
+
+            
+            <StackPanel 
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <StackPanel
+                    Margin="0 0 0 30"
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal">
+                <fa:FontAwesome Icon="ShoppingCart"
+                                Margin="0 0 10 0"
+                                FontSize="{StaticResource FontSizeHeadline}"
+                                VerticalAlignment="Center"/>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="{StaticResource FontSizeHeadline2}"
+                    Text="Product:"/>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="{StaticResource FontSizeHeadline2}"
+                    FontWeight="Bold"
+                    Margin="20 0 0 0"
+                    Text="10"/>
+                </StackPanel>
+                <StackPanel
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal">
+                    <fa:FontAwesome Icon="Star"
+                                    Margin="0 0 10 0"
+                                    FontSize="{StaticResource FontSizeHeadline}"
+                                    VerticalAlignment="Center"/>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                    FontSize="{StaticResource FontSizeHeadline2}"
+                    Text="Rating:"/>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                    FontSize="{StaticResource FontSizeHeadline2}"
+                    FontWeight="Bold"
+                    Margin="20 0 0 0"
+                    Text="5.0"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border
+                Grid.Column="0"
+                Margin="0 0 0 30"
+                Padding="50 0">
+                <Grid>
+                    <UniformGrid Columns="4">
+                        <FrameworkElement x:Name="temp"/>
+                    </UniformGrid>
+                    <TabControl>
+                        <TabItem Header="All" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                        <TabItem Header="Filter1" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                        <TabItem Header="Filter2" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                        <TabItem Header="Filter3" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
+                    </TabControl>
+                </Grid>
+            </Border>
+            <Separator Grid.Column="1"/>
+            <ComboBox 
+                VerticalAlignment="Top"
+                Grid.Column="2"
+                Text="More"/>
+        </Grid>
+    </StackPanel>
+</UserControl>
