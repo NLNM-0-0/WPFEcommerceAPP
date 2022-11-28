@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="WPFEcommerceApp.HiddenTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa= "http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="725"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
+    <UserControl.Resources>
+
+        <Style x:Key="ExpanderHeaderFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border>
+                            <Rectangle Margin="0" StrokeDashArray="1 2" Stroke="Black" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Padding="{TemplateBinding Padding}">
+                            <Grid Height="82">
+                                <Separator VerticalAlignment="Top"/>
+                                <Separator x:Name="bottomSpr" VerticalAlignment="Bottom"/>
+                                <StackPanel Orientation="Horizontal" Background="Transparent" SnapsToDevicePixels="False">
+                                    <ContentPresenter HorizontalAlignment="Left" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" TargetName="bottomSpr"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+   
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Expander">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Expander}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true">
+                            <DockPanel>
+                                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStretch="{TemplateBinding FontStretch}" Foreground="{TemplateBinding Foreground}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontFamily="{TemplateBinding FontFamily}" FontWeight="{TemplateBinding FontWeight}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="0" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
+
+
+                                <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <ContentPresenter.LayoutTransform>
+                                        <ScaleTransform ScaleY="0"/>
+                                    </ContentPresenter.LayoutTransform>
+                                </ContentPresenter>
+
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="ExpandSite"
+                             Storyboard.TargetProperty=
+                               "(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                             To="1"
+                             Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="ExpandSite"
+                             Storyboard.TargetProperty=
+                               "(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                             To="0"
+                             Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    <Expander Background="Pink">
+        <Expander.Header>
+            <Label Content="Delivery Options" 
+                   FontSize="{StaticResource FontSizeHeadline2}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"/>
+        </Expander.Header>
+        <StackPanel>
+            <Label Content="fuck"/>
+            <Label Content="fuck"/>
+            <Label Content="fuck"/>
+        </StackPanel>
+    </Expander>
+</UserControl>
