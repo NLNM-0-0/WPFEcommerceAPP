@@ -3,6 +3,7 @@
                     xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
                     xmlns:fa= "http://schemas.fontawesome.io/icons/"
                     xmlns:vm="clr-namespace:WPFEcommerceApp"
+                    x:Class="WPFEcommerceApp.BProductCard"
                     xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Constants/Colors.xaml" />
@@ -77,7 +78,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
     <Style x:Key="BProductCard" TargetType="Expander">
         <Setter Property="Template">
             <Setter.Value>
@@ -96,7 +96,6 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsExpanded" Value="True">
-                            <Setter Property="Margin" Value="0, 23, 0, 0" TargetName="ExpandSite"/>
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -128,72 +127,111 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <DataTemplate x:Key="ProductCard" DataType="{x:Type vm:Product}">
+        <Grid Background="{StaticResource WhiteColorBrush}" Width="455" Margin="0, 23, 0, 0">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
+            </Grid.Effect>
+            <Border Padding="5"  Width="455">
+                <StackPanel Orientation="Horizontal"  Width="455">
+                    <Image Source="{Binding ProductImage}" Height="125" Width="125" HorizontalAlignment="Left"/>
+                    <Grid  Width="455">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Name}"
+                                   Width="300"
+                                   HorizontalAlignment="Left"
+                               FontSize="13" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                        <Grid Grid.Row="1" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <!--Left column-->
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                                    <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                    <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                                    <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                    <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                                    <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                    <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <!--Right column-->
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                                    <TextBlock Text="Unit Price: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                    <TextBlock Text="{Binding Price}" FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                                    <TextBlock Text="Amount: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                    <TextBlock Text="{Binding Amount}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                                    <TextBlock Text="Subtotal: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                    <TextBlock Text="{Binding Subtotal}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </DataTemplate>
+    
+    <Style x:Key="ListItemCtn" TargetType="ListViewItem">
+        <Setter Property="Margin" Value="0, 0, 0, 0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Padding" Value="4,1"/>
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <DataTemplate x:Key="BProductCardContent" DataType="{x:Type vm:BProduct}">
         <Expander x:Name="expand" Style="{StaticResource BProductCard}" HorizontalAlignment="Center" Width="466.25">
             <Expander.Header>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{Binding ShopImage}"/>
                     <Label Content="{Binding ShopName}" 
-                   FontSize="{StaticResource FontSizeHeadline2}"
+                   FontSize="{StaticResource FontSizeHeadline3}"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                        Margin="5,0,0,0"/>
                 </StackPanel>
             </Expander.Header>
-            <Grid Background="{StaticResource WhiteColorBrush}">
+            <!--<Grid Background="{StaticResource WhiteColorBrush}">
                 <Grid.Effect>
                     <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
-                </Grid.Effect>
-                <Border Padding="5">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding ProductImage}" Height="125" Width="125"/>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="45"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Label Content="{Binding Name}"
-                               FontSize="13" VerticalAlignment="Center"/>
-                            <Grid Grid.Row="1" VerticalAlignment="Top">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <!--Left column-->
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                        <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                        <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                        <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                        <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                        <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                        <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    </StackPanel>
-                                </StackPanel>
-                                <!--Right column-->
-                                <StackPanel Grid.Column="1">
-                                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                        <TextBlock Text="Unit Price: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                        <TextBlock Text="{Binding Price}" FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                        <TextBlock Text="Amount: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                        <TextBlock Text="{Binding Amount}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                        <TextBlock Text="Subtotal: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                        <TextBlock Text="{Binding Subtotal}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Grid>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-            </Grid>
+                </Grid.Effect>-->
+                <ListView ItemsSource="{Binding ProductList}" ItemTemplate="{StaticResource ProductCard}"
+                              ItemContainerStyle="{StaticResource ListItemCtn}"
+                              BorderThickness="0"
+                          ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                          PreviewMouseWheel="HandlePreviewMouseWheel"
+                          Cursor="Arrow">
+                </ListView>
+            <!--</Grid>-->
         </Expander>
     </DataTemplate>
 </ResourceDictionary>
