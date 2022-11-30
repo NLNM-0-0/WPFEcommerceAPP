@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="WPFEcommerceApp.Screens.Payment.SuccessScreen.SuccessScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:WPFEcommerceApp.Screens.Payment.SuccessScreen"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1340"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
+    <Grid Background="{StaticResource BackgroundColorBrush}">
+        <StackPanel>
+            <Label Content="SUCCESS"
+               FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Top"
+               Margin="0 39 0 34"
+               />
+            <Image Source="..\..\..\Assests\Images\SuccessBag.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Width="460"
+                   Height="420"/>
+            <TextBlock Margin="0, 50,0,30"
+                       HorizontalAlignment="Center" Width="360" FontSize="{StaticResource FontSizeHeadline3}" TextWrapping="Wrap" TextAlignment="Center">
+                Your order will be delivered soon <LineBreak/>
+                Thank you for choosing our app!
+            </TextBlock>
+            <Button Content="Back to Shopping" Width="250" Height="66"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
