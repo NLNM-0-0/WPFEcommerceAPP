@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
+             x:Name="AlertDialog"
              Width="590"
              Height="auto">
     <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="auto" Height="auto">
@@ -34,7 +36,13 @@
             </Grid>
             <TextBlock Text="Before you place your order, please make sure that your shipping information, billing information and bag summary are true. 
 Are you sure to place your order?" TextWrapping="Wrap" FontSize="{StaticResource FontSizeText}" Margin="0, 30, 0,30 "/>
-            <Button Content="OK" HorizontalAlignment="Right" Command="{Binding OnOKPayment}" IsEnabled="True"/>
+            <Button Content="OK" HorizontalAlignment="Right" Command="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}, Path=DataContext.OnSuccessPayment}" CommandParameter="{Binding ElementName=AlertDialog}">
+                <!--<i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>-->
+            </Button>
         </StackPanel>
     </Border>
 </UserControl>

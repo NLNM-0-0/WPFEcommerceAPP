@@ -14,7 +14,7 @@ namespace WPFEcommerceApp {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
             var str = value as string;
             if(str == null || str.Length == 0) {
-                return new ValidationResult(true, null);
+                return new ValidationResult(false, null);
             }
                 if(str.Length < 5) {
                 return new ValidationResult(false, "Phone number is wrong type!");
