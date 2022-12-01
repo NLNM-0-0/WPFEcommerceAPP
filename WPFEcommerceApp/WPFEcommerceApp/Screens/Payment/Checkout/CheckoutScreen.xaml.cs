@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,15 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFEcommerceApp {
+namespace WPFEcommerceApp.Screens.Payment.Checkout {
     /// <summary>
-    /// Interaction logic for Drawer.xaml
+    /// Interaction logic for CheckoutScreen.xaml
     /// </summary>
-    public partial class Drawer : UserControl {
-        public Drawer() {
+    public partial class CheckoutScreen : UserControl {
+        public CheckoutScreen() {
             InitializeComponent();
-            DataContext = new DrawerVM();
+            this.DataContext = new CheckoutScreenVM();
+            
         }
     }
-
 }

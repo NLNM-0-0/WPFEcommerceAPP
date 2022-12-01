@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:fa= "http://schemas.fontawesome.io/icons/"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
@@ -60,7 +61,7 @@
                 <!--// Menu title text //-->
                 <TextBlock  Grid.Row="1"
                             Grid.Column="0"
-                            Margin="70,-20,0,0"
+                            Margin="70,-10,0,0"
                             Text="W A N O"
                             Foreground="White"
                             FontSize="28"
@@ -80,7 +81,7 @@
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
-                                Margin="15,-20,0,0"
+                                Margin="15,-10,0,0"
                                 Height="30"
                                 Width="30"
                                 BorderThickness="0"
@@ -125,6 +126,12 @@
                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                        ItemsSource="{Binding ButtonItems}"
                        SelectedIndex="{Binding SelectedIndex}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged" >
+                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}, Path=DataContext.OnChangeScreen}"
+                                               CommandParameter="{Binding ElementName=LV}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <!--// Listview items style template //-->
 
                 <ListView.ItemContainerStyle>
@@ -148,7 +155,6 @@
                                             <MultiTrigger.Conditions>
                                                 <Condition Property="IsMouseOver" Value="True"/>
                                             </MultiTrigger.Conditions>
-
                                             <Setter Property="Background"
                                                             TargetName="Bd"
                                                             Value="#545454"/>
@@ -172,7 +178,6 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-
                         <StackPanel x:Name="MainTab" Orientation="Horizontal"
                                         Width="220">
                             <fa:FontAwesome Icon="{Binding Icon}"

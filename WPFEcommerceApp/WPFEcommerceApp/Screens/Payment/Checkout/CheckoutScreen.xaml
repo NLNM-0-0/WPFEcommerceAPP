@@ -1,0 +1,329 @@
+﻿<UserControl x:Class="WPFEcommerceApp.Screens.Payment.Checkout.CheckoutScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:WPFEcommerceApp.Screens.Payment.Checkout"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1340"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\components\HiddenTab\Expander.xaml"/>
+                <ResourceDictionary Source="..\components\ProductCard\BProductCard.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <!--Pressable-->
+            <Style x:Key="Pressable" TargetType="Button">
+                <Style.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="Foreground" Value="#508BE3"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Foreground" Value="#83b4fc"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="18" ShadowDepth="0.5" Opacity="0.7" Color="White"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Style.Resources>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ShippingButton" TargetType="RadioButton">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Grid x:Name="Container" Height="66" Width="325">
+                                <Border x:Name="border" BorderBrush="#a6a6a6" BorderThickness="0.9" CornerRadius="5"  Padding="13, 8, 13, 8">
+                                    <StackPanel>
+                                        <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True" SourceName="Container">
+                                    <Setter Property="BorderBrush" Value="#508BE3" TargetName="border"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}" TargetName="border"/>
+                                    <Setter Property="BorderThickness" Value="10"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ListItemContainer" TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0, 5, 0, 5"/>
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="Padding" Value="4,1"/>
+                <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListViewItem">
+                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Color x:Key="detailMark">#FFA1A9B3</Color>
+            <SolidColorBrush x:Key="detailMarkBrush" Color="{StaticResource ResourceKey=detailMark}" />
+            <Style x:Key="flatTextBox" TargetType="{x:Type TextBox}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Grid Width="419" Height="42">
+                                <Rectangle  Stroke="{StaticResource ResourceKey=detailMarkBrush}" StrokeThickness="1"/>
+                                <TextBlock x:Name="placeholder" Text="Enter Voucher code" VerticalAlignment="Center" Margin="12, 0,0,0"
+                                           FontSize="{StaticResource FontSizeText}"
+                                           Foreground="{StaticResource NotAvailableColorBrush}" Visibility="Collapsed"/>
+                                <TextBox x:Name="textbox" Background="Transparent" Text="{TemplateBinding Text}" BorderThickness="0" FontSize="{StaticResource FontSizeText}" VerticalAlignment="Center" Margin="12, 0,0,0"/>
+
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Text" Value="" SourceName="textbox">
+                                    <Setter Property="Visibility" Value="Visible" TargetName="placeholder"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="White" wpf:ScrollBarAssist.ButtonsVisibility="Collapsed">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="12*"/>
+        </Grid.RowDefinitions>
+        <!--Header-->
+        <Label Content="Checkout"
+               FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Top"
+               Margin="0 39 0 34"
+               />
+        <!--Content-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="7*"/>
+            </Grid.ColumnDefinitions>
+            <!--Left column-->
+            <Grid Margin="53 0 0 73" Height="612.714">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        <!--Delivery Options-->
+                        <ListBox x:Name="AreaContainer">
+                            
+                            <ListBox.Template>
+                                <ControlTemplate TargetType="{x:Type ListBox}">
+                                    <ItemsPresenter/>
+                                </ControlTemplate>
+                            </ListBox.Template>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <ContentPresenter Content="{TemplateBinding Content}"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <Expander x:Name="DeliArea" Style="{StaticResource CustomExpander}" IsExpanded="{Binding StateArea[0]}">
+                                <Expander.Header>
+                                    <Label Content="Delivery Options" 
+                   FontSize="{StaticResource FontSizeHeadline2}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"/>
+                                </Expander.Header>
+                                <StackPanel>
+                                    <!--Address-->
+                                    <Label Content="Delivery address" FontSize="{StaticResource FontSizeHeadline3}"/>
+                                    <Border BorderBrush="{StaticResource BlackColorBrush}" BorderThickness="0.9" CornerRadius="5" Height="118" Padding="12"
+                                    Margin="0, 16, 0, 0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <Label Content="{Binding Username}" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="{Binding UserPhone}" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="{Binding UserAddress}" FontSize="{StaticResource FontSizeText}"/>
+                                            </StackPanel>
+                                            <Button 
+                                                x:Name="EditInfor"
+                                                Grid.Column="1" Style="{StaticResource Pressable}"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right"
+                                                    Command="{Binding OnEditInfor}"
+                                                    CommandParameter="{Binding ElementName=EditInfor}">
+                                                <Label Content="edit"/>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                    <!--Shipping speed-->
+                                    <Label Content="Select your shipping speed" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 16, 0, 0"/>
+                                    <Grid Margin="0, 16, 0, 16">
+                                        <RadioButton GroupName="Shipping" Style="{StaticResource ShippingButton}" HorizontalAlignment="Left" IsChecked="True">
+                                            <StackPanel>
+                                                <Label Content="Free No Rush Shipping" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="Arrives Mon, Oct 10- Tue, Oct 11"
+                               FontSize="{StaticResource FontSizeDescription}"
+                               Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                            </StackPanel>
+                                        </RadioButton>
+                                        <RadioButton GroupName="Shipping" Style="{StaticResource ShippingButton}" HorizontalAlignment="Right">
+                                            <StackPanel>
+                                                <Label Content="Free No Rush Shipping" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="Arrives Mon, Oct 10- Tue, Oct 11"
+                               FontSize="{StaticResource FontSizeDescription}"
+                               Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                            </StackPanel>
+                                        </RadioButton>
+                                    </Grid>
+                                    <Button x:Name="buttonToPayment" Content="Continue to Payment" 
+                                        Width="216" 
+                                        FontWeight="Light" 
+                                        HorizontalAlignment="Right" 
+                                        Height="46" 
+                                        Margin="0,0,0,16"
+                                        Command="{Binding OnPayment}"
+                                        CommandParameter="{Binding ElementName=PaymentArea}">
+                                    </Button>
+                                </StackPanel>
+                            </Expander>
+
+                            <!--Voucher-->
+                            <Expander Style="{StaticResource CustomExpander}" Visibility="Collapsed">
+                                <Expander.Header>
+                                    <Grid Width="698">
+                                        <Label Content="Voucher" 
+                   FontSize="{StaticResource FontSizeHeadline2}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"/>
+                                        <Button Content="Continue to Payment" HorizontalAlignment="Right" Width="202" FontWeight="Light"/>
+                                    </Grid>
+                                </Expander.Header>
+                                <StackPanel>
+                                    <Label Content="fuck"/>
+                                    <Label Content="fuck"/>
+                                    <Label Content="fuck"/>
+                                </StackPanel>
+                            </Expander>
+                            <!--Payment-->
+                            <Expander x:Name="PaymentArea" Style="{StaticResource CustomExpander}" IsEnabled="{Binding PaymentState}" IsExpanded="{Binding StateArea[1]}">
+                                <Expander.Header>
+                                    <Label Content="Payment" 
+                   FontSize="{StaticResource FontSizeHeadline2}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"/>
+                                </Expander.Header>
+                                <StackPanel>
+                                    <Label Content="Payment method" FontSize="{StaticResource FontSizeHeadline3}"/>
+                                    <RadioButton 
+                                        Style="{StaticResource RadioButton}"
+                                        Margin="0, 25, 0, 0"
+                                        GroupName="PaymentMethod"
+                                        Content="Cash on Delivery"
+                                        IsChecked="True"/>
+                                    <RadioButton 
+                                        Style="{StaticResource RadioButton}"
+                                        Margin="0, 8, 0, 0"
+                                        GroupName="PaymentMethod"
+                                        Content="Credit/Debit Card"
+                                        IsEnabled="False">
+                                    </RadioButton>
+                                    <RadioButton 
+                                        x:Name="PlaceOrder"
+                                        Style="{StaticResource RadioButton}"
+                                        Margin="0, 8, 0, 0"
+                                        GroupName="PaymentMethod"
+                                        Content="E-Wallet"
+                                        IsEnabled="False"/>
+                                    <Button Content="Place Order" Width="120" FontWeight="Light" HorizontalAlignment="Right" Command="{Binding PaymentAlertDialogCM}"
+                                            CommandParameter="{Binding ElementName=PlaceOrder}"/>
+                                </StackPanel>
+                            </Expander>
+                        </ListBox>
+                    </StackPanel>
+                </ScrollViewer>
+
+            </Grid>
+            <!--Right column-->
+            <Grid Grid.Column="1" Margin="67 0 53 73">
+                <StackPanel>
+                    <!--Header-->
+                    <Grid>
+                        <Label Content="Product ordered" FontSize="{StaticResource FontSizeHeadline2}"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <Button Style="{StaticResource Pressable}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Label Content="edit" FontSize="{StaticResource FontSizeText}"/>
+                        </Button>
+                    </Grid>
+                    <!--Price-->
+                    <Grid Margin="0,23,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Height="39">
+                            <Label Content="Subtotal: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <Label Content="{Binding SubTotal}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                        <Grid Height="39" Grid.Row="1">
+                            <Label Content="Shipping Total: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <Label Content="{Binding ShipTotal}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                        <Grid Height="39" Grid.Row="2">
+                            <Label Content="Discounted: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <Label Content="{Binding Discount}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                        <Grid Height="39" Grid.Row="3">
+                            <Label Content="Total Payment: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <Label Content="{Binding TotalPayment}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Grid >
+                    <!--Product-->
+                    <Grid Margin="0, 23, 0,0" Background="AliceBlue" Height="372">
+                        <ListView ItemsSource="{Binding ProductList}" 
+                                  ItemTemplate="{StaticResource BProductCardContent}" 
+                                  ItemContainerStyle="{StaticResource ListItemContainer}" 
+                                  BorderThickness="0"
+                                  ScrollViewer.CanContentScroll="False"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
+                        </ListView>
+                        <!--<uc:BProductCard/>-->
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
