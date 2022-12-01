@@ -11,24 +11,11 @@
     <materialDesign:DialogHost
         DialogTheme="Inherit"
         CloseOnClickAway="True">
-        <DockPanel>
-            <TextBlock
-            DockPanel.Dock="Top"
-            Text="Header"
-            Height="100"
-            Width="1440"
-            Background="{StaticResource BoxShadowColorBrush}"/>
-
-            <TextBlock
-            DockPanel.Dock="Left"
-            Text="Drawer"
-            Height="800"
-            Width="100"
-            Background="{StaticResource BoxShadowColorBrush}"/>
-            <Grid>
+        <Grid>
+            <Grid Width="1380" Height="800" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <ScrollViewer
                         HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Hidden"
                         x:Name="MainScrollViewer"
                         Grid.Row="1">
                     <ContentControl
@@ -36,7 +23,14 @@
                             Content="{Binding Content, UpdateSourceTrigger=PropertyChanged, FallbackValue={x:Null}}"/>
                 </ScrollViewer>
             </Grid>
-        </DockPanel>
+            <TextBlock
+            VerticalAlignment="Top"
+            Text="Header"
+            Height="75"
+            Width="1440"
+            Background="{StaticResource BoxShadowColorBrush}"/>
+            <local:Drawer HorizontalAlignment="Left"/>
+        </Grid>
     </materialDesign:DialogHost>
         
 </Window>
