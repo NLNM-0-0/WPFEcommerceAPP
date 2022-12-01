@@ -12,7 +12,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="400"/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="125"/>
             </Grid.ColumnDefinitions>
             <Image Source="{Binding ProductImage}" Width="107" Height="107" HorizontalAlignment="Left" Margin="15, 0"/>
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
