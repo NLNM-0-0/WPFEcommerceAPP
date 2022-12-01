@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace WPFEcommerceApp
 {
-    internal class MainItem
+    public class MainItem
     {
         private readonly Type _ContentType;
         private readonly object _DataContext;
