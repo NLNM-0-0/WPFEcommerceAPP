@@ -97,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\NavigateCommand.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Order.cs" />
@@ -141,6 +142,11 @@
     <Compile Include="Screens\Payment\SuccessScreen\SuccessScreen.xaml.cs">
       <DependentUpon>SuccessScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\CompositeNavigationService.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\NavigateService.cs" />
+    <Compile Include="Services\ParamNavigationService.cs" />
+    <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="UserControls\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
@@ -187,6 +193,8 @@
     </Compile>
     <Compile Include="Screens\ShopProduct\ShopProductViewModel.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
+    <Compile Include="Utils\CommandBase.cs" />
+    <Compile Include="Utils\CreateViewModel.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Screens\ShopRating\ShopRatingViewModel.cs" />
     <Compile Include="Screens\UserView\UserViewModel.cs" />
