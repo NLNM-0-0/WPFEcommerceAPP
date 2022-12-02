@@ -9,9 +9,6 @@ using System.Windows.Input;
 
 namespace WPFEcommerceApp {
     public partial class BProductCard : ResourceDictionary{
-        public BProductCard() {
-            InitializeComponent();
-        }
         private void HandlePreviewMouseWheel(object sender, MouseWheelEventArgs e) {
             if(!e.Handled) {
                 e.Handled = true;

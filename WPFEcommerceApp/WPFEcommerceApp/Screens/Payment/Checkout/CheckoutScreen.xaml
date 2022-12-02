@@ -247,22 +247,25 @@
                                     <Label Content="Payment method" FontSize="{StaticResource FontSizeHeadline3}"/>
                                     <RadioButton 
                                         Style="{StaticResource RadioButton}"
-                                        Margin="0, 25, 0, 0"
+                                        Margin="5, 25, 0, 0"
                                         GroupName="PaymentMethod"
+                                        FontSize="14"
                                         Content="Cash on Delivery"
                                         IsChecked="True"/>
                                     <RadioButton 
                                         Style="{StaticResource RadioButton}"
-                                        Margin="0, 8, 0, 0"
+                                        Margin="5, 8, 0, 0"
                                         GroupName="PaymentMethod"
+                                        FontSize="14"
                                         Content="Credit/Debit Card"
                                         IsEnabled="False">
                                     </RadioButton>
                                     <RadioButton 
                                         x:Name="PlaceOrder"
                                         Style="{StaticResource RadioButton}"
-                                        Margin="0, 8, 0, 0"
+                                        Margin="5, 8, 0, 0"
                                         GroupName="PaymentMethod"
+                                        FontSize="14"
                                         Content="E-Wallet"
                                         IsEnabled="False"/>
                                     <Button Content="Place Order" Width="120" FontWeight="Light" HorizontalAlignment="Right" Command="{Binding PaymentAlertDialogCM}"

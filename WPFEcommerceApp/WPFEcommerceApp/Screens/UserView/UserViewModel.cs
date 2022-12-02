@@ -62,7 +62,7 @@ namespace WPFEcommerceApp
             MainItems.Add(new MainItem(
                 "ProductDetails",
                 typeof(ProductDetails)));
-            SelectedItem = MainItems[6];
+            SelectedItem = MainItems[4];
 
             OnChangeScreen = new RelayCommand<object>((p) => true, (p) => {
                 string nav = ((p as ListView).SelectedItem as ButtonItem).NavLink;

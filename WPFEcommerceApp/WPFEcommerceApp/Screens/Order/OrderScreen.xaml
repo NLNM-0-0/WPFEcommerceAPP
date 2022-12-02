@@ -229,7 +229,7 @@
                                   ItemTemplate="{StaticResource OrderCard}"
                                   ItemsSource="{Binding DeliveringList}"
                                   ScrollViewer.CanContentScroll="False"
-                                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden" d:ItemsSource="{d:SampleData ItemCount=5}">
 
                         </ListView>
                         <i:Interaction.Triggers>
