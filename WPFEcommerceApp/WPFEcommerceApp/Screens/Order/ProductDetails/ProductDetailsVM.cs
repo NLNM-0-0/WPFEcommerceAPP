@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace WPFEcommerceApp {
     public class ProductDetailsVM :BaseViewModel {
@@ -27,8 +28,11 @@ namespace WPFEcommerceApp {
 			get { return orderDetail; }
 			set { orderDetail = value; OnPropertyChanged(); }
 		}
+		public ICommand OnReOrder { get; }
+		public ICommand OnCancel { get; }
+        public ICommand OnBack { get; }
 
-		public ProductDetailsVM(Order order) {
+        public ProductDetailsVM(Order order, NavigationStore navigationStore, INavigationService successNavService, INavigationService orderNavService) {
 			OrderDetail = order;
 			if(OrderDetail.Status == "Processing") {
 				Status = 1;
@@ -50,6 +54,16 @@ namespace WPFEcommerceApp {
 			for(int i = 0; i < Status; i++) {
 				OrderStatus[i] = true;
 			}
+			OnReOrder = new ReOrderCM(navigationStore, successNavService);
+			OnCancel = new RelayCommand<object>((p) => true, (p) => {
+				//Do something with OrderStore
+				orderNavService.Navigate();
+			});
+			OnBack = new RelayCommand<object>(p => true, p => {
+				//Actually I need to handle the tab index
+				//But nahh, we'll do it later
+				orderNavService.Navigate();
+			});
         }
 
     }

@@ -81,18 +81,18 @@ namespace WPFEcommerceApp {
         
         #endregion
 
-        public CheckoutScreenVM(INavigationService successNavService) {
+        public CheckoutScreenVM(INavigationService successNavService, Order order = null) {
 			Username = "Name";
 			UserPhone = "012345678";
 			UserAddress = "Nothing";
-            ProductList= new ObservableCollection<BProduct>() {
-                new BProduct(),
-                new BProduct(),
-                new BProduct(),
-                new BProduct(),
-            };
+			if(order != null)
+				ProductList= new ObservableCollection<BProduct>(order.ShopProduct);
+			else 
+				ProductList = new ObservableCollection<BProduct>();
+
 			ShipTotal = 23.89;
 			Discount = 5;
+
 			for(int i = 0; i < ProductList.Count; i++) {
 				SubTotal += ProductList[i].Subtotal;
 			}

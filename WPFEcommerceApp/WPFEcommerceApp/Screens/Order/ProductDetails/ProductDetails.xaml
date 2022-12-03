@@ -36,7 +36,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Style="{StaticResource TransparentButton}" HorizontalAlignment="Left" Height="50" Width="150">
+                <Button Style="{StaticResource TransparentButton}" HorizontalAlignment="Left" Height="50" Width="150" Command="{Binding OnBack}"
+                        CommandParameter="nah">
                     <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
                         <fa:FontAwesome Icon="AngleLeft" FontSize="{StaticResource FontSizeHeadline}" Foreground="{StaticResource NotAvailableColorBrush}"
                                         VerticalAlignment="Center"
@@ -111,13 +112,24 @@
                 
             </ListView>
             <Grid Margin="0, 20">
-                <Button Style="{StaticResource WhiteButton}" Content="Re-order" Background="Transparent"
+                <Button Style="{StaticResource WhiteButton}" 
+                        Content="Re-order" 
+                        Background="Transparent"
                         x:Name="FuncButton"
-                       HorizontalAlignment="Left" Margin="25,0" FontSize="{StaticResource FontSizeHeadline3}" Width="120" Height="45"
-                        VerticalAlignment="Center" FontWeight="Normal">
+                       HorizontalAlignment="Left" 
+                        Margin="25,0" 
+                        FontSize="{StaticResource FontSizeHeadline3}" 
+                        Width="120" 
+                        Height="45"
+                        VerticalAlignment="Center" 
+                        FontWeight="Normal"
+                        Command="{Binding OnReOrder}"
+                        CommandParameter="{Binding OrderDetail}">
                     <i:Interaction.Triggers>
                         <i:DataTrigger Binding="{Binding OrderDetail.Status}" Value="Processing">
                             <i:ChangePropertyAction TargetName="FuncButton" PropertyName="Content" Value="Cancel"/>
+                            <i:ChangePropertyAction TargetName="FuncButton" PropertyName="Command"
+                                                    Value="{Binding OnCancel}"/>
                         </i:DataTrigger>
                     </i:Interaction.Triggers>
                 </Button>

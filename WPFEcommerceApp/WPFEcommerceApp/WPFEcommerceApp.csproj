@@ -116,6 +116,7 @@
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Order.cs" />
+    <Compile Include="Screens\Order\Command\ReOrderCM.cs" />
     <Compile Include="Screens\Order\components\OrderCard.xaml.cs">
       <DependentUpon>OrderCard.xaml</DependentUpon>
     </Compile>

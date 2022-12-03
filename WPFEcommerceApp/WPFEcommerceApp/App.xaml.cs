@@ -31,7 +31,12 @@ namespace WPFEcommerceApp {
             //setup Transient ViewModel
             services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(CreateSuccessNavService(s)));
 
-            services.AddTransient<OrderScreenVM>(s => new OrderScreenVM(s.GetRequiredService<NavigationStore>()));
+            services.AddTransient<OrderScreenVM>(s => new OrderScreenVM(
+                s.GetRequiredService<NavigationStore>(),
+                CreateSuccessNavService(serviceProvider),
+                CreateOrderNavService(serviceProvider)
+                )
+            );
 
             services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider))); //Need to be HomeView here
 

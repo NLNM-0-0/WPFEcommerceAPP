@@ -47,7 +47,9 @@ namespace WPFEcommerceApp {
 
 
         public OrderScreenVM(
-            NavigationStore navigationStore) {
+            NavigationStore navigationStore, 
+            INavigationService successNavService,
+            INavigationService orderNavService) {
 			OrderList = new ObservableCollection<Order>() {
 				new Order("001", "Processing"),
                 new Order("002", "Dellivering"),
@@ -90,12 +92,10 @@ namespace WPFEcommerceApp {
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
                 var param = p as Order;
                 var nav = new ParamNavigationService<Order, ProductDetailsVM>(navigationStore,
-                    (parameter) => new ProductDetailsVM(parameter));
+                    (parameter) => new ProductDetailsVM(parameter, navigationStore, successNavService, orderNavService));
                 nav.Navigate(param);
             });
-            OnReorder = new RelayCommand<object>((p) => true, (p) => {
-                MessageBox.Show("OnReorder");
-            });
+            OnReorder = new ReOrderCM(navigationStore, successNavService);
         }
     }
 }
