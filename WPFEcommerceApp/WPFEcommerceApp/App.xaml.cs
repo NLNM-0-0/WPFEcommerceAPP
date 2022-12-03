@@ -34,7 +34,7 @@ namespace WPFEcommerceApp {
             return new NavigationService<CheckoutScreenVM>(navigationStore, () => new CheckoutScreenVM(CreateSuccessNavService()));
         }
         private INavigationService CreateOrderNavService() {
-            return new NavigationService<OrderScreenVM>(navigationStore, () => new OrderScreenVM());
+            return new NavigationService<OrderScreenVM>(navigationStore, () => new OrderScreenVM(navigationStore));
         }
         private INavigationService CreateSuccessNavService() {
             return new NavigationService<SuccessScreenVM>(navigationStore, () => new SuccessScreenVM(CreateOrderNavService()));

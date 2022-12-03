@@ -25,6 +25,10 @@ namespace WPFEcommerceApp {
                 }
                 if(flag) break;
             }
+            OrderTotal = 0;
+            for(int i = 0; i<ShopProduct.Count; i++) {
+                OrderTotal += ShopProduct[i].Subtotal;
+            }
         }
 
         public string ID { get; set; }

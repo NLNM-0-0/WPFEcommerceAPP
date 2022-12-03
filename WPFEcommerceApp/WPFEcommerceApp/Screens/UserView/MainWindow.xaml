@@ -23,6 +23,9 @@
                 <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
                     <local:SuccessScreen/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
+                    <local:ProductDetails/>
+                </DataTemplate>
             </Grid.Resources>
             <local:Drawer HorizontalAlignment="Left"
                           x:Name="Drawer"

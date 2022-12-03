@@ -68,7 +68,13 @@
                            HorizontalAlignment="Right"
                            Margin="20, 0"
                            FontSize="{StaticResource FontSizeHeadline2}"
-                           Style="{StaticResource StatusStyle}"/>
+                           Style="{StaticResource StatusStyle}">
+                    <i:Interaction.Triggers>
+                        <i:DataTrigger Binding="{Binding OrderDetail.Status}" Value="Cancelled">
+                            <i:ChangePropertyAction TargetName="status" PropertyName="Foreground" Value="{StaticResource ErrorColorBrush}"/>
+                        </i:DataTrigger>
+                    </i:Interaction.Triggers>
+                </TextBlock>
             </Grid>
             <Separator BorderThickness="0.3" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
             <StackPanel Orientation="Horizontal" Height="150"  HorizontalAlignment="Center">

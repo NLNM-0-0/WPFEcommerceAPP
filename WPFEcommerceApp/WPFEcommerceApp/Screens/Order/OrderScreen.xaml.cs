@@ -20,7 +20,6 @@ namespace WPFEcommerceApp {
     public partial class OrderScreen : UserControl {
         public OrderScreen() {
             InitializeComponent();
-            DataContext = new OrderScreenVM();
         }
     }
 }

@@ -20,7 +20,6 @@ namespace WPFEcommerceApp {
     public partial class ProductDetails : UserControl {
         public ProductDetails() {
             InitializeComponent();
-            this.DataContext = new ProductDetailsVM();
         }
     }
 }

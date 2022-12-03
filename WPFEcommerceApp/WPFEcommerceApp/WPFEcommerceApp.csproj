@@ -164,6 +164,7 @@
     <Compile Include="Services\NavigateService.cs" />
     <Compile Include="Services\ParamNavigationService.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
+    <Compile Include="Stores\OrderStore.cs" />
     <Compile Include="UserControls\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>

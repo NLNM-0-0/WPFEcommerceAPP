@@ -28,9 +28,8 @@ namespace WPFEcommerceApp {
 			set { orderDetail = value; OnPropertyChanged(); }
 		}
 
-
-		public ProductDetailsVM() {
-			OrderDetail = new Order();
+		public ProductDetailsVM(Order order) {
+			OrderDetail = order;
 			if(OrderDetail.Status == "Processing") {
 				Status = 1;
 			}
