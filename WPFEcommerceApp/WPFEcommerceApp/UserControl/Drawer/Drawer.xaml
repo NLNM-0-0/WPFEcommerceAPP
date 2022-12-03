@@ -128,8 +128,7 @@
                        SelectedIndex="{Binding SelectedIndex}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged" >
-                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}, Path=DataContext.OnChangeScreen}"
-                                               CommandParameter="{Binding ElementName=LV}"/>
+                        <i:InvokeCommandAction Command="{Binding OnChangeScreen}" CommandParameter="{Binding ElementName=LV}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <!--// Listview items style template //-->

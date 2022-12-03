@@ -21,7 +21,6 @@ namespace WPFEcommerceApp {
     public partial class Drawer : UserControl {
         public Drawer() {
             InitializeComponent();
-            DataContext = new DrawerVM();
         }
     }
 
