@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e1efa225b97e4a8bbe8f423e71da5aaa" Name="Diagram1">
+        <EntityTypeShape EntityType="EcommerceAppModel.Advertisement" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Brand" Width="1.5" PointX="3.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Category" Width="1.5" PointX="3.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.ImageProduct" Width="1.5" PointX="8.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.MOrder" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.MUser" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Notification" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.OrderInfo" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Product" Width="1.5" PointX="6" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Rating" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.RatingInfo" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Shop" Width="1.5" PointX="3" PointY="19.625" IsExpanded="true" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Product_Brand" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Product_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_IP_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_MOrder_MUser" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_MOrder_Rating" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_OrderInfo_MOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Notification_User" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Shop_MUser" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_RatingInfo_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FK_RatingInfo_Rating" ManuallyRouted="false" />
+        <AssociationConnector Association="EcommerceAppModel.FavouriteProduct" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
