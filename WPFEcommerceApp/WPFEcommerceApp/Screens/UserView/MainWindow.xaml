@@ -26,6 +26,12 @@
                 <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
                     <local:ProductDetails/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
+                    <local:ShopMain/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
+                    <local:ShopRating/>
+                </DataTemplate>
             </Grid.Resources>
             <local:Drawer HorizontalAlignment="Left"
                           x:Name="Drawer"
