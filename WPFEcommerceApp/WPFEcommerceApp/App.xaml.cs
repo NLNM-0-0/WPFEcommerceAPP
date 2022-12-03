@@ -33,7 +33,7 @@ namespace WPFEcommerceApp {
 
             services.AddTransient<OrderScreenVM>(s => new OrderScreenVM(s.GetRequiredService<NavigationStore>()));
 
-            services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider)));
+            services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider))); //Need to be HomeView here
 
             //Setup MainWindow
             services.AddSingleton<MainViewModel>();
