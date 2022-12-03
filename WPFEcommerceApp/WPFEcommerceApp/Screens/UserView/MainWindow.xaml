@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFEcommerceApp"
         xmlns:fa= "http://schemas.fontawesome.com/icons/"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1440">
@@ -12,25 +13,29 @@
         DialogTheme="Inherit"
         CloseOnClickAway="True">
         <Grid>
-            <Grid Width="1380" Height="800" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <ScrollViewer
-                        HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Hidden"
-                        x:Name="MainScrollViewer"
-                        Grid.Row="1">
-                    <ContentControl
-                            DataContext="{Binding SelectedItem}"
-                            Content="{Binding Content, UpdateSourceTrigger=PropertyChanged, FallbackValue={x:Null}}"/>
-                </ScrollViewer>
-            </Grid>
-            <TextBlock
-            VerticalAlignment="Top"
-            Text="Header"
-            Height="75"
-            Width="1440"
-            Background="{StaticResource BoxShadowColorBrush}"/>
-            <local:Drawer HorizontalAlignment="Left"/>
+            <Grid.Resources>
+                <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
+                    <local:CheckoutScreen/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:OrderScreenVM}">
+                    <local:OrderScreen/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
+                    <local:SuccessScreen/>
+                </DataTemplate>
+            </Grid.Resources>
+            <local:Drawer HorizontalAlignment="Left"
+                          x:Name="Drawer"
+                          DataContext="{Binding DrawerVM}" Panel.ZIndex="100"/>
+            <Grid  Height="80" VerticalAlignment="Top" Background="AliceBlue"/>
+            <ContentControl 
+                x:Name="Content"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Width="1380"
+                Height="800"
+                Content="{Binding CurrentViewModel}"/>
         </Grid>
     </materialDesign:DialogHost>
-        
+
 </Window>

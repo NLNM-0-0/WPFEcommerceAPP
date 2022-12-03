@@ -10,8 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
-using WPFEcommerceApp.Screens.Payment.Checkout;
-using WPFEcommerceApp.Screens.Payment.SuccessScreen;
 
 namespace WPFEcommerceApp
 {
@@ -65,13 +63,6 @@ namespace WPFEcommerceApp
             SelectedItem = MainItems[6];
 
             OnChangeScreen = new RelayCommand<object>((p) => true, (p) => {
-                string nav = ((p as ListView).SelectedItem as ButtonItem).NavLink;
-                for(int i = 0; i < MainItems.Count; i++) {
-                    if(MainItems[i].Name == nav) {
-                        SelectedItem = MainItems[i];
-                        break;
-                    }
-                }
             });
             OnSuccessPayment = new RelayCommand<object>((p) => true, (p) => {
                 DialogHost.CloseDialogCommand.Execute(p, (p as IInputElement));

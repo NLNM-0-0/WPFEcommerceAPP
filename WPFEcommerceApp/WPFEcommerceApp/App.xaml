@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WPFEcommerceApp"
-             StartupUri="/Screens/UserView/MainWindow.xaml"
              xmlns:fa="http://schemas.fontawesome.io/icons/">
     <Application.Resources>
         <ResourceDictionary>
