@@ -125,8 +125,8 @@ namespace WPFEcommerceApp
             Email = shop.Email;
             Address = shop.Address;
             Description = shop.Description;
-            SourceImageAva = shop.SourceImageAva;
-            SourceImageBackground = shop.SourceImageBackground;
+            //SourceImageAva = shop.SourceImageAva;
+            //SourceImageBackground = shop.SourceImageBackground;
 
             ChangeAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) => 
             {
@@ -140,7 +140,7 @@ namespace WPFEcommerceApp
             });
             ChangeToDefaultAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                SourceImageAva = Shop.DefaultSourceImageAva;
+                //SourceImageAva = Shop.DefaultSourceImageAva;
             });
             SaveAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {

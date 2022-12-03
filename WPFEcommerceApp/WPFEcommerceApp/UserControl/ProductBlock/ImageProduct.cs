@@ -12,7 +12,7 @@ namespace WPFEcommerceApp
     /// <summary>
     /// This class will be deleted after having database
     /// </summary>
-    class ImageProduct:BaseViewModel
+    partial class ImageProduct:BaseViewModel
     {
         public string Path { get; set; }
         public Image Image { get; private set; }

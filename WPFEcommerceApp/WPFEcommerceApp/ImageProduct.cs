@@ -7,19 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataAccessLayer
+namespace WPFEcommerceApp
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Notification
+    public partial class ImageProduct
     {
-        public string Id { get; set; }
-        public string IdReceiver { get; set; }
-        public string IdSender { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public string Content { get; set; }
+        public string IdProduct { get; set; }
+        public string Source { get; set; }
     
-        public virtual MUser MUser { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

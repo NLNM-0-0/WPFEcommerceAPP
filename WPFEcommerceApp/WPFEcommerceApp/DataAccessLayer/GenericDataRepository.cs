@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
+using WPFEcommerceApp;
 
 namespace DataAccessLayer
 {
