@@ -12,32 +12,64 @@ namespace WPFEcommerceApp {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        private readonly NavigationStore navigationStore;
-        private readonly DrawerVM drawerVM;
+        private readonly IServiceProvider serviceProvider;
         public App() {
-            navigationStore = new NavigationStore();
-            drawerVM = new DrawerVM(CreateCheckoutNavService(), CreateOrderNavService());
+            IServiceCollection services = new ServiceCollection();
+
+            //Set Store and some initial dependences
+            services.AddSingleton<NavigationStore>();
+
+            services.AddSingleton<DrawerVM>(s => new DrawerVM(CreateCheckoutNavService(serviceProvider), CreateOrderNavService(serviceProvider)));
+
+            //Set service
+
+            //It need to be CreateHomeNavService
+            //But I set initial screen is checkout here
+            //just for example
+            services.AddSingleton<INavigationService>(s => CreateCheckoutNavService(serviceProvider));
+
+            //setup Transient ViewModel
+            services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(CreateSuccessNavService(s)));
+
+            services.AddTransient<OrderScreenVM>(s => new OrderScreenVM(s.GetRequiredService<NavigationStore>()));
+
+            services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider)));
+
+            //Setup MainWindow
+            services.AddSingleton<MainViewModel>();
+
+            services.AddSingleton<MainWindow>(s => new MainWindow() {
+                DataContext = s.GetRequiredService<MainViewModel>()
+            });
+
+            serviceProvider = services.BuildServiceProvider();
+
         }
 
         protected override void OnStartup(StartupEventArgs e) {
-            INavigationService navigationService = CreateCheckoutNavService();
-            navigationService.Navigate();
-            MainWindow = new MainWindow() {
-                DataContext = new MainViewModel(navigationStore,
-                drawerVM)
-            };
+            INavigationService initial = serviceProvider.GetRequiredService<INavigationService>();
+            initial.Navigate();
+
+            MainWindow = serviceProvider.GetRequiredService<MainWindow>();
             MainWindow.Show();
+
             base.OnStartup(e);
         }
 
-        private INavigationService CreateCheckoutNavService() {
-            return new NavigationService<CheckoutScreenVM>(navigationStore, () => new CheckoutScreenVM(CreateSuccessNavService()));
+        private INavigationService CreateCheckoutNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<CheckoutScreenVM>(
+                serviceProvider.GetRequiredService<NavigationStore>(), 
+                serviceProvider.GetRequiredService<CheckoutScreenVM>);
         }
-        private INavigationService CreateOrderNavService() {
-            return new NavigationService<OrderScreenVM>(navigationStore, () => new OrderScreenVM(navigationStore));
+        private INavigationService CreateOrderNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<OrderScreenVM>(
+                serviceProvider.GetRequiredService<NavigationStore>(), 
+                serviceProvider.GetRequiredService<OrderScreenVM>);
         }
-        private INavigationService CreateSuccessNavService() {
-            return new NavigationService<SuccessScreenVM>(navigationStore, () => new SuccessScreenVM(CreateOrderNavService()));
+        private INavigationService CreateSuccessNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<SuccessScreenVM>(
+                serviceProvider.GetRequiredService<NavigationStore>(), 
+                serviceProvider.GetRequiredService<SuccessScreenVM>);
         }
     }
 }
