@@ -77,10 +77,11 @@ namespace WPFEcommerceApp {
         public ICommand OnPayment { get; set; }
 		public ICommand PaymentAlertDialogCM { get; set; }
 		public ICommand OnEditInfor { get; set; }
+		public ICommand OnSuccessPayment { get; set; }
         
         #endregion
 
-        public CheckoutScreenVM() {
+        public CheckoutScreenVM(INavigationService successNavService) {
 			Username = "Name";
 			UserPhone = "012345678";
 			UserAddress = "Nothing";
@@ -107,15 +108,20 @@ namespace WPFEcommerceApp {
                 StateArea[1] = true;
                 PaymentState = true;
             });
+
 			PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(p));
 			OnEditInfor = new RelayCommand<object>((p) => true, (p) => EditInforDialog(p));
+			OnSuccessPayment = new RelayCommand<object>((p) => true, (p) => {
+                DialogHost.CloseDialogCommand.Execute(p, (p as IInputElement));
+				//Do something with store here
+				successNavService.Navigate();
+            });
         }
 
 		private async void PaymentAlertDialog(object p) {
 			var view = new EnterPaymentDialog() {
 				DataContext = this
 			};
-			//var result = await DialogHost.Show(view, "RootDialog", null, ClosingEventHandler, ClosedEventHandler);
 			await DialogHost.Show(view);
         }
         private async void EditInforDialog(object p) {
@@ -125,7 +131,6 @@ namespace WPFEcommerceApp {
 				Address = UserAddress,
 				EditData = this,
             };
-            //var result = await DialogHost.Show(view, "RootDialog", null, ClosingEventHandler, ClosedEventHandler);
             await DialogHost.Show(view);
         }
     }

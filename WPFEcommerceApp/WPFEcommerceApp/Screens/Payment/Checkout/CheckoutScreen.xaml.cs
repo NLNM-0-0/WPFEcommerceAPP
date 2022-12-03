@@ -13,15 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFEcommerceApp.Screens.Payment.Checkout {
+namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for CheckoutScreen.xaml
     /// </summary>
     public partial class CheckoutScreen : UserControl {
         public CheckoutScreen() {
             InitializeComponent();
-            this.DataContext = new CheckoutScreenVM();
-            
         }
     }
 }

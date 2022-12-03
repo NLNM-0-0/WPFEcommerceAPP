@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFEcommerceApp.Screens.Payment.SuccessScreen {
+namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for SuccessScreen.xaml
     /// </summary>
