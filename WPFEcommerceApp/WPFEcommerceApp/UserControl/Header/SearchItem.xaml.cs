@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for SearchBar.xaml
+    /// Interaction logic for SearchItem.xaml
     /// </summary>
-    public partial class SearchBar : UserControl
+    public partial class SearchItem : UserControl
     {
-        public SearchBar()
+        public SearchItem()
         {
             InitializeComponent();
         }
