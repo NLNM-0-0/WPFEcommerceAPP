@@ -9,11 +9,11 @@ namespace DataAccessLayer
 {
     public interface IGenericDataRepository<T> where T : class
     {
-        IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties);
-        IList<T> GetList(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
-        T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
-        void Add(params T[] items);
-        void Update(params T[] items);
-        void Remove(params T[] items);
+        Task<IList<T>> GetAllAsync(params Expression<Func<T, object>>[] navigationProperties);
+        Task<IList<T>> GetListAsync(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
+        Task<T> GetSingleAsync(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
+        Task Add(params T[] items);
+        Task Update(params T[] items);
+        Task Remove(params T[] items);
     }
 }

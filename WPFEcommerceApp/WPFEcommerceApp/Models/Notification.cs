@@ -7,19 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPFEcommerceApp
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class RatingInfo
+    public partial class Notification
     {
         public string Id { get; set; }
-        public string IdRating { get; set; }
-        public string IdProduct { get; set; }
-        public Nullable<int> Rating { get; set; }
+        public string IdReceiver { get; set; }
+        public string IdSender { get; set; }
+        public System.DateTime Date { get; set; }
+        public string Content { get; set; }
     
-        public virtual Product Product { get; set; }
-        public virtual Rating Rating1 { get; set; }
+        public virtual MUser MUser { get; set; }
     }
 }

@@ -7,30 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPFEcommerceApp
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class MOrder
+    public partial class Shop
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MOrder()
+        public Shop()
         {
-            this.OrderInfoes = new HashSet<OrderInfo>();
+            this.Products = new HashSet<Product>();
         }
     
         public string Id { get; set; }
-        public string IdCustomer { get; set; }
-        public string IdRating { get; set; }
-        public Nullable<System.DateTime> DateBegin { get; set; }
-        public Nullable<System.DateTime> DateEnd { get; set; }
-        public Nullable<long> OrderTotal { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string Description { get; set; }
+        public string SourceImageAve { get; set; }
+        public string SourceImageBackground { get; set; }
         public string Status { get; set; }
     
         public virtual MUser MUser { get; set; }
-        public virtual Rating Rating { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

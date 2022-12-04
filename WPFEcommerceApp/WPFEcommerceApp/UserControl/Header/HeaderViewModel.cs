@@ -75,6 +75,7 @@ namespace WPFEcommerceApp
                 new SearchItemViewModel{ Name="A nice day"},
             };
 
+            SearchText = string.Empty;
             ItemsSource = ItemsDefault;
 
             AllItems = new ObservableCollection<SearchItemViewModel>

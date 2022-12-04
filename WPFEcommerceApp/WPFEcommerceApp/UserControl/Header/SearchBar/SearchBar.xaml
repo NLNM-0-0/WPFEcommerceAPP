@@ -130,7 +130,7 @@
                         x:Name="CloseButton"
                         Command="{Binding CloseSearchCommand}"
                         Background="{Binding Path=Background, ElementName=Search}"
-                        Visibility="{c:Binding '!(SearchText == \'\')', ElementName=searchBarUC}">
+                        >
                         <fa:FontAwesome Icon="Close"/>
                     </Button>
 

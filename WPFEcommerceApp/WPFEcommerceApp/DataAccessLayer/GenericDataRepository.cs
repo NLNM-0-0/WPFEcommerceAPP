@@ -4,16 +4,17 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Data;
-using System.Text;
+using WPFEcommerceApp.Models;
 using System.Threading.Tasks;
-using WPFEcommerceApp;
+using System.Runtime.InteropServices;
+using System.Windows.Documents;
 
 namespace DataAccessLayer
 {
     public class GenericDataRepository<T> : IGenericDataRepository<T> where T : class
     {
         // Add
-        public virtual void Add(params T[] items)
+        public virtual async Task Add(params T[] items)
         {
             using (var context = new EcommerceAppEntities())
             {
@@ -21,68 +22,79 @@ namespace DataAccessLayer
                 {
                     context.Entry(item).State = EntityState.Added;
                 }
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
 
-        public virtual IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<IList<T>> GetAllAsync(params Expression<Func<T, object>>[] navigationProperties)
         {
-            List<T> list;
-            using (var context = new EcommerceAppEntities())
+            List<T> list=new List<T>();
+            await Task.Run(() =>
             {
-                IQueryable<T> dbQuery = context.Set<T>();
+                using (var context = new EcommerceAppEntities())
+                {
+                    IQueryable<T> dbQuery = context.Set<T>();
 
-                //Apply eager loading
-                foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
-                    dbQuery = dbQuery.Include<T, object>(navigationProperty);
+                    //Apply eager loading
+                    foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                        dbQuery = dbQuery.Include<T, object>(navigationProperty);
 
-                list = dbQuery
-                    .AsNoTracking()
-                    .ToList<T>();
-            }
+                    list = dbQuery
+                        .AsNoTracking()
+                        .ToList<T>();
+                    
+                }
+            });
+            return list;
+
+        }
+
+
+        public async Task<IList<T>> GetListAsync(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
+        {
+            List<T> list = new List<T>();
+            await Task.Run(() =>
+            {
+                using (var context = new EcommerceAppEntities())
+                {
+                    IQueryable<T> dbQuery = context.Set<T>();
+
+                    //Apply eager loading
+                    foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                        dbQuery = dbQuery.Include<T, object>(navigationProperty);
+
+                    list = dbQuery
+                        .AsNoTracking()
+                        .Where(where)
+                        .ToList<T>();
+                }
+            });
             return list;
         }
 
-        public virtual IList<T> GetList(Func<T, bool> where,
-             params Expression<Func<T, object>>[] navigationProperties)
-        {
-            List<T> list;
-            using (var context = new EcommerceAppEntities())
-            {
-                IQueryable<T> dbQuery = context.Set<T>();
 
-                //Apply eager loading
-                foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
-                    dbQuery = dbQuery.Include<T, object>(navigationProperty);
-
-                list = dbQuery
-                    .AsNoTracking()
-                    .Where(where)
-                    .ToList<T>();
-            }
-            return list;
-        }
-
-        public virtual T GetSingle(Func<T, bool> where,
-             params Expression<Func<T, object>>[] navigationProperties)
+        public async Task<T> GetSingleAsync(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
         {
             T item = null;
-            using (var context = new EcommerceAppEntities())
+            await Task.Run(() =>
             {
-                IQueryable<T> dbQuery = context.Set<T>();
+                using (var context = new EcommerceAppEntities())
+                {
+                    IQueryable<T> dbQuery = context.Set<T>();
 
-                //Apply eager loading
-                foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
-                    dbQuery = dbQuery.Include<T, object>(navigationProperty);
+                    //Apply eager loading
+                    foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                        dbQuery = dbQuery.Include<T, object>(navigationProperty);
 
-                item = dbQuery
-                    .AsNoTracking() //Don't track any changes for the selected item
-                    .FirstOrDefault(where); //Apply where clause
-            }
+                    item = dbQuery
+                        .AsNoTracking() //Don't track any changes for the selected item
+                        .FirstOrDefault(where); //Apply where clause
+                }
+            });
             return item;
         }
 
-        public void Remove(params T[] items)
+        public async Task Remove(params T[] items)
         {
 
             using (var context = new EcommerceAppEntities())
@@ -91,11 +103,11 @@ namespace DataAccessLayer
                 {
                     context.Entry(item).State = EntityState.Deleted;
                 }
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
 
-        public void Update(params T[] items)
+        public async Task Update(params T[] items)
         {
             using (var context = new EcommerceAppEntities())
             {
@@ -103,7 +115,7 @@ namespace DataAccessLayer
                 {
                     context.Entry(item).State = EntityState.Modified;
                 }
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

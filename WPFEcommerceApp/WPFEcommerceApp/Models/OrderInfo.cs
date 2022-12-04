@@ -7,19 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPFEcommerceApp
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Notification
+    public partial class OrderInfo
     {
-        public string Id { get; set; }
-        public string IdReceiver { get; set; }
-        public string IdSender { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public string Content { get; set; }
+        public string IdOrder { get; set; }
+        public string IdProduct { get; set; }
+        public int Count { get; set; }
+        public long TotalPrice { get; set; }
     
-        public virtual MUser MUser { get; set; }
+        public virtual MOrder MOrder { get; set; }
     }
 }

@@ -7,18 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPFEcommerceApp
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderInfo
+    public partial class Advertisement
     {
-        public string IdOrder { get; set; }
-        public string IdProduct { get; set; }
-        public Nullable<int> Count { get; set; }
-        public Nullable<long> TotalPrice { get; set; }
-    
-        public virtual MOrder MOrder { get; set; }
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string SubTitle { get; set; }
+        public string Image { get; set; }
     }
 }

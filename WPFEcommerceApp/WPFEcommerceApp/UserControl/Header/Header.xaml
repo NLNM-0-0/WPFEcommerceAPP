@@ -15,7 +15,7 @@
         </Grid.Effect>
         <Border Background="{StaticResource WhiteColorBrush}"/>
 
-        <DockPanel LastChildFill="{Binding ElementName=bar, Path=IsKeyboardFocusWithin}"
+        <DockPanel 
                    x:Name="container">
 
             <!-- The WANO icon -->

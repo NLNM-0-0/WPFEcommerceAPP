@@ -26,7 +26,7 @@ namespace WPFEcommerceApp
 
         public SearchItemViewModel()
         {
-            //SourceImage = Shop.DefaultSourceImageAva;
+            SourceImage = null;
             Name = "A product or shop name";
         }
     }
