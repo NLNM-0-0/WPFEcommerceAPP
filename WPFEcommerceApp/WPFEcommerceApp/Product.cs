@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataAccessLayer
+namespace WPFEcommerceApp
 {
     using System;
     using System.Collections.Generic;

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WPFEcommerceApp {
-    public class Product {
+    public partial class Product {
         public Product(
             string productImage = "..\\..\\..\\..\\Assests\\Images\\2.jpg", 
             string name = "Nike Air Zoom Pegasus 39 Men’s Road Running Shoes", 
@@ -19,17 +19,17 @@ namespace WPFEcommerceApp {
             Size=size;
             Color=color;
             Description=description;
-            Price=price;
+            Price=(long)price;
             Amount=amount;
             Subtotal=amount * price;
         }
 
         public string ProductImage { get; set; }
-        public string Name { get; set; }
+        //public string Name { get; set; }
         public string Size { get; set; }
-        public string Color { get; set; }
-        public string Description { get; set; }
-        public double Price { get; set; }
+        //public string Color { get; set; }
+        //public string Description { get; set; }
+        //public double Price { get; set; }
         public int Amount { get; set; }
         public double Subtotal { get; set; }
         

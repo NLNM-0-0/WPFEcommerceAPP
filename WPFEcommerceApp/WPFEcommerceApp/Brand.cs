@@ -7,26 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataAccessLayer
+namespace WPFEcommerceApp
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Rating
+    public partial class Brand
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Rating()
+        public Brand()
         {
-            this.MOrders = new HashSet<MOrder>();
-            this.RatingInfoes = new HashSet<RatingInfo>();
+            this.Products = new HashSet<Product>();
         }
     
         public string Id { get; set; }
-        public Nullable<System.DateTime> DateRating { get; set; }
+        public string Name { get; set; }
+        public int IdStatus { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MOrder> MOrders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

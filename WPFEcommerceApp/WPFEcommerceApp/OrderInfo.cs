@@ -7,16 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataAccessLayer
+namespace WPFEcommerceApp
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ImageProduct
+    public partial class OrderInfo
     {
+        public string IdOrder { get; set; }
         public string IdProduct { get; set; }
-        public string Source { get; set; }
+        public Nullable<int> Count { get; set; }
+        public Nullable<long> TotalPrice { get; set; }
     
-        public virtual Product Product { get; set; }
+        public virtual MOrder MOrder { get; set; }
     }
 }

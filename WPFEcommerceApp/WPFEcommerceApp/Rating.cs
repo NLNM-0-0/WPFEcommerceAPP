@@ -7,30 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataAccessLayer
+namespace WPFEcommerceApp
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class MOrder
+    public partial class Rating
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MOrder()
+        public Rating()
         {
-            this.OrderInfoes = new HashSet<OrderInfo>();
+            this.MOrders = new HashSet<MOrder>();
+            this.RatingInfoes = new HashSet<RatingInfo>();
         }
     
         public string Id { get; set; }
-        public string IdCustomer { get; set; }
-        public string IdRating { get; set; }
-        public Nullable<System.DateTime> DateBegin { get; set; }
-        public Nullable<System.DateTime> DateEnd { get; set; }
-        public Nullable<long> OrderTotal { get; set; }
-        public string Status { get; set; }
+        public Nullable<System.DateTime> DateRating { get; set; }
     
-        public virtual MUser MUser { get; set; }
-        public virtual Rating Rating { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
+        public virtual ICollection<MOrder> MOrders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
     }
 }
