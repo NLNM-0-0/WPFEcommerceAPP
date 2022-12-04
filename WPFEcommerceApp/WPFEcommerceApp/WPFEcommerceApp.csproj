@@ -128,9 +128,6 @@
     <Compile Include="Models\Shop.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Order.cs" />
