@@ -83,61 +83,57 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Advertisement.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Brand.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Category.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Command\NavigateCommand.cs" />
     <Compile Include="DataAccessLayer\DbContextExtensions.cs" />
     <Compile Include="DataAccessLayer\GenericDataRepository.cs" />
     <Compile Include="DataAccessLayer\IGenericDataRepository.cs" />
-    <Compile Include="ImageProduct.cs">
+    <Compile Include="Models\Advertisement.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Models\Brand.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ImageProduct.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model.Context.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\Model.Designer.cs">
+      <DependentUpon>Model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MOrder.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MUser.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderInfo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rating.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RatingInfo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Shop.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Order.cs" />
-    <Compile Include="MOrder.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MUser.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Notification.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OrderInfo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Product.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Rating.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RatingInfo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Screens\Order\Command\ReOrderCM.cs" />
     <Compile Include="Screens\Order\components\OrderCard.xaml.cs">
       <DependentUpon>OrderCard.xaml</DependentUpon>
@@ -186,14 +182,8 @@
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\NavigateService.cs" />
     <Compile Include="Services\ParamNavigationService.cs" />
-    <Compile Include="Shop.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Stores\OrderStore.cs" />
-    <Compile Include="UserControls\SearchBar.xaml.cs">
-      <DependentUpon>SearchBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\Dialogs\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
     </Compile>
@@ -207,6 +197,21 @@
       <DependentUpon>Drawer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControl\Drawer\DrawerVM.cs" />
+    <Compile Include="UserControl\Header\Header.xaml.cs">
+      <DependentUpon>Header.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\HeaderViewModel.cs" />
+    <Compile Include="UserControl\Header\SearchBar\DropDownSearchBar.xaml.cs">
+      <DependentUpon>DropDownSearchBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\SearchBar\KeyboardFocus.cs" />
+    <Compile Include="UserControl\Header\SearchBar\SearchBar.xaml.cs">
+      <DependentUpon>SearchBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\SearchItem.xaml.cs">
+      <DependentUpon>SearchItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\SearchItemViewModel.cs" />
     <Compile Include="UserControl\ProductBlock\ImageProduct.cs" />
     <Compile Include="MainItem.cs" />
     <Compile Include="Model\Shop.cs" />
@@ -243,6 +248,7 @@
     <Compile Include="Screens\ShopRating\ShopRatingViewModel.cs" />
     <Compile Include="Screens\UserView\UserViewModel.cs" />
     <Compile Include="UserControl\ProductBlock\ProductBlockViewModel.cs" />
+    <Compile Include="Utils\RelayCommandWithNoParameter.cs" />
     <Page Include="Components\Buttons\ButtonRectangle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -286,6 +292,10 @@
     <Page Include="Components\DatePickers\DatePickers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Scroll.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Components\TabControls\DefaultTabControl.xaml">
       <SubType>Designer</SubType>
@@ -367,10 +377,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\SearchBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControl\Dialogs\AddBrandDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -396,6 +402,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UserControl\Drawer\Drawer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\Header.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\SearchBar\DropDownSearchBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\SearchBar\SearchBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\SearchItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -510,11 +532,11 @@
     <None Include="FodyWeavers.xsd">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="Model.edmx">
+    <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model2.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model.edmx.diagram">
+    <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
@@ -568,15 +590,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model.Context.tt">
+    <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
+      <LastGenOutput>Model.Context1.cs</LastGenOutput>
     </Content>
-    <Content Include="Model.tt">
+    <Content Include="Models\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
+      <LastGenOutput>Model2.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
