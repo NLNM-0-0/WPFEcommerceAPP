@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             Height="40" Width="250"
+             Height="40"
              d:DesignHeight="40" d:DesignWidth="250">
     <UserControl.Resources>
         <!-- The search box style -->
@@ -26,14 +27,18 @@
                     <ControlTemplate TargetType="{x:Type TextBoxBase}">
                         <Grid>
                             <Grid>
-                                <Border x:Name="border" Background="{TemplateBinding Background}"  BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
-                                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                <Border x:Name="border" Background="{TemplateBinding Background}"  
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        CornerRadius="{c:Binding '!(Text == \'\')?\'0\': \'0 20 20 0\'', RelativeSource={RelativeSource TemplatedParent}}"
+                                        SnapsToDevicePixels="True">
+                                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                                                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                                 </Border>
                                 <!-- The textblock placeholder -->
                                 <TextBlock IsHitTestVisible="False"
                                    Text="{TemplateBinding Tag}"
                                    x:Name="placeHolder"
-                                   Padding="13 10 10 10"
+                                   Padding="3 10 10 10"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                    FontFamily="{TemplateBinding FontFamily}"
@@ -70,65 +75,69 @@
 
     </UserControl.Resources>
 
-    <Grid Background="Transparent" Height="40">
-        <Border x:Name="Container" Background="{Binding Path=Background, ElementName=Search}"
+    <materialDesign:DialogHost Background="Transparent" Height="40">
+        <Grid FocusManager.FocusedElement="{Binding ElementName=Search}">
+
+
+            <Border x:Name="Container" Background="{Binding Path=Background, ElementName=Search}"
                 CornerRadius="20">
-        </Border>
-        <Grid>
-            <!-- The corner clip -->
-            <Grid.OpacityMask>
-                <VisualBrush Visual="{Binding ElementName=Container}"/>
-            </Grid.OpacityMask>
+            </Border>
+            <Grid>
+                <!-- The corner clip -->
+                <Grid.OpacityMask>
+                    <VisualBrush Visual="{Binding ElementName=Container}"/>
+                </Grid.OpacityMask>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="{Binding ElementName=IconGrid, Path=ActualWidth}"/>
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- The search icon button -->
-            <Grid Grid.Column="0"
+                <!-- The search icon button -->
+                <Grid Grid.Column="0"
                   x:Name="IconGrid">
-                <Button Style="{StaticResource IconButton}"
+                    <Button Style="{StaticResource TransparentButton}"
+                        Margin="2"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                         BorderThickness="0"
-                        Background="{Binding Path=Background, ElementName=Search}">
-                    <Button.Content>
-                        <fa:FontAwesome Icon="Search"/>
-                    </Button.Content>
-                </Button>
-            </Grid>
+                        Command="{Binding SearchCommand}"
+                        Background="{Binding Path=Background, ElementName=Search}"
+                        >
+                        <Button.Content>
+                            <fa:FontAwesome Icon="Search"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>
 
-            <!-- The search box -->
-            <Grid  Grid.Column="1">
-                <TextBox 
-                         x:Name="Search"
+                <!-- The search box -->
+                <Grid  Grid.Column="1">
+                    <TextBox VerticalContentAlignment="Center" Style="{StaticResource SearchBox}"
+                        x:Name="Search"
                          Tag="Search"
-                         >
-                    <TextBox.Style>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey=SearchBox}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=CloseButton, Path=IsPressed}" Value="True">
-                                    <Setter Property="Text" Value=""/>
-                                    <Setter Property="FocusManager.FocusedElement"  Value="{Binding RelativeSource={RelativeSource Self}}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-            </Grid>
+                         Text="{Binding SearchText, RelativeSource={RelativeSource AncestorType={x:Type local:SearchBar}}, UpdateSourceTrigger=PropertyChanged}" 
+                         local:KeyboardFocus.On="{Binding ElementName=Search}">
+                         
+                    </TextBox>
+                </Grid>
 
-            <!-- The close icon button -->
-            <Grid Grid.Column="2" >
-                <Button Style="{StaticResource IconButton}"
+                <!-- The close icon button -->
+                <Grid Grid.Column="2" >
+                    <Button Style="{StaticResource TransparentButton}"
+                        Margin="2"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                         BorderThickness="0"
                         x:Name="CloseButton"
+                        Command="{Binding CloseSearchCommand}"
                         Background="{Binding Path=Background, ElementName=Search}"
-                        Visibility="{c:Binding '!(Text == \'\')', ElementName=Search}"
                         >
-                    <fa:FontAwesome Icon="Close"/>
-                </Button>
+                        <fa:FontAwesome Icon="Close"/>
+                    </Button>
+
+                </Grid>
             </Grid>
         </Grid>
-    </Grid>
+        
+    </materialDesign:DialogHost>
 
 </UserControl>

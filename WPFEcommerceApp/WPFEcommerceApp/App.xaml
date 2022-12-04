@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="Components/ComboBoxes/ComboBoxes.xaml"/>
                 <ResourceDictionary Source="Components/Datagrid/Datagrid.xaml"/>
                 <ResourceDictionary Source="Components/DatePickers/DatePickers.xaml"/>
+                <ResourceDictionary Source="Components/Scroll.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

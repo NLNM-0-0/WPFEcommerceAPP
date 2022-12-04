@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPFEcommerceApp
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace WPFEcommerceApp
     
         public string Id { get; set; }
         public string Name { get; set; }
-        public int IdStatus { get; set; }
+        public string Status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }

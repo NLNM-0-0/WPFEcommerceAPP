@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPFEcommerceApp
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Collections.Generic;
@@ -27,19 +27,19 @@ namespace WPFEcommerceApp
         public string IdCategory { get; set; }
         public string IdBrand { get; set; }
         public string IdShop { get; set; }
-        public Nullable<long> Price { get; set; }
-        public Nullable<int> Sale { get; set; }
-        public Nullable<int> InStock { get; set; }
-        public Nullable<int> Sold { get; set; }
-        public Nullable<bool> IsOneSize { get; set; }
-        public Nullable<bool> IsHadSizeS { get; set; }
-        public Nullable<bool> IsHadSizeM { get; set; }
-        public Nullable<bool> IsHadSizeL { get; set; }
-        public Nullable<bool> IsHadSizeXL { get; set; }
-        public Nullable<bool> IsHadSizeXXL { get; set; }
+        public long Price { get; set; }
+        public int Sale { get; set; }
+        public int InStock { get; set; }
+        public int Sold { get; set; }
+        public bool IsOneSize { get; set; }
+        public bool IsHadSizeS { get; set; }
+        public bool IsHadSizeM { get; set; }
+        public bool IsHadSizeL { get; set; }
+        public bool IsHadSizeXL { get; set; }
+        public bool IsHadSizeXXL { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
-        public Nullable<System.DateTime> DateOfSale { get; set; }
+        public System.DateTime DateOfSale { get; set; }
         public string Status { get; set; }
     
         public virtual Brand Brand { get; set; }
@@ -50,5 +50,6 @@ namespace WPFEcommerceApp
         public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MUser> MUsers { get; set; }
+        public virtual Shop Shop { get; set; }
     }
 }

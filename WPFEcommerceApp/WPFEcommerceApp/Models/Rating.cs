@@ -7,39 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPFEcommerceApp
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class MUser
+    public partial class Rating
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MUser()
+        public Rating()
         {
             this.MOrders = new HashSet<MOrder>();
-            this.Notifications = new HashSet<Notification>();
-            this.Products = new HashSet<Product>();
+            this.RatingInfoes = new HashSet<RatingInfo>();
         }
     
         public string Id { get; set; }
-        public string Name { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public Nullable<bool> Gender { get; set; }
-        public Nullable<System.DateTime> DOB { get; set; }
-        public string Description { get; set; }
-        public string Status { get; set; }
-        public string SourceImageAve { get; set; }
-        public string SourceImageBackground { get; set; }
+        public System.DateTime DateRating { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MOrder> MOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Notification> Notifications { get; set; }
-        public virtual Shop Shop { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
     }
 }
