@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="Components/TabItems/TabItems.xaml"/>
                 <ResourceDictionary Source="Components/TabControls/TabControls.xaml"/>
                 <ResourceDictionary Source="Components/TextBoxes/TextBoxes.xaml"/>
+                <ResourceDictionary Source="Components/RadioButtons/RadioButtons.xaml"/>
                 <ResourceDictionary Source="Components/ComboBoxes/ComboBoxes.xaml"/>
                 <ResourceDictionary Source="Components/Datagrid/Datagrid.xaml"/>
                 <ResourceDictionary Source="Components/DatePickers/DatePickers.xaml"/>

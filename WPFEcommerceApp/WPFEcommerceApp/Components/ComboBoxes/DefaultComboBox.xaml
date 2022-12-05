@@ -6,9 +6,9 @@
                     xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
                     xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes">
     <ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary Source="/Constants/Colors.xaml" />
-            <ResourceDictionary Source="/Constants/Fonts.xaml" />
-            <ResourceDictionary Source="/Components/TextBoxes/TextBoxes.xaml" />
+        <ResourceDictionary Source="/Constants/Colors.xaml" />
+        <ResourceDictionary Source="/Constants/Fonts.xaml" />
+        <ResourceDictionary Source="/Components/TextBoxes/TextBoxes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="FocusVisual">
@@ -346,7 +346,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>-->
-    
+
     <!-- Style of ComboBox Item -->
     <!--<Style TargetType="{x:Type ComboBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -428,7 +428,7 @@
             </Setter.Value>
         </Setter>
     </Style>-->
-    
+
     <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
         <Setter Property="materialDesign:TextFieldAssist.TextFieldCornerRadius" Value="5" />
         <Setter Property="Padding" Value="15" />
@@ -436,6 +436,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}"/>
+        <Setter Property="Background" Value="{StaticResource WhiteColorBrush}" />
         <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource BlackColorBrush}" />
         <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource BlackColorBrush}" />
     </Style>

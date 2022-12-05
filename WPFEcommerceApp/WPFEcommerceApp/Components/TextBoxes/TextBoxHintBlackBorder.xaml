@@ -5,12 +5,13 @@
         <ResourceDictionary Source="/Constants/Colors.xaml" />
         <ResourceDictionary Source="/Constants/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
+
     <Style x:Key="TextBoxHintBlackBorder" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}" TargetType="{x:Type TextBox}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
         <Setter Property="Padding" Value="5"/>
         <Setter Property="BorderBrush" Value="{StaticResource BoxLineColorBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="{StaticResource WhiteColorBrush}"/>
         <Setter Property="Width" Value="150"/>
         <Setter Property="Height" Value="55"/>
         <Setter Property="materialDesign:TextFieldAssist.TextFieldCornerRadius" Value="5" />
@@ -23,6 +24,12 @@
         <Setter Property="SelectionBrush" Value="{StaticResource BoxShadowColorBrush}" />
         <Setter Property="CaretBrush" Value="{StaticResource BlackColorBrush}" />
         <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource BlackColorBrush}" />
+        <Setter Property="materialDesign:HintAssist.Background" Value="Transparent"/>
         <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource BlackColorBrush}" />
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Constants/Colors.xaml" />
         <ResourceDictionary Source="/Constants/Fonts.xaml" />
@@ -7,5 +8,10 @@
     </ResourceDictionary.MergedDictionaries>
     <Style x:Key="TextBoxHintTransparentBorder" BasedOn="{StaticResource TextBoxHintBlackBorder}" TargetType="{x:Type TextBox}">
         <Setter Property="BorderBrush" Value="Transparent"/>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource MaterialDesignValidationErrorBrush}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
