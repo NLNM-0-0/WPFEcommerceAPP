@@ -47,36 +47,36 @@
                     CornerRadius="5"
                     Width="{TemplateBinding Width}">
                 <Grid>
-                        <Grid.Resources>
-                            <ControlTemplate 
+                    <Grid.Resources>
+                        <ControlTemplate 
                                     x:Key="PreviousButtonTemplate"      
                                     TargetType="{x:Type Button}">
-                                <Grid Cursor="Hand">
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="MouseOver">
-                                                <Storyboard>
-                                                    <ColorAnimation 
+                            <Grid Cursor="Hand">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="PreviousIcon" 
                                                             To="{StaticResource NotAvailable}" 
                                                             Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Disabled">
-                                                <Storyboard>
-                                                    <DoubleAnimation 
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <DoubleAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="PreviousIcon" 
                                                             To=".5" 
                                                             Storyboard.TargetProperty="(Shape.Fill).(Brush.Opacity)"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Grid>
-                                        <TextBlock
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Grid>
+                                    <TextBlock
                                                 x:Name="PreviousIcon"
                                                 Height="15"
                                                 Width="15"
@@ -87,37 +87,37 @@
                                                                  Height="{Binding ElementName=PreviousIcon, Path=ActualHeight}"
                                                                  Width="{Binding ElementName=PreviousIcon, Path=ActualHeight}"
                                                                  Foreground="{Binding ElementName=PreviousIcon, Path=Foreground}"/>
-                                        </TextBlock>
-                                    </Grid>
+                                    </TextBlock>
                                 </Grid>
-                            </ControlTemplate>
-                            <ControlTemplate x:Key="NextButtonTemplate" TargetType="{x:Type Button}">
-                                <Grid Cursor="Hand">
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="MouseOver">
-                                                <Storyboard>
-                                                    <ColorAnimation 
+                            </Grid>
+                        </ControlTemplate>
+                        <ControlTemplate x:Key="NextButtonTemplate" TargetType="{x:Type Button}">
+                            <Grid Cursor="Hand">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="NextIcon" 
                                                             To="{StaticResource NotAvailable}" 
                                                             Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Disabled">
-                                                <Storyboard>
-                                                    <DoubleAnimation 
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <DoubleAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="NextIcon" 
                                                             To=".5" 
                                                             Storyboard.TargetProperty="(Shape.Fill).(Brush.Opacity)"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Grid>
-                                        <TextBlock
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Grid>
+                                    <TextBlock
                                                 x:Name="NextIcon"
                                                 Height="15"
                                                 Width="15"
@@ -128,36 +128,36 @@
                                                                  Height="{Binding ElementName=NextIcon, Path=ActualHeight}"
                                                                  Width="{Binding ElementName=NextIcon, Path=ActualHeight}"
                                                                  Foreground="{Binding ElementName=NextIcon, Path=Foreground}"/>
-                                        </TextBlock>
-                                    </Grid>
+                                    </TextBlock>
                                 </Grid>
-                            </ControlTemplate>
-                            <ControlTemplate x:Key="HeaderButtonTemplate" TargetType="{x:Type Button}">
-                                <Grid Cursor="Hand">
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="MouseOver">
-                                                <Storyboard>
-                                                    <ColorAnimation 
+                            </Grid>
+                        </ControlTemplate>
+                        <ControlTemplate x:Key="HeaderButtonTemplate" TargetType="{x:Type Button}">
+                            <Grid Cursor="Hand">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="buttonContent" 
                                                             To="{StaticResource NotAvailable}" 
                                                             Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Disabled">
-                                                <Storyboard>
-                                                    <DoubleAnimation 
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <DoubleAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="buttonContent" 
                                                             To=".5" 
                                                             Storyboard.TargetProperty="Opacity"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <ContentPresenter 
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <ContentPresenter 
                                             x:Name="buttonContent" 
                                             Margin="0 3 0 0"
                                             ContentTemplate="{TemplateBinding ContentTemplate}" 
@@ -168,60 +168,60 @@
                                             TextElement.FontFamily="{StaticResource Bold}"
                                             TextElement.FontSize="{StaticResource FontSizeDescription}"
                                             Opacity="0.7"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid
+                            </Grid>
+                        </ControlTemplate>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid
                                 x:Name="GridHeader"
                                 Grid.Row="0"
                                 Grid.ColumnSpan="3"
                                 Margin="5"
                                 Background="{TemplateBinding Background}">
-                            <Grid.Triggers>
-                                <EventTrigger RoutedEvent="MouseEnter">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation
+                        <Grid.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
                                                     Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
                                                     To="{StaticResource Background}"
                                                     Duration="0:0:0.05"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="MouseLeave">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
                                                         Storyboard.TargetName="GridHeader"
                                                         Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
                                                         To="{TemplateBinding Property=Background}"
                                                         Duration="0:0:0.05"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </Grid.Triggers>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Button x:Name="PART_PreviousButton" 
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Grid.Triggers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="PART_PreviousButton" 
                                     Focusable="False" 
                                     HorizontalAlignment="Center" 
                                     Height="20" 
                                     Grid.Row="0" 
                                     Template="{StaticResource PreviousButtonTemplate}" 
                                     Width="28" Margin="0,11,0,9"/>
-                            <Button 
+                        <Button 
                                     x:Name="PART_HeaderButton" 
                                     Grid.Column="1" 
                                     Focusable="False" 
@@ -229,7 +229,7 @@
                                     Grid.Row="0" 
                                     Template="{StaticResource HeaderButtonTemplate}" 
                                     VerticalAlignment="Center"/>
-                            <Button 
+                        <Button 
                                     x:Name="PART_NextButton" 
                                     Grid.Column="2" 
                                     Focusable="False" 
@@ -238,44 +238,44 @@
                                     Grid.Row="0" 
                                     Template="{StaticResource NextButtonTemplate}" 
                                     Width="28"/>
-                            <Border
+                        <Border
                                     x:Name="border"
                                     BorderBrush="{StaticResource BoxLineColorBrush}"
                                     BorderThickness="0.2"
                                     CornerRadius="1"
                                     Grid.ColumnSpan="3">
-                                <Border.Effect>
-                                    <DropShadowEffect
+                            <Border.Effect>
+                                <DropShadowEffect
                                             ShadowDepth="1"
                                             Color="{StaticResource BoxShadow}"/>
-                                </Border.Effect>
-                            </Border>
-                        </Grid>
-                        <Grid 
+                            </Border.Effect>
+                        </Border>
+                    </Grid>
+                    <Grid 
                                 x:Name="PART_MonthView" 
                                 Grid.ColumnSpan="3" 
                                 Grid.Row="1" 
                                 Visibility="Visible">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" x:Name="HeaderNameDay"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                        </Grid>
-                        <Border
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" x:Name="HeaderNameDay"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                    <Border
                                     x:Name="SeparatorBorder"
                                     Grid.ColumnSpan="7"
                                     Grid.Row="2"
@@ -284,25 +284,25 @@
                                     VerticalAlignment="Top"
                                     BorderBrush="{StaticResource NotAvailableColorBrush}"
                                     BorderThickness="0 0 0 0.5"/>
-                        <Grid 
+                    <Grid 
                                 x:Name="PART_YearView" 
                                 Grid.ColumnSpan="3" 
                                 Grid.Row="1"
                                 Visibility="Hidden">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                        </Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
                     </Grid>
-                </Border>
+                </Grid>
+            </Border>
             <Rectangle 
                     x:Name="PART_DisabledVisual" 
                     Fill="{StaticResource NotAvailableColorBrush}" 
@@ -391,7 +391,6 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Width" Value="150"/>
         <Setter Property="CalendarStyle" Value="{StaticResource OurCalendar}"/>
-        <Setter Property="Tag" Value="Select a date"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DatePicker}">
@@ -443,7 +442,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <DatePickerTextBox 
                             x:Name="PART_TextBox" 
                             Style="{StaticResource TextBoxHintTransparentBorder}"
@@ -454,7 +453,8 @@
                             VerticalContentAlignment="Center" 
                             Grid.ColumnSpan="2"
                             materialDesign:HintAssist.Hint="{TemplateBinding materialDesign:HintAssist.Hint}"
-                            Width="{TemplateBinding Width}"/>
+                            Width="{TemplateBinding Width}"
+                            Text="{TemplateBinding Text}"/>
                         <Button 
                             x:Name="PART_Button" 
                             Grid.Column="2" 
