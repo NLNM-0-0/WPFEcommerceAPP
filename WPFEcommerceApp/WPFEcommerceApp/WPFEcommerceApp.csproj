@@ -52,12 +52,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MaterialDesignColors, Version=2.0.9.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignColors.2.0.9\lib\net462\MaterialDesignColors.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=4.6.1.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.4.6.1\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -83,33 +77,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Advertisement.cs">
+    <Compile Include="Models\Advertisement.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Brand.cs">
+    <Compile Include="Models\Brand.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Category.cs">
+    <Compile Include="Models\Category.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Command\NavigateCommand.cs" />
     <Compile Include="DataAccessLayer\DbContextExtensions.cs" />
     <Compile Include="DataAccessLayer\GenericDataRepository.cs" />
     <Compile Include="DataAccessLayer\IGenericDataRepository.cs" />
-    <Compile Include="ImageProduct.cs">
+    <Compile Include="Models\ImageProduct.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model.Context.cs">
+    <Compile Include="Models\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model.cs">
+    <Compile Include="Models\Model.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model.Designer.cs">
+    <Compile Include="Models\Model.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
@@ -117,27 +111,31 @@
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Order.cs" />
-    <Compile Include="MOrder.cs">
+    <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="MUser.cs">
+    <Compile Include="Models\MUser.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Notification.cs">
+    <Compile Include="Models\Notification.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="OrderInfo.cs">
+    <Compile Include="Models\OrderInfo.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Product.cs">
+    <Compile Include="Models\Product.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Rating.cs">
+    <Compile Include="Models\Rating.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="RatingInfo.cs">
+    <Compile Include="Models\RatingInfo.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Screens\AdminShopInformation\ShopInformationPage.xaml.cs">
+      <DependentUpon>ShopInformationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminShopInformation\ShopInformationPageViewModel.cs" />
     <Compile Include="Screens\Order\Command\ReOrderCM.cs" />
     <Compile Include="Screens\Order\components\OrderCard.xaml.cs">
       <DependentUpon>OrderCard.xaml</DependentUpon>
@@ -186,14 +184,11 @@
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\NavigateService.cs" />
     <Compile Include="Services\ParamNavigationService.cs" />
-    <Compile Include="Shop.cs">
+    <Compile Include="Models\Shop.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Stores\OrderStore.cs" />
-    <Compile Include="UserControls\SearchBar.xaml.cs">
-      <DependentUpon>SearchBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\Dialogs\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
     </Compile>
@@ -203,10 +198,31 @@
     <Compile Include="UserControl\Dialogs\AddProductDialog.xaml.cs">
       <DependentUpon>AddProductDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\Dialogs\AdminAddShopDialog.xaml.cs">
+      <DependentUpon>AdminAddShopDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Dialogs\ShopRequestInformationDialog.xaml.cs">
+      <DependentUpon>ShopRequestInformationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\Drawer\Drawer.xaml.cs">
       <DependentUpon>Drawer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControl\Drawer\DrawerVM.cs" />
+    <Compile Include="UserControl\Header\Header.xaml.cs">
+      <DependentUpon>Header.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\HeaderViewModel.cs" />
+    <Compile Include="UserControl\Header\SearchBar\DropDownSearchBar.xaml.cs">
+      <DependentUpon>DropDownSearchBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\SearchBar\KeyboardFocus.cs" />
+    <Compile Include="UserControl\Header\SearchBar\SearchBar.xaml.cs">
+      <DependentUpon>SearchBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\SearchItem.xaml.cs">
+      <DependentUpon>SearchItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Header\SearchItemViewModel.cs" />
     <Compile Include="UserControl\ProductBlock\ImageProduct.cs" />
     <Compile Include="MainItem.cs" />
     <Compile Include="Model\Shop.cs" />
@@ -236,13 +252,28 @@
       <DependentUpon>ShopRating.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopProduct\ShopProductViewModel.cs" />
+    <Compile Include="UserControl\ShopRequest\ShopRequestItem.xaml.cs">
+      <DependentUpon>ShopRequestItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ShopRequest\ShopRequestItemViewModel.cs" />
+    <Compile Include="UserControl\ShopRequest\ShopRequestList.xaml.cs">
+      <DependentUpon>ShopRequestList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ShopRequest\ShopRequestListViewModel.cs" />
+    <Compile Include="UserControl\UserIconControl\UserIconControl.xaml.cs">
+      <DependentUpon>UserIconControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\UserIconControl\UserIconViewModel.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\CommandBase.cs" />
+    <Compile Include="Utils\CommandType2.cs" />
     <Compile Include="Utils\CreateViewModel.cs" />
+    <Compile Include="Utils\NullImageConverter.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Screens\ShopRating\ShopRatingViewModel.cs" />
     <Compile Include="Screens\UserView\UserViewModel.cs" />
     <Compile Include="UserControl\ProductBlock\ProductBlockViewModel.cs" />
+    <Compile Include="Utils\RelayCommandWithNoParameter.cs" />
     <Page Include="Components\Buttons\ButtonRectangle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -287,6 +318,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Scroll.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Components\TabControls\DefaultTabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -310,6 +345,10 @@
     <Page Include="Components\ToggleButtons\ToggleButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\AdminShopInformation\ShopInformationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Order\components\OrderCard.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -367,10 +406,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\SearchBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControl\Dialogs\AddBrandDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -395,7 +430,31 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControl\Dialogs\AdminAddShopDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Dialogs\ShopRequestInformationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControl\Drawer\Drawer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\Header.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\SearchBar\DropDownSearchBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\SearchBar\SearchBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Header\SearchItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -475,6 +534,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControl\ShopRequest\ShopRequestItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\ShopRequest\ShopRequestList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\UserIconControl\UserIconControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UserControl\ProductBlock\ProductBlock.xaml.cs">
@@ -510,11 +581,11 @@
     <None Include="FodyWeavers.xsd">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="Model.edmx">
+    <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model.edmx.diagram">
+    <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
@@ -563,17 +634,17 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
       <Version>1.1.39</Version>
     </PackageReference>
-    <PackageReference Include="PropertyChanged.Fody">
+    <PackageReference Include="PropertyChanged.Fody" PrivateAssets="All">
       <Version>4.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model.Context.tt">
+    <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model.tt">
+    <Content Include="Models\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>

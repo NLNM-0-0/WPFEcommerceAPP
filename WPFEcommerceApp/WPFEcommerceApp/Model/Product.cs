@@ -25,11 +25,11 @@ namespace WPFEcommerceApp {
         }
 
         public string ProductImage { get; set; }
-        //public string Name { get; set; }
+        public string Name { get; set; }
         public string Size { get; set; }
-        //public string Color { get; set; }
-        //public string Description { get; set; }
-        //public double Price { get; set; }
+        public string Color { get; set; }
+        public string Description { get; set; }
+        public double Price { get; set; }
         public int Amount { get; set; }
         public double Subtotal { get; set; }
         

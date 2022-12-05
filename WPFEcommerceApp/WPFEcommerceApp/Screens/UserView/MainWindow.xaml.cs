@@ -22,10 +22,7 @@ namespace WPFEcommerceApp {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            var ads = new Advertisement { Id = "1", Title = "Have a nice day" };
-            var repository = new GenericDataRepository<Advertisement>();
-            //repository.Add(ads);
-            repository.Remove(ads);
+            
         }
     }
 }
