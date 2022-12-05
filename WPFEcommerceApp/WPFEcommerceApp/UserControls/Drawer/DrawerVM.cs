@@ -7,23 +7,21 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DataAccessLayer;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class DrawerVM : BaseViewModel {
-        private string role;
-        public string Role {
-            get { return role; }
-            set { role = value; OnPropertyChanged(); }
-        }
+        private readonly AccountStore _accountStore;
+        public MUser CurrentUser => _accountStore?.CurrentAccount;
 
-        private ObservableCollection<ButtonItem> _buttonItems;
-        public ObservableCollection<ButtonItem> ButtonItems {
-            get => _buttonItems;
-            set {
-                _buttonItems = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<ButtonItem> ButtonItems =>
+            CurrentUser == null
+            ? NormalButtonCreate()
+            : CurrentUser.IsAdmin == false
+            ? NormalButtonCreate()
+            : AdminButtonCreate();
+
         private int selectedIndex = 0;
 
         public int SelectedIndex {
@@ -36,23 +34,32 @@ namespace WPFEcommerceApp {
 
         public ICommand OnChangeScreen { get; set; }
         public DrawerVM(
+            AccountStore accountStore,
             INavigationService CheckoutNavigateService, 
             INavigationService OrderNavigateService) {
-            if(Role == "Admin") {
-                ButtonItems = AdminButtonCreate();
-            }
-            else {
-                ButtonItems = NormalButtonCreate();
-            }
+
+            _accountStore = accountStore;
+            _accountStore.AccountChanged += OnAccountChange;
 
             OnChangeScreen = new RelayCommand<object>((p) => true, (p) => {
                 if(SelectedIndex == 0) {
                     CheckoutNavigateService.Navigate();
                 }
                 else if(SelectedIndex == 1) {
+                    //var t = new GenericDataRepository<MUser>();
+                    //_accountStore.CurrentAccount = await t.GetSingleAsync(d => d.Id.Equals("000000"));
                     OrderNavigateService.Navigate();
                 }
             });
+        }
+
+        private void OnAccountChange() {
+            OnPropertyChanged(nameof(CurrentUser));
+            OnPropertyChanged(nameof(ButtonItems));
+        }
+        public override void Dispose() {
+            _accountStore.AccountChanged -= OnAccountChange;
+            base.Dispose();
         }
 
         private ObservableCollection<ButtonItem> AdminButtonCreate() {

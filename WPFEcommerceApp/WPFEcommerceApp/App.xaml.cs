@@ -18,8 +18,14 @@ namespace WPFEcommerceApp {
 
             //Set Store and some initial dependences
             services.AddSingleton<NavigationStore>();
+            services.AddSingleton<AccountStore>();
 
-            services.AddSingleton<DrawerVM>(s => new DrawerVM(CreateCheckoutNavService(serviceProvider), CreateOrderNavService(serviceProvider)));
+            services.AddTransient<DrawerVM>(s => new DrawerVM(
+                    serviceProvider.GetRequiredService<AccountStore>(),
+                    CreateCheckoutNavService(serviceProvider), 
+                    CreateOrderNavService(serviceProvider)
+                )
+            );
 
             //Set service
 
