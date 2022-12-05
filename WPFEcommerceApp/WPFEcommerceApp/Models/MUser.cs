@@ -23,6 +23,7 @@ namespace WPFEcommerceApp.Models
         }
     
         public string Id { get; set; }
+        public bool IsAdmin { get; set; }
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
@@ -33,7 +34,6 @@ namespace WPFEcommerceApp.Models
         public string Status { get; set; }
         public string SourceImageAve { get; set; }
         public string SourceImageBackground { get; set; }
-        public bool IsAdmin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MOrder> MOrders { get; set; }

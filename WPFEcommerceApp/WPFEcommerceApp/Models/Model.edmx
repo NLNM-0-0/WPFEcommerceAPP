@@ -149,6 +149,16 @@
           <Property Name="SourceImageBackground" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <Association Name="FK_FP_MUser">
           <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
           <End Role="FavouriteProduct" Type="Self.FavouriteProduct" Multiplicity="*" />
@@ -319,6 +329,7 @@
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatingInfo" EntityType="Self.RatingInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shop" EntityType="Self.Shop" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_FP_MUser" Association="Self.FK_FP_MUser">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="FavouriteProduct" EntitySet="FavouriteProduct" />
@@ -376,109 +387,172 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EcommerceAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="EcommerceAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Advertisements" EntityType="EcommerceAppModel.Advertisement" />
+          <EntitySet Name="Brands" EntityType="EcommerceAppModel.Brand" />
+          <EntitySet Name="Categories" EntityType="EcommerceAppModel.Category" />
+          <EntitySet Name="ImageProducts" EntityType="EcommerceAppModel.ImageProduct" />
+          <EntitySet Name="MOrders" EntityType="EcommerceAppModel.MOrder" />
+          <EntitySet Name="MUsers" EntityType="EcommerceAppModel.MUser" />
+          <EntitySet Name="Notifications" EntityType="EcommerceAppModel.Notification" />
+          <EntitySet Name="OrderInfoes" EntityType="EcommerceAppModel.OrderInfo" />
+          <EntitySet Name="Products" EntityType="EcommerceAppModel.Product" />
+          <EntitySet Name="Ratings" EntityType="EcommerceAppModel.Rating" />
+          <EntitySet Name="RatingInfoes" EntityType="EcommerceAppModel.RatingInfo" />
+          <EntitySet Name="Shops" EntityType="EcommerceAppModel.Shop" />
+          <EntitySet Name="sysdiagrams" EntityType="EcommerceAppModel.sysdiagram" />
+          <AssociationSet Name="FK_Product_Brand" Association="EcommerceAppModel.FK_Product_Brand">
+            <End Role="Brand" EntitySet="Brands" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Category" Association="EcommerceAppModel.FK_Product_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IP_Product" Association="EcommerceAppModel.FK_IP_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ImageProduct" EntitySet="ImageProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MOrder_MUser" Association="EcommerceAppModel.FK_MOrder_MUser">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="MOrder" EntitySet="MOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MOrder_Rating" Association="EcommerceAppModel.FK_MOrder_Rating">
+            <End Role="Rating" EntitySet="Ratings" />
+            <End Role="MOrder" EntitySet="MOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderInfo_MOrder" Association="EcommerceAppModel.FK_OrderInfo_MOrder">
+            <End Role="MOrder" EntitySet="MOrders" />
+            <End Role="OrderInfo" EntitySet="OrderInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_User" Association="EcommerceAppModel.FK_Notification_User">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shop_MUser" Association="EcommerceAppModel.FK_Shop_MUser">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="Shop" EntitySet="Shops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Shop" Association="EcommerceAppModel.FK_Product_Shop">
+            <End Role="Shop" EntitySet="Shops" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RatingInfo_Product" Association="EcommerceAppModel.FK_RatingInfo_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="RatingInfo" EntitySet="RatingInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RatingInfo_Rating" Association="EcommerceAppModel.FK_RatingInfo_Rating">
+            <End Role="Rating" EntitySet="Ratings" />
+            <End Role="RatingInfo" EntitySet="RatingInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FavouriteProduct" Association="EcommerceAppModel.FavouriteProduct">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Advertisement">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SubTitle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SubTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Brand" FromRole="Brand" ToRole="Product" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Brand" FromRole="Brand" ToRole="Product" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Category" FromRole="Category" ToRole="Product" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Category" FromRole="Category" ToRole="Product" />
         </EntityType>
         <EntityType Name="ImageProduct">
           <Key>
             <PropertyRef Name="IdProduct" />
             <PropertyRef Name="Source" />
           </Key>
-          <Property Name="IdProduct" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Source" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_IP_Product" FromRole="ImageProduct" ToRole="Product" />
+          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Source" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK_IP_Product" FromRole="ImageProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="MOrder">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdCustomer" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdRating" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DateBegin" Type="DateTime" Precision="0" Nullable="false" />
-          <Property Name="DateEnd" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdCustomer" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="IdRating" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DateBegin" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="OrderTotal" Type="Int64" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MUser" Relationship="Self.FK_MOrder_MUser" FromRole="MOrder" ToRole="MUser" />
-          <NavigationProperty Name="Rating" Relationship="Self.FK_MOrder_Rating" FromRole="MOrder" ToRole="Rating" />
-          <NavigationProperty Name="OrderInfoes" Relationship="Self.FK_OrderInfo_MOrder" FromRole="MOrder" ToRole="OrderInfo" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MOrder" ToRole="MUser" />
+          <NavigationProperty Name="Rating" Relationship="EcommerceAppModel.FK_MOrder_Rating" FromRole="MOrder" ToRole="Rating" />
+          <NavigationProperty Name="OrderInfoes" Relationship="EcommerceAppModel.FK_OrderInfo_MOrder" FromRole="MOrder" ToRole="OrderInfo" />
         </EntityType>
         <EntityType Name="MUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Gender" Type="Boolean" Nullable="false" />
-          <Property Name="DOB" Type="DateTime" Precision="0" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="SourceImageAve" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SourceImageBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="MOrders" Relationship="Self.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
-          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_User" FromRole="MUser" ToRole="Notification" />
-          <NavigationProperty Name="Shop" Relationship="Self.FK_Shop_MUser" FromRole="MUser" ToRole="Shop" />
-          <NavigationProperty Name="Products" Relationship="Self.FavouriteProduct" FromRole="MUser" ToRole="Product" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Boolean" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SourceImageAve" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SourceImageBackground" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
+          <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_User" FromRole="MUser" ToRole="Notification" />
+          <NavigationProperty Name="Shop" Relationship="EcommerceAppModel.FK_Shop_MUser" FromRole="MUser" ToRole="Shop" />
+          <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FavouriteProduct" FromRole="MUser" ToRole="Product" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdReceiver" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdSender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Precision="0" Nullable="false" />
-          <Property Name="Content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="MUser" Relationship="Self.FK_Notification_User" FromRole="Notification" ToRole="MUser" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdReceiver" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="IdSender" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Notification_User" FromRole="Notification" ToRole="MUser" />
         </EntityType>
         <EntityType Name="OrderInfo">
           <Key>
             <PropertyRef Name="IdOrder" />
             <PropertyRef Name="IdProduct" />
           </Key>
-          <Property Name="IdOrder" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdProduct" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdOrder" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Count" Type="Int32" Nullable="false" />
           <Property Name="TotalPrice" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="MOrder" Relationship="Self.FK_OrderInfo_MOrder" FromRole="OrderInfo" ToRole="MOrder" />
+          <NavigationProperty Name="MOrder" Relationship="EcommerceAppModel.FK_OrderInfo_MOrder" FromRole="OrderInfo" ToRole="MOrder" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IdCategory" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdBrand" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdShop" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IdCategory" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="IdBrand" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int64" Nullable="false" />
           <Property Name="Sale" Type="Int32" Nullable="false" />
           <Property Name="InStock" Type="Int32" Nullable="false" />
@@ -489,56 +563,66 @@
           <Property Name="IsHadSizeL" Type="Boolean" Nullable="false" />
           <Property Name="IsHadSizeXL" Type="Boolean" Nullable="false" />
           <Property Name="IsHadSizeXXL" Type="Boolean" Nullable="false" />
-          <Property Name="Color" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DateOfSale" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfSale" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Brand" Relationship="Self.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
-          <NavigationProperty Name="Category" Relationship="Self.FK_Product_Category" FromRole="Product" ToRole="Category" />
-          <NavigationProperty Name="ImageProducts" Relationship="Self.FK_IP_Product" FromRole="Product" ToRole="ImageProduct" />
-          <NavigationProperty Name="RatingInfoes" Relationship="Self.FK_RatingInfo_Product" FromRole="Product" ToRole="RatingInfo" />
-          <NavigationProperty Name="MUsers" Relationship="Self.FavouriteProduct" FromRole="Product" ToRole="MUser" />
+          <NavigationProperty Name="Brand" Relationship="EcommerceAppModel.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
+          <NavigationProperty Name="Category" Relationship="EcommerceAppModel.FK_Product_Category" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="ImageProducts" Relationship="EcommerceAppModel.FK_IP_Product" FromRole="Product" ToRole="ImageProduct" />
           <NavigationProperty Name="Shop" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="Product" ToRole="Shop" />
+          <NavigationProperty Name="RatingInfoes" Relationship="EcommerceAppModel.FK_RatingInfo_Product" FromRole="Product" ToRole="RatingInfo" />
+          <NavigationProperty Name="MUsers" Relationship="EcommerceAppModel.FavouriteProduct" FromRole="Product" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DateRating" Type="DateTime" Precision="0" Nullable="false" />
-          <NavigationProperty Name="MOrders" Relationship="Self.FK_MOrder_Rating" FromRole="Rating" ToRole="MOrder" />
-          <NavigationProperty Name="RatingInfoes" Relationship="Self.FK_RatingInfo_Rating" FromRole="Rating" ToRole="RatingInfo" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DateRating" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_Rating" FromRole="Rating" ToRole="MOrder" />
+          <NavigationProperty Name="RatingInfoes" Relationship="EcommerceAppModel.FK_RatingInfo_Rating" FromRole="Rating" ToRole="RatingInfo" />
         </EntityType>
         <EntityType Name="RatingInfo">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdRating" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdProduct" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="IdRating" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Rating" Type="Int32" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_RatingInfo_Product" FromRole="RatingInfo" ToRole="Product" />
-          <NavigationProperty Name="Rating1" Relationship="Self.FK_RatingInfo_Rating" FromRole="RatingInfo" ToRole="Rating" />
+          <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK_RatingInfo_Product" FromRole="RatingInfo" ToRole="Product" />
+          <NavigationProperty Name="Rating1" Relationship="EcommerceAppModel.FK_RatingInfo_Rating" FromRole="RatingInfo" ToRole="Rating" />
         </EntityType>
         <EntityType Name="Shop">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="SourceImageAve" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SourceImageBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SourceImageAve" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SourceImageBackground" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MUser" Relationship="Self.FK_Shop_MUser" FromRole="Shop" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Shop_MUser" FromRole="Shop" ToRole="MUser" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="Shop" ToRole="Product" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <Association Name="FK_Product_Brand">
-          <End Role="Brand" Type="Self.Brand" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <End Type="EcommerceAppModel.Brand" Role="Brand" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Brand">
               <PropertyRef Name="Id" />
@@ -549,8 +633,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Product_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <End Type="EcommerceAppModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
               <PropertyRef Name="Id" />
@@ -561,8 +645,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_IP_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="ImageProduct" Type="Self.ImageProduct" Multiplicity="*" />
+          <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="EcommerceAppModel.ImageProduct" Role="ImageProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="Id" />
@@ -573,8 +657,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MOrder_MUser">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
-          <End Role="MOrder" Type="Self.MOrder" Multiplicity="*" />
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.MOrder" Role="MOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MUser">
               <PropertyRef Name="Id" />
@@ -585,8 +669,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MOrder_Rating">
-          <End Role="Rating" Type="Self.Rating" Multiplicity="1" />
-          <End Role="MOrder" Type="Self.MOrder" Multiplicity="*" />
+          <End Type="EcommerceAppModel.Rating" Role="Rating" Multiplicity="1" />
+          <End Type="EcommerceAppModel.MOrder" Role="MOrder" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Rating">
               <PropertyRef Name="Id" />
@@ -597,8 +681,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderInfo_MOrder">
-          <End Role="MOrder" Type="Self.MOrder" Multiplicity="1" />
-          <End Role="OrderInfo" Type="Self.OrderInfo" Multiplicity="*" />
+          <End Type="EcommerceAppModel.MOrder" Role="MOrder" Multiplicity="1" />
+          <End Type="EcommerceAppModel.OrderInfo" Role="OrderInfo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MOrder">
               <PropertyRef Name="Id" />
@@ -609,8 +693,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notification_User">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Notification" Role="Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MUser">
               <PropertyRef Name="Id" />
@@ -621,8 +705,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Shop_MUser">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
-          <End Role="Shop" Type="Self.Shop" Multiplicity="0..1" />
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Shop" Role="Shop" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="MUser">
               <PropertyRef Name="Id" />
@@ -632,96 +716,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RatingInfo_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="RatingInfo" Type="Self.RatingInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RatingInfo">
-              <PropertyRef Name="IdProduct" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RatingInfo_Rating">
-          <End Role="Rating" Type="Self.Rating" Multiplicity="1" />
-          <End Role="RatingInfo" Type="Self.RatingInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Rating">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RatingInfo">
-              <PropertyRef Name="IdRating" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FavouriteProduct">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="*" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="EcommerceAppEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Advertisements" EntityType="Self.Advertisement" />
-          <EntitySet Name="Brands" EntityType="Self.Brand" />
-          <EntitySet Name="Categories" EntityType="Self.Category" />
-          <EntitySet Name="ImageProducts" EntityType="Self.ImageProduct" />
-          <EntitySet Name="MOrders" EntityType="Self.MOrder" />
-          <EntitySet Name="MUsers" EntityType="Self.MUser" />
-          <EntitySet Name="Notifications" EntityType="Self.Notification" />
-          <EntitySet Name="OrderInfoes" EntityType="Self.OrderInfo" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
-          <EntitySet Name="Ratings" EntityType="Self.Rating" />
-          <EntitySet Name="RatingInfoes" EntityType="Self.RatingInfo" />
-          <EntitySet Name="Shops" EntityType="Self.Shop" />
-          <AssociationSet Name="FK_Product_Brand" Association="Self.FK_Product_Brand">
-            <End Role="Brand" EntitySet="Brands" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_IP_Product" Association="Self.FK_IP_Product">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="ImageProduct" EntitySet="ImageProducts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MOrder_MUser" Association="Self.FK_MOrder_MUser">
-            <End Role="MUser" EntitySet="MUsers" />
-            <End Role="MOrder" EntitySet="MOrders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MOrder_Rating" Association="Self.FK_MOrder_Rating">
-            <End Role="Rating" EntitySet="Ratings" />
-            <End Role="MOrder" EntitySet="MOrders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderInfo_MOrder" Association="Self.FK_OrderInfo_MOrder">
-            <End Role="MOrder" EntitySet="MOrders" />
-            <End Role="OrderInfo" EntitySet="OrderInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notification_User" Association="Self.FK_Notification_User">
-            <End Role="MUser" EntitySet="MUsers" />
-            <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Shop_MUser" Association="Self.FK_Shop_MUser">
-            <End Role="MUser" EntitySet="MUsers" />
-            <End Role="Shop" EntitySet="Shops" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RatingInfo_Product" Association="Self.FK_RatingInfo_Product">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="RatingInfo" EntitySet="RatingInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RatingInfo_Rating" Association="Self.FK_RatingInfo_Rating">
-            <End Role="Rating" EntitySet="Ratings" />
-            <End Role="RatingInfo" EntitySet="RatingInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="FavouriteProduct" Association="Self.FavouriteProduct">
-            <End Role="MUser" EntitySet="MUsers" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_Shop" Association="EcommerceAppModel.FK_Product_Shop">
-            <End Role="Shop" EntitySet="Shops" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-        </EntityContainer>
         <Association Name="FK_Product_Shop">
           <End Type="EcommerceAppModel.Shop" Role="Shop" Multiplicity="1" />
           <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
@@ -734,6 +728,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RatingInfo_Product">
+          <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="EcommerceAppModel.RatingInfo" Role="RatingInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RatingInfo">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RatingInfo_Rating">
+          <End Type="EcommerceAppModel.Rating" Role="Rating" Multiplicity="1" />
+          <End Type="EcommerceAppModel.RatingInfo" Role="RatingInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rating">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RatingInfo">
+              <PropertyRef Name="IdRating" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FavouriteProduct">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="*" />
+          <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -743,10 +765,10 @@
           <EntitySetMapping Name="Advertisements">
             <EntityTypeMapping TypeName="EcommerceAppModel.Advertisement">
               <MappingFragment StoreEntitySet="Advertisement">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="SubTitle" ColumnName="SubTitle" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="SubTitle" ColumnName="SubTitle" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -754,8 +776,8 @@
             <EntityTypeMapping TypeName="EcommerceAppModel.Brand">
               <MappingFragment StoreEntitySet="Brand">
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -763,135 +785,146 @@
             <EntityTypeMapping TypeName="EcommerceAppModel.Category">
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ImageProducts">
             <EntityTypeMapping TypeName="EcommerceAppModel.ImageProduct">
               <MappingFragment StoreEntitySet="ImageProduct">
-                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
                 <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MOrders">
             <EntityTypeMapping TypeName="EcommerceAppModel.MOrder">
               <MappingFragment StoreEntitySet="MOrder">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
-                <ScalarProperty Name="IdRating" ColumnName="IdRating" />
-                <ScalarProperty Name="DateBegin" ColumnName="DateBegin" />
-                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
-                <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateBegin" ColumnName="DateBegin" />
+                <ScalarProperty Name="IdRating" ColumnName="IdRating" />
+                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MUsers">
             <EntityTypeMapping TypeName="EcommerceAppModel.MUser">
               <MappingFragment StoreEntitySet="MUser">
+                <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
+                <ScalarProperty Name="SourceImageAve" ColumnName="SourceImageAve" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="SourceImageAve" ColumnName="SourceImageAve" />
-                <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="EcommerceAppModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdReceiver" ColumnName="IdReceiver" />
-                <ScalarProperty Name="IdSender" ColumnName="IdSender" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IdSender" ColumnName="IdSender" />
+                <ScalarProperty Name="IdReceiver" ColumnName="IdReceiver" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderInfoes">
             <EntityTypeMapping TypeName="EcommerceAppModel.OrderInfo">
               <MappingFragment StoreEntitySet="OrderInfo">
-                <ScalarProperty Name="IdOrder" ColumnName="IdOrder" />
-                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
-                <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="IdOrder" ColumnName="IdOrder" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="EcommerceAppModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IdCategory" ColumnName="IdCategory" />
-                <ScalarProperty Name="IdBrand" ColumnName="IdBrand" />
-                <ScalarProperty Name="IdShop" ColumnName="IdShop" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Sale" ColumnName="Sale" />
-                <ScalarProperty Name="InStock" ColumnName="InStock" />
-                <ScalarProperty Name="Sold" ColumnName="Sold" />
-                <ScalarProperty Name="IsOneSize" ColumnName="IsOneSize" />
-                <ScalarProperty Name="IsHadSizeS" ColumnName="IsHadSizeS" />
-                <ScalarProperty Name="IsHadSizeM" ColumnName="IsHadSizeM" />
-                <ScalarProperty Name="IsHadSizeL" ColumnName="IsHadSizeL" />
-                <ScalarProperty Name="IsHadSizeXL" ColumnName="IsHadSizeXL" />
-                <ScalarProperty Name="IsHadSizeXXL" ColumnName="IsHadSizeXXL" />
-                <ScalarProperty Name="Color" ColumnName="Color" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DateOfSale" ColumnName="DateOfSale" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateOfSale" ColumnName="DateOfSale" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="IsHadSizeXXL" ColumnName="IsHadSizeXXL" />
+                <ScalarProperty Name="IsHadSizeXL" ColumnName="IsHadSizeXL" />
+                <ScalarProperty Name="IsHadSizeL" ColumnName="IsHadSizeL" />
+                <ScalarProperty Name="IsHadSizeM" ColumnName="IsHadSizeM" />
+                <ScalarProperty Name="IsHadSizeS" ColumnName="IsHadSizeS" />
+                <ScalarProperty Name="IsOneSize" ColumnName="IsOneSize" />
+                <ScalarProperty Name="Sold" ColumnName="Sold" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="Sale" ColumnName="Sale" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="IdShop" ColumnName="IdShop" />
+                <ScalarProperty Name="IdBrand" ColumnName="IdBrand" />
+                <ScalarProperty Name="IdCategory" ColumnName="IdCategory" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Ratings">
             <EntityTypeMapping TypeName="EcommerceAppModel.Rating">
               <MappingFragment StoreEntitySet="Rating">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DateRating" ColumnName="DateRating" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RatingInfoes">
             <EntityTypeMapping TypeName="EcommerceAppModel.RatingInfo">
               <MappingFragment StoreEntitySet="RatingInfo">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IdRating" ColumnName="IdRating" />
-                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="IdRating" ColumnName="IdRating" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Shops">
             <EntityTypeMapping TypeName="EcommerceAppModel.Shop">
               <MappingFragment StoreEntitySet="Shop">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="SourceImageAve" ColumnName="SourceImageAve" />
-                <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
+                <ScalarProperty Name="SourceImageAve" ColumnName="SourceImageAve" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EcommerceAppModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="FavouriteProduct" TypeName="EcommerceAppModel.FavouriteProduct" StoreEntitySet="FavouriteProduct">
-            <EndProperty Name="MUser">
-              <ScalarProperty Name="Id" ColumnName="IdUser" />
-            </EndProperty>
             <EndProperty Name="Product">
               <ScalarProperty Name="Id" ColumnName="IdProduct" />
+            </EndProperty>
+            <EndProperty Name="MUser">
+              <ScalarProperty Name="Id" ColumnName="IdUser" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

@@ -16,11 +16,10 @@ namespace WPFEcommerceApp
         public string Address { get; set; }
         public string Description { get; set; }
         public ImageSource SourceImageAva { get; set; }
-        public static ImageSource DefaultSourceImageAva = new BitmapImage(/*new Uri("file:///C:/Users/ASUS/Downloads/UserDefaultAvatar.png")*/);
+        public static ImageSource DefaultSourceImageAva = new BitmapImage(new Uri("file:///C:/Users/ASUS/Downloads/UserDefaultAvatar.png"));
         public ImageSource SourceImageBackground { get; set; }
         public static ImageSource DefaultSourceImageBackground = new BitmapImage(new Uri("https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png"));
-        public Shop()
-        {
+        public Shop() {
             SourceImageAva = DefaultSourceImageAva;
             SourceImageBackground = DefaultSourceImageBackground;
         }
