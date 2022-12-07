@@ -28,6 +28,7 @@ namespace WPFEcommerceApp.Models
         public virtual DbSet<Advertisement> Advertisements { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<CategoryRequest> CategoryRequests { get; set; }
         public virtual DbSet<ImageProduct> ImageProducts { get; set; }
         public virtual DbSet<MOrder> MOrders { get; set; }
         public virtual DbSet<MUser> MUsers { get; set; }
@@ -36,6 +37,7 @@ namespace WPFEcommerceApp.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<RatingInfo> RatingInfoes { get; set; }
-        public virtual DbSet<Shop> Shops { get; set; }
+        public virtual DbSet<ShopRequest> ShopRequests { get; set; }
+        public virtual DbSet<BrandRequest> BrandRequests { get; set; }
     }
 }

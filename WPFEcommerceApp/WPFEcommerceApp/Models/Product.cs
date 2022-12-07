@@ -18,6 +18,7 @@ namespace WPFEcommerceApp.Models
         public Product()
         {
             this.ImageProducts = new HashSet<ImageProduct>();
+            this.OrderInfoes = new HashSet<OrderInfo>();
             this.RatingInfoes = new HashSet<RatingInfo>();
             this.MUsers = new HashSet<MUser>();
         }
@@ -39,14 +40,16 @@ namespace WPFEcommerceApp.Models
         public bool IsHadSizeXXL { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
-        public System.DateTime DateOfSale { get; set; }
+        public Nullable<System.DateTime> DateOfSale { get; set; }
         public string Status { get; set; }
     
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ImageProduct> ImageProducts { get; set; }
-        public virtual Shop Shop { get; set; }
+        public virtual MUser MUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

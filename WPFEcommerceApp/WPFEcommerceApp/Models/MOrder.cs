@@ -23,8 +23,8 @@ namespace WPFEcommerceApp.Models
         public string Id { get; set; }
         public string IdCustomer { get; set; }
         public string IdRating { get; set; }
-        public System.DateTime DateBegin { get; set; }
-        public System.DateTime DateEnd { get; set; }
+        public Nullable<System.DateTime> DateBegin { get; set; }
+        public Nullable<System.DateTime> DateEnd { get; set; }
         public long OrderTotal { get; set; }
         public string Status { get; set; }
     

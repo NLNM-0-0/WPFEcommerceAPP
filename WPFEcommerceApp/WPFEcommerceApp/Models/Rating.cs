@@ -22,7 +22,7 @@ namespace WPFEcommerceApp.Models
         }
     
         public string Id { get; set; }
-        public System.DateTime DateRating { get; set; }
+        public Nullable<System.DateTime> DateRating { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MOrder> MOrders { get; set; }

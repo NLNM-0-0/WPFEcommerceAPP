@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class CheckoutScreenVM : BaseViewModel {
@@ -112,16 +113,18 @@ namespace WPFEcommerceApp {
 			PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(p));
 			OnEditInfor = new RelayCommand<object>((p) => true, (p) => EditInforDialog(p));
 			OnSuccessPayment = new RelayCommand<object>((p) => true, (p) => {
-                DialogHost.CloseDialogCommand.Execute(p, (p as IInputElement));
 				//Do something with store here
 				successNavService.Navigate();
             });
         }
 
 		private async void PaymentAlertDialog(object p) {
-			var view = new EnterPaymentDialog() {
-				DataContext = this
-			};
+			var view = new ConfirmDialog() {
+				CM = OnSuccessPayment,
+				Param = p,
+				Header = "Place-Order",
+				Content = "Before you place your order, please make sure that your shipping information, billing information and bag summary are true. Are you sure to place your order?"
+            };
 			await DialogHost.Show(view);
         }
         private async void EditInforDialog(object p) {

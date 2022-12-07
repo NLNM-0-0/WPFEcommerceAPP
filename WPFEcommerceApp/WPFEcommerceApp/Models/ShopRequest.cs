@@ -12,18 +12,12 @@ namespace WPFEcommerceApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderInfo
+    public partial class ShopRequest
     {
-        public string IdOrder { get; set; }
-        public string IdProduct { get; set; }
-        public int Count { get; set; }
-        public long TotalPrice { get; set; }
-        public string ImageProduct { get; set; }
-        public string Size { get; set; }
-        public string IdShop { get; set; }
+        public string Id { get; set; }
+        public string IdUser { get; set; }
+        public string Description { get; set; }
     
-        public virtual MOrder MOrder { get; set; }
         public virtual MUser MUser { get; set; }
-        public virtual Product Product { get; set; }
     }
 }

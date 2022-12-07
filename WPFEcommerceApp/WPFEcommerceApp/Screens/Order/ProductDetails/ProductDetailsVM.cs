@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
     public class ProductDetailsVM :BaseViewModel {
@@ -54,10 +55,29 @@ namespace WPFEcommerceApp {
 			for(int i = 0; i < Status; i++) {
 				OrderStatus[i] = true;
 			}
-			OnReOrder = new ReOrderCM(navigationStore, successNavService);
-			OnCancel = new RelayCommand<object>((p) => true, (p) => {
+			//OnReOrder = new ReOrderCM(navigationStore, successNavService);
+			ICommand ReOrderCM = new ReOrderCM(navigationStore, successNavService);
+			OnReOrder = new RelayCommand<object>(p => true, async p => {
+				var view = new ConfirmDialog() {
+					CM = ReOrderCM,
+					Param = p,
+				};
+				await DialogHost.Show(view);
+			});
+
+
+            ICommand CanCelCM = new RelayCommand<object>((p) => true, (p) => {
 				//Do something with OrderStore
 				orderNavService.Navigate();
+			});
+			OnCancel = new RelayCommand<object>(p => true, async p => {
+				var view = new ConfirmDialog() {
+					Header = "Are you sure?",
+					Content = "You will not be able to take this action back.",
+					CM = CanCelCM,
+					Param = p,
+				};
+				await DialogHost.Show(view);
 			});
 			OnBack = new RelayCommand<object>(p => true, p => {
 				//Actually I need to handle the tab index

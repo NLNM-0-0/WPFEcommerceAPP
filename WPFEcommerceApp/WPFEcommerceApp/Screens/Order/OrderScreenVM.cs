@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
     public class OrderScreenVM : BaseViewModel {
@@ -79,7 +80,7 @@ namespace WPFEcommerceApp {
                 }
             }
 
-            OnCancel = new RelayCommand<object>((p) => true, (p) => {
+            ICommand CanCelCM = new RelayCommand<object>((p) => true, (p) => {
                 for(int i = 0; i < OrderList.Count; i++) {
                     if(OrderList[i] == (p as Order)) {
                         OrderList[i].Status = "Cancelled";
@@ -89,13 +90,32 @@ namespace WPFEcommerceApp {
                 CancelledList.Add(p as Order);
                 ProcessingList.Remove(p as Order);
 			});
+            OnCancel = new RelayCommand<object>(p => true, async p => {
+                var view = new ConfirmDialog() {
+                    Header = "Are you sure?",
+                    Content = "You will not be able to take this action back.",
+                    CM = CanCelCM,
+                    Param = p,
+                };
+                await DialogHost.Show(view);
+            });
+
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
                 var param = p as Order;
                 var nav = new ParamNavigationService<Order, ProductDetailsVM>(navigationStore,
                     (parameter) => new ProductDetailsVM(parameter, navigationStore, successNavService, orderNavService));
                 nav.Navigate(param);
             });
-            OnReorder = new ReOrderCM(navigationStore, successNavService);
+            
+            ICommand ReOrderCM = new ReOrderCM(navigationStore, successNavService);
+            OnReorder = new RelayCommand<object>(p => true,async p => {
+                var view = new ConfirmDialog() {
+                    CM = ReOrderCM,
+                    Param = p
+                };
+                await DialogHost.Show(view);
+            });
+
         }
     }
 }
