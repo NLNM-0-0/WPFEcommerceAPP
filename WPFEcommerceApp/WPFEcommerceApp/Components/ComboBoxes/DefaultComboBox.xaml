@@ -437,6 +437,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}"/>
+        <Setter Property="Background" Value="{StaticResource WhiteColorBrush}" />
         <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource BlackColorBrush}" />
         <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource BlackColorBrush}" />
     </Style>
