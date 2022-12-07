@@ -10,6 +10,7 @@ using WPFEcommerceApp.Models;
 namespace WPFEcommerceApp {
     public class AccountStore {
         public event Action AccountChanged;
+
         private MUser currentAccount;
 
         public MUser CurrentAccount {
@@ -19,8 +20,19 @@ namespace WPFEcommerceApp {
                 OnCurrentAccountChange();
             }
         }
-        public void Change(MUser user) {
+
+        private GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
+
+        public async Task Update(MUser user) {
             CurrentAccount = user;
+            await userRepo.Update(CurrentAccount);
+        }
+        public async Task Add(MUser user) {
+            throw new NotImplementedException();
+
+        }
+        public async Task Remove(MUser user) {
+            throw new NotImplementedException();
         }
         private void OnCurrentAccountChange() {
             AccountChanged?.Invoke();
