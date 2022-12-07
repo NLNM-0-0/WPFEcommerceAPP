@@ -52,12 +52,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MaterialDesignColors, Version=2.0.9.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignColors.2.0.9\lib\net462\MaterialDesignColors.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=4.6.1.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.4.6.1\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -93,16 +87,32 @@
     <Compile Include="Models\Brand.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BrandRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Category.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CategoryRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ImageProduct.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model.Context.cs" />
-    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model.Designer.cs">
-      <DependentUpon>Model.cs</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -125,12 +135,20 @@
     <Compile Include="Models\RatingInfo.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Shop.cs">
+    <Compile Include="Models\ShopRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Order.cs" />
+    <Compile Include="Screens\AdminBrand\AdminBrandManager.xaml.cs">
+      <DependentUpon>AdminBrandManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminBrand\AdminBrandViewModel.cs" />
+    <Compile Include="Screens\AdminShopInformation\ShopInformationPage.xaml.cs">
+      <DependentUpon>ShopInformationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminShopInformation\ShopInformationPageViewModel.cs" />
     <Compile Include="Screens\Order\Command\ReOrderCM.cs" />
     <Compile Include="Screens\Order\components\OrderCard.xaml.cs">
       <DependentUpon>OrderCard.xaml</DependentUpon>
@@ -181,6 +199,14 @@
     <Compile Include="Services\ParamNavigationService.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Stores\OrderStore.cs" />
+    <Compile Include="UserControl\BrandRequest\BrandRequestItem.xaml.cs">
+      <DependentUpon>BrandRequestItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\BrandRequest\BrandRequestItemViewModel.cs" />
+    <Compile Include="UserControl\BrandRequest\BrandRequestList.xaml.cs">
+      <DependentUpon>BrandRequestList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\BrandRequest\BrandRequestListViewModel.cs" />
     <Compile Include="UserControl\Dialogs\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
     </Compile>
@@ -189,6 +215,12 @@
     </Compile>
     <Compile Include="UserControl\Dialogs\AddProductDialog.xaml.cs">
       <DependentUpon>AddProductDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Dialogs\AdminAddBrandDialog.xaml.cs">
+      <DependentUpon>AdminAddBrandDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Dialogs\ShopRequestInformationDialog.xaml.cs">
+      <DependentUpon>ShopRequestInformationDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControl\Drawer\Drawer.xaml.cs">
       <DependentUpon>Drawer.xaml</DependentUpon>
@@ -238,9 +270,23 @@
       <DependentUpon>ShopRating.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopProduct\ShopProductViewModel.cs" />
+    <Compile Include="UserControl\ShopRequest\ShopRequestItem.xaml.cs">
+      <DependentUpon>ShopRequestItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ShopRequest\ShopRequestItemViewModel.cs" />
+    <Compile Include="UserControl\ShopRequest\ShopRequestList.xaml.cs">
+      <DependentUpon>ShopRequestList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ShopRequest\ShopRequestListViewModel.cs" />
+    <Compile Include="UserControl\UserIconControl\UserIconControl.xaml.cs">
+      <DependentUpon>UserIconControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\CommandBase.cs" />
+    <Compile Include="Utils\CommandType2.cs" />
     <Compile Include="Utils\CreateViewModel.cs" />
+    <Compile Include="Utils\IAsyncInitialization.cs" />
+    <Compile Include="Utils\NullImageConverter.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Screens\ShopRating\ShopRatingViewModel.cs" />
     <Compile Include="Screens\UserView\UserViewModel.cs" />
@@ -334,6 +380,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Screens\AdminBrand\AdminBrandManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\AdminShopInformation\ShopInformationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\Order\components\OrderCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -390,6 +444,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControl\BrandRequest\BrandRequestItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\BrandRequest\BrandRequestList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControl\Dialogs\AddBrandDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -414,6 +476,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControl\Dialogs\AdminAddBrandDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\Dialogs\ShopRequestInformationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControl\Drawer\Drawer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -510,6 +580,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControl\ShopRequest\ShopRequestItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\ShopRequest\ShopRequestList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControl\UserIconControl\UserIconControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UserControl\ProductBlock\ProductBlock.xaml.cs">
@@ -547,7 +629,7 @@
     </None>
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model2.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
@@ -598,22 +680,24 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
       <Version>1.1.39</Version>
     </PackageReference>
-    <PackageReference Include="PropertyChanged.Fody">
+    <PackageReference Include="PropertyChanged.Fody" PrivateAssets="All">
       <Version>4.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context1.cs</LastGenOutput>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model2.cs</LastGenOutput>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
