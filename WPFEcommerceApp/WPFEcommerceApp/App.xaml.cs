@@ -5,7 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using DataAccessLayer;
 using Microsoft.Extensions.DependencyInjection;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     /// <summary>
@@ -17,8 +19,14 @@ namespace WPFEcommerceApp {
             IServiceCollection services = new ServiceCollection();
 
             //Set Store and some initial dependences
+            var t = new GenericDataRepository<MUser>();
+            var u = t.GetSingleAsync(d => d.Id.Equals("user02")).Result;
+            AccountStore ast = new AccountStore();
+            ast.CurrentAccount = u;
+
             services.AddSingleton<NavigationStore>();
-            services.AddSingleton<AccountStore>();
+            services.AddSingleton<AccountStore>(s => ast);
+            services.AddSingleton<OrderStore>();
 
             services.AddTransient<DrawerVM>(s => new DrawerVM(
                     serviceProvider.GetRequiredService<AccountStore>(),
@@ -35,10 +43,17 @@ namespace WPFEcommerceApp {
             services.AddSingleton<INavigationService>(s => CreateCheckoutNavService(serviceProvider));
 
             //setup Transient ViewModel
-            services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(CreateSuccessNavService(s)));
+            services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(
+                    CreateSuccessNavService(s),
+                    s.GetRequiredService<AccountStore>(),
+                    s.GetRequiredService<OrderStore>()
+                )
+            );
 
             services.AddTransient<OrderScreenVM>(s => new OrderScreenVM(
                 s.GetRequiredService<NavigationStore>(),
+                s.GetRequiredService<AccountStore>(),
+                s.GetRequiredService<OrderStore>(),
                 CreateSuccessNavService(serviceProvider),
                 CreateOrderNavService(serviceProvider)
                 )

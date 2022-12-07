@@ -18,7 +18,7 @@ namespace WPFEcommerceApp {
         public ObservableCollection<ButtonItem> ButtonItems =>
             CurrentUser == null
             ? NormalButtonCreate()
-            : CurrentUser.IsAdmin == false
+            : CurrentUser.Role != "Admin"
             ? NormalButtonCreate()
             : AdminButtonCreate();
 
@@ -47,7 +47,7 @@ namespace WPFEcommerceApp {
                 }
                 else if(SelectedIndex == 1) {
                     //var t = new GenericDataRepository<MUser>();
-                    //_accountStore.CurrentAccount = await t.GetSingleAsync(d => d.Id.Equals("000000"));
+                    //_accountStore.CurrentAccount = await t.GetSingleAsync(d => d.Id.Equals("user01"));
                     OrderNavigateService.Navigate();
                 }
             });
