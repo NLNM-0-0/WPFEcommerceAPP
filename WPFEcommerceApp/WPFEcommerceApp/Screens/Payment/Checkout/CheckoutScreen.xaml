@@ -156,11 +156,18 @@
                             <Expander x:Name="DeliArea" 
                                       Style="{StaticResource CustomExpander}" 
                                       IsExpanded="{Binding StateArea[0]}">
+                                <i:Interaction.Triggers>
+                                    <i:DataTrigger Binding="{Binding ElementName=DeliArea, Path=IsExpanded}" Value="True">
+                                        <i:InvokeCommandAction Command="{Binding OnDeliFieldChoice}" CommandParameter=""/>
+                                    </i:DataTrigger>
+                                </i:Interaction.Triggers>
                                 <Expander.Header>
-                                    <Label Content="Delivery Options" 
-                                           FontSize="{StaticResource FontSizeHeadline2}"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"/>
+                                    <Grid Width="700" Height="50" Cursor="Hand" Background="Transparent">
+                                        <Label Content="Delivery Options" 
+                                               FontSize="{StaticResource FontSizeHeadline2}"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"/>
+                                    </Grid>
                                 </Expander.Header>
                                 <StackPanel>
                                     <!--Address-->
@@ -173,7 +180,7 @@
                                                 <ColumnDefinition Width="80"/>
                                             </Grid.ColumnDefinitions>
                                             <StackPanel>
-                                                <Label Content="{Binding Username}" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="{Binding UserName}" FontSize="{StaticResource FontSizeText}"/>
                                                 <Label Content="{Binding UserPhone}" FontSize="{StaticResource FontSizeText}"/>
                                                 <Label Content="{Binding UserAddress}" FontSize="{StaticResource FontSizeText}"/>
                                             </StackPanel>
@@ -200,10 +207,10 @@
                                         </RadioButton>
                                         <RadioButton GroupName="Shipping" Style="{StaticResource ShippingButton}" HorizontalAlignment="Right">
                                             <StackPanel>
-                                                <Label Content="Free No Rush Shipping" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="Fast Shipping" FontSize="{StaticResource FontSizeText}"/>
                                                 <Label Content="Arrives Mon, Oct 10- Tue, Oct 11"
-                               FontSize="{StaticResource FontSizeDescription}"
-                               Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                                        FontSize="{StaticResource FontSizeDescription}"
+                                                        Foreground="{StaticResource NotAvailableColorBrush}"/>
                                             </StackPanel>
                                         </RadioButton>
                                     </Grid>
@@ -241,10 +248,16 @@
                                       IsEnabled="{Binding PaymentState}" 
                                       IsExpanded="{Binding StateArea[1]}">
                                 <Expander.Header>
-                                    <Label Content="Payment" 
+                                    <Grid Width="700" Height="50" Cursor="Hand" Background="Transparent">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="39*"/>
+                                            <ColumnDefinition Width="101*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Payment" 
                                            FontSize="{StaticResource FontSizeHeadline2}"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"/>
+                                    </Grid>
                                 </Expander.Header>
                                 <StackPanel>
                                     <Label Content="Payment method" FontSize="{StaticResource FontSizeHeadline3}"/>

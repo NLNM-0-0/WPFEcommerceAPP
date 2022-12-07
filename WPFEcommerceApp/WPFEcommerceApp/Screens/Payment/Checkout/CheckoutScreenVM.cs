@@ -16,42 +16,25 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class CheckoutScreenVM : BaseViewModel {
+		private readonly AccountStore _accountStore;
+		private readonly Order _order;
+		public MUser CurrentUser => _accountStore?.CurrentAccount;
+
         #region props private
-        private double subtotal;
-        private double shipTotal;
-        private double totalPayment;
-        private double discount;
-		private ObservableCollection<bool> stateArea;
-        private ObservableCollection<BProduct> productList;
+        private ObservableCollection<bool> stateArea;
         private bool paymentState;
-		private string userName;
-		private string userPhone;
-		private string userAddress;
-		#endregion
-		#region props
-		public double SubTotal {
-			get { return subtotal; }
-			set { subtotal = value; OnPropertyChanged(); }
-		}
+        #endregion
+        #region props
+        public double SubTotal => _order != null ? _order.SubTotal : 0;
+        public double ShipTotal => _order != null ? _order.ShipTotal : 0;
+        public double TotalPayment => _order != null ? _order.OrderTotal : 0;
+        public double Discount => _order != null ? _order.Discount : 0;
 
-		public double ShipTotal {
-			get { return shipTotal; }
-			set { shipTotal = value; OnPropertyChanged(); }
-		}
-
-		public double TotalPayment {
-			get { return totalPayment; }
-			set { totalPayment = value; OnPropertyChanged(); }
-		}
-
-		public double Discount {
-			get { return discount; }
-			set { discount = value; OnPropertyChanged(); }
-		}
-        public ObservableCollection<BProduct> ProductList {
-            get { return productList; }
-            set { productList = value; OnPropertyChanged(); }
-        }
+		public ObservableCollection<BProduct> ProductList => _order != null ? new ObservableCollection<BProduct>(_order.ShopProduct) : null;
+		public string UserName => CurrentUser?.Name;
+        public string UserPhone => CurrentUser?.PhoneNumber;
+        public string UserAddress => CurrentUser?.Address;
+		
 		public ObservableCollection<bool> StateArea {
 			get { return stateArea; }
 			set { stateArea = value; OnPropertyChanged(); }
@@ -61,43 +44,27 @@ namespace WPFEcommerceApp {
 			get { return paymentState; }
 			set { paymentState = value; OnPropertyChanged(); }
 		}
-        public string UserAddress {
-            get { return userAddress; }
-            set { userAddress = value; OnPropertyChanged(); }
-        }
-        public string UserPhone {
-            get { return userPhone; }
-            set { userPhone = value; OnPropertyChanged(); }
-        }
-        public string Username {
-            get { return userName; }
-            set { userName = value; OnPropertyChanged(); }
-        }
+
         #endregion
         #region command
         public ICommand OnPayment { get; set; }
 		public ICommand PaymentAlertDialogCM { get; set; }
 		public ICommand OnEditInfor { get; set; }
 		public ICommand OnSuccessPayment { get; set; }
-        
+		public ICommand OnPaymentFieldChoice { get; set; }
+        public ICommand OnDeliFieldChoice { get; set; }
+
+
         #endregion
 
-        public CheckoutScreenVM(INavigationService successNavService, Order order = null) {
-			Username = "Name";
-			UserPhone = "012345678";
-			UserAddress = "Nothing";
-			if(order != null)
-				ProductList= new ObservableCollection<BProduct>(order.ShopProduct);
-			else 
-				ProductList = new ObservableCollection<BProduct>();
-
-			ShipTotal = 23.89;
-			Discount = 5;
-
-			for(int i = 0; i < ProductList.Count; i++) {
-				SubTotal += ProductList[i].Subtotal;
-			}
-			TotalPayment = (SubTotal + ShipTotal) * (100 - discount) / 100;
+        public CheckoutScreenVM(
+			INavigationService successNavService, 
+			AccountStore accountStore,
+			OrderStore orderStore,
+			Order order = null) {
+			_accountStore = accountStore;
+			_accountStore.AccountChanged += OnAccountChange;
+			_order = order;
 			PaymentState = false;
 			StateArea = new ObservableCollection<bool> {
 				true,
@@ -109,14 +76,34 @@ namespace WPFEcommerceApp {
                 StateArea[1] = true;
                 PaymentState = true;
             });
+			OnDeliFieldChoice = new RelayCommand<object>(p => true, p => {
+				if(PaymentState == false) StateArea[0] = true;
+				else { StateArea[0] = true; StateArea[1] = false; PaymentState = false; }
+			});
 
-			PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(p));
+            PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(p));
 			OnEditInfor = new RelayCommand<object>((p) => true, (p) => EditInforDialog(p));
-			OnSuccessPayment = new RelayCommand<object>((p) => true, (p) => {
+			OnSuccessPayment = new RelayCommand<object>((p) => true, async (p) => {
 				//Do something with store here
+				var temp = new Order(order);
+				temp.ID += 1;
+				temp.Status = "Processing";
+				await orderStore.Add(temp);
 				successNavService.Navigate();
             });
+
         }
+
+		public void OnAccountChange() {
+			OnPropertyChanged(nameof(CurrentUser));
+            OnPropertyChanged(nameof(UserName));
+            OnPropertyChanged(nameof(UserPhone));
+            OnPropertyChanged(nameof(UserAddress));
+        }
+        public override void Dispose() {
+			_accountStore.AccountChanged -= OnAccountChange;
+			base.Dispose();
+		}
 
 		private async void PaymentAlertDialog(object p) {
 			var view = new ConfirmDialog() {
@@ -128,8 +115,8 @@ namespace WPFEcommerceApp {
 			await DialogHost.Show(view);
         }
         private async void EditInforDialog(object p) {
-            var view = new EditInforDialog() {
-                Username = Username,
+            var view = new EditInforDialog(_accountStore) {
+                Username = UserName,
 				Phone = UserPhone,
 				Address = UserAddress,
 				EditData = this,

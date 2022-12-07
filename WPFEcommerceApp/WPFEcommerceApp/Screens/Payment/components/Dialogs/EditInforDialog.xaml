@@ -33,21 +33,24 @@
                 </Button>
             </Grid>
             <StackPanel Margin="0, 30, 0, 30">
-                <Label Content="Name" FontSize="{StaticResource FontSizeHeadline3}"/>
+                <Label Content="Name" FontSize="{StaticResource FontSizeHeadline3}" Margin="0 0 0 10"/>
                 <TextBox Style="{StaticResource TextBoxHintBlackBorder}" 
                          x:Name="nameBox"
                          Height="55"
                          Width="auto"
                          materialDesign:HintAssist.Hint="Name"
-                         Text="{Binding Username}"/>
+                         materialDesign:HintAssist.IsFloating="False"
+                         Text="{Binding Username}">
+                </TextBox>
 
-                <Label Content="Phone" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 19, 0, 0"/>
+                <Label Content="Phone" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 19, 0, 10"/>
                 <TextBox 
                     x:Name="phoneBox"
                     Style="{StaticResource TextBoxHintBlackBorder}" 
                          Height="55"
                          Width="auto"
-                         materialDesign:HintAssist.Hint="Phone">
+                         materialDesign:HintAssist.Hint="Phone"
+                         materialDesign:HintAssist.IsFloating="False">
                     <TextBox.Text>
                         <Binding Path="Phone" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
@@ -65,12 +68,13 @@
                     </i:Interaction.Triggers>
                 </TextBox>
 
-                <Label Content="Address" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 19, 0, 0"/>
+                <Label Content="Address" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 19, 0, 10"/>
                 <TextBox 
                     x:Name="addressBox"
-                    Style="{StaticResource TextBoxHintBlackBorder}" 
+                    Style="{StaticResource TextBoxHintWrapText}"
                          Height="88"
                          Width="auto"
+                         materialDesign:HintAssist.IsFloating="False"
                          materialDesign:HintAssist.Hint="Address"
                          TextWrapping="Wrap"
                          Text="{Binding Address}"/>
