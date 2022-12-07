@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Constants/Colors.xaml" />
+        <ResourceDictionary Source="/Constants/Fonts.xaml" />
+        <ResourceDictionary Source="/Components/TextBoxes/TextBoxes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <!-- It will not show the item is selected -->
+    <Style x:Key="ComboBoxTransparentBorder" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignComboBox}">
+        <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource BlackColorBrush}" />
+        <Setter Property="materialDesign:ComboBoxAssist.ShowSelectedItem" Value="False"/>
+        <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="materialDesign:HintAssist.IsFloating" Value="False"/>
+        <Setter Property="materialDesign:HintAssist.FontFamily" Value="{StaticResource Regular}"/>
+        <Setter Property="materialDesign:HintAssist.FloatingScale" Value="{StaticResource FontSizeHeadline3}"/>
+        <Setter Property="materialDesign:HintAssist.HintOpacity" Value="1"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource BlackColorBrush}"/>
+    </Style>
+</ResourceDictionary>
