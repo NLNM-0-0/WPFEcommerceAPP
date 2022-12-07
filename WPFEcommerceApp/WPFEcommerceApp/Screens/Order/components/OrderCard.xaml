@@ -71,6 +71,7 @@
                 <it:Interaction.Triggers>
                     <it:DataTrigger Binding="{Binding ProductPreview.Count}" Value="1">
                         <it:ChangePropertyAction PropertyName="Visibility" TargetName="product2" Value="Collapsed"/>
+                        <it:ChangePropertyAction PropertyName="DataContext" TargetName="product2" Value=""/>
                     </it:DataTrigger>
                 </it:Interaction.Triggers>
             </StackPanel>
