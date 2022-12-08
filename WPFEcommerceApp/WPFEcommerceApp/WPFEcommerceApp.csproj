@@ -85,11 +85,15 @@
     <Compile Include="Models\Brand.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BrandRequest.cs" />
+    <Compile Include="Models\BrandRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Category.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CategoryRequest.cs" />
+    <Compile Include="Models\CategoryRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ImageProduct.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -115,7 +119,6 @@
     <Compile Include="Models\RatingInfo.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Shop.cs" />
     <Compile Include="Models\ShopRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

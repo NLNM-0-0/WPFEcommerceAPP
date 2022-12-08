@@ -20,7 +20,7 @@ namespace WPFEcommerceApp {
 
             //Set Store and some initial dependences
             var t = new GenericDataRepository<MUser>();
-            var u = t.GetSingleAsync(d => d.Id.Equals("user02")).Result;
+            var u = t.GetSingleAsync(d => d.Id.Equals("user01")).Result;
             AccountStore ast = new AccountStore();
             ast.CurrentAccount = u;
 
