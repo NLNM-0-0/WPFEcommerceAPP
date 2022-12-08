@@ -31,7 +31,8 @@ namespace WPFEcommerceApp {
             services.AddTransient<DrawerVM>(s => new DrawerVM(
                     serviceProvider.GetRequiredService<AccountStore>(),
                     CreateCheckoutNavService(serviceProvider), 
-                    CreateOrderNavService(serviceProvider)
+                    CreateOrderNavService(serviceProvider),
+                    CreateShopInformationPageNavService(serviceProvider)
                 )
             );
 
@@ -43,6 +44,7 @@ namespace WPFEcommerceApp {
             services.AddSingleton<INavigationService>(s => CreateCheckoutNavService(serviceProvider));
 
             //setup Transient ViewModel
+            //Normal
             services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(
                     CreateSuccessNavService(s),
                     s.GetRequiredService<AccountStore>(),
@@ -60,6 +62,8 @@ namespace WPFEcommerceApp {
             );
 
             services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider))); //Need to be HomeView here
+            //Admin
+            services.AddTransient<ShopInformationPageViewModel>(s => new ShopInformationPageViewModel());
 
             //Setup MainWindow
             services.AddSingleton<MainViewModel>();
@@ -96,6 +100,12 @@ namespace WPFEcommerceApp {
             return new NavigationService<SuccessScreenVM>(
                 serviceProvider.GetRequiredService<NavigationStore>(), 
                 serviceProvider.GetRequiredService<SuccessScreenVM>);
+        }
+
+        private INavigationService CreateShopInformationPageNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<ShopInformationPageViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
         }
     }
 }

@@ -36,19 +36,27 @@ namespace WPFEcommerceApp {
         public DrawerVM(
             AccountStore accountStore,
             INavigationService CheckoutNavigateService, 
-            INavigationService OrderNavigateService) {
+            INavigationService OrderNavigateService,
+            INavigationService ShopInformationPageNavigateService) {
 
             _accountStore = accountStore;
             _accountStore.AccountChanged += OnAccountChange;
 
             OnChangeScreen = new RelayCommand<object>((p) => true, (p) => {
-                if(SelectedIndex == 0) {
-                    CheckoutNavigateService.Navigate();
+                if(CurrentUser.Role != "Admin") {
+                    if(SelectedIndex == 0) {
+                        CheckoutNavigateService.Navigate();
+                    }
+                    else if(SelectedIndex == 2) {
+                        //var t = new GenericDataRepository<MUser>();
+                        //_accountStore.CurrentAccount = await t.GetSingleAsync(d => d.Id.Equals("user01"));
+                        OrderNavigateService.Navigate();
+                    }
                 }
-                else if(SelectedIndex == 1) {
-                    //var t = new GenericDataRepository<MUser>();
-                    //_accountStore.CurrentAccount = await t.GetSingleAsync(d => d.Id.Equals("user01"));
-                    OrderNavigateService.Navigate();
+                else {
+                    if(SelectedIndex == 1) {
+                        ShopInformationPageNavigateService.Navigate();
+                    }
                 }
             });
         }
