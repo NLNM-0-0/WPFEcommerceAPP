@@ -7,8 +7,8 @@ namespace WPFEcommerceApp
     public class ShopRequestItemViewModel:BaseViewModel
     {
         #region Public Properties
-        private string _requestId;
-        public string RequestId
+        private int _requestId;
+        public int RequestId
         {
             get=>_requestId;
             set
@@ -80,8 +80,8 @@ namespace WPFEcommerceApp
             set { _sourceImageAva = value; OnPropertyChanged(); }
         }
 
-        private string _id;
-        public string Id
+        private int _id;
+        public int Id
         {
             get { return _id; }
             set { _id = value; OnPropertyChanged(); }

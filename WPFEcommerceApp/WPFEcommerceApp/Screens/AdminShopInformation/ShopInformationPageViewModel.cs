@@ -174,42 +174,21 @@ namespace WPFEcommerceApp
                 Shops = new ObservableCollection<MUser>(await userRepository.
                     GetListAsync(item => item.Role.Equals("Shop")&&item.Status.Equals("NotBanned")));
 
-                using (var context = new EcommerceAppEntities())
-                {
-                    try
-                    {
-                        var query = (from request in context.ShopRequests
-                                    join user in context.MUsers
-                                    on request.IdUser equals user.Id
-                                    select new
-                                    {
-                                        RequestId=request.Id,
-                                        IdUser=request.IdUser,
-                                        Name=user.Name,
-                                        SourceImageAva=user.SourceImageAve,
-                                        Description=request.Description,
-                                        Email=user.Email,
-                                        PhoneNumber=user.PhoneNumber,
-                                        Address=user.Address,
-                                    }).ToList();
-                        RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
-                            query.Select(item=> new ShopRequestItemViewModel
-                            {
-                                RequestId = item.RequestId,
-                                Id=item.IdUser,
-                                Name=item.Name,
-                                Description=item.Description,
-                                SourceImageAva=new BitmapImage(new Uri(item.SourceImageAva)),
-                                Email=item.Email,
-                                PhoneNumber=item.PhoneNumber,
-                                Address=item.Address
-                            }));
+                var shopRequestRepo = new GenericDataRepository<ShopRequest>();
+                var query = await shopRequestRepo.GetAllAsync(s=>s.MUser);
 
-                    }
-                    catch { }
-                }
-                
-                
+                RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
+                    query.Select(item => new ShopRequestItemViewModel
+                    {
+                        RequestId = item.Id,
+                        Id = (int)item.IdUser,
+                        Name = item.MUser.Name,
+                        Description = item.Description,
+                        SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
+                        Email = item.MUser.Email,
+                        PhoneNumber = item.MUser.PhoneNumber,
+                        Address = item.MUser.Address
+                    }));
             }
             catch { }
            

@@ -38,13 +38,13 @@
 
             <DataGrid ItemsSource="{Binding Shops, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0 20" x:Name="datagrid"
                       AutoGenerateColumns="False" MaxHeight="700"
-                      IsReadOnly="True" 
+                      IsReadOnly="True" CanUserReorderColumns="False"
                       SelectedItem="{Binding DatagridSelectedItem, UpdateSourceTrigger=PropertyChanged}"
                       >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Width="100" Binding="{Binding Id}"/>
                     <DataGridTextColumn Header="Shop Name" Width="250" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Description" Width="350" Binding="{Binding Description}"/>
+                    <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description}"/>
                     <DataGridTextColumn Header="Phone number" Width="200" Binding="{Binding PhoneNumber}"/>
                     <DataGridTextColumn Header="Email" Width="200" Binding="{Binding Email}"/>
                     <DataGridTextColumn Header="Address" Width="*" Binding="{Binding Address}"/>
