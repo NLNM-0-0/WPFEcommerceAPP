@@ -321,7 +321,6 @@
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{StaticResource BoxLineColorBrush}"/>
-                <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
                 <Setter Property="BorderBrush" Value="{StaticResource BoxLineColorBrush}"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">

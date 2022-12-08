@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local ="clr-namespace:WPFEcommerceApp">
+                    xmlns:local ="clr-namespace:WPFEcommerceApp"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Constants/Colors.xaml" />
@@ -40,6 +41,7 @@
                         Background="{TemplateBinding Background}" 
                         BorderBrush="{TemplateBinding BorderBrush}" 
                         BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(materialDesign:ButtonAssist.CornerRadius)}"
                         SnapsToDevicePixels="true">
                         <ContentPresenter 
                             x:Name="contentPresenter" 

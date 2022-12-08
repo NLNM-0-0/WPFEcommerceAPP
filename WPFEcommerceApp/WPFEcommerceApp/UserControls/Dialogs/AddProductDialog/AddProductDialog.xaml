@@ -1,0 +1,414 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AddProductDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:addProductDialogNamespace="clr-namespace:WPFEcommerceApp.UserControls.Dialogs.AddProductDialog"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:fa="http://schemas.fontawesome.io/icons/">
+    <materialDesign:DialogHost
+        Identifier="SecondDialog">
+        <Grid>
+            <Grid.Resources>
+                <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
+                <local:NumberToBooleanConverter x:Key="NumberToBooleanConverter"/>
+                <local:TrueFromBooleansToFalseConverter x:Key="TrueFromBooleansToFalseConverter"/>
+            </Grid.Resources>
+            <Border
+            BorderBrush="{StaticResource BoxLineColorBrush}"
+            BorderThickness="1">
+                <StackPanel
+                    Width="740"
+                    Margin="30 30">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.ColumnSpan="2"
+                            Text="Add new product"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            FontFamily="{StaticResource Regular}"
+                            FontSize="{StaticResource FontSizeHeadline}"/>
+                        <Button
+                            x:Name="ButtonClose"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                            Grid.Column="1"
+                            Margin="0 0 10 0"
+                            Padding="0"
+                            Height="30"
+                            Width="30"
+                            Background="Transparent"
+                            BorderBrush="{StaticResource NotAvailableColorBrush}"
+                            BorderThickness="3">
+
+                            <fa:ImageAwesome
+                                x:Name="IconButtonClose"
+                                Icon="Close"
+                                Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                                Width="10"
+                                Height="10"/>
+                        </Button>
+                    </Grid>
+                    <DockPanel
+                        Margin="0 30 0 0">
+                        <TextBox
+                            x:Name="productNameTextBox"
+                            Style="{StaticResource TextBoxHintBlackBorder}"
+                            materialDesign:HintAssist.Hint="Product Name"
+                            Width="500"
+                            Margin="0 0 30 0"
+                            VerticalAlignment="Center">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="RegisterProduct.Name"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox
+                            x:Name="priceTextBox"
+                            Width="auto"
+                            Style="{StaticResource TextBoxHintBlackBorder}"
+                            materialDesign:HintAssist.Hint="Price">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="RegisterProduct.Price"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NumberTextBoxValidation
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </DockPanel>
+                    <Grid
+                        Margin="0 30 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid
+                            Grid.Column="0"
+                            Width="500"
+                            Height="146">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid
+                                Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Text="Images"
+                                    FontFamily="{StaticResource Bold}"
+                                    FontSize="{StaticResource FontSizeHeadline3}"
+                                    VerticalAlignment="Top"/>
+                                <Button
+                                    Grid.Column="1"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding OpenChangeImageDialogCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                    Style="{StaticResource ButtonRectangle}"
+                                    Margin="30 0 0 0"
+                                    Width="70"
+                                    Content="Change">
+                                </Button>
+                            </Grid>
+                            <ScrollViewer
+                                HorizontalScrollBarVisibility="Auto"
+                                Grid.Row="1"
+                                Margin="0 10 0 0">
+                                <StackPanel
+                                    x:Name="imageStackPanel"
+                                    Orientation="Horizontal">
+                                    <ItemsControl ItemsSource="{Binding RegisterProduct.ImageSources, UpdateSourceTrigger=PropertyChanged}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel
+                                                    Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border
+                                                    Background="{StaticResource BoxShadowColorBrush}"
+                                                    Margin="0 0 10 0"
+                                                    Height="70"
+                                                    MaxWidth="70">
+                                                    <Image
+                                                        Source="{Binding}"
+                                                        Height="70"
+                                                        Width="70">
+                                                    </Image>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                        <Grid
+                            Grid.Column="2"
+                            x:Name="gridSize">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid
+                                VerticalAlignment="Top"
+                                Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                x:Name="ComboBoxSize" 
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Size">
+                                    <ComboBoxItem Content="S" Visibility="{i:Binding !RegisterProduct.IsHadSizeS, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="M" Visibility="{i:Binding !RegisterProduct.IsHadSizeM, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="L" Visibility="{i:Binding !RegisterProduct.IsHadSizeL, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="XL" Visibility="{i:Binding !RegisterProduct.IsHadSizeXL, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="XXL" Visibility="{i:Binding !RegisterProduct.IsHadSizeXXL, FalseToVisibility=Collapsed}"/>
+                                </ComboBox>
+                                <Button
+                                    Command="{Binding AddSizeCommand}"
+                                    CommandParameter="{Binding ElementName=ComboBoxSize}"
+                                    Style="{StaticResource ButtonRectangle}"
+                                    Grid.Column="1"
+                                    Margin="30 0 0 0"
+                                    Width="70"
+                                    Content="+ Add"/>
+                            </Grid>
+                            <WrapPanel
+                                Margin="0 5 0 0"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+                                <addProductDialogNamespace:SizeBlock 
+                                    Command="{Binding DeleteSizeCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                    Width="90"
+                                    Size="S"
+                                    Margin="0 0 10 5"
+                                    Visibility="{i:Binding RegisterProduct.IsHadSizeS, FalseToVisibility=Collapsed}"/>
+                                <addProductDialogNamespace:SizeBlock 
+                                    Command="{Binding DeleteSizeCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                    Width="90"
+                                    Size="M"
+                                    Margin="0 0 10 5"
+                                    Visibility="{i:Binding RegisterProduct.IsHadSizeM, FalseToVisibility=Collapsed}"/>
+                                <addProductDialogNamespace:SizeBlock 
+                                    Command="{Binding DeleteSizeCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                    Width="90"
+                                    Size="L"
+                                    Margin="0 0 10 5"
+                                    Visibility="{i:Binding RegisterProduct.IsHadSizeL, FalseToVisibility=Collapsed}"/>
+                                <addProductDialogNamespace:SizeBlock 
+                                    Command="{Binding DeleteSizeCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                    Width="90"
+                                    Size="XL"
+                                    Margin="0 0 10 5"
+                                    Visibility="{i:Binding RegisterProduct.IsHadSizeXL, FalseToVisibility=Collapsed}"/>
+                                <addProductDialogNamespace:SizeBlock 
+                                    Command="{Binding DeleteSizeCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                    Width="100"
+                                    Size="XXL"
+                                    Margin="0 0 10 5"
+                                    Visibility="{i:Binding RegisterProduct.IsHadSizeXXL, FalseToVisibility=Collapsed}"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Grid>
+                    <DockPanel
+                        Margin="0 30 0 0">
+                        <StackPanel Width="500"
+                                Margin="0 0 30 0">
+                            <DockPanel>
+                                <ComboBox
+                                    x:Name="categoryComboBox"
+                                    materialDesign:HintAssist.Hint="Category"
+                                    Width="455"
+                                    Margin="0 0 10 0"
+                                    VerticalAlignment="Center">
+                                    <ComboBox.Text>
+                                        <Binding
+                                            Path="RegisterProduct.Category"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:NotEmptyValidationRule
+                                                    ErrorMessage="*If you can't find the category, press button add new and we will update"
+                                                    ValidatesOnTargetUpdated="True"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.Text>
+                                </ComboBox>
+                                <Button
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TransparentButton}"
+                                    HorizontalAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Padding="0"
+                                    Command="{Binding OpenAddCategoryDialogCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                    <fa:ImageAwesome
+                                            Icon="Plus"
+                                            Margin="5">
+                                    </fa:ImageAwesome>
+                                </Button>
+                            </DockPanel>
+                        </StackPanel>
+
+                        <TextBox
+                            x:Name="inStockTextBox"
+                            VerticalAlignment="Top"
+                            Width="auto"
+                            Style="{StaticResource TextBoxHintBlackBorder}"
+                            materialDesign:HintAssist.Hint="In Stock">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="RegisterProduct.InStock"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NumberTextBoxValidation
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </DockPanel>
+                    <DockPanel
+                    Margin="0 30 0 0">
+                        <StackPanel 
+                            Width="500"
+                            Margin="0 0 30 0">
+                            <DockPanel>
+                                <ComboBox
+                                    x:Name="brandComboBox"
+                                    materialDesign:HintAssist.Hint="Brand"
+                                    Width="455"
+                                    Margin="0 0 10 0"
+                                    VerticalAlignment="Center">
+                                    <ComboBox.Text>
+                                        <Binding
+                                            Path="RegisterProduct.Brand"
+                                            UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <local:NotEmptyValidationRule
+                                                    ErrorMessage="*If you can't find the brand, press button add new and we will update"
+                                                    ValidatesOnTargetUpdated="True"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </ComboBox.Text>
+                                </ComboBox>
+                                <Button
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TransparentButton}"
+                                    HorizontalAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Padding="0"
+                                    Command="{Binding OpenAddBrandDialogCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                    <fa:ImageAwesome
+                                            Icon="Plus"
+                                            Margin="5">
+                                    </fa:ImageAwesome>
+                                </Button>
+                            </DockPanel>
+                        </StackPanel>
+
+                        <TextBox
+                            x:Name="saleTextBox"
+                            VerticalAlignment="Top"
+                            Width="auto"
+                            Style="{StaticResource TextBoxHintBlackBorder}"
+                            materialDesign:HintAssist.Hint="Sale">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="RegisterProduct.Sale"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NumberTextBoxValidation
+                                            Type="DoubleType"
+                                            Min="0"
+                                            Max="100"
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </DockPanel>
+                    <TextBox
+                        x:Name="descriptionTextBox"
+                        Margin="0 30 0 0"
+                        Style="{StaticResource TextBoxHintWrapText}"
+                        materialDesign:HintAssist.Hint="Description"
+                        Width="auto"
+                        Height="140">
+                        <TextBox.Text>
+                            <Binding
+                                Path="RegisterProduct.Description"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                        ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <FrameworkElement x:Name="IsHadSize">
+                        <FrameworkElement.Tag>
+                            <MultiBinding Converter="{StaticResource TrueFromBooleansToFalseConverter}">
+                                <Binding Path="RegisterProduct.IsHadSizeS"/>
+                                <Binding Path="RegisterProduct.IsHadSizeM"/>
+                                <Binding Path="RegisterProduct.IsHadSizeL"/>
+                                <Binding Path="RegisterProduct.IsHadSizeXL"/>
+                                <Binding Path="RegisterProduct.IsHadSizeXXL"/>
+                            </MultiBinding>
+                        </FrameworkElement.Tag>
+                    </FrameworkElement>
+                    <Button
+                        Margin="0 30 0 0"
+                        HorizontalAlignment="Right"
+                        Width="170"
+                        Content="Add Product"
+                        Command="{Binding RequestProductCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                                <Binding ElementName="productNameTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="priceTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="inStockTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="saleTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="IsHadSize" Path="Tag"/>
+                                <Binding ElementName="categoryComboBox" Path="SelectedIndex" Converter="{StaticResource NumberToBooleanConverter}" ConverterParameter="-1"/>
+                                <Binding ElementName="brandComboBox" Path="SelectedIndex" Converter="{StaticResource NumberToBooleanConverter}" ConverterParameter="-1"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </materialDesign:DialogHost>
+</UserControl>

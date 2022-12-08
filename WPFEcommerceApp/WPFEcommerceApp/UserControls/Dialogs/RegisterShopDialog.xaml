@@ -23,7 +23,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock
                             Grid.ColumnSpan="2"
-                            Text="Add new product"
+                            Text="Register Shop"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             FontFamily="{StaticResource Regular}"
@@ -52,7 +52,7 @@
                         Margin="0 30 0 0"
                         Width="auto"
                         Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Name Shop"
+                        materialDesign:HintAssist.Hint="Shop Name"
                         MaxLength="27"
                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
 
@@ -84,7 +84,7 @@
                         Height="150"
                         MaxLength="200"
                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
-                    
+
                     <Button
                         Margin="0 30 0 0"
                         HorizontalAlignment="Right"

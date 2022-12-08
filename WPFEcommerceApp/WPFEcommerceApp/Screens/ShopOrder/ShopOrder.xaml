@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1340">
     <StackPanel Background="Transparent">
@@ -37,13 +38,16 @@
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <ComboBox
+                                Height="{Binding ElementName=textBoxSearch, Path=ActualHeight}"
+                                materialDesign:TextFieldAssist.TextFieldCornerRadius="5 0 0 5"
                                 Grid.Column="0"
                                 IsEditable="True"
                                 materialDesign:HintAssist.Hint="SortBy">
-
                             </ComboBox>
                             <Grid Grid.Column="1">
                                 <TextBox 
+                                    x:Name="textBoxSearch"
+                                    materialDesign:TextFieldAssist.TextFieldCornerRadius="0 5 5 0"
                                     Width="auto"
                                     Style="{StaticResource TextBoxHintBlackBorder}"
                                     MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
@@ -76,21 +80,65 @@
             </Grid>
         </Border>
         <Border
-            Margin="0 0 0 30"
+            Margin="0 0 0 20"
             Padding="50 0">
             <Grid>
-                <UniformGrid Columns="5">
-                    <FrameworkElement x:Name="temp"/>
-                </UniformGrid>
-                <TabControl>
-                    <TabItem Header="All" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                    <TabItem Header="ToShip" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                    <TabItem Header="Shipping" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                    <TabItem Header="Completed" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                    <TabItem Header="Canceled" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                </TabControl>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="All" 
+                    Grid.Column="0"
+                    IsChecked="True"/>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="To Ship" 
+                    Grid.Column="1"/>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="Shipping" 
+                    Grid.Column="2"/>
+                <RadioButton 
+                    x:Name="completedRadioButton"
+                    Style="{StaticResource RadioTabButton}"
+                    Content="Completed" 
+                    Grid.Column="3"/>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="Canceled" 
+                    Grid.Column="4"/>
             </Grid>
         </Border>
-
+        <DockPanel
+            Margin="50 0 50 30"
+            LastChildFill="False">
+            <TextBlock
+                Text="Sum: "
+                Foreground="{StaticResource SuccessColorBrush}"
+                FontSize="{StaticResource FontSizeHeadline2}"
+                FontFamily="{StaticResource Bold}"
+                FontWeight="DemiBold"/>
+            <TextBlock
+                Text="90"
+                Foreground="{StaticResource SuccessColorBrush}"
+                FontSize="{StaticResource FontSizeHeadline2}"
+                FontFamily="{StaticResource Bold}"
+                FontWeight="DemiBold"/>
+            <TextBlock
+                Text=" orders"
+                Foreground="{StaticResource SuccessColorBrush}"
+                FontSize="{StaticResource FontSizeHeadline2}"
+                FontFamily="{StaticResource Bold}"
+                FontWeight="DemiBold"/>
+            <Button
+                Visibility="{i:Binding Path=IsChecked, ElementName=completedRadioButton}"
+                Content="Export"
+                DockPanel.Dock="Right"/>
+        </DockPanel>
     </StackPanel>
 </UserControl>

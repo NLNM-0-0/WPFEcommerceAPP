@@ -431,6 +431,7 @@
 
     <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
         <Setter Property="materialDesign:TextFieldAssist.TextFieldCornerRadius" Value="5" />
+        <Setter Property="Background" Value="{StaticResource WhiteColorBrush}"/>
         <Setter Property="Padding" Value="15" />
         <Setter Property="Height" Value="54"/>
         <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
