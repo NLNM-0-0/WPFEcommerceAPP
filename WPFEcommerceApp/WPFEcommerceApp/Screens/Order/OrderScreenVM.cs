@@ -90,7 +90,7 @@ namespace WPFEcommerceApp {
                     CM = CanCelCM,
                     Param = p,
                 };
-                await DialogHost.Show(view);
+                await DialogHost.Show(view, "Main");
             });
 
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
@@ -106,7 +106,7 @@ namespace WPFEcommerceApp {
                     CM = ReOrderCM,
                     Param = p
                 };
-                await DialogHost.Show(view);
+                await DialogHost.Show(view, "Main");
             });
 
         }

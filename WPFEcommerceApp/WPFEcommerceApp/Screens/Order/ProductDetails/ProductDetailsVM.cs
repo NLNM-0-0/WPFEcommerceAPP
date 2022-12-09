@@ -53,7 +53,7 @@ namespace WPFEcommerceApp {
 					CM = ReOrderCM,
 					Param = p,
 				};
-				await DialogHost.Show(view);
+				await DialogHost.Show(view, "Main");
 			});
 
 
@@ -70,7 +70,7 @@ namespace WPFEcommerceApp {
 					CM = CanCelCM,
 					Param = p,
 				};
-				await DialogHost.Show(view);
+				await DialogHost.Show(view, "Main");
 			});
 			OnBack = new RelayCommand<object>(p => true, p => {
 				//Actually I need to handle the tab index
