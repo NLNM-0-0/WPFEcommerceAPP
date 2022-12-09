@@ -204,19 +204,20 @@ alter table dbo.OrderInfo
 add constraint FK_OrderInfo_Product foreign key (IdProduct) references Product(Id)
 
 insert into MUser values
-('user01', 'User', 'Hahaha', '01234569', 
-'a@a.aa', 'im here', 0, '6-11-2003', 'Nothing', 'NotBanned', null, null)
+('User', 'Hahaha', '01234569', 
+'a@a.aa', 'im here', 0, '6-11-2003', 'Nothing', 'NotBanned', 'NotBanned', null, null)
 
 insert into MUser values
-('user02', 'Admin', 'Hahaha', '01234569', 
-'a@a.aa', 'im here', 0, '6-11-2003', 'Nothing', 'NotBanned', null, null)
+('Admin', 'Hahaha', '01234569', 
+'a@a.aa', 'im here', 0, '6-11-2003', 'Nothing', 'NotBanned', 'NotBanned', null, null)
 
 insert into Rating values
-('rate01', null)
+(1,null)
 
 select * from MUser
 select * from Rating
 select * from MOrder
+select * from Product
 select * from OrderInfo
 
 delete from OrderInfo
@@ -229,20 +230,20 @@ where Id = 'order11'
 
 
 insert into MOrder values
-('order1', 'user01', 'rate01', '12-6-2022', null, 1234, 'Processing')
+(1, 1, '12-6-2022', null, 1234, 'Processing')
 
 insert into Category values
-('cate01', 'Category 01', 'NotBanned')
+('Category 01', 'NotBanned')
 
 insert into Brand values
-('brand1', 'Brand 01', 'NotBanned')
+('Brand 01', 'NotBanned')
 
 insert into Product values
-('prod01', 'Product01', 'cate01', 'brand1', 'user01', 123, 5, 50, 20, 
+('Product01', 1, 1, 1, 123, 5, 50, 20, 
 1, 1, 0, 0, 0, 0, 'Dark Smoke', 'Description 0', '12-13-2022', 'NotBanned')
 
 insert into OrderInfo values
-('order1', 'prod01', 5, 123, null, 'XXL', 'user01')
+(2, 2, null, 'XXL', 1, 5, 666)
 
 alter table MOrder
 alter column IdRating varchar(20) null
