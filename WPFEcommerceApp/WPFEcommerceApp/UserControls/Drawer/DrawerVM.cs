@@ -58,7 +58,7 @@ namespace WPFEcommerceApp {
                 ShopRatingNavigateService);
 
             OnChangeScreen = new RelayCommand<object>((p) => true, (p) => {
-                if(CurrentUser.Role != "Admin") {
+                if(CurrentUser == null || CurrentUser.Role != "Admin") {
                     if(SelectedIndex == 0) {
                         CheckoutNavigateService.Navigate();
                     }
