@@ -53,11 +53,14 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <local:Header Grid.Column="1"/>
-                    <ContentControl 
+                    <!--<ContentControl 
                     Grid.Column="1"
                         Grid.Row="1"
                     x:Name="Content"
-                    Content="{Binding CurrentViewModel}"/>
+                    Content="{Binding CurrentViewModel}"/>-->
+                <ContentControl Grid.Row="1" Grid.Column="1">
+                    <local:AdminBrandManager/>
+                </ContentControl>
                 </Grid>
             </Grid>
         </materialDesign:DialogHost>

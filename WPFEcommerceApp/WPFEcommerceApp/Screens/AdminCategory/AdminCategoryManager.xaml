@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AdminCategoryManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="1440"
+            >
+    <Grid Margin="0 0 0 50">
+
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
+            <StackPanel Margin="95 20">
+                <DockPanel>
+                    <TextBlock Text="Categories"
+                                   FontFamily="{StaticResource Bold}"
+                                   FontSize="{StaticResource FontSizeHeadline}"
+                                   />
+
+                    <Button DockPanel.Dock="Right"
+                                Content="Add"
+                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                        <Button.CommandParameter>
+                            <local:AdminAddCategoryDialog/>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button DockPanel.Dock="Right" Margin="0 0 5 0"
+                            Content="{Binding RemoveOrUnBanned}"
+                    Command="{Binding RemoveCategoryCommand}"
+                    CommandParameter="{Binding ElementName=datagrid, Path=SelectedItem}"/>
+
+                    <!-- Search bar -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                        <local:SearchBar Width="400" SearchText="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox Margin="5 0" SelectedItem="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding SearchByOptions}"
+                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        materialDesign:HintAssist.Hint="Search by"
+                        materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
+                        materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+
+
+                    </StackPanel>
+                </DockPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
+                           FontSize="{StaticResource FontSizeText}"/>
+
+                    <ToggleButton Margin="5 20 5 0"
+                Style="{StaticResource SwitchToggleButton}"
+                          Background="{StaticResource BlackColorBrush}"
+                          materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
+                          IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+
+
+
+
+                <DataGrid ItemsSource="{Binding FilteredCategories}" x:Name="datagrid" ScrollViewer.CanContentScroll="True"
+                      Margin="0 20" MaxHeight="700" CanUserReorderColumns="False" CanUserResizeColumns="False"
+                      AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="200" Binding="{Binding Id}" SortDirection="Ascending"/>
+                        <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" SortDirection="Ascending"/>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+                <StackPanel>
+                    <TextBlock Text="Category Requests"
+                               Margin="0 20"
+                                FontFamily="{StaticResource Bold}"
+                                FontSize="{StaticResource FontSizeHeadline}"
+                                   />
+                    <Grid Margin="0 0 0 50">
+                        <local:CategoryRequestList Height="500"/>
+                    </Grid>
+
+                </StackPanel>
+
+                <StackPanel.InputBindings>
+                    <KeyBinding Key="Enter"
+                            Command="{Binding SearchCommand}"/>
+                    <KeyBinding Key="Esc"
+                            Command="{Binding CloseSearchCommand}"/>
+                </StackPanel.InputBindings>
+            </StackPanel>
+
+
+        </ScrollViewer>
+    </Grid>
+
+</UserControl>

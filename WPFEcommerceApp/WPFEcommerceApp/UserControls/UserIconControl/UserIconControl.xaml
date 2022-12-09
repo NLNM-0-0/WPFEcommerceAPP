@@ -29,7 +29,7 @@
             
         </Border>
 
-        <TextBlock Text="{Binding Name}" TextWrapping="Wrap"
+        <TextBlock Text="{Binding Name}" 
                    Margin="5 4 5 2"
                    HorizontalAlignment="Center"
                    FontWeight="Medium"

@@ -128,16 +128,48 @@
     <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="Screens\AdminBrand\AdminBrandManager.xaml.cs">
+      <DependentUpon>AdminBrandManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminBrand\AdminBrandViewModel.cs" />
+    <Compile Include="Screens\AdminCategory\AdminCategoryManager.xaml.cs">
+      <DependentUpon>AdminCategoryManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminCategory\AdminCategoryViewModel.cs" />
+    <Compile Include="Screens\AdminCategory\CategoryModel.cs" />
     <Compile Include="Screens\AdminShopInformation\ShopInformationPage.xaml.cs">
       <DependentUpon>ShopInformationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminShopInformation\ShopInformationPageViewModel.cs" />
+    <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
+      <DependentUpon>BrandRequestItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BrandRequest\BrandRequestItemViewModel.cs" />
+    <Compile Include="UserControls\BrandRequest\BrandRequestList.xaml.cs">
+      <DependentUpon>BrandRequestList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BrandRequest\BrandRequestListViewModel.cs" />
+    <Compile Include="UserControls\CategoryRequest\CategoryRequestItem.xaml.cs">
+      <DependentUpon>CategoryRequestItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CategoryRequest\CategoryRequestItemViewModel.cs" />
+    <Compile Include="UserControls\CategoryRequest\CategoryRequestList.xaml.cs">
+      <DependentUpon>CategoryRequestList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CategoryRequest\CategoryRequestListViewModel.cs" />
     <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\AddProductDialog\AddProductDialogViewModel.cs" />
     <Compile Include="UserControls\Dialogs\AddProductDialog\SizeBlock.xaml.cs">
       <DependentUpon>SizeBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\AdminAddBrandDialog.xaml.cs">
+      <DependentUpon>AdminAddBrandDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml.cs">
+      <DependentUpon>AdminAddCategoryDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml.cs">
       <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
@@ -390,9 +422,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\ToggleButtons\SwitchToggleButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\ToggleButtons\ToggleButtons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\AdminBrand\AdminBrandManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\AdminCategory\AdminCategoryManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\AdminShopInformation\ShopInformationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -465,6 +509,22 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\BrandRequest\BrandRequestItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\BrandRequest\BrandRequestList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CategoryRequest\CategoryRequestItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CategoryRequest\CategoryRequestList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -478,6 +538,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Dialogs\AddProductDialog\SizeBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dialogs\AdminAddBrandDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
