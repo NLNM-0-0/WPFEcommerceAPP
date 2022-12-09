@@ -20,6 +20,7 @@
             <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}"/>
             <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource BlackColorBrush}" />
             <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource BlackColorBrush}" />
+            <Setter Property="Background" Value="{StaticResource WhiteColorBrush}"/>
         </Style>
 
         <Style x:Key="RadioButtonStarFull" TargetType="{x:Type RadioButton}">
@@ -312,26 +313,30 @@
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Grid.Column="0"
                             materialDesign:HintAssist.Hint="Product Name"
-                            Margin="0 0 15 0"/>
+                            Margin="0 0 15 0"
+                            Text="{Binding ProductName}"/>
                         <TextBox
                             Width="auto"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Grid.Column="1"
                             materialDesign:HintAssist.Hint="UserName"
-                            Margin="0 0 15 0"/>
+                            Margin="0 0 15 0"
+                            Text="{Binding UserName}"/>
                         <DatePicker
                             Height="55"
                             Width="auto"
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="From"
                             Grid.Column="2"
-                            Margin="0 0 15 0"/>
+                            Margin="0 0 15 0"
+                            Text="{Binding DateFrom}"/>
                         <DatePicker
                             Height="55"
                             Width="auto"
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="To"
-                            Grid.Column="3"/>
+                            Grid.Column="3"
+                            Text="{Binding DateTo}"/>
                     </Grid>
                     <Grid 
                         Grid.Column="0"
@@ -345,12 +350,14 @@
                             Style="{StaticResource OurComboBox}"
                             materialDesign:HintAssist.Hint="Category"
                             Grid.Column="0"
-                            Margin="0 0 15 0"/>
+                            Margin="0 0 15 0"
+                            Text="{Binding Category}"/>
                         <ComboBox
                             Style="{StaticResource OurComboBox}"
                             materialDesign:HintAssist.Hint="Brand"
                             Grid.Column="1"
-                            Margin="0 0 15 0"/>
+                            Margin="0 0 15 0"
+                            Text="{Binding Brand}"/>
                         <Grid 
                             Margin="45 0 0 0"
                             Grid.Column="2">
@@ -365,28 +372,52 @@
                             <RadioButton 
                                 Content="All" 
                                 Grid.Column="0"
-                                Style="{DynamicResource RadioButtonStarLeft}"/>
+                                Style="{StaticResource RadioButtonFill}"
+                                IsChecked="{Binding RatingStarStyles[0]}"
+                                materialDesign:ButtonAssist.CornerRadius="5 0 0 5"
+                                Command="{Binding ChangeRatingStarStyleCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
                             <RadioButton 
+                                Style="{StaticResource RadioButtonFill}"
                                 Content="5 Star" 
                                 Grid.Column="1"
-                                Style="{DynamicResource RadioButtonStarFull}">
+                                IsChecked="{Binding RatingStarStyles[1]}"
+                                Command="{Binding ChangeRatingStarStyleCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
                             </RadioButton>
                             <RadioButton 
+                                Style="{StaticResource RadioButtonFill}"
                                 Content="4 Star" 
                                 Grid.Column="2"
-                                Style="{DynamicResource RadioButtonStarFull}"/>
+                                IsChecked="{Binding RatingStarStyles[2]}"
+                                Command="{Binding ChangeRatingStarStyleCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                            </RadioButton>
                             <RadioButton 
+                                Style="{StaticResource RadioButtonFill}"
                                 Content="3 Star" 
                                 Grid.Column="3"
-                                Style="{DynamicResource RadioButtonStarFull}"/>
+                                IsChecked="{Binding RatingStarStyles[3]}"
+                                Command="{Binding ChangeRatingStarStyleCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                            </RadioButton>
                             <RadioButton 
+                                Style="{StaticResource RadioButtonFill}"
                                 Content="2 Star" 
                                 Grid.Column="4"
-                                Style="{DynamicResource RadioButtonStarFull}"/>
+                                IsChecked="{Binding RatingStarStyles[4]}"
+                                Command="{Binding ChangeRatingStarStyleCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                            </RadioButton>
                             <RadioButton 
+                                Style="{StaticResource RadioButtonFill}"
                                 Content="1 Star" 
                                 Grid.Column="5"
-                                Style="{DynamicResource RadioButtonStarRight}"/>
+                                IsChecked="{Binding RatingStarStyles[5]}"
+                                materialDesign:ButtonAssist.CornerRadius="0 5 5 0"
+                                Command="{Binding ChangeRatingStarStyleCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                            </RadioButton>
                         </Grid>
                     </Grid>
                     <Grid 
@@ -400,7 +431,10 @@
                         Grid.Column="1"
                         Grid.Row="1"
                         Margin="20 0 0 0">
-                        <Button Content="Reset"/>
+                        <Button 
+                            Content="Reset"
+                            Command="{Binding ResetCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
                     </Grid>
                 </Grid>
             </Grid>
@@ -409,14 +443,32 @@
             Margin="0 0 0 30"
             Padding="50 0">
             <Grid>
-                <UniformGrid Columns="3">
-                    <FrameworkElement x:Name="temp"/>
-                </UniformGrid>
-                <TabControl>
-                    <TabItem Header="All" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                    <TabItem Header="To reply" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                    <TabItem Header="Replied" Width="{Binding ElementName=temp, Path=ActualWidth}"/>
-                </TabControl>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton
+                    Style="{StaticResource RadioTabButton}"
+                    Grid.Column="0"
+                    Content="All"
+                    IsChecked="{Binding StatusStyles[0]}"
+                    Command="{Binding ChangeRatingStatusCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                <RadioButton
+                    Style="{StaticResource RadioTabButton}"
+                    Grid.Column="1"
+                    Content="To Reply"
+                    IsChecked="{Binding StatusStyles[1]}"
+                     Command="{Binding ChangeRatingStatusCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                <RadioButton
+                    Style="{StaticResource RadioTabButton}"
+                    Grid.Column="2"
+                    Content="Replied"
+                    IsChecked="{Binding StatusStyles[2]}"
+                     Command="{Binding ChangeRatingStatusCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
             </Grid>
         </Border>
 

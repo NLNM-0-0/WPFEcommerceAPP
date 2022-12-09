@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ProductInfoPortraitBanned"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             Background="{StaticResource WhiteColorBrush}">
+    <StackPanel Margin="30" Width="440">
+        <StackPanel.Resources>
+            <local:ProductInfoConverter x:Key="ProductInfoConverter"/>
+        </StackPanel.Resources>
+        <TextBlock
+            Padding="0"
+            materialDesign:HintAssist.Hint=""
+            materialDesign:HintAssist.IsFloating="False"
+            Text="Product Name"
+            Width="auto"
+            HorizontalAlignment="Stretch"
+            Foreground="{StaticResource BlackColorBrush}"
+            FontFamily="{StaticResource Bold}"
+            FontSize="{StaticResource FontSizeHeadline}"/>
+        <Button
+            Command="{Binding OpenProductInfoLandscapeCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+            Margin="0 30 0 0"
+            Width="auto"
+            Content="View product in the window">
+        </Button>
+        <TextBox
+            Margin="0 30 0 0"
+            Style="{StaticResource TextBoxHintBlackBorder}"
+            materialDesign:HintAssist.Hint="UpdateOn"
+            Width="auto"
+            IsReadOnly="True"/>
+        <TextBox
+            Margin="0 30 0 0"
+            x:Name="textBoxSale"
+            Style="{StaticResource TextBoxHintBlackBorder}"
+            materialDesign:HintAssist.Hint="Deadline"
+            Width="auto"
+            IsReadOnly="True"/>
+
+        <ComboBox
+            Margin="0 30 0 0"
+            materialDesign:HintAssist.Hint="Violation Type"
+            IsReadOnly="True"/>
+        <!---When having the model I will fix it-->
+        <TextBox
+            Margin="0 30 0 0"
+            Style="{StaticResource TextBoxHintWrapText}"
+            materialDesign:HintAssist.Hint="Violation Reason"
+            Width="auto"
+            Height="200"
+            IsReadOnly="True"/>
+        <Button
+            Margin="0 30 0 0"
+            x:Name="saveButton"
+            Grid.Column="2"
+            Content="Contact us"
+            Width="210"
+            HorizontalAlignment="Right"/>
+    </StackPanel>
+</UserControl>

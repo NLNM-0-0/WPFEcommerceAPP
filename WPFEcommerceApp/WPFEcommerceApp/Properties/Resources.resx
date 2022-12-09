@@ -117,5 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DefaultProductImage" xml:space="preserve">
+    <value>https://vanhoadoanhnghiepvn.vn/wp-content/uploads/2020/08/112815953-stock-vector-no-image-available-icon-flat-vector.jpg</value>
+  </data>
+  <data name="DefaultShopAvaImage" xml:space="preserve">
+    <value>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRO4UWlqGFb04KgtRHNxGV3vwbS6sM00ZerD7LoQmrwpuge0ou1</value>
+  </data>
+  <data name="DefaultShopBackgroundImage" xml:space="preserve">
+    <value>https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png</value>
+  </data>
 </root>

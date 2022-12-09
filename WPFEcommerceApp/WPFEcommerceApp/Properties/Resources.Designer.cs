@@ -59,5 +59,32 @@ namespace WPFEcommerceApp.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://vanhoadoanhnghiepvn.vn/wp-content/uploads/2020/08/112815953-stock-vector-no-image-available-icon-flat-vector.jpg.
+        /// </summary>
+        internal static string DefaultProductImage {
+            get {
+                return ResourceManager.GetString("DefaultProductImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRO4UWlqGFb04KgtRHNxGV3vwbS6sM00ZerD7LoQmrwpuge0ou1.
+        /// </summary>
+        internal static string DefaultShopAvaImage {
+            get {
+                return ResourceManager.GetString("DefaultShopAvaImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png.
+        /// </summary>
+        internal static string DefaultShopBackgroundImage {
+            get {
+                return ResourceManager.GetString("DefaultShopBackgroundImage", resourceCulture);
+            }
+        }
     }
 }

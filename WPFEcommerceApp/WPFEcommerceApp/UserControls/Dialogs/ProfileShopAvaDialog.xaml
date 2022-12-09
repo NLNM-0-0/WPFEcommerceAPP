@@ -79,7 +79,7 @@
                             Icon="Folder"/>
                     </Button>
                 </Canvas>
-                
+
                 <Button
                     Grid.Column="1"
                     VerticalAlignment="Center"
@@ -129,7 +129,7 @@
 
                 </Border>
             </Grid>
-            
+
             <Button
                 Command="{Binding SaveAvaShopCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"
@@ -139,5 +139,5 @@
                 Content="Save"/>
         </StackPanel>
     </materialDesign:DialogHost>
-    
+
 </UserControl>

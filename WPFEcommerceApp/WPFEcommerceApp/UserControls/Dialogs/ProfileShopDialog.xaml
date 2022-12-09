@@ -41,7 +41,7 @@
                         </Image>
                     </ScrollViewer>
                 </Border>
-                    <DockPanel
+                <DockPanel
                     Margin="0 30 0 10">
                     <Button
                         DockPanel.Dock="Top"
@@ -210,7 +210,7 @@
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
                             MaxLength="200"/>
                     </Grid>
-                    
+
                 </Grid>
                 <Grid
                     Grid.Row="1">
@@ -241,5 +241,5 @@
             </Grid>
         </DockPanel>
     </materialDesign:DialogHost>
-    
+
 </UserControl>

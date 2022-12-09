@@ -1,0 +1,516 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ProductInfoPortrait"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             Background="{StaticResource WhiteColorBrush}"
+             x:Name="productInfoPortrait">
+    <StackPanel Margin="30" Width="440">
+        <StackPanel.Resources>
+            <local:ProductInfoConverter x:Key="ProductInfoConverter"/>
+            <local:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
+            <local:NumberToBooleanConverter x:Key="NumberToBooleanConverter"/>
+            <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
+            <local:TrueFromBooleansToFalseConverter x:Key="TrueFromBooleansToFalseConverter"/>
+        </StackPanel.Resources>
+        <TextBox
+            x:Name="nameTextBox"
+            Style="{StaticResource TextBoxHintBlackBorder}"
+            Padding="0"
+            BorderBrush="Transparent"
+            BorderThickness="0"
+            materialDesign:HintAssist.Hint=""
+            materialDesign:HintAssist.IsFloating="False"
+            Width="auto"
+            HorizontalAlignment="Stretch"
+            Foreground="{StaticResource BlackColorBrush}"
+            FontFamily="{StaticResource Bold}"
+            FontSize="{StaticResource FontSizeHeadline}"
+            IsReadOnly="{i:Binding !IsEditting}"
+            TextChanged="textBox_TextChanged">
+            <TextBox.Text>
+                <Binding
+                   Path="SelectedProduct.Name"
+                   UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <local:NotEmptyValidationRule
+                           ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <DockPanel
+            Margin="0 30 0 0">
+            <TextBlock
+                Text="No rating yet"
+                Visibility="{i:Binding 'RatingTimes == 0'}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="{StaticResource FontSizeText}"
+                FontFamily="{StaticResource Medium}"
+                Foreground="{StaticResource NotAvailableColorBrush}"/>
+            <materialDesign:PackIcon
+                Kind="StarHalfFull"
+                Height="25"
+                Visibility="{i:Binding '(Rating >= 0.5) and (Rating less 1)'}"/>
+            <materialDesign:PackIcon
+                Kind="Star"
+                Height="25"
+                Visibility="{i:Binding 'Rating >= 1'}"/>
+            <materialDesign:PackIcon
+                Kind="StarHalfFull"
+                Height="25"
+                Visibility="{i:Binding '(Rating >= 1.5) and (Rating less 2)'}"/>
+            <materialDesign:PackIcon
+                Kind="Star"
+                Height="25"
+                Visibility="{i:Binding 'Rating >= 2'}"/>
+            <materialDesign:PackIcon
+                Kind="StarHalfFull"
+                Height="25"
+                Visibility="{i:Binding '(Rating >= 2.5) and (Rating less 3)'}"/>
+            <materialDesign:PackIcon
+                Kind="Star"
+                Height="25"
+                Visibility="{i:Binding 'Rating >= 3'}"/>
+            <materialDesign:PackIcon
+                Kind="StarHalfFull"
+                Height="25"
+                Visibility="{i:Binding '(Rating >= 3.5) and (Rating less 4)'}"/>
+            <materialDesign:PackIcon
+                Kind="Star"
+                Height="25"
+                Visibility="{i:Binding 'Rating >= 4'}"/>
+            <materialDesign:PackIcon
+                Kind="StarHalfFull"
+                Height="25"
+                Visibility="{i:Binding '(Rating >= 4.5) and (Rating less 5)'}"/>
+            <materialDesign:PackIcon
+                Kind="Star"
+                Height="25"
+                Visibility="{i:Binding 'Rating >= 5'}"/>
+            <TextBlock
+                Visibility="{i:Binding 'RatingTimes != 0'}"
+                Text="{Binding Rating}"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource Bold}"
+                FontSize="{StaticResource FontSizeText}"/>
+        </DockPanel>
+        <Button
+            Command="{Binding OpenProductInfoLandscapeCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+            Margin="0 30 0 0"
+            Width="auto"
+            Content="View product in the window">
+        </Button>
+        <Grid
+            Margin="0 30 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <DockPanel 
+                x:Name="dockPanelImages"
+                Height="250"
+                Margin="0 0 20 0">
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <ItemsControl
+                        x:Name="ImagesPanel"
+                        ItemsSource="{Binding ImageProducts, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0 0 8 0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Style="{StaticResource ButtonRectangle}"
+                                    Background="{StaticResource BoxShadowColorBrush}"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="0 0 0 10"
+                                    IsHitTestVisible="True">
+                                    <Button.Content>
+                                        <Image
+                                            x:Name="ImageProduct"
+                                            Source="{Binding}"/>
+                                    </Button.Content>
+                                    <behavior:Interaction.Triggers>
+                                        <behavior:EventTrigger EventName="MouseMove">
+                                            <behavior:InvokeCommandAction
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                            AncestorType={x:Type UserControl}}, 
+                                                            Path=DataContext.ChangeSelectedImageCommand}" 
+                                                CommandParameter="{Binding ElementName=ImageProduct}"/>
+                                        </behavior:EventTrigger>
+                                    </behavior:Interaction.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+            <Grid
+                Grid.Column="1"
+                Width="250"
+                Height="250"
+                Margin="0 0 30 0"
+                Background="{StaticResource BoxShadowColorBrush}">
+                <Image x:Name="ImageMainProduct"
+                    Source="{Binding SelectedImage, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            <Grid
+                Visibility="{i:Binding IsEditting, FalseToVisibility=Hidden}"
+                Grid.Column="2">
+                <Button
+                    Style="{StaticResource ButtonRectangle}"
+                    Content="Change"
+                    VerticalAlignment="Top"
+                    Width="70"
+                    Command="{Binding OpenChangeImageDialogCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                </Button>
+            </Grid>
+
+        </Grid>
+        <Grid
+            Margin="0 30 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid
+                Height="{Binding ElementName=freeSizeCheckBox, Path=Height}">
+                <TextBlock
+                    Text="Size"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Column="0"
+                    FontSize="{StaticResource FontSizeHeadline3}"
+                    FontFamily="{StaticResource Medium}"/>
+            </Grid>
+            
+            <CheckBox
+                x:Name="freeSizeCheckBox"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Style="{StaticResource MaterialDesignLightCheckBox}"
+                IsChecked="{Binding IsHadOneSize, UpdateSourceTrigger=PropertyChanged}"
+                Content="Free Size"
+                FontFamily="{StaticResource Medium}"
+                FontSize="{StaticResource FontSizeText}"
+                Background="{StaticResource BlackColorBrush}"
+                IsEnabled="{i:Binding IsEditting}"
+                Command="{Binding CheckOneSizeCommand}"
+                CommandParameter="{Binding ElementName=sizeGrid}"/>
+        </Grid>
+        
+        <Grid
+            x:Name="sizeGrid"
+            Margin="0 10 0 0"
+            Visibility="{i:Binding !IsChecked, ElementName=freeSizeCheckBox}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid
+                Margin="0 20 0 0"
+                Visibility="{i:Binding IsChecked, ElementName=freeSizeCheckBox}"/>
+            <ToggleButton
+                Grid.Column="0"
+                x:Name="sizeSToogleButton"
+                Style="{StaticResource ToggleButtonSize}"
+                Content="S"
+                Margin="0 0 10 0"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                IsEnabled="{i:Binding IsEditting}"
+                IsChecked="{Binding SelectedProduct.IsHadSizeS, UpdateSourceTrigger=Explicit}"/>
+            <ToggleButton
+                Grid.Column="2"
+                x:Name="sizeMToogleButton"
+                Style="{StaticResource ToggleButtonSize}"
+                Content="M"
+                Margin="0 0 10 0"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                IsEnabled="{i:Binding IsEditting}"
+                IsChecked="{Binding SelectedProduct.IsHadSizeM, UpdateSourceTrigger=Explicit}"/>
+            <ToggleButton
+                Grid.Column="4"
+                x:Name="sizeLToogleButton"
+                Style="{StaticResource ToggleButtonSize}"
+                Content="L"
+                Margin="0 0 10 0"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                IsEnabled="{i:Binding IsEditting}"
+                IsChecked="{Binding SelectedProduct.IsHadSizeL, UpdateSourceTrigger=Explicit}"/>
+            <ToggleButton
+                Grid.Column="6"
+                x:Name="sizeXLToogleButton"
+                Style="{StaticResource ToggleButtonSize}"
+                Content="XL"
+                Margin="0 0 10 0"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                IsEnabled="{i:Binding IsEditting}"
+                IsChecked="{Binding SelectedProduct.IsHadSizeXL, UpdateSourceTrigger=Explicit}"/>
+            <ToggleButton
+                Grid.Column="8"
+                x:Name="sizeXXLToogleButton"
+                Style="{StaticResource ToggleButtonSize}"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                Content="XXL"
+                IsEnabled="{i:Binding IsEditting}"
+                IsChecked="{Binding SelectedProduct.IsHadSizeXXL, UpdateSourceTrigger=Explicit}"/>
+        </Grid>
+        <Grid
+            Margin="0 30 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox
+                x:Name="priceTextBox"
+                Style="{StaticResource TextBoxHintBlackBorder}"
+                materialDesign:HintAssist.Hint="Price"
+                Width="auto"
+                IsReadOnly="{i:Binding !IsEditting}"
+                TextChanged="textBox_TextChanged">
+                <TextBox.Text>
+                    <Binding
+                        Path="SelectedProduct.Price"
+                        UpdateSourceTrigger="Explicit">
+                        <Binding.ValidationRules>
+                            <local:NumberTextBoxValidation
+                                Type="DoubleType"
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox
+                x:Name="saleTextBox"
+                Grid.Column="2"
+                Style="{StaticResource TextBoxHintBlackBorder}"
+                materialDesign:HintAssist.Hint="Sale"
+                Width="auto"
+                IsReadOnly="{i:Binding !IsEditting}"
+                TextChanged="textBox_TextChanged">
+                <TextBox.Text>
+                    <Binding
+                        Path="SelectedProduct.Sale"
+                        UpdateSourceTrigger="Explicit">
+                        <Binding.ValidationRules>
+                            <local:NumberTextBoxValidation
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </Grid>
+        <Grid
+            Margin="0 30 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox
+                x:Name="inStockTextBox"
+                Style="{StaticResource TextBoxHintBlackBorder}"
+                materialDesign:HintAssist.Hint="In Stock"
+                Width="auto"
+                IsReadOnly="{i:Binding !IsEditting}"
+                TextChanged="textBox_TextChanged">
+                <TextBox.Text>
+                    <Binding
+                        Path="SelectedProduct.InStock"
+                        UpdateSourceTrigger="Explicit">
+                        <Binding.ValidationRules>
+                            <local:NumberTextBoxValidation
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox
+                x:Name="soldTextBox"
+                Grid.Column="2"
+                Style="{StaticResource TextBoxHintBlackBorder}"
+                materialDesign:HintAssist.Hint="Sold"
+                Width="auto"
+                IsReadOnly="False"
+                TextChanged="textBox_TextChanged">
+                <TextBox.Text>
+                    <Binding
+                        Path="SelectedProduct.Sold"
+                        UpdateSourceTrigger="Explicit">
+                        <Binding.ValidationRules>
+                            <local:NumberTextBoxValidation
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </Grid>
+        <ComboBox
+            x:Name="categoryComboBox"
+            Margin="0 30 0 0"
+            materialDesign:HintAssist.Hint="Category"
+            ItemsSource="{Binding Categories}"
+            DisplayMemberPath="Name"
+            IsSynchronizedWithCurrentItem="True"
+            IsEnabled="{Binding IsEditting}">
+            <ComboBox.SelectedItem>
+                <Binding
+                    Path="SelectedProduct.Category"
+                    UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <local:NotEmptyValidationRule
+                            ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedItem>
+        </ComboBox>
+        <!---When having the model I will fix it-->
+        <ComboBox
+            x:Name="brandComboBox"
+            Margin="0 30 0 0"
+            materialDesign:HintAssist.Hint="Brand"
+            ItemsSource="{Binding Brands}"
+            DisplayMemberPath="Name"
+            IsSynchronizedWithCurrentItem="True"
+            IsEnabled="{Binding IsEditting}">
+            <ComboBox.SelectedItem>
+                <Binding
+                    Path="SelectedProduct.Brand"
+                    UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <local:NotEmptyValidationRule
+                            ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedItem>
+        </ComboBox>
+        <TextBox
+            x:Name="colorTextBox"
+            Margin="0 30 0 0"
+            Style="{StaticResource TextBoxHintWrapText}"
+            materialDesign:HintAssist.Hint="Color"
+            Width="auto"
+            IsReadOnly="{i:Binding !IsEditting}"
+            TextChanged="textBox_TextChanged">
+            <TextBox.Text>
+                <Binding
+                    Path="SelectedProduct.Color"
+                    UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <local:NotEmptyValidationRule
+                            ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox
+            x:Name="descriptionTextBox"
+            Margin="0 30 0 0"
+            Style="{StaticResource TextBoxHintWrapText}"
+            materialDesign:HintAssist.Hint="Description"
+            Width="auto"
+            Height="200"
+            IsReadOnly="{i:Binding !IsEditting}"
+            TextChanged="textBox_TextChanged">
+            <TextBox.Text>
+                <Binding
+                    Path="SelectedProduct.Description"
+                    UpdateSourceTrigger="Explicit">
+                    <Binding.ValidationRules>
+                        <local:NotEmptyValidationRule
+                            ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Grid
+            Margin="0 30 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Content="Edit"
+                Width="auto"
+                IsEnabled="{i:Binding !IsEditting}"
+                Command="{Binding EditProductInfoCommand}"
+                CommandParameter="{Binding ElementName=productInfoPortrait}"/>
+            <FrameworkElement x:Name="IsHadSize">
+                <FrameworkElement.Tag>
+                    <MultiBinding Converter="{StaticResource TrueFromBooleansToFalseConverter}">
+                        <Binding Path="IsHadOneSize"/>
+                        <Binding ElementName="sizeSToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeMToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeLToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeXLToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeXXLToogleButton" Path="IsChecked"/>
+                    </MultiBinding>
+                </FrameworkElement.Tag>
+            </FrameworkElement>
+            <Button
+                x:Name="saveButton"
+                Grid.Column="2"
+                Content="Save"
+                Width="auto"
+                Command="{Binding SaveProductInfoCommand}">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                        <Binding ElementName="nameTextBox" Path="(Validation.HasError)"/>
+                        <Binding ElementName="priceTextBox" Path="(Validation.HasError)"/>
+                        <Binding ElementName="inStockTextBox" Path="(Validation.HasError)"/>
+                        <Binding ElementName="saleTextBox" Path="(Validation.HasError)"/>
+                        <Binding ElementName="soldTextBox" Path="(Validation.HasError)"/>
+                        <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
+                        <Binding ElementName="colorTextBox" Path="(Validation.HasError)"/>
+                        <Binding ElementName="IsHadSize" Path="Tag"/>
+                        <Binding ElementName="categoryComboBox" Path="SelectedIndex" Converter="{StaticResource NumberToBooleanConverter}" ConverterParameter="-1"/>
+                        <Binding ElementName="brandComboBox" Path="SelectedIndex" Converter="{StaticResource NumberToBooleanConverter}" ConverterParameter="-1"/>
+                        <Binding Path="IsEditting" Converter="{StaticResource InvertBooleanConverter}"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource ProductInfoConverter}">
+                        <Binding ElementName="productInfoPortrait" Path="Status"/>
+                        <Binding ElementName="nameTextBox" Path="Text"/>
+                        <Binding ElementName="priceTextBox" Path="Text"/>
+                        <Binding ElementName="ImagesPanel" Path="ItemsSource"/>
+                        <Binding ElementName="freeSizeCheckBox" Path="IsChecked"/>
+                        <Binding ElementName="sizeSToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeMToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeLToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeXLToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="sizeXXLToogleButton" Path="IsChecked"/>
+                        <Binding ElementName="categoryComboBox" Path="SelectedItem"/>
+                        <Binding ElementName="brandComboBox" Path="SelectedItem"/>
+                        <Binding ElementName="inStockTextBox" Path="Text"/>
+                        <Binding ElementName="soldTextBox" Path="Text"/>
+                        <Binding ElementName="saleTextBox" Path="Text"/>
+                        <Binding ElementName="colorTextBox" Path="Text"/>
+                        <Binding ElementName="descriptionTextBox" Path="Text"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
+        </Grid>
+        </StackPanel>
+</UserControl>

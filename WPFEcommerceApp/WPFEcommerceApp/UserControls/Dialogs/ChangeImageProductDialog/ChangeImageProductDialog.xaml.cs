@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for ShopProduct.xaml
+    /// Interaction logic for ChangeImageProductDialog.xaml
     /// </summary>
-    public partial class ShopProduct : UserControl
+    public partial class ChangeImageProductDialog : UserControl
     {
-        public ShopProduct()
+        public ChangeImageProductDialog()
         {
             InitializeComponent();
-            this.DataContext = new ShopProductViewModel();
         }
     }
 }
