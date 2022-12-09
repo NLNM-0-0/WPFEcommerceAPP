@@ -11,51 +11,6 @@
         <ResourceDictionary Source="/Constants/Fonts.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
-    <!--#region ProductCard Datatemplate-->
-    <!--<DataTemplate x:Key="ProductCard" DataType="{x:Type vm:Product}">
-        <StackPanel Width="1111">
-            <Separator BorderThickness="0.5" BorderBrush="{StaticResource NotAvailableColorBrush}" VerticalAlignment="Top" Margin="0, 0,0,20"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="400"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Image Source="{Binding ProductImage}" Width="107" Height="107" HorizontalAlignment="Left" Margin="15, 0"/>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Name}"
-                                                               FontSize="13" TextWrapping="Wrap"/>
-                    <StackPanel Orientation="Horizontal" Margin="5, 9, 0, 0">
-                        <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                        <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                        <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                        <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                        <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                        <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Column="2" 
-                                                                VerticalAlignment="Center" 
-                                                                HorizontalAlignment="Center">
-                    <TextBlock Text="x" FontSize="13"/>
-                    <TextBlock Text="{Binding Amount}" FontSize="13"/>
-                </StackPanel>
-                <StackPanel Grid.Column="3"
-                                                            VerticalAlignment="Center" 
-                                                            HorizontalAlignment="Center">
-                    <TextBlock Text="Subtotal:" FontSize="13"/>
-                    <TextBlock Text="{Binding Subtotal}" FontSize="13"/>
-                </StackPanel>
-            </Grid>
-        </StackPanel>
-    </DataTemplate>-->
-    <!--#endregion-->
-    
     <Style x:Key="ListItemContainer" TargetType="ListViewItem">
         <Setter Property="Margin" Value="0, 5, 0, 5"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -116,18 +71,9 @@
                 <it:Interaction.Triggers>
                     <it:DataTrigger Binding="{Binding ProductPreview.Count}" Value="1">
                         <it:ChangePropertyAction PropertyName="Visibility" TargetName="product2" Value="Collapsed"/>
+                        <it:ChangePropertyAction PropertyName="DataContext" TargetName="product2" Value=""/>
                     </it:DataTrigger>
                 </it:Interaction.Triggers>
-                <!--#region Listview Example-->
-                <!--<ListView Width="1118" Height="292"  BorderThickness="0" ItemContainerStyle="{StaticResource ListItemContainer}" Margin="-10, 0, 0, 0" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      ItemsSource="{Binding ProductPreview}"
-                      ItemTemplate="{StaticResource ProductCard}"
-                      ScrollViewer.CanContentScroll="False"
-                      PreviewMouseWheel="HandlePreviewMouseWheel"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden">
-
-                </ListView>-->
-                <!--#endregion-->
             </StackPanel>
             <!--Footer-->
             <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 

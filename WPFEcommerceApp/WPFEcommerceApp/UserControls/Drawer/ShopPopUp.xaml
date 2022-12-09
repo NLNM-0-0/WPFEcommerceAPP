@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ShopPopUp"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d"
+             Height="150" 
+             Width="150"
+             x:Name="shoppop"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
+    <UserControl.Resources>
+        <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="GroupName" Value="ShopPopUp"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Grid>
+                            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
+                            <ProgressBar x:Name="ProgressBar" Background="{Binding (wpf:ButtonProgressAssist.IndicatorBackground), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{Binding (wpf:ButtonProgressAssist.IndicatorBackground), RelativeSource={RelativeSource TemplatedParent}}" Foreground="{Binding (wpf:ButtonProgressAssist.IndicatorForeground), RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Left" Height="{TemplateBinding Height}" IsIndeterminate="{Binding (wpf:ButtonProgressAssist.IsIndeterminate), RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource MaterialDesignLinearProgressBar}" Value="{Binding (wpf:ButtonProgressAssist.Value), RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Visibility="{Binding (wpf:ButtonProgressAssist.IsIndicatorVisible), Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ButtonBase}}}">
+                                <ProgressBar.Clip>
+                                    <MultiBinding Converter="{StaticResource BorderClipConverter}">
+                                        <Binding ElementName="border" Path="ActualWidth"/>
+                                        <Binding ElementName="border" Path="ActualHeight"/>
+                                        <Binding ElementName="border" Path="CornerRadius"/>
+                                        <Binding ElementName="border" Path="BorderThickness"/>
+                                    </MultiBinding>
+                                </ProgressBar.Clip>
+                            </ProgressBar>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource BlurColorBrush}"/>
+                                <Setter Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Border Background="{StaticResource BlackColorBrush}" 
+            BorderBrush="Transparent"
+            CornerRadius="10"
+            x:Name="Container">
+        <StackPanel VerticalAlignment="Center">
+
+            <RadioButton IsChecked="True"
+                         Command="{Binding OnChecked}"
+                         CommandParameter="1">
+                <TextBlock VerticalAlignment="Center" Text="Boarding"/>
+            </RadioButton>
+            <RadioButton Command="{Binding OnChecked}"
+                         CommandParameter="2">
+                <TextBlock VerticalAlignment="Center" Text="Order"/>
+            </RadioButton>
+            <RadioButton Command="{Binding OnChecked}"
+                         CommandParameter="3">
+                <TextBlock VerticalAlignment="Center" Text="Product"/>
+            </RadioButton>
+            <RadioButton Command="{Binding OnChecked}"
+                         CommandParameter="4">
+                <TextBlock VerticalAlignment="Center" Text="Rating"/>
+            </RadioButton>
+        </StackPanel>
+    </Border>
+</UserControl>

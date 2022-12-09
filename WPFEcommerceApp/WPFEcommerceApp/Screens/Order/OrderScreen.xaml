@@ -247,7 +247,7 @@
                 <!--Deliverd-->
                 <TabItem Header="Delivered" Style="{StaticResource CustomTabItem}" >
                     <Grid>
-                        <TextBlock Text="No orders in Processing"
+                        <TextBlock Text="No orders in Delivered"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage3"
                                        VerticalAlignment="Center"
@@ -267,7 +267,7 @@
                                 <i:ChangePropertyAction TargetName="EmptyMessage3" PropertyName="Visibility" Value="Visible"/>
                                 <i:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetName="DeliveredList"/>
                             </i:DataTrigger>
-                            <i:DataTrigger Binding="{Binding DeliveredList.Count}" Value="0">
+                            <i:DataTrigger Binding="{Binding DeliveredList.Count}" Value="1">
                                 <i:ChangePropertyAction TargetName="EmptyMessage3" PropertyName="Visibility" Value="Collapsed"/>
                                 <i:ChangePropertyAction PropertyName="Visibility" Value="Visible" TargetName="DeliveredList"/>
                             </i:DataTrigger>

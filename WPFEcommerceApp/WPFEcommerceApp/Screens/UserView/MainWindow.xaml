@@ -8,10 +8,13 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1440">
+        Title="MainWindow" Height="900" Width="1440"
+        MinWidth="1280" MinHeight="800"
+        WindowStartupLocation="CenterScreen">
     <materialDesign:DialogHost
         DialogTheme="Inherit"
-        CloseOnClickAway="True">
+        CloseOnClickAway="True"
+        Identifier="Main">
         <Grid>
             <Grid.Resources>
                 <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
@@ -32,18 +35,30 @@
                 <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
                     <local:ShopRating/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
+                    <local:ShopInformationPage/>
+                </DataTemplate>
             </Grid.Resources>
             <local:Drawer HorizontalAlignment="Left"
                           x:Name="Drawer"
                           DataContext="{Binding DrawerVM}" Panel.ZIndex="100"/>
-            <Grid  Height="80" VerticalAlignment="Top" Background="AliceBlue"/>
-            <ContentControl 
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <local:Header Grid.Column="1"/>
+                <ContentControl 
+                Grid.Column="1"
+                    Grid.Row="1"
                 x:Name="Content"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Width="1380"
-                Height="800"
                 Content="{Binding CurrentViewModel}"/>
+            </Grid>
         </Grid>
     </materialDesign:DialogHost>
 
