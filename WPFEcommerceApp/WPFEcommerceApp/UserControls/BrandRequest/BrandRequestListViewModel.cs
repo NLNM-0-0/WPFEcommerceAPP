@@ -19,11 +19,7 @@ namespace WPFEcommerceApp
 
         public BrandRequestListViewModel()
         {
-            Items = new ObservableCollection<BrandRequestItemViewModel>
-            {
-                new BrandRequestItemViewModel{BrandName="BrandName1", Reason="Some reason"},
-                new BrandRequestItemViewModel{BrandName="BrandName2", Reason="Some reason"},
-            };
+            
         }
     }
 }

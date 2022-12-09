@@ -89,6 +89,8 @@ namespace WPFEcommerceApp
             set { _selectedItem = value; OnPropertyChanged(); }
         }
 
+
+        public List<string> SearchByOptions { get; set; }
         private bool _isChecked;
         public bool IsChecked
         {
@@ -99,11 +101,13 @@ namespace WPFEcommerceApp
                 {
                     StatusText = "Not Banned";
                     FilteredBrands = _brandToSearch = notBannedBrands;
+                    RemoveOrRestore = "Remove";
                 }
                 else
                 {
                     StatusText = "Banned";
                     FilteredBrands = _brandToSearch = bannedBrands;
+                    RemoveOrRestore = "Restore";
                 }
 
                 _isChecked = value;
@@ -117,8 +121,12 @@ namespace WPFEcommerceApp
             set { _statusText = value; OnPropertyChanged(); }
         }
 
-        public List<string> SearchByOptions { get; set; }
-
+        private string _removeOrUnBanned;
+        public string RemoveOrRestore
+        {
+            get => _removeOrUnBanned;
+            set { _removeOrUnBanned = value; OnPropertyChanged(); }
+        }
 
 
         #endregion
@@ -166,33 +174,32 @@ namespace WPFEcommerceApp
         #region Command Methods
         public async Task Load()
         {
-            try
-            {
-                IsChecked = true;
-                FilteredBrands = new ObservableCollection<Brand>(
-                    await BrandRepository.GetListAsync(br => br.Status.Equals(Status.NotBanned.ToString())));
 
-                bannedBrands = new ObservableCollection<Brand>(
-                    await BrandRepository.GetListAsync(br => br.Status.Equals(Status.Banned.ToString())));
+            IsChecked = true;
+            RemoveOrRestore = "Remove";
 
-                _brandToSearch = FilteredBrands;
-                notBannedBrands = FilteredBrands;
+            FilteredBrands = new ObservableCollection<Brand>(
+                await BrandRepository.GetListAsync(br => br.Status.Equals(Status.NotBanned.ToString())));
 
-                var query = await RequestRepo.GetAllAsync(item => item.MUser);
+            bannedBrands = new ObservableCollection<Brand>(
+                await BrandRepository.GetListAsync(br => br.Status.Equals(Status.Banned.ToString())));
 
-                RequestList.Items = new ObservableCollection<BrandRequestItemViewModel>(
-                            query.Select(item => new BrandRequestItemViewModel
-                            {
-                                RequestId = item.Id,
-                                Id = item.MUser.Id,
-                                Name = item.Name,
-                                BrandName = item.Name,
-                                SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
-                                Reason = item.Reason,
-                            }));
+            _brandToSearch = FilteredBrands;
+            notBannedBrands = FilteredBrands;
 
-            }
-            catch { }
+            var query = await RequestRepo.GetAllAsync(item => item.MUser);
+
+            RequestList.Items = new ObservableCollection<BrandRequestItemViewModel>(
+                        query.Select(item => new BrandRequestItemViewModel
+                        {
+                            RequestId = item.Id,
+                            Id = item.MUser.Id,
+                            Name = item.Name,
+                            BrandName = item.Name,
+                            SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
+                            Reason = item.Reason,
+                        }));
+
 
         }
         public async Task AddNewBrand(string brandName)
@@ -217,12 +224,16 @@ namespace WPFEcommerceApp
 
         public async Task RemoveBrand(object obj)
         {
-            var removebrand = obj as Brand;
-            if (removebrand == null)
+            var removeBrand = obj as Brand;
+            if (removeBrand == null)
                 return;
 
-            removebrand.Status = Status.Banned.ToString();
-            await BrandRepository.Update(removebrand);
+            if (removeBrand.Status == Status.NotBanned.ToString())
+                removeBrand.Status = Status.Banned.ToString();
+            else
+                removeBrand.Status = Status.NotBanned.ToString();
+
+            await BrandRepository.Update(removeBrand);
             await Load();
         }
 

@@ -9,10 +9,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="1500" d:DesignWidth="1440"
             >
-
-    <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
+    <Grid Margin="0 0 0 50">
+        
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
         <StackPanel Margin="95 20">
-            <DockPanel Margin="0 20">
+            <DockPanel >
                 <TextBlock Text="Brands"
                                    FontFamily="{StaticResource Bold}"
                                    FontSize="{StaticResource FontSizeHeadline}"
@@ -26,16 +27,16 @@
                 </Button>
 
                 <Button DockPanel.Dock="Right" Margin="0 0 5 0"
-                                Content="Remove"
+                                Content="{Binding RemoveOrRestore}"
                         Command="{Binding RemoveBrandCommand}"
                         CommandParameter="{Binding ElementName=datagrid, Path=SelectedItem}"/>
                 
                 <!-- Search bar -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                    <local:SearchBar x:Name="searchbar" Width="400" SearchText="{Binding SearchString,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <local:SearchBar x:Name="searchbar" Width="400" SearchText="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     
-                    <ComboBox Margin="5 0" Text="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
+                    <ComboBox Margin="5 0" SelectedItem="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding SearchByOptions}"
                             Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                             materialDesign:HintAssist.Hint="Search by"
@@ -43,6 +44,17 @@
                             materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
                 </StackPanel>
             </DockPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
+                           FontSize="{StaticResource FontSizeText}"/>
+
+                <ToggleButton Margin="5 20 5 0"
+                Style="{StaticResource SwitchToggleButton}"
+                          Background="{StaticResource BlackColorBrush}"
+                          materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
+                          IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
 
             <DataGrid ItemsSource="{Binding FilteredBrands}" Margin="0 20" x:Name="datagrid"
                               MaxHeight="700"
@@ -71,4 +83,6 @@
 
         </StackPanel>
     </ScrollViewer>
+    </Grid>
+
 </UserControl>
