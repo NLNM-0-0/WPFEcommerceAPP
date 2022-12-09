@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using DataAccessLayer;
 using WPFEcommerceApp.Models;
 
@@ -26,21 +28,34 @@ namespace WPFEcommerceApp {
 
         public int SelectedIndex {
             get { return selectedIndex; }
-            set { 
-                selectedIndex = value; 
+            set {
+                selectedIndex = value;
                 OnPropertyChanged();
             }
         }
 
         public ICommand OnChangeScreen { get; set; }
+        public ICommand OnShopMouseOver { get; set; }
+        public ICommand OnShopMouseLeave { get; set; }
+        public ShopPopUpVM ShopPopUpDataContext { get; set; }
+
         public DrawerVM(
             AccountStore accountStore,
-            INavigationService CheckoutNavigateService, 
+            INavigationService CheckoutNavigateService,
             INavigationService OrderNavigateService,
-            INavigationService ShopInformationPageNavigateService) {
+            INavigationService ShopInformationPageNavigateService,
+            INavigationService ShopMainNavigateService,
+            INavigationService ShopOrderNavigateService,
+            INavigationService ShopProductNavigateService,
+            INavigationService ShopRatingNavigateService) {
 
             _accountStore = accountStore;
             _accountStore.AccountChanged += OnAccountChange;
+            ShopPopUpDataContext = new ShopPopUpVM(
+                ShopMainNavigateService, 
+                ShopOrderNavigateService, 
+                ShopProductNavigateService, 
+                ShopRatingNavigateService);
 
             OnChangeScreen = new RelayCommand<object>((p) => true, (p) => {
                 if(CurrentUser.Role != "Admin") {
@@ -52,12 +67,43 @@ namespace WPFEcommerceApp {
                         //_accountStore.CurrentAccount = await t.GetSingleAsync(d => d.Id.Equals("user01"));
                         OrderNavigateService.Navigate();
                     }
+                    else if(SelectedIndex == 4) {
+
+                    }
                 }
                 else {
                     if(SelectedIndex == 1) {
                         ShopInformationPageNavigateService.Navigate();
                     }
                 }
+            });
+            var timer = new DispatcherTimer();
+            OnShopMouseOver = new RelayCommand<object>(p => {
+                var values = (object[])p;
+                if((values[0] as ButtonItem).Text == "Shop") return true;
+                return false;
+            }, p => {
+                var values = (object[])p;
+                timer.Stop();
+                timer.Interval = TimeSpan.FromMilliseconds(200);
+                timer.Tick += delegate {
+                    (values[1] as ShopPopUp).Visibility = Visibility.Visible;
+                };
+                timer.Start();
+            });
+            OnShopMouseLeave = new RelayCommand<object>(p => {
+                var values = (object[])p;
+                if((values[0] as ButtonItem).Text == "Shop") return true;
+                return false;
+            }, p => {
+                var values = (object[])p;
+                timer.Stop();
+                timer.Interval = TimeSpan.FromMilliseconds(300);
+                timer.Tick += delegate {
+                    if((values[1] as ShopPopUp).IsMouseOver == false)
+                        (values[1] as ShopPopUp).Visibility = Visibility.Collapsed;
+                };
+                timer.Start();
             });
         }
 
