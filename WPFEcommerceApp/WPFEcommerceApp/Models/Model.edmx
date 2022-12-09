@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="SubTitle" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
@@ -18,27 +18,38 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="10" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="BrandRequest">
           <Key>
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Reason" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="6" />
-          <Property Name="IdShop" Type="varchar" MaxLength="6" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdShop" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Reason" Type="nvarchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="IsChooseSizeS" Type="bit" />
+          <Property Name="IsChooseSizeM" Type="bit" />
+          <Property Name="IsChooseSizeL" Type="bit" />
+          <Property Name="IsChooseSizeXL" Type="bit" />
+          <Property Name="IsChooseSizeXXL" Type="bit" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="10" />
         </EntityType>
@@ -46,8 +57,8 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="6" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdShop" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Reason" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -56,24 +67,24 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IdProduct" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="IdProduct" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IdUser" Type="int" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ImageProduct">
           <Key>
             <PropertyRef Name="IdProduct" />
             <PropertyRef Name="Source" />
           </Key>
-          <Property Name="IdProduct" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
           <Property Name="Source" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="MOrder">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="IdCustomer" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="IdRating" Type="varchar" MaxLength="20" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdCustomer" Type="int" Nullable="false" />
+          <Property Name="IdRating" Type="bigint" />
           <Property Name="DateBegin" Type="smalldatetime" />
           <Property Name="DateEnd" Type="smalldatetime" />
           <Property Name="OrderTotal" Type="bigint" Nullable="false" />
@@ -83,7 +94,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Role" Type="varchar" MaxLength="5" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="10" Nullable="false" />
@@ -92,17 +103,18 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Property Name="Gender" Type="bit" Nullable="false" />
           <Property Name="DOB" Type="smalldatetime" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" Nullable="false" />
-          <Property Name="Status" Type="varchar" MaxLength="10" />
-          <Property Name="SourceImageAve" Type="nvarchar" MaxLength="200" />
+          <Property Name="StatusUser" Type="varchar" MaxLength="10" />
+          <Property Name="StatusShop" Type="varchar" MaxLength="10" />
+          <Property Name="SourceImageAva" Type="nvarchar" MaxLength="200" />
           <Property Name="SourceImageBackground" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="IdReceiver" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="IdSender" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdReceiver" Type="int" Nullable="false" />
+          <Property Name="IdSender" Type="int" Nullable="false" />
           <Property Name="Date" Type="smalldatetime" Nullable="false" />
           <Property Name="Content" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -111,23 +123,23 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             <PropertyRef Name="IdOrder" />
             <PropertyRef Name="IdProduct" />
           </Key>
-          <Property Name="IdOrder" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="IdProduct" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Count" Type="int" Nullable="false" />
-          <Property Name="TotalPrice" Type="bigint" Nullable="false" />
+          <Property Name="IdOrder" Type="int" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
           <Property Name="ImageProduct" Type="varchar" MaxLength="200" />
           <Property Name="Size" Type="varchar" MaxLength="5" />
-          <Property Name="IdShop" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="IdShop" Type="int" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+          <Property Name="TotalPrice" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="IdCategory" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="IdBrand" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="IdCategory" Type="int" Nullable="false" />
+          <Property Name="IdBrand" Type="int" Nullable="false" />
+          <Property Name="IdShop" Type="int" Nullable="false" />
           <Property Name="Price" Type="bigint" Nullable="false" />
           <Property Name="Sale" Type="int" Nullable="false" />
           <Property Name="InStock" Type="int" Nullable="false" />
@@ -147,51 +159,51 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="DateRating" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="RatingInfo">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="40" Nullable="false" />
-          <Property Name="IdRating" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="IdProduct" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRating" Type="bigint" Nullable="false" />
+          <Property Name="IdProduct" Type="int" Nullable="false" />
           <Property Name="Rating" Type="int" />
         </EntityType>
         <EntityType Name="ShopRequest">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="6" Nullable="false" />
-          <Property Name="IdUser" Type="varchar" MaxLength="6" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUser" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
         </EntityType>
-        <Association Name="FK__BrandRequ__IdSho__5AEE82B9">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
-          <End Role="BrandRequest" Type="Self.BrandRequest" Multiplicity="*" />
+        <Association Name="FK__Cart__IdProduct__46E78A0C">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__IdUser__45F365D3">
+          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MUser">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="BrandRequest">
-              <PropertyRef Name="IdShop" />
+            <Dependent Role="Cart">
+              <PropertyRef Name="IdUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CategoryR__IdSho__5FB337D6">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
-          <End Role="CategoryRequest" Type="Self.CategoryRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CategoryRequest">
-              <PropertyRef Name="IdShop" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ShopReque__IdUse__6383C8BA">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
           <End Role="ShopRequest" Type="Self.ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -287,7 +299,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Notification_User">
+        <Association Name="FK_Notification_UserReceiver">
           <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
@@ -296,6 +308,18 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="IdReceiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_UserSender">
+          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="IdSender" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -398,6 +422,8 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
         <EntityContainer Name="EcommerceAppModelStoreContainer">
           <EntitySet Name="Advertisement" EntityType="Self.Advertisement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BrandRequest" EntityType="Self.BrandRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CategoryRequest" EntityType="Self.CategoryRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FavouriteProduct" EntityType="Self.FavouriteProduct" Schema="dbo" store:Type="Tables" />
@@ -410,23 +436,15 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatingInfo" EntityType="Self.RatingInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopRequest" EntityType="Self.ShopRequest" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BrandRequest" EntityType="Self.BrandRequest" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [BrandRequest].[Id] AS [Id], 
-    [BrandRequest].[IdShop] AS [IdShop], 
-    [BrandRequest].[Name] AS [Name], 
-    [BrandRequest].[Reason] AS [Reason]
-    FROM [dbo].[BrandRequest] AS [BrandRequest]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__BrandRequ__IdSho__5AEE82B9" Association="Self.FK__BrandRequ__IdSho__5AEE82B9">
-            <End Role="MUser" EntitySet="MUser" />
-            <End Role="BrandRequest" EntitySet="BrandRequest" />
+          <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="Self.FK__Cart__IdProduct__46E78A0C">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__CategoryR__IdSho__5FB337D6" Association="Self.FK__CategoryR__IdSho__5FB337D6">
+          <AssociationSet Name="FK__Cart__IdUser__45F365D3" Association="Self.FK__Cart__IdUser__45F365D3">
             <End Role="MUser" EntitySet="MUser" />
-            <End Role="CategoryRequest" EntitySet="CategoryRequest" />
+            <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__6383C8BA" Association="Self.FK__ShopReque__IdUse__6383C8BA">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="Self.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="ShopRequest" EntitySet="ShopRequest" />
           </AssociationSet>
@@ -458,7 +476,11 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             <End Role="Rating" EntitySet="Rating" />
             <End Role="MOrder" EntitySet="MOrder" />
           </AssociationSet>
-          <AssociationSet Name="FK_Notification_User" Association="Self.FK_Notification_User">
+          <AssociationSet Name="FK_Notification_UserReceiver" Association="Self.FK_Notification_UserReceiver">
+            <End Role="MUser" EntitySet="MUser" />
+            <End Role="Notification" EntitySet="Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_UserSender" Association="Self.FK_Notification_UserSender">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
@@ -502,6 +524,8 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
         <EntityContainer Name="EcommerceAppEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Advertisements" EntityType="EcommerceAppModel.Advertisement" />
           <EntitySet Name="Brands" EntityType="EcommerceAppModel.Brand" />
+          <EntitySet Name="BrandRequests" EntityType="EcommerceAppModel.BrandRequest" />
+          <EntitySet Name="Carts" EntityType="EcommerceAppModel.Cart" />
           <EntitySet Name="Categories" EntityType="EcommerceAppModel.Category" />
           <EntitySet Name="CategoryRequests" EntityType="EcommerceAppModel.CategoryRequest" />
           <EntitySet Name="ImageProducts" EntityType="EcommerceAppModel.ImageProduct" />
@@ -513,18 +537,25 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <EntitySet Name="Ratings" EntityType="EcommerceAppModel.Rating" />
           <EntitySet Name="RatingInfoes" EntityType="EcommerceAppModel.RatingInfo" />
           <EntitySet Name="ShopRequests" EntityType="EcommerceAppModel.ShopRequest" />
-          <EntitySet Name="BrandRequests" EntityType="EcommerceAppModel.BrandRequest" />
           <AssociationSet Name="FK_Product_Brand" Association="EcommerceAppModel.FK_Product_Brand">
             <End Role="Brand" EntitySet="Brands" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
+          <AssociationSet Name="FK_BrandRequest_Shop" Association="EcommerceAppModel.FK_BrandRequest_Shop">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="BrandRequest" EntitySet="BrandRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__IdUser__45F365D3" Association="EcommerceAppModel.FK__Cart__IdUser__45F365D3">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
           <AssociationSet Name="FK_Product_Category" Association="EcommerceAppModel.FK_Product_Category">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CategoryR__IdSho__5FB337D6" Association="EcommerceAppModel.FK__CategoryR__IdSho__5FB337D6">
-            <End Role="MUser" EntitySet="MUsers" />
-            <End Role="CategoryRequest" EntitySet="CategoryRequests" />
           </AssociationSet>
           <AssociationSet Name="FK_CategoryRequest_Shop" Association="EcommerceAppModel.FK_CategoryRequest_Shop">
             <End Role="MUser" EntitySet="MUsers" />
@@ -546,19 +577,15 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             <End Role="MOrder" EntitySet="MOrders" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
           </AssociationSet>
-          <AssociationSet Name="FK__BrandRequ__IdSho__5AEE82B9" Association="EcommerceAppModel.FK__BrandRequ__IdSho__5AEE82B9">
-            <End Role="MUser" EntitySet="MUsers" />
-            <End Role="BrandRequest" EntitySet="BrandRequests" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__6383C8BA" Association="EcommerceAppModel.FK__ShopReque__IdUse__6383C8BA">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="ShopRequest" EntitySet="ShopRequests" />
           </AssociationSet>
-          <AssociationSet Name="FK_BrandRequest_Shop" Association="EcommerceAppModel.FK_BrandRequest_Shop">
+          <AssociationSet Name="FK_Notification_UserReceiver" Association="EcommerceAppModel.FK_Notification_UserReceiver">
             <End Role="MUser" EntitySet="MUsers" />
-            <End Role="BrandRequest" EntitySet="BrandRequests" />
+            <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Notification_User" Association="EcommerceAppModel.FK_Notification_User">
+          <AssociationSet Name="FK_Notification_UserSender" Association="EcommerceAppModel.FK_Notification_UserSender">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
@@ -591,7 +618,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SubTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -600,16 +627,42 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Brand" FromRole="Brand" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="BrandRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdShop" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="BrandRequest" ToRole="MUser" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="IdProduct" />
+          </Key>
+          <Property Name="IdUser" Type="Int32" Nullable="false" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="IsChooseSizeS" Type="Boolean" />
+          <Property Name="IsChooseSizeM" Type="Boolean" />
+          <Property Name="IsChooseSizeL" Type="Boolean" />
+          <Property Name="IsChooseSizeXL" Type="Boolean" />
+          <Property Name="IsChooseSizeXXL" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" FromRole="Cart" ToRole="Product" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="Cart" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Category" FromRole="Category" ToRole="Product" />
@@ -618,19 +671,18 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdShop" Type="Int32" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__CategoryR__IdSho__5FB337D6" FromRole="CategoryRequest" ToRole="MUser" />
-          <NavigationProperty Name="MUser1" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="CategoryRequest" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="CategoryRequest" ToRole="MUser" />
         </EntityType>
         <EntityType Name="ImageProduct">
           <Key>
             <PropertyRef Name="IdProduct" />
             <PropertyRef Name="Source" />
           </Key>
-          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
           <Property Name="Source" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK_IP_Product" FromRole="ImageProduct" ToRole="Product" />
         </EntityType>
@@ -638,9 +690,9 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IdCustomer" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="IdRating" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdCustomer" Type="Int32" Nullable="false" />
+          <Property Name="IdRating" Type="Int64" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
           <Property Name="DateEnd" Type="DateTime" Precision="0" />
           <Property Name="OrderTotal" Type="Int64" Nullable="false" />
@@ -653,7 +705,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Role" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -662,16 +714,17 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Property Name="Gender" Type="Boolean" Nullable="false" />
           <Property Name="DOB" Type="DateTime" Precision="0" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="SourceImageAve" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="StatusUser" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="StatusShop" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SourceImageAva" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SourceImageBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK__CategoryR__IdSho__5FB337D6" FromRole="MUser" ToRole="CategoryRequest" />
-          <NavigationProperty Name="CategoryRequests1" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
+          <NavigationProperty Name="BrandRequests" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="MUser" ToRole="BrandRequest" />
+          <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="MUser" ToRole="Cart" />
+          <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
-          <NavigationProperty Name="BrandRequests" Relationship="EcommerceAppModel.FK__BrandRequ__IdSho__5AEE82B9" FromRole="MUser" ToRole="BrandRequest" />
-          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6383C8BA" FromRole="MUser" ToRole="ShopRequest" />
-          <NavigationProperty Name="BrandRequests1" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="MUser" ToRole="BrandRequest" />
-          <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_User" FromRole="MUser" ToRole="Notification" />
+          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="MUser" ToRole="ShopRequest" />
+          <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
+          <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="OrderInfoes" Relationship="EcommerceAppModel.FK_Orderinfor_Shop" FromRole="MUser" ToRole="OrderInfo" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
           <NavigationProperty Name="Products1" Relationship="EcommerceAppModel.FavouriteProduct" FromRole="MUser" ToRole="Product" />
@@ -680,25 +733,26 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IdReceiver" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="IdSender" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdReceiver" Type="Int32" Nullable="false" />
+          <Property Name="IdSender" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Notification_User" FromRole="Notification" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="Notification" ToRole="MUser" />
+          <NavigationProperty Name="MUser1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="Notification" ToRole="MUser" />
         </EntityType>
         <EntityType Name="OrderInfo">
           <Key>
             <PropertyRef Name="IdOrder" />
             <PropertyRef Name="IdProduct" />
           </Key>
-          <Property Name="IdOrder" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Count" Type="Int32" Nullable="false" />
-          <Property Name="TotalPrice" Type="Int64" Nullable="false" />
+          <Property Name="IdOrder" Type="Int32" Nullable="false" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
           <Property Name="ImageProduct" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Size" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="Int32" Nullable="false" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <Property Name="TotalPrice" Type="Int64" Nullable="false" />
           <NavigationProperty Name="MOrder" Relationship="EcommerceAppModel.FK_OrderInfo_MOrder" FromRole="OrderInfo" ToRole="MOrder" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Orderinfor_Shop" FromRole="OrderInfo" ToRole="MUser" />
           <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK_OrderInfo_Product" FromRole="OrderInfo" ToRole="Product" />
@@ -707,11 +761,11 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IdCategory" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="IdBrand" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="IdCategory" Type="Int32" Nullable="false" />
+          <Property Name="IdBrand" Type="Int32" Nullable="false" />
+          <Property Name="IdShop" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Int64" Nullable="false" />
           <Property Name="Sale" Type="Int32" Nullable="false" />
           <Property Name="InStock" Type="Int32" Nullable="false" />
@@ -727,6 +781,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Property Name="DateOfSale" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Brand" Relationship="EcommerceAppModel.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
+          <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" FromRole="Product" ToRole="Cart" />
           <NavigationProperty Name="Category" Relationship="EcommerceAppModel.FK_Product_Category" FromRole="Product" ToRole="Category" />
           <NavigationProperty Name="ImageProducts" Relationship="EcommerceAppModel.FK_IP_Product" FromRole="Product" ToRole="ImageProduct" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="Product" ToRole="MUser" />
@@ -738,7 +793,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="DateRating" Type="DateTime" Precision="0" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_Rating" FromRole="Rating" ToRole="MOrder" />
           <NavigationProperty Name="RatingInfoes" Relationship="EcommerceAppModel.FK_RatingInfo_Rating" FromRole="Rating" ToRole="RatingInfo" />
@@ -747,9 +802,9 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Name="IdRating" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRating" Type="Int64" Nullable="false" />
+          <Property Name="IdProduct" Type="Int32" Nullable="false" />
           <Property Name="Rating" Type="Int32" />
           <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK_RatingInfo_Product" FromRole="RatingInfo" ToRole="Product" />
           <NavigationProperty Name="Rating1" Relationship="EcommerceAppModel.FK_RatingInfo_Rating" FromRole="RatingInfo" ToRole="Rating" />
@@ -758,22 +813,10 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="IdUser" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUser" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6383C8BA" FromRole="ShopRequest" ToRole="MUser" />
-        </EntityType>
-        <EntityType Name="BrandRequest">
-          <Key>
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Reason" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__BrandRequ__IdSho__5AEE82B9" FromRole="BrandRequest" ToRole="MUser" />
-          <NavigationProperty Name="MUser1" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="BrandRequest" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
         <Association Name="FK_Product_Brand">
           <End Type="EcommerceAppModel.Brand" Role="Brand" Multiplicity="1" />
@@ -787,6 +830,42 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BrandRequest_Shop">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
+          <End Type="EcommerceAppModel.BrandRequest" Role="BrandRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BrandRequest">
+              <PropertyRef Name="IdShop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__IdProduct__46E78A0C">
+          <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__IdUser__45F365D3">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Category">
           <End Type="EcommerceAppModel.Category" Role="Category" Multiplicity="1" />
           <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
@@ -796,18 +875,6 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="IdCategory" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CategoryR__IdSho__5FB337D6">
-          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
-          <End Type="EcommerceAppModel.CategoryRequest" Role="CategoryRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CategoryRequest">
-              <PropertyRef Name="IdShop" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -871,19 +938,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BrandRequ__IdSho__5AEE82B9">
-          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
-          <End Type="EcommerceAppModel.BrandRequest" Role="BrandRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BrandRequest">
-              <PropertyRef Name="IdShop" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ShopReque__IdUse__6383C8BA">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
           <End Type="EcommerceAppModel.ShopRequest" Role="ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -895,19 +950,7 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BrandRequest_Shop">
-          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
-          <End Type="EcommerceAppModel.BrandRequest" Role="BrandRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BrandRequest">
-              <PropertyRef Name="IdShop" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Notification_User">
+        <Association Name="FK_Notification_UserReceiver">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
           <End Type="EcommerceAppModel.Notification" Role="Notification" Multiplicity="*" />
           <ReferentialConstraint>
@@ -916,6 +959,18 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="IdReceiver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_UserSender">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="IdSender" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1008,6 +1063,30 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BrandRequests">
+            <EntityTypeMapping TypeName="EcommerceAppModel.BrandRequest">
+              <MappingFragment StoreEntitySet="BrandRequest">
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdShop" ColumnName="IdShop" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="EcommerceAppModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="IsChooseSizeXXL" ColumnName="IsChooseSizeXXL" />
+                <ScalarProperty Name="IsChooseSizeXL" ColumnName="IsChooseSizeXL" />
+                <ScalarProperty Name="IsChooseSizeL" ColumnName="IsChooseSizeL" />
+                <ScalarProperty Name="IsChooseSizeM" ColumnName="IsChooseSizeM" />
+                <ScalarProperty Name="IsChooseSizeS" ColumnName="IsChooseSizeS" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="EcommerceAppModel.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -1052,8 +1131,9 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
             <EntityTypeMapping TypeName="EcommerceAppModel.MUser">
               <MappingFragment StoreEntitySet="MUser">
                 <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
-                <ScalarProperty Name="SourceImageAve" ColumnName="SourceImageAve" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="SourceImageAva" ColumnName="SourceImageAva" />
+                <ScalarProperty Name="StatusShop" ColumnName="StatusShop" />
+                <ScalarProperty Name="StatusUser" ColumnName="StatusUser" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
@@ -1080,11 +1160,11 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
           <EntitySetMapping Name="OrderInfoes">
             <EntityTypeMapping TypeName="EcommerceAppModel.OrderInfo">
               <MappingFragment StoreEntitySet="OrderInfo">
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="IdShop" ColumnName="IdShop" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="ImageProduct" ColumnName="ImageProduct" />
-                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
-                <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
                 <ScalarProperty Name="IdOrder" ColumnName="IdOrder" />
               </MappingFragment>
@@ -1138,16 +1218,6 @@ warning 6002: The table/view 'EcommerceApp.dbo.BrandRequest' does not have a pri
               <MappingFragment StoreEntitySet="ShopRequest">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BrandRequests">
-            <EntityTypeMapping TypeName="EcommerceAppModel.BrandRequest">
-              <MappingFragment StoreEntitySet="BrandRequest">
-                <ScalarProperty Name="Reason" ColumnName="Reason" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IdShop" ColumnName="IdShop" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

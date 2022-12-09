@@ -86,7 +86,6 @@ namespace WPFEcommerceApp {
 			OnSuccessPayment = new RelayCommand<object>((p) => true, async (p) => {
 				//Do something with store here
 				var temp = new Order(order);
-				temp.ID += 1;
 				temp.Status = "Processing";
 				await orderStore.Add(temp);
 				successNavService.Navigate();

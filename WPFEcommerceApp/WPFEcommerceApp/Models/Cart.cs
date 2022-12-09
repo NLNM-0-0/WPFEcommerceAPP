@@ -12,15 +12,18 @@ namespace WPFEcommerceApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Notification
+    public partial class Cart
     {
-        public long Id { get; set; }
-        public int IdReceiver { get; set; }
-        public int IdSender { get; set; }
-        public System.DateTime Date { get; set; }
-        public string Content { get; set; }
+        public int IdUser { get; set; }
+        public int IdProduct { get; set; }
+        public Nullable<int> Amount { get; set; }
+        public Nullable<bool> IsChooseSizeS { get; set; }
+        public Nullable<bool> IsChooseSizeM { get; set; }
+        public Nullable<bool> IsChooseSizeL { get; set; }
+        public Nullable<bool> IsChooseSizeXL { get; set; }
+        public Nullable<bool> IsChooseSizeXXL { get; set; }
     
+        public virtual Product Product { get; set; }
         public virtual MUser MUser { get; set; }
-        public virtual MUser MUser1 { get; set; }
     }
 }

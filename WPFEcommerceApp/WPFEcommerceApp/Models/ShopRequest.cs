@@ -14,8 +14,8 @@ namespace WPFEcommerceApp.Models
     
     public partial class ShopRequest
     {
-        public string Id { get; set; }
-        public string IdUser { get; set; }
+        public int Id { get; set; }
+        public Nullable<int> IdUser { get; set; }
         public string Description { get; set; }
     
         public virtual MUser MUser { get; set; }
