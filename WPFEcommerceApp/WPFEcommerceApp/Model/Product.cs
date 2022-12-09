@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 namespace WPFEcommerceApp {
     public partial class Product {
         public Product(
-            string productImage = "..\\..\\..\\..\\Assests\\Images\\2.jpg", 
-            string name = "Nike Air Zoom Pegasus 39 Men’s Road Running Shoes", 
-            string size = "12", 
-            string color = "Dark smoke", 
-            string description = "Nothing", 
-            double price = 21.85, 
-            int amount = 10) {
+            string productImage = "..\\..\\..\\..\\Assests\\Images\\2.jpg",
+            string name = "Nike Air Zoom Pegasus 39 Men’s Road Running Shoes",
+            string size = "12",
+            string color = "Dark smoke",
+            string description = "Nothing",
+            double price = 21.85,
+            int amount = 10,
+            string iD = null) {
             ProductImage=productImage;
             Name=name;
             Size=size;
@@ -22,6 +23,7 @@ namespace WPFEcommerceApp {
             Price=(long)price;
             Amount=amount;
             Subtotal=amount * price;
+            ID=iD;
         }
 
         public string ProductImage { get; set; }
@@ -32,7 +34,7 @@ namespace WPFEcommerceApp {
         public double Price { get; set; }
         public int Amount { get; set; }
         public double Subtotal { get; set; }
-        
+        public string ID { get; set; }
 
 
     }

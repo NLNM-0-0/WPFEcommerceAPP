@@ -12,15 +12,13 @@ namespace WPFEcommerceApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Notification
+    public partial class CategoryRequest
     {
-        public long Id { get; set; }
-        public int IdReceiver { get; set; }
-        public int IdSender { get; set; }
-        public System.DateTime Date { get; set; }
-        public string Content { get; set; }
+        public int Id { get; set; }
+        public Nullable<int> IdShop { get; set; }
+        public string Name { get; set; }
+        public string Reason { get; set; }
     
         public virtual MUser MUser { get; set; }
-        public virtual MUser MUser1 { get; set; }
     }
 }

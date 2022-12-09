@@ -12,15 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataAccessLayer;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for EditInforDialog.xaml
     /// </summary>
     public partial class EditInforDialog : UserControl {
-        public EditInforDialog() {
+        private readonly AccountStore accountStore;
+        public EditInforDialog(AccountStore accountStore) {
             InitializeComponent();
             DataContext = this;
+            this.accountStore = accountStore;
         }
 
 
@@ -63,10 +67,12 @@ namespace WPFEcommerceApp {
         public static readonly DependencyProperty EditDataProperty =
             DependencyProperty.Register("EditData", typeof(CheckoutScreenVM), typeof(EditInforDialog), new PropertyMetadata(null));
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            EditData.Username = Username;
-            EditData.UserPhone = Phone;
-            EditData.UserAddress = Address;
+        private async void Button_Click(object sender, RoutedEventArgs e) {
+            var t = accountStore.CurrentAccount;
+            t.Name = Username;
+            t.PhoneNumber = Phone;
+            t.Address = Address;
+            await accountStore.Update(t);
         }
     }
 }

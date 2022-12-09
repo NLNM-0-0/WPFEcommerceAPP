@@ -6,15 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
     public class OrderScreenVM : BaseViewModel {
-        private ObservableCollection<Order> orderList;
+        private readonly OrderStore _orderStore;
 
-        public ObservableCollection<Order> OrderList {
-            get { return orderList; }
-            set { orderList = value; OnPropertyChanged(); }
-        }
+        private ObservableCollection<Order> OrderList => _orderStore.OrderList;
+
+
         private ObservableCollection<Order> processingList;
 
         public ObservableCollection<Order> ProcessingList {
@@ -48,54 +48,94 @@ namespace WPFEcommerceApp {
 
         public OrderScreenVM(
             NavigationStore navigationStore, 
+            AccountStore accountStore,
+            OrderStore orderStore,
             INavigationService successNavService,
             INavigationService orderNavService) {
-			OrderList = new ObservableCollection<Order>() {
-				new Order("001", "Processing"),
-                new Order("002", "Dellivering"),
-                new Order("003", "Dellivered"),
-                new Order("004", "Processing"),
-                new Order("005", "Dellivering"),
-                new Order("006", "Dellivered"),
 
-            };
+            _orderStore = orderStore;
+            _orderStore.OrderListChanged += onOrderListChange;
             ProcessingList = new ObservableCollection<Order>();
             DeliveringList = new ObservableCollection<Order>();
             DeliveredList = new ObservableCollection<Order>();
             CancelledList = new ObservableCollection<Order>();
 
-            for(int i = 0; i < OrderList.Count; i++) {
-                if(OrderList[i].Status == "Processing") {
-                    ProcessingList.Add(OrderList[i]);
-                }
-                else if(OrderList[i].Status == "Dellivering") {
-                    DeliveringList.Add(OrderList[i]);
-                }
-                else if(OrderList[i].Status == "Dellivered") {
-                    DeliveredList.Add(OrderList[i]);
-                }
-                else if(OrderList[i].Status == "Cancelled") {
-                    CancelledList.Add(OrderList[i]);
-                }
-            }
-
-            OnCancel = new RelayCommand<object>((p) => true, (p) => {
+            if(OrderList != null)
                 for(int i = 0; i < OrderList.Count; i++) {
-                    if(OrderList[i] == (p as Order)) {
-                        OrderList[i].Status = "Cancelled";
+                    if(OrderList[i].Status == "Processing") {
+                        ProcessingList.Add(OrderList[i]);
+                    }
+                    else if(OrderList[i].Status == "Dellivering") {
+                        DeliveringList.Add(OrderList[i]);
+                    }
+                    else if(OrderList[i].Status == "Dellivered") {
+                        DeliveredList.Add(OrderList[i]);
+                    }
+                    else if(OrderList[i].Status == "Cancelled") {
+                        CancelledList.Add(OrderList[i]);
                     }
                 }
+
+            ICommand CanCelCM = new RelayCommand<object>((p) => true,async (p) => {
                 (p as Order).Status = "Cancelled";
-                CancelledList.Add(p as Order);
-                ProcessingList.Remove(p as Order);
+                await _orderStore.Update(p as Order);
+                //CancelledList.Add(p as Order);
+                //ProcessingList.Remove(p as Order);
 			});
+
+            OnCancel = new RelayCommand<object>(p => true, async p => {
+                var view = new ConfirmDialog() {
+                    Header = "Are you sure?",
+                    Content = "You will not be able to take this action back.",
+                    CM = CanCelCM,
+                    Param = p,
+                };
+                await DialogHost.Show(view, "Main");
+            });
+
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
                 var param = p as Order;
                 var nav = new ParamNavigationService<Order, ProductDetailsVM>(navigationStore,
-                    (parameter) => new ProductDetailsVM(parameter, navigationStore, successNavService, orderNavService));
+                    (parameter) => new ProductDetailsVM(parameter, navigationStore, accountStore, orderStore, successNavService, orderNavService));
                 nav.Navigate(param);
             });
-            OnReorder = new ReOrderCM(navigationStore, successNavService);
+            
+            ICommand ReOrderCM = new ReOrderCM(navigationStore, accountStore, orderStore, successNavService);
+            OnReorder = new RelayCommand<object>(p => true,async p => {
+                var view = new ConfirmDialog() {
+                    CM = ReOrderCM,
+                    Param = p
+                };
+                await DialogHost.Show(view, "Main");
+            });
+
+        }
+
+        private void onOrderListChange() {
+            ProcessingList.Clear();
+            DeliveringList.Clear();
+            DeliveredList.Clear();
+            CancelledList.Clear();
+            if(OrderList != null)
+                for(int i = 0; i < OrderList.Count; i++) {
+                    if(OrderList[i].Status == "Processing") {
+                        ProcessingList.Add(OrderList[i]);
+                    }
+                    else if(OrderList[i].Status == "Dellivering") {
+                        DeliveringList.Add(OrderList[i]);
+                    }
+                    else if(OrderList[i].Status == "Dellivered") {
+                        DeliveredList.Add(OrderList[i]);
+                    }
+                    else if(OrderList[i].Status == "Cancelled") {
+                        CancelledList.Add(OrderList[i]);
+                    }
+                }
+        }
+
+        public override void Dispose() {
+            _orderStore.OrderListChanged -= onOrderListChange;
+            base.Dispose();
         }
     }
 }

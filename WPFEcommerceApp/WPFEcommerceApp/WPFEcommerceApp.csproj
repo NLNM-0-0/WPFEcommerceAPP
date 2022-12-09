@@ -52,6 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -87,6 +88,9 @@
     <Compile Include="Models\BrandRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cart.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Category.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -96,11 +100,7 @@
     <Compile Include="Models\ImageProduct.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model2.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Model.Context.cs" />
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -122,16 +122,64 @@
     <Compile Include="Models\RatingInfo.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Shop.cs" />
     <Compile Include="Models\ShopRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\BProduct.cs" />
+    <Compile Include="Model\Order.cs" />
     <Compile Include="Screens\AdminShopInformation\ShopInformationPage.xaml.cs">
       <DependentUpon>ShopInformationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminShopInformation\ShopInformationPageViewModel.cs" />
+    <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
+      <DependentUpon>AddBrandDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\AddProductDialog\AddProductDialogViewModel.cs" />
+    <Compile Include="UserControls\Dialogs\AddProductDialog\SizeBlock.xaml.cs">
+      <DependentUpon>SizeBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml.cs">
+      <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialogViewModel.cs" />
+    <Compile Include="UserControls\Dialogs\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscape.xaml.cs">
+      <DependentUpon>ProductInfoLanscape.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscapeViewModel.cs" />
+    <Compile Include="UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBanned.xaml.cs">
+      <DependentUpon>ProductInfoPortraitBanned.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBannedViewModel.cs" />
+    <Compile Include="UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortrait.xaml.cs">
+      <DependentUpon>ProductInfoPortrait.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortraitViewModel.cs" />
+    <Compile Include="UserControls\Dialogs\ProfileShopAvaDialog.xaml.cs">
+      <DependentUpon>ProfileShopAvaDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ProfileShopBackgroundDialog.xaml.cs">
+      <DependentUpon>ProfileShopBackgroundDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\ProfileShopDialog.xaml.cs">
+      <DependentUpon>ProfileShopDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\RegisterShopDialog.xaml.cs">
+      <DependentUpon>RegisterShopDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Dialogs\ShopRequestInformationDialog.xaml.cs">
       <DependentUpon>ShopRequestInformationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Drawer\ShopPopUp.xaml.cs">
+      <DependentUpon>ShopPopUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Drawer\ShopPopUpVM.cs" />
+    <Compile Include="UserControls\ProductBlock\ImageProduct.cs" />
+    <Compile Include="UserControls\ProductBlock\ProductBlock.xaml.cs">
+      <DependentUpon>ProductBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ShopRequest\ShopRequestItem.xaml.cs">
       <DependentUpon>ShopRequestItem.xaml</DependentUpon>
@@ -145,6 +193,7 @@
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Converters\FalsesToTrueConverter.cs" />
+    <Compile Include="Utils\Converters\MultiValueConverter.cs" />
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
     <Compile Include="Utils\Converters\ProdcutInfoConverter.cs" />
     <Compile Include="Utils\Converters\StringToImageSourceConverter.cs" />
@@ -152,19 +201,9 @@
     <Compile Include="DataAccessLayer\DbContextExtensions.cs" />
     <Compile Include="DataAccessLayer\GenericDataRepository.cs" />
     <Compile Include="DataAccessLayer\IGenericDataRepository.cs" />
-    <Compile Include="Models\Model.Context1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Model.Designer.cs">
       <DependentUpon>Model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model2.Designer.cs">
-      <DependentUpon>Model.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\BProduct.cs" />
@@ -197,10 +236,7 @@
     <Compile Include="Screens\Payment\components\Dialogs\EditInforDialog.xaml.cs">
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Payment\components\Dialogs\EnterPaymentDialog.xaml.cs">
-      <DependentUpon>EnterPaymentDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Screens\Payment\components\Dialogs\PhoneValidateRule.cs" />
+    <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\Payment\components\HiddenTab\HiddenTab.xaml.cs">
       <DependentUpon>HiddenTab.xaml</DependentUpon>
     </Compile>
@@ -220,11 +256,9 @@
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\NavigateService.cs" />
     <Compile Include="Services\ParamNavigationService.cs" />
+    <Compile Include="Stores\AccountStore.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Stores\OrderStore.cs" />
-    <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
-      <DependentUpon>AddBrandDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialogViewModel.cs" />
     <Compile Include="UserControls\Dialogs\AddCategoryDialog\AddCategoryDialog.xaml.cs">
       <DependentUpon>AddCategoryDialog.xaml</DependentUpon>
@@ -232,38 +266,6 @@
     <Compile Include="UserControls\Dialogs\AddCategoryDialog\AddCategoryViewModel.cs" />
     <Compile Include="UserControls\Dialogs\AddProductDialog\AddProductDialog.xaml.cs">
       <DependentUpon>AddProductDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\AddProductDialog\AddProductDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\AddProductDialog\SizeBlock.xaml.cs">
-      <DependentUpon>SizeBlock.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml.cs">
-      <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscape.xaml.cs">
-      <DependentUpon>ProductInfoLanscape.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscapeViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBanned.xaml.cs">
-      <DependentUpon>ProductInfoPortraitBanned.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBannedViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortrait.xaml.cs">
-      <DependentUpon>ProductInfoPortrait.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortraitViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProfileShopAvaDialog.xaml.cs">
-      <DependentUpon>ProfileShopAvaDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\ProfileShopBackgroundDialog.xaml.cs">
-      <DependentUpon>ProfileShopBackgroundDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\ProfileShopDialog.xaml.cs">
-      <DependentUpon>ProfileShopDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\Dialogs\RegisterShopDialog.xaml.cs">
-      <DependentUpon>RegisterShopDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Drawer\Drawer.xaml.cs">
       <DependentUpon>Drawer.xaml</DependentUpon>
@@ -297,10 +299,6 @@
       <DependentUpon>ShopRating.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopProduct\ShopProductViewModel.cs" />
-    <Compile Include="UserControls\ProductBlock\ImageProduct.cs" />
-    <Compile Include="UserControls\ProductBlock\ProductBlock.xaml.cs">
-      <DependentUpon>ProductBlock.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\ProductBlock\ProductBlockViewModel.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\CommandBase.cs" />
@@ -308,7 +306,6 @@
     <Compile Include="Utils\IAsyncInitialization.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Screens\ShopRating\ShopRatingViewModel.cs" />
-    <Compile Include="Screens\UserView\UserViewModel.cs" />
     <Compile Include="Utils\RelayCommandWithNoParameter.cs" />
     <Compile Include="Utils\ValidationRule\NotEmptyValidationRule.cs" />
     <Compile Include="Utils\ValidationRule\NumberTextBoxValidation.cs" />
@@ -402,7 +399,6 @@
     </Page>
     <Page Include="Screens\AdminShopInformation\ShopInformationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Order\components\OrderCard.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -433,10 +429,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Payment\components\Dialogs\EditInforDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Screens\Payment\components\Dialogs\EnterPaymentDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -496,6 +488,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\Dialogs\ConfirmDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscape.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -531,6 +527,10 @@
     <Page Include="UserControls\Drawer\Drawer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Drawer\ShopPopUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Header\Header.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -714,6 +714,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model2.cs</LastGenOutput>
     </Content>
+    <Content Include="Model\SQL.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

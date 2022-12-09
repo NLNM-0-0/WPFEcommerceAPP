@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace WPFEcommerceApp {
     /// <summary>
-    /// Interaction logic for EnterPaymentDialog.xaml
+    /// Interaction logic for test.xaml
     /// </summary>
-    public partial class EnterPaymentDialog : UserControl {
-        public EnterPaymentDialog() {
+    public partial class ShopPopUp : UserControl {
+        public ShopPopUp() {
             InitializeComponent();
         }
     }

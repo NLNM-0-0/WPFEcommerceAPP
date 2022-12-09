@@ -1,20 +1,17 @@
-﻿<UserControl x:Class="WPFEcommerceApp.EnterPaymentDialog"
+﻿<UserControl x:Class="WPFEcommerceApp.ConfirmDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:local="clr-namespace:WPFEcommerceApp"
-             mc:Ignorable="d" 
-             x:Name="AlertDialog"
-             Width="590"
-             Height="auto">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" Width="590">
     <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="auto" Height="auto">
         <StackPanel>
             <Grid>
-                <Label Content="Confirm" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
+                <TextBlock Text="{Binding Header}" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
                 <Button HorizontalAlignment="Right"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         x:Name="ButtonClose"
@@ -34,9 +31,14 @@
                             Height="10"/>
                 </Button>
             </Grid>
-            <TextBlock Text="Before you place your order, please make sure that your shipping information, billing information and bag summary are true. 
-Are you sure to place your order?" TextWrapping="Wrap" FontSize="{StaticResource FontSizeText}" Margin="0, 30, 0,30 "/>
-            <Button Content="OK" HorizontalAlignment="Right" Command="{Binding OnSuccessPayment}" CommandParameter="{Binding ElementName=AlertDialog}">
+            <TextBlock Text="{Binding Content}" TextWrapping="Wrap" FontSize="{StaticResource FontSizeText}" Margin="0, 30, 0,30 " Width="480"
+                       HorizontalAlignment="Left"/>
+            <Button x:Name="ConfirmButton" Content="OK" HorizontalAlignment="Right" Command="{Binding CM}" CommandParameter="{Binding Param}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click" SourceName="ConfirmButton">
+                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
         </StackPanel>
     </Border>
