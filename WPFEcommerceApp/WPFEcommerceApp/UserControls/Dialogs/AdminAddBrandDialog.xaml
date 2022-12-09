@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AdminAddBrandDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d">
+    <Grid x:Name="container">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="301*"/>
+            <ColumnDefinition Width="299*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Border
+            BorderBrush="{StaticResource BoxLineColorBrush}"
+            BorderThickness="1" Grid.ColumnSpan="3">
+            <StackPanel
+                Width="540"
+                Margin="30 30">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.ColumnSpan="2"
+                        Text="Add new Brand"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontFamily="{StaticResource Regular}"
+                        FontSize="{StaticResource FontSizeHeadline}"/>
+                    <Button
+                        x:Name="ButtonClose"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Grid.Column="1"
+                        Margin="0 0 10 0"
+                        Padding="0"
+                        Height="30"
+                        Width="30"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
+
+                        <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+                    </Button>
+                </Grid>
+                <TextBox x:Name="brandname" Text="{Binding NewBrandName, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Brand Name"
+                    Width="auto"
+                    Margin="0 30 0 0" local:KeyboardFocus.On="{Binding ElementName=brandname}"
+                    VerticalAlignment="Center"/>
+                <Button Command="{Binding AddNewBrandCommand}"
+                        CommandParameter="{Binding ElementName=brandname, Path=Text}"
+                    Margin="0 30 0 0"
+                    HorizontalAlignment="Right"
+                    Content="Add"/>
+            </StackPanel>
+        </Border>
+
+        <Grid.InputBindings>
+            <KeyBinding Command="{Binding AddNewBrandCommand}"
+                        CommandParameter="{Binding ElementName=brandname, Path=Text}"
+                        Key="Enter"/>
+        </Grid.InputBindings>
+        <Grid.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=container, Path=IsVisible}" Value="True">
+                        <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=brandname}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+    </Grid>
+</UserControl>
