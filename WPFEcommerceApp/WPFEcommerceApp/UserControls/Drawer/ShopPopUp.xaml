@@ -59,22 +59,28 @@
             CornerRadius="10"
             x:Name="Container">
         <StackPanel VerticalAlignment="Center">
-
-            <RadioButton IsChecked="True"
-                         Command="{Binding OnChecked}"
-                         CommandParameter="1">
+            <RadioButton Command="{Binding OnChecked}"
+                         CommandParameter="1"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding IsFirstTime}">
                 <TextBlock VerticalAlignment="Center" Text="Boarding"/>
             </RadioButton>
             <RadioButton Command="{Binding OnChecked}"
-                         CommandParameter="2">
+                         CommandParameter="2"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding SelectedIndex[0]}">
                 <TextBlock VerticalAlignment="Center" Text="Order"/>
             </RadioButton>
             <RadioButton Command="{Binding OnChecked}"
-                         CommandParameter="3">
+                         CommandParameter="3"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding SelectedIndex[1]}">
                 <TextBlock VerticalAlignment="Center" Text="Product"/>
             </RadioButton>
             <RadioButton Command="{Binding OnChecked}"
-                         CommandParameter="4">
+                         CommandParameter="4"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding SelectedIndex[2]}">
                 <TextBlock VerticalAlignment="Center" Text="Rating"/>
             </RadioButton>
         </StackPanel>

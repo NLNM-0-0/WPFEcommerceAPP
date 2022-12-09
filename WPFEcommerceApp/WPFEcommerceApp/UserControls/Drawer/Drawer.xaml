@@ -133,7 +133,6 @@
                     </Grid>
 
                     <!--// ListView with menu list items //-->
-
                     <ListView  x:Name="LV"
                                Background="Transparent"
                                BorderBrush="Transparent"
@@ -241,13 +240,14 @@
 
                 </StackPanel>
             </Grid>
+            <!--Shop popup-->
             <local:ShopPopUp x:Name="ShopPopup" 
                              Grid.Column="1" 
                              Visibility="Collapsed"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Margin="20 300 0 0"
-                              DataContext="{Binding ShopPopUpDataContext}"/>
+                             DataContext="{Binding ShopPopUpDataContext}"/>
             <i:Interaction.Triggers>
                 <i:DataTrigger Binding="{Binding ElementName=ShopPopup, Path=IsMouseOver}" Value="True">
                     <i:ChangePropertyAction PropertyName="Visibility" TargetName="ShopPopup" Value="Visible"/>
@@ -257,6 +257,8 @@
                 </i:DataTrigger>
             </i:Interaction.Triggers>
         </Grid>
+        
+        <!--Blur Box-->
         <Grid x:Name="blurBox" 
               Background="{StaticResource BlackColorBrush}" 
               Opacity="0.39"
