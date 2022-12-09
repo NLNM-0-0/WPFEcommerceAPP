@@ -112,7 +112,7 @@ namespace WPFEcommerceApp {
 				Header = "Place-Order",
 				Content = "Before you place your order, please make sure that your shipping information, billing information and bag summary are true. Are you sure to place your order?"
             };
-			await DialogHost.Show(view);
+			await DialogHost.Show(view, "Main");
         }
         private async void EditInforDialog(object p) {
             var view = new EditInforDialog(_accountStore) {
@@ -121,7 +121,7 @@ namespace WPFEcommerceApp {
 				Address = UserAddress,
 				EditData = this,
             };
-            await DialogHost.Show(view);
+            await DialogHost.Show(view, "Main");
         }
     }
 }
