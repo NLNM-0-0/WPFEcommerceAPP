@@ -144,7 +144,7 @@ namespace WPFEcommerceApp
             RequestList = new CategoryRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
             SearchBy = SearchByOptions[1];
-
+            
 
             AddNewCategoryCommand = new RelayCommand<string>(p => p != string.Empty, AddNewCategory);
             RemoveCategoryCommand = new RelayCommand<object>(p => p != null, RemoveCategory);
