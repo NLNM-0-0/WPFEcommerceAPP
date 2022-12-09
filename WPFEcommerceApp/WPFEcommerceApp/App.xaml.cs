@@ -32,7 +32,11 @@ namespace WPFEcommerceApp {
                     serviceProvider.GetRequiredService<AccountStore>(),
                     CreateCheckoutNavService(serviceProvider), 
                     CreateOrderNavService(serviceProvider),
-                    CreateShopInformationPageNavService(serviceProvider)
+                    CreateShopInformationPageNavService(serviceProvider),
+                    CreateShopMainNavService(serviceProvider),
+                    CreateShopOrderNavService(serviceProvider),
+                    CreateShopProductNavService(serviceProvider),
+                    CreateShopRatingNavService(serviceProvider)
                 )
             );
 
@@ -45,6 +49,7 @@ namespace WPFEcommerceApp {
 
             //setup Transient ViewModel
             //Normal
+            //Normal - Checkout and Order
             services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(
                     CreateSuccessNavService(s),
                     s.GetRequiredService<AccountStore>(),
@@ -62,6 +67,9 @@ namespace WPFEcommerceApp {
             );
 
             services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider))); //Need to be HomeView here
+            //Normal - Shop
+
+
             //Admin
             services.AddTransient<ShopInformationPageViewModel>(s => new ShopInformationPageViewModel());
 
@@ -86,6 +94,7 @@ namespace WPFEcommerceApp {
             base.OnStartup(e);
         }
 
+        //Checkout and Payment
         private INavigationService CreateCheckoutNavService(IServiceProvider serviceProvider) {
             return new NavigationService<CheckoutScreenVM>(
                 serviceProvider.GetRequiredService<NavigationStore>(), 
@@ -102,7 +111,33 @@ namespace WPFEcommerceApp {
                 serviceProvider.GetRequiredService<SuccessScreenVM>);
         }
 
+        //Admin
+
         private INavigationService CreateShopInformationPageNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<ShopInformationPageViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
+        }
+
+        //Shop
+        private INavigationService CreateShopMainNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<ShopInformationPageViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
+        }
+        private INavigationService CreateShopOrderNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<ShopInformationPageViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
+        }
+
+        private INavigationService CreateShopProductNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<ShopInformationPageViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
+        }
+
+        private INavigationService CreateShopRatingNavService(IServiceProvider serviceProvider) {
             return new NavigationService<ShopInformationPageViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopInformationPageViewModel>);

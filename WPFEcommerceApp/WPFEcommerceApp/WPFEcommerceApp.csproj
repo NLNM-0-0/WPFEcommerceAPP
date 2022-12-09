@@ -170,6 +170,10 @@
     <Compile Include="UserControls\Dialogs\ShopRequestInformationDialog.xaml.cs">
       <DependentUpon>ShopRequestInformationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Drawer\ShopPopUp.xaml.cs">
+      <DependentUpon>ShopPopUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Drawer\ShopPopUpVM.cs" />
     <Compile Include="UserControls\ProductBlock\ImageProduct.cs" />
     <Compile Include="UserControls\ProductBlock\ProductBlock.xaml.cs">
       <DependentUpon>ProductBlock.xaml</DependentUpon>
@@ -186,6 +190,7 @@
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Converters\FalsesToTrueConverter.cs" />
+    <Compile Include="Utils\Converters\MultiValueConverter.cs" />
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
     <Compile Include="Utils\Converters\ProdcutInfoConverter.cs" />
     <Compile Include="Utils\Converters\StringToImageSourceConverter.cs" />
@@ -228,7 +233,7 @@
     <Compile Include="Screens\Payment\components\Dialogs\EditInforDialog.xaml.cs">
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Payment\components\Dialogs\PhoneValidateRule.cs" />
+    <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\Payment\components\HiddenTab\HiddenTab.xaml.cs">
       <DependentUpon>HiddenTab.xaml</DependentUpon>
     </Compile>
@@ -519,6 +524,10 @@
     <Page Include="UserControls\Drawer\Drawer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Drawer\ShopPopUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Header\Header.xaml">
       <Generator>MSBuild:Compile</Generator>
