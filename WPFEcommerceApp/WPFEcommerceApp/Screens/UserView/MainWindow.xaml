@@ -11,55 +11,55 @@
         Title="MainWindow" Height="900" Width="1440"
         MinWidth="1280" MinHeight="800"
         WindowStartupLocation="CenterScreen">
-    <materialDesign:DialogHost
-        DialogTheme="Inherit"
-        CloseOnClickAway="True"
+        <materialDesign:DialogHost
+            DialogTheme="Inherit"
+            CloseOnClickAway="True"
         Identifier="Main">
-        <Grid>
-            <Grid.Resources>
-                <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
-                    <local:CheckoutScreen/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:OrderScreenVM}">
-                    <local:OrderScreen/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
-                    <local:SuccessScreen/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
-                    <local:ProductDetails/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
-                    <local:ShopMain/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
-                    <local:ShopRating/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
-                    <local:ShopInformationPage/>
-                </DataTemplate>
-            </Grid.Resources>
-            <local:Drawer HorizontalAlignment="Left"
-                          x:Name="Drawer"
-                          DataContext="{Binding DrawerVM}" Panel.ZIndex="100"/>
-
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <local:Header Grid.Column="1"/>
-                <ContentControl 
-                Grid.Column="1"
-                    Grid.Row="1"
-                x:Name="Content"
-                Content="{Binding CurrentViewModel}"/>
+                <Grid.Resources>
+                    <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
+                        <local:CheckoutScreen/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:OrderScreenVM}">
+                        <local:OrderScreen/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
+                        <local:SuccessScreen/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
+                        <local:ProductDetails/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
+                        <local:ShopMain/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
+                        <local:ShopRating/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
+                        <local:ShopInformationPage/>
+                    </DataTemplate>
+                </Grid.Resources>
+                <local:Drawer HorizontalAlignment="Left"
+                              x:Name="Drawer"
+                              DataContext="{Binding DrawerVM}" Panel.ZIndex="100"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <local:Header Grid.Column="1"/>
+                    <ContentControl 
+                    Grid.Column="1"
+                        Grid.Row="1"
+                    x:Name="Content"
+                    Content="{Binding CurrentViewModel}"/>
+                </Grid>
             </Grid>
-        </Grid>
-    </materialDesign:DialogHost>
+        </materialDesign:DialogHost>
 
 </Window>
