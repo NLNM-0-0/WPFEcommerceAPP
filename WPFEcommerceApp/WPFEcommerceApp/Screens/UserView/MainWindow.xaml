@@ -55,6 +55,10 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <materialDesign:DialogHost
+        DialogTheme="Inherit"
+        CloseOnClickAway="True"
+        Identifier="App">
     <Grid>
         <!--Drawer-->
         <local:Drawer HorizontalAlignment="Left"
@@ -168,4 +172,5 @@
         </Grid>
 
     </Grid>
+    </materialDesign:DialogHost>
 </Window>

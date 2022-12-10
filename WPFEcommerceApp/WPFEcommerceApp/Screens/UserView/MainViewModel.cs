@@ -36,7 +36,7 @@ namespace WPFEcommerceApp {
                     Header = "Are you sure?",
                     Content = "Close app may not save your process. Please check your work before close the app!"
                 };
-                DialogHost.Show(view, "Main");
+                DialogHost.Show(view, "App");
             });
             MinimizeCM = new RelayCommand<object>(p => true, p => {
                 (p as Window).WindowState = WindowState.Minimized;

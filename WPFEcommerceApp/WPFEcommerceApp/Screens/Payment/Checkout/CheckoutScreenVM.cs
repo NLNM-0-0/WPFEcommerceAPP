@@ -54,7 +54,7 @@ namespace WPFEcommerceApp {
 		public ICommand OnPaymentFieldChoice { get; set; }
         public ICommand OnDeliFieldChoice { get; set; }
 
-
+		public ICommand testCM { get; set; }
         #endregion
 
         public CheckoutScreenVM(
@@ -81,7 +81,7 @@ namespace WPFEcommerceApp {
 				else { StateArea[0] = true; StateArea[1] = false; PaymentState = false; }
 			});
 
-            PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(p));
+            PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(order));
 			OnEditInfor = new RelayCommand<object>((p) => true, (p) => EditInforDialog(p));
 			OnSuccessPayment = new RelayCommand<object>((p) => true, async (p) => {
 				//Do something with store here
@@ -90,7 +90,6 @@ namespace WPFEcommerceApp {
 				await orderStore.Add(temp);
 				successNavService.Navigate();
             });
-
         }
 
 		public void OnAccountChange() {

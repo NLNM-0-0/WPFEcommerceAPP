@@ -104,7 +104,6 @@ namespace WPFEcommerceApp {
 			temp.IdCustomer = Int32.Parse( p.IDCustomer);
 			temp.Status = p.Status;
 			temp.IdRating = Int32.Parse(p.IDrating);
-			temp.Id = Int32.Parse(p.ID);
 			temp.DateBegin = DateTime.Now;
 			temp.DateEnd = null;
 			await orderRepo.Add(temp);

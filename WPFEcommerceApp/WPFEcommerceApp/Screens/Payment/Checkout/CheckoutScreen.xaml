@@ -123,6 +123,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
+
         <!--Header-->
         <Label Content="Checkout"
                FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
