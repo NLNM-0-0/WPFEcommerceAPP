@@ -61,7 +61,7 @@ namespace WPFEcommerceApp {
 					product = objTemp.Product;
 					product.MUser = objTemp.MUser;
 					Product tmp = new Product(
-							iD: obj.IdProduct.ToString(),
+							iD: obj.IdProduct,
 							productImage: obj.ImageProduct,
 							name: product.Name,
 							size: obj.Size,
@@ -83,7 +83,7 @@ namespace WPFEcommerceApp {
                 List<BProduct> bProducts = new List<BProduct>();
 
 				for(int i = 0; i < shoplisttemp.Count; i++) {
-					BProduct bprdtemp = new BProduct(shoplisttemp[i], shopRefList[i].SourceImageAva, shopRefList[i].Name, shopRefList[i].Id.ToString());
+					BProduct bprdtemp = new BProduct(shoplisttemp[i], shopRefList[i].SourceImageAva, shopRefList[i].Name, shopRefList[i].Id);
 					bProducts.Add(bprdtemp);
 				}
 
@@ -91,19 +91,20 @@ namespace WPFEcommerceApp {
 			};
 			
 			for(int i = 0; i < listBProduct.Count; i++) {
-				Order ordertemp = new Order(listBProduct[i], mOrders[i].Id.ToString(), mOrders[i].Status, mOrders[i].IdCustomer.ToString(), mOrders[i].IdRating.ToString());
+				Order ordertemp = new Order(listBProduct[i], mOrders[i].Id, mOrders[i].Status, mOrders[i].IdCustomer, mOrders[i].IdRating);
 				OrderList.Add(ordertemp);
 			}
             OrderListChanged?.Invoke();
         }
         public async Task Add(Order p) {
-			p.ID = (Int32.Parse(p.ID) + 1).ToString();
+			p.ID = await GenerateID.Gen(typeof(MOrder));
             OrderList.Add(p);
 			MOrder temp = new MOrder();
+			temp.Id = p.ID;
 			temp.OrderTotal = (long)p.OrderTotal;
-			temp.IdCustomer = Int32.Parse( p.IDCustomer);
+			temp.IdCustomer =p.IDCustomer;
 			temp.Status = p.Status;
-			temp.IdRating = Int32.Parse(p.IDrating);
+			temp.IdRating = p.IDrating;
 			temp.DateBegin = DateTime.Now;
 			temp.DateEnd = null;
 			await orderRepo.Add(temp);
@@ -111,10 +112,10 @@ namespace WPFEcommerceApp {
 			for(int i = 0; i < bProducts.Count; i++) {
 				for(int j = 0; j < bProducts[i].ProductList.Count; j++) {
 					OrderInfo t = new OrderInfo();
-					t.IdOrder = Int32.Parse( p.ID);
-					t.IdProduct = Int32.Parse( bProducts[i].ProductList[j].ID);
+					t.IdOrder =p.ID;
+					t.IdProduct = bProducts[i].ProductList[j].ID;
 					t.ImageProduct = bProducts[i].ProductList[j].ProductImage;
-					t.IdShop = Int32.Parse( bProducts[i].IDShop);
+					t.IdShop = bProducts[i].IDShop;
 					t.Size = bProducts[i].ProductList[j].Size;
 					t.TotalPrice = (long)bProducts[i].Subtotal;
 					t.Count = bProducts[i].ProductList[j].Amount;
@@ -127,10 +128,10 @@ namespace WPFEcommerceApp {
             OrderList.Remove(p);
             MOrder temp = new MOrder();
             temp.OrderTotal = (long)p.OrderTotal;
-            temp.IdCustomer = Int32.Parse( p.IDCustomer);
+            temp.IdCustomer = p.IDCustomer;
             temp.Status = p.Status;
-            temp.IdRating =Int32.Parse(p.IDrating);
-            temp.Id =Int32.Parse(p.ID);
+            temp.IdRating =p.IDrating;
+            temp.Id =p.ID;
             temp.DateBegin = DateTime.Now;
             temp.DateEnd = null;
             await orderRepo.Remove(temp);
@@ -138,10 +139,10 @@ namespace WPFEcommerceApp {
             for(int i = 0; i < bProducts.Count; i++) {
                 for(int j = 0; j < bProducts[i].ProductList.Count; j++) {
                     OrderInfo t = new OrderInfo();
-                    t.IdOrder = Int32.Parse(p.ID);
-                    t.IdProduct =Int32.Parse(bProducts[i].ProductList[j].ID);
+                    t.IdOrder = p.ID;
+                    t.IdProduct =bProducts[i].ProductList[j].ID;
                     t.ImageProduct = bProducts[i].ProductList[j].ProductImage;
-                    t.IdShop = Int32.Parse(bProducts[i].IDShop);
+                    t.IdShop = bProducts[i].IDShop;
                     t.Size = bProducts[i].ProductList[j].Size;
                     t.TotalPrice = (long)bProducts[i].Subtotal;
                     t.Count = bProducts[i].ProductList[j].Amount;
@@ -157,10 +158,10 @@ namespace WPFEcommerceApp {
 
             MOrder temp = new MOrder();
             temp.OrderTotal = (long)p.OrderTotal;
-            temp.IdCustomer =Int32.Parse(p.IDCustomer);
+            temp.IdCustomer =p.IDCustomer;
             temp.Status = p.Status;
-            temp.IdRating = Int32.Parse(p.IDrating);
-            temp.Id = Int32.Parse(p.ID);
+            temp.IdRating = p.IDrating;
+            temp.Id = p.ID;
             temp.DateBegin = DateTime.Now;
             temp.DateEnd = null;
             await orderRepo.Update(temp);
@@ -168,10 +169,10 @@ namespace WPFEcommerceApp {
             for(int i = 0; i < bProducts.Count; i++) {
                 for(int j = 0; j < bProducts[i].ProductList.Count; j++) {
                     OrderInfo t = new OrderInfo();
-                    t.IdOrder = Int32.Parse(p.ID);
-                    t.IdProduct = Int32.Parse(bProducts[i].ProductList[j].ID);
+                    t.IdOrder = p.ID;
+                    t.IdProduct = bProducts[i].ProductList[j].ID;
                     t.ImageProduct = bProducts[i].ProductList[j].ProductImage;
-                    t.IdShop = Int32.Parse(bProducts[i].IDShop);
+                    t.IdShop = bProducts[i].IDShop;
                     t.Size = bProducts[i].ProductList[j].Size;
                     t.TotalPrice = (long)bProducts[i].Subtotal;
                     t.Count = bProducts[i].ProductList[j].Amount;

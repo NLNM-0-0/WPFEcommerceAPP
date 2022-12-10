@@ -14,9 +14,9 @@ namespace WPFEcommerceApp.Models
     
     public partial class Notification
     {
-        public long Id { get; set; }
-        public int IdReceiver { get; set; }
-        public int IdSender { get; set; }
+        public string Id { get; set; }
+        public string IdReceiver { get; set; }
+        public string IdSender { get; set; }
         public System.DateTime Date { get; set; }
         public string Content { get; set; }
     

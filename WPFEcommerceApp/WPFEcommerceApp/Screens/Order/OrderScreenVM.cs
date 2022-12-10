@@ -65,10 +65,10 @@ namespace WPFEcommerceApp {
                     if(OrderList[i].Status == "Processing") {
                         ProcessingList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Dellivering") {
+                    else if(OrderList[i].Status == "Delivering") {
                         DeliveringList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Dellivered") {
+                    else if(OrderList[i].Status == "Delivered") {
                         DeliveredList.Add(OrderList[i]);
                     }
                     else if(OrderList[i].Status == "Cancelled") {
@@ -125,10 +125,10 @@ namespace WPFEcommerceApp {
                     if(OrderList[i].Status == "Processing") {
                         ProcessingList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Dellivering") {
+                    else if(OrderList[i].Status == "Delivering") {
                         DeliveringList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Dellivered") {
+                    else if(OrderList[i].Status == "Delivered") {
                         DeliveredList.Add(OrderList[i]);
                     }
                     else if(OrderList[i].Status == "Cancelled") {

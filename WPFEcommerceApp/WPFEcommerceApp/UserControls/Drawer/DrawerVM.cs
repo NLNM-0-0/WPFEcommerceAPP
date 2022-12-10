@@ -93,6 +93,7 @@ namespace WPFEcommerceApp {
                         OrderNavigateService.Navigate();
                     }
                     else if(SelectedIndex == 4) {
+                        ShopMainNavigateService.Navigate();
                     }
                 }
                 else {

@@ -14,8 +14,8 @@ namespace WPFEcommerceApp.Models
     
     public partial class Cart
     {
-        public int IdUser { get; set; }
-        public int IdProduct { get; set; }
+        public string IdUser { get; set; }
+        public string IdProduct { get; set; }
         public Nullable<int> Amount { get; set; }
         public Nullable<bool> IsChooseSizeS { get; set; }
         public Nullable<bool> IsChooseSizeM { get; set; }

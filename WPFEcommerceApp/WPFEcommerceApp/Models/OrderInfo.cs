@@ -14,11 +14,11 @@ namespace WPFEcommerceApp.Models
     
     public partial class OrderInfo
     {
-        public int IdOrder { get; set; }
-        public int IdProduct { get; set; }
+        public string IdOrder { get; set; }
+        public string IdProduct { get; set; }
         public string ImageProduct { get; set; }
         public string Size { get; set; }
-        public int IdShop { get; set; }
+        public string IdShop { get; set; }
         public int Count { get; set; }
         public long TotalPrice { get; set; }
     

@@ -5,13 +5,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using Microsoft.JScript;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class GenerateID {
-        static char reVal(int num) {
+        static char reVal(long num) {
             if(num > -1 && num < 5)
                 return (char)(num +'5');
             else if(num > 4 && num < 10)
@@ -25,9 +28,9 @@ namespace WPFEcommerceApp {
             return '?';
         }
 
-        static string encode(int inputNum) {
+        static string encode(long inputNum) {
             inputNum += 262145;
-            int index = 0;
+            long index = 0;
             string res = "";
             while(inputNum > 0) {
                 res += reVal(inputNum % 64);
@@ -37,7 +40,7 @@ namespace WPFEcommerceApp {
             return res;
         }
         static public async Task<string> Gen(Type type) {
-            int res = 0;
+            long res = 0;
             await Task.Run(() => {
                 using(var context = new EcommerceAppEntities()) {
                     string t = type.Name;
@@ -45,11 +48,28 @@ namespace WPFEcommerceApp {
                     res = context.Database.SqlQuery<int>(sql).Single();
                 }
             });
-            string id = encode(res);
-            char r1 = (char) (new Random().Next(0, 10) + '0');
-            char r2 = (char) (new Random().Next(36, 62) - 36 + 'a');
-            id += r1;
-            id += r2;
+            bool check = false;
+            string id = "";
+            while(!check) {
+                id = encode(res);
+                if(id.Length < 6)
+                    for(int i = 0; i <= 6 - id.Length; i++)
+                        id = "#" + id;
+                char r1 = (char)(new Random().Next(0, 10) + '0');
+                char r2 = (char)(new Random().Next(36, 62) - 36 + 'a');
+                id = r1 + id;
+                id += r2;
+
+                await Task.Run(() => {
+                    using(var context = new EcommerceAppEntities()) {
+                        string t = type.Name;
+                        var sql = $"SELECT COUNT(1) FROM dbo.{t} WHERE Id = '{id}'";
+                        check = context.Database.SqlQuery<int>(sql).Single() == 0 ? true : false;
+                    }
+                });
+                if(!check) res = (long)(res * 1.5);
+            }
+
             return id;
         }
     }

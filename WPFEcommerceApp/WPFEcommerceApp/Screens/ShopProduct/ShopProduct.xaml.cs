@@ -37,7 +37,7 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             var repository = new GenericDataRepository<Models.MUser>();
-            viewModel = new ShopProductViewModel(await repository.GetSingleAsync(x => x.Id == 1,
+            viewModel = new ShopProductViewModel(await repository.GetSingleAsync(x => x.Id == "user01",
                                                                                 x => x.Products,
                                                                                 x => x.Products.Select(p=>p.ImageProducts),
                                                                                 x => x.Products.Select(p => p.Brand),

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1340"
@@ -177,10 +178,9 @@
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <Grid Background="White" wpf:ScrollBarAssist.ButtonsVisibility="Collapsed">
+    <Grid Background="White" wpf:ScrollBarAssist.ButtonsVisibility="Collapsed" x:Name="container">
         <Border Padding="70, 40, 70, 25">
-            <TabControl
-                    Width="auto">
+            <TabControl Width="{c:Binding ElementName=container, Path=Width-70*2}">
                 <!--Processing-->
                 <TabItem Style="{StaticResource CustomTabItem}" 
                     Header="Processing">
@@ -308,103 +308,6 @@
             </TabControl>
         </Border>
     </Grid>
-    <!--#region Yay-->
-    <!--Header-->
-    <!--<ListViewItem Margin="0">
-                                <StackPanel Background="AliceBlue" Width="1111" Margin="0">
-                                    <Separator BorderThickness="0.5" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
-                                    <Border Padding="15, 0">
-                                        <Grid Margin="0, 20">
-                                            <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="ID: " 
-                                                       HorizontalAlignment="Left"
-                                                       FontSize="{StaticResource FontSizeHeadline3}"/>
-                                                <TextBlock Text="0000" 
-                                                       HorizontalAlignment="Left"
-                                                       FontSize="{StaticResource FontSizeHeadline3}"/>
-                                            </StackPanel>
-                                            <TextBlock Text="Processing" 
-                                                       HorizontalAlignment="Right"
-                                                       FontSize="{StaticResource FontSizeHeadline3}"
-                                                       Foreground="{StaticResource SuccessColorBrush}"/>
-                                        </Grid>
-                                    </Border>
-                                
-                                    -->
-    <!--Product-->
-    <!--
-                                    <ListView Width="1118" Height="292"  BorderThickness="0" ItemContainerStyle="{StaticResource ListItemContainer}" Margin="-10, 0, 0, 0" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                                        <ListViewItem>
-                                            <StackPanel Width="1111" Background="pink">
-
-                                                <Separator BorderThickness="0.5" BorderBrush="{StaticResource NotAvailableColorBrush}" VerticalAlignment="Top" Margin="0, 0,0,20"/>
-                                                <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto"/>
-                                                    <ColumnDefinition Width="400"/>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Image Source="..\..\Assests\Images\2.jpg" Width="107" Height="107" HorizontalAlignment="Left" Margin="15, 0"/>
-                                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                        <TextBlock Text="Nike Air Zoom Pegasus 39 Men's Road Running Shoes"
-                                                                   FontSize="13" TextWrapping="Wrap"/>
-                                                        <StackPanel Orientation="Horizontal" Margin="5, 9, 0, 0">
-                                                            <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                                            <TextBlock Text="9" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                                        </StackPanel>
-                                                        <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                                            <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                                            <TextBlock Text="Dark gray" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                                        </StackPanel>
-                                                        <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                                            <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                                            <TextBlock Text="Yayya" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                                        </StackPanel>
-                                                    </StackPanel>
-                                                        <StackPanel Orientation="Horizontal" Grid.Column="2" 
-                                                                    VerticalAlignment="Center" 
-                                                                    HorizontalAlignment="Center">
-                                                        <TextBlock Text="x" FontSize="13"/>
-                                                        <TextBlock Text="1" FontSize="13"/>
-                                                    </StackPanel>
-                                                    <StackPanel Grid.Column="3"
-                                                                VerticalAlignment="Center" 
-                                                                HorizontalAlignment="Center">
-                                                        <TextBlock Text="Subtotal:" FontSize="13"/>
-                                                        <TextBlock Text="23.19" FontSize="13"/>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </StackPanel>
-                                        </ListViewItem>
-                                    </ListView>
-                                    -->
-    <!--Footer-->
-    <!--
-                                    <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                               Width="300"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Top" Margin="0, 0,0,20"/>
-                                    <Grid Width="1118">
-                                        <Button Content="Cancel" FontWeight="Light"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"/>
-                                        <StackPanel VerticalAlignment="Center"
-                                                    HorizontalAlignment="Right">
-                                            <TextBlock Text="Order Total: "
-                                                       FontWeight="Bold"
-                                                       FontSize="{StaticResource FontSizeHeadline3}"/>
-                                            <TextBlock Text="5555 "
-                                                   
-                                                       FontSize="{StaticResource FontSizeHeadline3}"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Top" Margin="0, 20"/>
-                                </StackPanel>
-                            </ListViewItem>-->
-    <!--#endregion-->
 </UserControl>
     
     

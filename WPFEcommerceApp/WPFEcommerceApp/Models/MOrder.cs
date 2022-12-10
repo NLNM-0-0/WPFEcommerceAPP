@@ -20,9 +20,9 @@ namespace WPFEcommerceApp.Models
             this.OrderInfoes = new HashSet<OrderInfo>();
         }
     
-        public int Id { get; set; }
-        public int IdCustomer { get; set; }
-        public Nullable<long> IdRating { get; set; }
+        public string Id { get; set; }
+        public string IdCustomer { get; set; }
+        public string IdRating { get; set; }
         public Nullable<System.DateTime> DateBegin { get; set; }
         public Nullable<System.DateTime> DateEnd { get; set; }
         public long OrderTotal { get; set; }

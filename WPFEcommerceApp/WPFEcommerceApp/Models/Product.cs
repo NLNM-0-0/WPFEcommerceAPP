@@ -24,11 +24,11 @@ namespace WPFEcommerceApp.Models
             this.MUsers = new HashSet<MUser>();
         }
     
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-        public int IdCategory { get; set; }
-        public int IdBrand { get; set; }
-        public int IdShop { get; set; }
+        public string IdCategory { get; set; }
+        public string IdBrand { get; set; }
+        public string IdShop { get; set; }
         public long Price { get; set; }
         public int Sale { get; set; }
         public int InStock { get; set; }

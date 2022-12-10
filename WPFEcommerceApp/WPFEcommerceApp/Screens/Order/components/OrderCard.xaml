@@ -123,7 +123,7 @@
                 <Setter TargetName="Button1" Property="Content" Value="Cancel"/>
                 <Setter TargetName="Button1" Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnCancel}"/>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="Cancelled">
+            <DataTrigger Binding="{Binding Status}" Value="Delivered">
                 <Setter TargetName="ReviewButton" Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </DataTemplate.Triggers>
