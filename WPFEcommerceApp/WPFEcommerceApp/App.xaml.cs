@@ -68,7 +68,7 @@ namespace WPFEcommerceApp {
 
             services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider))); //Need to be HomeView here
             //Normal - Shop
-
+            services.AddTransient<ShopRatingViewModel>(s => new ShopRatingViewModel());
 
             //Admin
             services.AddTransient<ShopInformationPageViewModel>(s => new ShopInformationPageViewModel());
@@ -138,9 +138,9 @@ namespace WPFEcommerceApp {
         }
 
         private INavigationService CreateShopRatingNavService(IServiceProvider serviceProvider) {
-            return new NavigationService<ShopInformationPageViewModel>(
+            return new NavigationService<ShopRatingViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
-                serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
+                serviceProvider.GetRequiredService<ShopRatingViewModel>);
         }
     }
 }

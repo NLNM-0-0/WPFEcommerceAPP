@@ -96,6 +96,14 @@
                             Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnDetailView}"
                             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}">
                     </Button>
+                    <Button Content="Review" FontWeight="Medium"
+                            x:Name="ReviewButton"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnReviewProduct}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}"
+                            Visibility="Collapsed">
+                    </Button>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
                                                 HorizontalAlignment="Right">
@@ -114,6 +122,9 @@
             <DataTrigger Binding="{Binding Status}" Value="Processing">
                 <Setter TargetName="Button1" Property="Content" Value="Cancel"/>
                 <Setter TargetName="Button1" Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnCancel}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="Cancelled">
+                <Setter TargetName="ReviewButton" Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
