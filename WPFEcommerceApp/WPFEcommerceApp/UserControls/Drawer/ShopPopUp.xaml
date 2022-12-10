@@ -11,28 +11,16 @@
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
     <UserControl.Resources>
         <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="38"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="GroupName" Value="ShopPopUp"/>
             <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Width" Value="150"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ButtonBase}">
                         <Grid>
-                            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
-                            <ProgressBar x:Name="ProgressBar" Background="{Binding (wpf:ButtonProgressAssist.IndicatorBackground), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{Binding (wpf:ButtonProgressAssist.IndicatorBackground), RelativeSource={RelativeSource TemplatedParent}}" Foreground="{Binding (wpf:ButtonProgressAssist.IndicatorForeground), RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Left" Height="{TemplateBinding Height}" IsIndeterminate="{Binding (wpf:ButtonProgressAssist.IsIndeterminate), RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource MaterialDesignLinearProgressBar}" Value="{Binding (wpf:ButtonProgressAssist.Value), RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Visibility="{Binding (wpf:ButtonProgressAssist.IsIndicatorVisible), Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ButtonBase}}}">
-                                <ProgressBar.Clip>
-                                    <MultiBinding Converter="{StaticResource BorderClipConverter}">
-                                        <Binding ElementName="border" Path="ActualWidth"/>
-                                        <Binding ElementName="border" Path="ActualHeight"/>
-                                        <Binding ElementName="border" Path="CornerRadius"/>
-                                        <Binding ElementName="border" Path="BorderThickness"/>
-                                    </MultiBinding>
-                                </ProgressBar.Clip>
-                            </ProgressBar>
+                            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
@@ -54,29 +42,50 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Border Background="{StaticResource BlackColorBrush}" 
-            BorderBrush="Transparent"
+    <Grid>
+        <Grid.OpacityMask>
+            <VisualBrush Visual="{Binding ElementName=Container}"/>
+        </Grid.OpacityMask>
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="50" ShadowDepth="10" Opacity="0.2" Color="{StaticResource Blur}"/>
+        </Grid.Effect>
+        <Border Background="{StaticResource BlackColorBrush}"
             CornerRadius="10"
-            x:Name="Container">
-        <StackPanel VerticalAlignment="Center">
-
-            <RadioButton IsChecked="True"
-                         Command="{Binding OnChecked}"
-                         CommandParameter="1">
-                <TextBlock VerticalAlignment="Center" Text="Boarding"/>
+            x:Name="Container"/>
+        <StackPanel VerticalAlignment="Center" 
+                    Width="{Binding Width, ElementName=Container}">
+            <RadioButton Command="{Binding OnChecked}"
+                             CommandParameter="1"
+                             GroupName="ShopPopup"
+                             IsChecked="{Binding IsFirstTime}">
+                <TextBlock VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"
+                               Text="Boarding"/>
             </RadioButton>
             <RadioButton Command="{Binding OnChecked}"
-                         CommandParameter="2">
-                <TextBlock VerticalAlignment="Center" Text="Order"/>
+                         CommandParameter="2"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding SelectedIndex[0]}">
+                <TextBlock VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           Text="Order"/>
             </RadioButton>
             <RadioButton Command="{Binding OnChecked}"
-                         CommandParameter="3">
-                <TextBlock VerticalAlignment="Center" Text="Product"/>
+                         CommandParameter="3"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding SelectedIndex[1]}">
+                <TextBlock VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           Text="Product"/>
             </RadioButton>
             <RadioButton Command="{Binding OnChecked}"
-                         CommandParameter="4">
-                <TextBlock VerticalAlignment="Center" Text="Rating"/>
+                         CommandParameter="4"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding SelectedIndex[2]}">
+                <TextBlock VerticalAlignment="Center"  
+                               HorizontalAlignment="Center"
+                               Text="Rating"/>
             </RadioButton>
         </StackPanel>
-    </Border>
+    </Grid>
 </UserControl>

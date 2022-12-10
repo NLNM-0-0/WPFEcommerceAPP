@@ -20,7 +20,7 @@ namespace WPFEcommerceApp {
 
             //Set Store and some initial dependences
             var t = new GenericDataRepository<MUser>();
-            var u = t.GetSingleAsync(d => d.Id.Equals(1)).Result;
+            var u = t.GetSingleAsync(d => d.Id.Equals("user01")).Result;
             AccountStore ast = new AccountStore();
             ast.CurrentAccount = u;
 
@@ -68,7 +68,7 @@ namespace WPFEcommerceApp {
 
             services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider))); //Need to be HomeView here
             //Normal - Shop
-
+            services.AddTransient<ShopRatingViewModel>(s => new ShopRatingViewModel());
 
             //Admin
             services.AddTransient<ShopInformationPageViewModel>(s => new ShopInformationPageViewModel());
@@ -138,9 +138,9 @@ namespace WPFEcommerceApp {
         }
 
         private INavigationService CreateShopRatingNavService(IServiceProvider serviceProvider) {
-            return new NavigationService<ShopInformationPageViewModel>(
+            return new NavigationService<ShopRatingViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
-                serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
+                serviceProvider.GetRequiredService<ShopRatingViewModel>);
         }
     }
 }

@@ -34,6 +34,14 @@ namespace WPFEcommerceApp {
             }
         }
 
+        private bool canReload;
+
+        public bool CanReload {
+            get { return canReload; }
+            set { canReload = value; OnPropertyChanged(); }
+        }
+
+
         public ICommand OnChangeScreen { get; set; }
         public ICommand OnShopMouseOver { get; set; }
         public ICommand OnShopMouseLeave { get; set; }
@@ -51,14 +59,31 @@ namespace WPFEcommerceApp {
 
             _accountStore = accountStore;
             _accountStore.AccountChanged += OnAccountChange;
+
+            CanReload = true;
             ShopPopUpDataContext = new ShopPopUpVM(
-                ShopMainNavigateService, 
-                ShopOrderNavigateService, 
-                ShopProductNavigateService, 
+                this,
+                ShopMainNavigateService,
+                ShopOrderNavigateService,
+                ShopProductNavigateService,
                 ShopRatingNavigateService);
 
-            OnChangeScreen = new RelayCommand<object>((p) => true, (p) => {
+            OnChangeScreen = new RelayCommand<object>((p) => {
+                if(CanReload) return true;
+                if(!CanReload && SelectedIndex != 4) {
+                    CanReload = true;
+                    return true;
+                }
+                return false;
+            }, (p) => {
                 if(CurrentUser == null || CurrentUser.Role != "Admin") {
+                    ShopPopUpDataContext = new ShopPopUpVM(
+                        this,
+                        ShopMainNavigateService,
+                        ShopOrderNavigateService,
+                        ShopProductNavigateService,
+                        ShopRatingNavigateService);
+
                     if(SelectedIndex == 0) {
                         CheckoutNavigateService.Navigate();
                     }
@@ -68,7 +93,7 @@ namespace WPFEcommerceApp {
                         OrderNavigateService.Navigate();
                     }
                     else if(SelectedIndex == 4) {
-
+                        ShopMainNavigateService.Navigate();
                     }
                 }
                 else {
@@ -77,6 +102,8 @@ namespace WPFEcommerceApp {
                     }
                 }
             });
+
+            //Shop popup Handle
             var timer = new DispatcherTimer();
             OnShopMouseOver = new RelayCommand<object>(p => {
                 var values = (object[])p;

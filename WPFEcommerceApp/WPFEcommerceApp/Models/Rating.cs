@@ -21,7 +21,7 @@ namespace WPFEcommerceApp.Models
             this.RatingInfoes = new HashSet<RatingInfo>();
         }
     
-        public long Id { get; set; }
+        public string Id { get; set; }
         public Nullable<System.DateTime> DateRating { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -192,8 +192,8 @@ namespace WPFEcommerceApp
             RequestList.Items = new ObservableCollection<BrandRequestItemViewModel>(
                         query.Select(item => new BrandRequestItemViewModel
                         {
-                            RequestId = item.Id,
-                            Id = item.MUser.Id,
+                            RequestId = Int32.Parse(item.Id),
+                            Id =  Int32.Parse(item.MUser.Id),
                             Name = item.Name,
                             BrandName = item.Name,
                             SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
