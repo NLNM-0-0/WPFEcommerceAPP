@@ -29,7 +29,8 @@ namespace WPFEcommerceApp {
         }
 
         static string encode(long inputNum) {
-            inputNum += 262145;
+            inputNum += 261816;
+            inputNum = (long)(inputNum * 1.62);
             long index = 0;
             string res = "";
             while(inputNum > 0) {
