@@ -34,7 +34,7 @@ namespace WPFEcommerceApp {
                         (t as Window).Close();
                     }),
                     Header = "Are you sure?",
-                    Content = "Close app may not save your process. Please check your work before close the app!"
+                    Content = "Your process may not be saved if you close the app. Please check your work before closing the app!"
                 };
                 DialogHost.Show(view, "App");
             });
@@ -42,10 +42,15 @@ namespace WPFEcommerceApp {
                 (p as Window).WindowState = WindowState.Minimized;
             });
             MaximizeCM = new RelayCommand<object>(p => true, p => {
-                if((p as Window).WindowState == WindowState.Normal)
-                    (p as Window).WindowState = WindowState.Maximized;
-                else
-                    (p as Window).WindowState = WindowState.Normal;
+                var temp = (object[])p;
+                if((temp[0] as Window).WindowState == WindowState.Normal) {
+                    (temp[0] as Window).WindowState = WindowState.Maximized;
+                    (temp[1] as PackIcon).Kind = PackIconKind.CheckboxMultipleBlankOutline;
+                }
+                else {
+                    (temp[0] as Window).WindowState = WindowState.Normal;
+                    (temp[1] as PackIcon).Kind = PackIconKind.CheckboxBlankOutline;
+                }
             });
             DragWindowCM = new RelayCommand<object>(p => true, p => {
                 (p as Window).DragMove();

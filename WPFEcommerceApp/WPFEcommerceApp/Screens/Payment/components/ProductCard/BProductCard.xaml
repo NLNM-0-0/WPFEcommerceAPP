@@ -27,7 +27,7 @@
                     <Border Padding="{TemplateBinding Padding}">
                         <Grid Height="65" Background="{StaticResource WhiteColorBrush}">
                             <Grid.Effect>
-                                <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
+                                <DropShadowEffect BlurRadius="18" ShadowDepth="0.25" Opacity="0.15" Color="{StaticResource NotAvailable}"/>
                             </Grid.Effect>
                             <Border Padding="16, 13, 16, 13">
                                 <Grid>
@@ -82,7 +82,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Expander}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true">
                         <DockPanel>
                             <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStretch="{TemplateBinding FontStretch}" Foreground="{TemplateBinding Foreground}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontFamily="{TemplateBinding FontFamily}" FontWeight="{TemplateBinding FontWeight}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="0" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
 
@@ -129,22 +130,29 @@
     </Style>
 
     <DataTemplate x:Key="ProductCard" DataType="{x:Type vm:Product}">
-        <Grid Background="{StaticResource WhiteColorBrush}" Width="455" Margin="0, 23, 0, 0">
+        <Grid Background="{StaticResource WhiteColorBrush}" Margin="0, 23, 0, 0"
+              Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}, 
+                Path=ActualWidth-20}">
             <Grid.Effect>
-                <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
+                <DropShadowEffect BlurRadius="18" ShadowDepth="0.25" Opacity="0.15" Color="{StaticResource NotAvailable}"/>
             </Grid.Effect>
-            <Border Padding="5"  Width="455">
-                <StackPanel Orientation="Horizontal"  Width="455">
-                    <Image Source="{Binding ProductImage}" Height="125" Width="125" HorizontalAlignment="Left"/>
-                    <Grid  Width="455">
+            <Border Padding="5">
+                <StackPanel Orientation="Horizontal">
+                    <Grid Background="Transparent" Margin="0 0 10 0">
+                        <Image Source="{Binding ProductImage}" Height="125" Width="125" 
+                               HorizontalAlignment="Center"/>
+                    </Grid>
+                    <Grid >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="45"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Name}"
-                                   Width="300"
                                    HorizontalAlignment="Left"
-                               FontSize="13" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                   FontSize="13" 
+                                   VerticalAlignment="Center" 
+                                   TextWrapping="Wrap" 
+                                   Margin="5,0,0,0"/>
                         <Grid Grid.Row="1" VerticalAlignment="Top">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -209,7 +217,10 @@
     </Style>
     
     <DataTemplate x:Key="BProductCardContent" DataType="{x:Type vm:BProduct}">
-        <Expander x:Name="expand" Style="{StaticResource BProductCard}" HorizontalAlignment="Center" Width="466.25">
+        <Expander x:Name="expand" Style="{StaticResource BProductCard}" 
+                  HorizontalAlignment="Center" 
+                  Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}
+            , Path=ActualWidth-20}">
             <Expander.Header>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{Binding ShopImage}"/>
@@ -224,9 +235,12 @@
                 <Grid.Effect>
                     <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
                 </Grid.Effect>-->
-                <ListView ItemsSource="{Binding ProductList}" ItemTemplate="{StaticResource ProductCard}"
-                              ItemContainerStyle="{StaticResource ListItemCtn}"
-                              BorderThickness="0"
+                <ListView ItemsSource="{Binding ProductList}" 
+                          Width="{i:Binding RelativeSource={RelativeSource AncestorType=Expander}
+            , Path=ActualWidth-5}"
+                          ItemTemplate="{StaticResource ProductCard}"
+                          ItemContainerStyle="{StaticResource ListItemCtn}"
+                          BorderThickness="0"
                           ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                           PreviewMouseWheel="HandlePreviewMouseWheel"
                           Cursor="Arrow">

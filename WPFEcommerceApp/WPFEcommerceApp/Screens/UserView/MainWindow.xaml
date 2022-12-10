@@ -19,6 +19,7 @@
                       ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
+        <local:MultiValueConverter x:Key="MultiValueConverter"/>
         <Style TargetType="{x:Type Button}" x:Key="controlButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="Foreground" Value="{DynamicResource BlackColorBrush}"/>
             <Setter Property="TextBlock.FontFamily" Value="{StaticResource Regular}"/>
@@ -108,9 +109,15 @@
                                                  Foreground="{StaticResource BlackColorBrush}"/>
                             </Button>
                             <Button Style="{StaticResource controlButton}"
-                                Command="{Binding MaximizeCM}"
-                                CommandParameter="{Binding ElementName=MainWD}">
+                                Command="{Binding MaximizeCM}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource MultiValueConverter}">
+                                        <Binding ElementName="MainWD"/>
+                                        <Binding ElementName="MaximizeIcon"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
                                 <materialDesign:PackIcon Kind="CheckboxBlankOutline" 
+                                                         x:Name="MaximizeIcon"
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
                                                  Width="21" Height="21"

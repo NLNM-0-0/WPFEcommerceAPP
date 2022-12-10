@@ -23,7 +23,7 @@ namespace WPFEcommerceApp {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 10;
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 5;
         }
     }
 }

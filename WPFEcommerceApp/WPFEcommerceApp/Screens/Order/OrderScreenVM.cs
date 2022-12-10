@@ -41,17 +41,27 @@ namespace WPFEcommerceApp {
             set { cancelList = value; OnPropertyChanged(); }
         }
 
+        private int currentPage;
+
+        public int CurrentPage {
+            get { return currentPage; }
+            set { currentPage = value; }
+        }
+
         public ICommand OnCancel { get; set; }
         public ICommand OnDetailView { get; set; }
         public ICommand OnReorder { get; set; }
         public ICommand OnReviewProduct { get; set; }
 
         public OrderScreenVM(
-            NavigationStore navigationStore, 
+            NavigationStore navigationStore,
             AccountStore accountStore,
             OrderStore orderStore,
             INavigationService successNavService,
-            INavigationService orderNavService) {
+            INavigationService orderNavService,
+            int currentPage = 0) {
+
+            CurrentPage = currentPage;
 
             _orderStore = orderStore;
             _orderStore.OrderListChanged += onOrderListChange;

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
@@ -27,42 +28,51 @@
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <Border Padding="50" Background="{StaticResource BackgroundColorBrush}">
-        <StackPanel >
-            <Grid Height="80" Width="auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+    <Border Padding="30" Background="{StaticResource BackgroundColorBrush}" x:Name="Header">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1.3*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="0.9*"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <Grid Height="80" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-                <Button Style="{StaticResource TransparentButton}" HorizontalAlignment="Left" Height="50" Width="150" Command="{Binding OnBack}"
+                    <Button Style="{StaticResource TransparentButton}" 
+                        HorizontalAlignment="Left" 
+                        Height="50" Width="150" Command="{Binding OnBack}"
                         CommandParameter="nah">
-                    <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
-                        <fa:FontAwesome Icon="AngleLeft" FontSize="{StaticResource FontSizeHeadline}" Foreground="{StaticResource NotAvailableColorBrush}"
+                        <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
+                            <fa:FontAwesome Icon="AngleLeft" FontSize="{StaticResource FontSizeHeadline}" Foreground="{StaticResource NotAvailableColorBrush}"
                                         VerticalAlignment="Center"
                                         FontWeight="Regular"/>
-                        <TextBlock Text="BACK"
+                            <TextBlock Text="BACK"
                                    VerticalAlignment="Center"
                                    Margin="20, 0"
                                    FontSize="{StaticResource FontSizeHeadline2}"
                                    Foreground="{StaticResource NotAvailableColorBrush}"
                                    FontWeight="Regular"/>
-                    </StackPanel>
-                </Button>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center"
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center"
                             Orientation="Horizontal"
                             HorizontalAlignment="Right">
-                    <TextBlock Text="ORDER ID:  "
+                        <TextBlock Text="ORDER ID:  "
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
                                FontSize="{StaticResource FontSizeHeadline2}"/>
-                    <TextBlock Text="{Binding OrderDetail.ID}"
+                        <TextBlock Text="{Binding OrderDetail.ID}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
                                FontSize="{StaticResource FontSizeHeadline2}"/>
-                </StackPanel>
-                <TextBlock Grid.Column="2"
+                    </StackPanel>
+                    <TextBlock Grid.Column="2"
                            x:Name="status"
                            Text="{Binding OrderDetail.Status}"
                            VerticalAlignment="Center"
@@ -75,20 +85,29 @@
                             <i:ChangePropertyAction TargetName="status" PropertyName="Foreground" Value="{StaticResource ErrorColorBrush}"/>
                         </i:DataTrigger>
                     </i:Interaction.Triggers>
-                </TextBlock>
-            </Grid>
-            <Separator BorderThickness="0.3" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
-            <StackPanel Orientation="Horizontal" Height="150"  HorizontalAlignment="Center">
+                    </TextBlock>
+                </Grid>
+                <Separator BorderThickness="0.3" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Row="1"
+                        Height="150"  
+                        HorizontalAlignment="Center"
+                        x:Name="StatusContainer">
                 <local:StatusDetailLabel Text="Order Placed"
                                          Icon="FileText"
+                                         Width="{c:Binding ElementName=Header, Path=ActualWidth/4}"
                                          Status="{Binding DataContext.OrderStatus[0], ElementName=MyPD}"/>
                 <local:StatusDetailLabel Text="Order Shipped Out"
                                          Icon="Truck"
                                          Status="{Binding DataContext.OrderStatus[1], ElementName=MyPD}"
+                                         Width="{c:Binding ElementName=Header, Path=ActualWidth/4}"
                                          Margin="-41,0,0,0"/>
                 <local:StatusDetailLabel Text="Order Received"
                                          Icon="DropBox"
                                          Status="{Binding DataContext.OrderStatus[2], ElementName=MyPD}"
+                                         Width="{c:Binding ElementName=Header, Path=ActualWidth/4}"
                                          Margin="-41,0,0,0"/>
                 <local:StatusDetailLabel Text="Order Compledted"
                                          Icon="Star"
@@ -97,21 +116,23 @@
                                          Margin="-41,0,0,0"/>
             </StackPanel>
 
-            <ListView Width="1240"
-                      Height="380"
+            <ListView Width="{c:Binding ElementName=Header, Path=ActualWidth-60}"
+                      HorizontalAlignment="Center"
+                      Grid.Row="2"
                       Background="Transparent"
                       Cursor="Arrow"
-                        x:Name="CancelledList"
-                        BorderThickness="0.3" 
-                        ItemContainerStyle="{StaticResource ListItemContainer}"
-                        ItemTemplate="{StaticResource ShopCard}"
+                      x:Name="CancelledList"
+                      BorderThickness="0.3" 
+                      ItemContainerStyle="{StaticResource ListItemContainer}"
+                      ItemTemplate="{StaticResource ShopCard}"
                       ItemsSource="{Binding ShopProduct}"
-                        ScrollViewer.CanContentScroll="False"
+                      ScrollViewer.CanContentScroll="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
             </ListView>
-            <Grid Margin="0, 20">
+
+            <Grid Margin="0, 20" Grid.Row="3">
                 <Button Style="{StaticResource WhiteButton}" 
                         Content="Re-order" 
                         Background="Transparent"
@@ -138,6 +159,6 @@
                     <TextBlock Text="{Binding OrderDetail.OrderTotal}" FontSize="{StaticResource FontSizeHeadline3}"/>
                 </StackPanel>
             </Grid>
-        </StackPanel>
+        </Grid>
     </Border>
 </UserControl>

@@ -73,9 +73,19 @@ namespace WPFEcommerceApp {
 				await DialogHost.Show(view, "Main");
 			});
 			OnBack = new RelayCommand<object>(p => true, p => {
-				//Actually I need to handle the tab index
-				//But nahh, we'll do it later
-				orderNavService.Navigate();
+                //Actually I need to handle the tab index
+                //But nahh, we'll do it later
+                var param = OrderDetail.Status == "Processing"
+							? 0
+							: OrderDetail.Status == "Delivering"
+							? 1
+							: OrderDetail.Status == "Delivered"
+							? 2
+							: OrderDetail.Status == "Cancelled"
+							? 3 : 2;
+                var nav = new ParamNavigationService<int, OrderScreenVM>(navigationStore,
+                    (parameter) => new OrderScreenVM(navigationStore, accountStore, orderStore, successNavService, orderNavService, parameter));
+                nav.Navigate(param);
 			});
         }
 
