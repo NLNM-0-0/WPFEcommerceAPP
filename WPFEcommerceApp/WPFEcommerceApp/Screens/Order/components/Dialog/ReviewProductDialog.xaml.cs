@@ -41,22 +41,21 @@ namespace WPFEcommerceApp {
 
 
 
-        public Product Param {
-            get { return (Product)GetValue(ParamProperty); }
-            set { SetValue(ParamProperty, value); }
+        public List<ReviewProduct> ProductList {
+            get { return (List<ReviewProduct>)GetValue(ProductListProperty); }
+            set { SetValue(ProductListProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Param.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ParamProperty =
-            DependencyProperty.Register("Param", typeof(Product), typeof(ReviewProductDialog), new PropertyMetadata(null));
+        public static readonly DependencyProperty ProductListProperty =
+            DependencyProperty.Register("ProductList", typeof(List<ReviewProduct>), typeof(ReviewProductDialog), new PropertyMetadata(null));
 
 
 
         public ReviewProductDialog() {
             InitializeComponent();
-            OnOK = new RelayCommand<object>(p => commentBox.Text.Length > 6 && Value > 0, p => {
-                //do something with Product
-                MessageBox.Show($"{Value} and {Param.ID}");
+            OnOK = new RelayCommand<object>(p => true, p => {
+                MessageBox.Show("Create Rating in DB");
             });
             DataContext = this;
         }
@@ -66,4 +65,6 @@ namespace WPFEcommerceApp {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+
 }

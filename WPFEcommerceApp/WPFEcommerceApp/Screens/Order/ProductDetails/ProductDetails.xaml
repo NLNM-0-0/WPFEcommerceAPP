@@ -133,7 +133,7 @@
 
             </ListView>
             <!--Footer-->
-            <Grid Margin="0, 20" Grid.Row="3">
+            <DockPanel Margin="0, 20" Grid.Row="3">
                 <Button Style="{StaticResource WhiteButton}" 
                         Content="Re-order" 
                         Background="Transparent"
@@ -155,11 +155,29 @@
                         </i:DataTrigger>
                     </i:Interaction.Triggers>
                 </Button>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="25,0" VerticalAlignment="Center">
-                    <TextBlock Text="Order Total: " FontSize="{StaticResource FontSizeHeadline3}"/>
-                    <TextBlock Text="{Binding OrderDetail.OrderTotal}" FontSize="{StaticResource FontSizeHeadline3}"/>
-                </StackPanel>
-            </Grid>
+                <Button x:Name="reviewbtn"
+                        Content="Review" 
+                       HorizontalAlignment="Left" 
+                        FontSize="{StaticResource FontSizeHeadline3}" 
+                        Width="120" 
+                        Height="45"
+                        VerticalAlignment="Center" 
+                        FontWeight="Normal"
+                        Command="{Binding OnReviewProduct}"
+                        CommandParameter="{Binding OrderDetail}"
+                        Visibility="Collapsed">
+                    <i:Interaction.Triggers>
+                        <i:DataTrigger Binding="{Binding Status}" Value="3">
+                            <i:ChangePropertyAction TargetName="reviewbtn" PropertyName="Visibility" Value="Visible"/>
+                        </i:DataTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <TextBlock Text="{c:Binding \'Order Total: \' + OrderDetail.OrderTotal}" 
+                           DockPanel.Dock="Right"
+                               FontSize="{StaticResource FontSizeHeadline3}"
+                               HorizontalAlignment="Right" Margin="25,0" VerticalAlignment="Center"/>
+            </DockPanel>
         </Grid>
     </Border>
 </UserControl>

@@ -9,7 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="950" Width="1440"
-        MinWidth="909.47" MinHeight="600"
+        MinWidth="1212.63" MinHeight="800"
         WindowStyle="None"
         x:Name="MainWD"
         WindowStartupLocation="CenterScreen">
@@ -120,7 +120,7 @@
                                                          x:Name="MaximizeIcon"
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
-                                                 Width="21" Height="21"
+                                                 Width="19" Height="19"
                                                  Foreground="{StaticResource BlackColorBrush}"/>
                             </Button>
                             <Button Style="{StaticResource CloseButton}" 

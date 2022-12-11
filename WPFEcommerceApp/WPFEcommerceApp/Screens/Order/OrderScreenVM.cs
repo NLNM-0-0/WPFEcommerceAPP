@@ -121,7 +121,16 @@ namespace WPFEcommerceApp {
             });
 
             OnReviewProduct = new RelayCommand<object>(p => true, async p => {
-                var view = new ReviewProductDialog();
+                var t = p as Order;
+                List<ReviewProduct> products = new List<ReviewProduct>();
+                for(int i = 0; i < t.ShopProduct.Count; i++) {
+                    for(int j = 0; j < t.ShopProduct[i].ProductList.Count; j++) {
+                        products.Add(new ReviewProduct(t.ShopProduct[i].ProductList[j], t.ID));
+                    }
+                }
+                var view = new ReviewProductDialog() {
+                    ProductList = products,
+                };
                 await DialogHost.Show(view, "Main");
             });
         }
@@ -152,6 +161,17 @@ namespace WPFEcommerceApp {
         public override void Dispose() {
             _orderStore.OrderListChanged -= onOrderListChange;
             base.Dispose();
+        }
+    }
+
+    public class ReviewProduct {
+        public string IdOrder { get; set; }
+        public Product product { get; set; }
+        public int rating {get; set;}
+        public ReviewProduct(Product product, string IdOrder, int rating = 5) {
+            this.IdOrder = IdOrder;
+            this.product = product;
+            this.rating = rating;
         }
     }
 }

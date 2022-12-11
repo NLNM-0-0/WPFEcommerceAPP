@@ -30,6 +30,7 @@ namespace WPFEcommerceApp {
 		public ICommand OnCancel { get; }
         public ICommand OnBack { get; }
 		public ICommand OnViewProduct { get; }
+		public ICommand OnReviewProduct { get; }
 
         public ProductDetailsVM(
 			Order order, 
@@ -89,8 +90,21 @@ namespace WPFEcommerceApp {
                     (parameter) => new OrderScreenVM(navigationStore, accountStore, orderStore, successNavService, orderNavService, parameter));
                 nav.Navigate(param);
 			});
-			OnViewProduct = new RelayCommand<object>(p => OrderDetail.Status == "Delivered", p => {
+			OnViewProduct = new RelayCommand<object>(p => true, p => {
 				MessageBox.Show($"Navigate to {(p as Product).ID}");
+            });
+			OnReviewProduct = new RelayCommand<object>(p => true, async p => {
+                var t = p as Order;
+                List<ReviewProduct> products = new List<ReviewProduct>();
+                for(int i = 0; i < t.ShopProduct.Count; i++) {
+                    for(int j = 0; j < t.ShopProduct[i].ProductList.Count; j++) {
+                        products.Add(new ReviewProduct(t.ShopProduct[i].ProductList[j], t.ID));
+                    }
+                }
+                var view = new ReviewProductDialog() {
+                    ProductList = products,
+                };
+                await DialogHost.Show(view, "Main");
             });
         }
 
