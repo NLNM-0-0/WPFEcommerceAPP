@@ -72,16 +72,17 @@ namespace WPFEcommerceApp {
 
             if(OrderList != null)
                 for(int i = 0; i < OrderList.Count; i++) {
-                    if(OrderList[i].Status == "Processing") {
+                    string stt = OrderList[i].Status;
+                    if(stt == "Processing") {
                         ProcessingList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivering") {
+                    else if(stt == "Delivering") {
                         DeliveringList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivered") {
+                    else if(stt == "Delivered" || stt == "Completed") {
                         DeliveredList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Cancelled") {
+                    else if(stt == "Cancelled") {
                         CancelledList.Add(OrderList[i]);
                     }
                 }
@@ -132,16 +133,17 @@ namespace WPFEcommerceApp {
             CancelledList.Clear();
             if(OrderList != null)
                 for(int i = 0; i < OrderList.Count; i++) {
-                    if(OrderList[i].Status == "Processing") {
+                    string stt = OrderList[i].Status;
+                    if(stt == "Processing") {
                         ProcessingList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivering") {
+                    else if(stt == "Delivering") {
                         DeliveringList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivered") {
+                    else if(stt == "Delivered" || stt == "Completed") {
                         DeliveredList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Cancelled") {
+                    else if(stt == "Cancelled") {
                         CancelledList.Add(OrderList[i]);
                     }
                 }

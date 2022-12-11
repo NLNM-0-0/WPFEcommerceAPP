@@ -41,7 +41,7 @@ namespace WPFEcommerceApp {
 
 			ShopProduct = new ObservableCollection<BProduct>(OrderDetail.ShopProduct);
 			OrderStatus = new ObservableCollection<bool>() {
-				false, false, false, false
+				false, false, false, false, false
 			};
 			for(int i = 0; i < Status; i++) {
 				OrderStatus[i] = true;

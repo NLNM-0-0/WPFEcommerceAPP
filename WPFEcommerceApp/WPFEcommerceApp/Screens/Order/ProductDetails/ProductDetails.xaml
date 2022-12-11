@@ -36,6 +36,7 @@
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="0.9*"/>
             </Grid.RowDefinitions>
+            <!--Header-->
             <StackPanel>
                 <Grid Height="80" Width="auto">
                     <Grid.ColumnDefinitions>
@@ -89,7 +90,7 @@
                 </Grid>
                 <Separator BorderThickness="0.3" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
             </StackPanel>
-
+            <!--Order status-->
             <StackPanel Orientation="Horizontal" 
                         Grid.Row="1"
                         Height="150"  
@@ -115,7 +116,7 @@
                                          CanProcess="False"
                                          Margin="-41,0,0,0"/>
             </StackPanel>
-
+            <!--List of shops-->
             <ListView Width="{c:Binding ElementName=Header, Path=ActualWidth-60}"
                       HorizontalAlignment="Center"
                       Grid.Row="2"
@@ -131,7 +132,7 @@
                       ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
             </ListView>
-
+            <!--Footer-->
             <Grid Margin="0, 20" Grid.Row="3">
                 <Button Style="{StaticResource WhiteButton}" 
                         Content="Re-order" 
