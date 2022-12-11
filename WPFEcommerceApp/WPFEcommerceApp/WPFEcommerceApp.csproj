@@ -243,6 +243,9 @@
     <Compile Include="UserControls\ProductBlock\ProductBlock.xaml.cs">
       <DependentUpon>ProductBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\RatingBar\RatingBar.xaml.cs">
+      <DependentUpon>RatingBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ShopRequest\ShopRequestItem.xaml.cs">
       <DependentUpon>ShopRequestItem.xaml</DependentUpon>
     </Compile>
@@ -726,6 +729,10 @@
     <Page Include="UserControls\ProductBlock\ProductBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\RatingBar\RatingBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ShopRequest\ShopRequestItem.xaml">
       <Generator>MSBuild:Compile</Generator>
