@@ -9,62 +9,98 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Constants/Colors.xaml" />
         <ResourceDictionary Source="/Constants/Fonts.xaml" />
+        <ResourceDictionary Source="OrderCard.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <!--#region ProductCard Datatemplate-->
+
+    <Style TargetType="{x:Type Button}" x:Key="prdButton">
+        <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+        <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="{i:Binding Path=Height*0.05, RelativeSource={RelativeSource Mode=Self}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="Transparent" 
+                            x:Name="Bd"
+                            CornerRadius="{i:Binding Path=Height*0.05, RelativeSource={RelativeSource Mode=Self}}">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" SourceName="Bd" Value="True">
+                            <Setter Property="Background" TargetName="Bd" Value="LightGray"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <vm:MultiValueConverter x:Key="MultiValueConverter"/>
+
     <DataTemplate x:Key="ProductCard" DataType="{x:Type vm:Product}">
-        <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListView, Mode=FindAncestor}
-            , Path=ActualWidth}">
-            <Separator BorderThickness="0.5" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                       VerticalAlignment="Top" Margin="0, 0,0,20"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
+        <Button Width="{i:Binding ElementName=prdContainer, Path=ActualWidth-5}"
+                Height="{i:Binding ElementName=prdContainer, Path=ActualHeight+10}"
+                Style="{StaticResource prdButton}"
+                Command="{Binding RelativeSource={RelativeSource AncestorType=vm:ProductDetails, Mode=FindAncestor}, Path=DataContext.OnViewProduct}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}">
 
-                <Grid Background="Transparent"  x:Name="ImageContainer" MinHeight="107">
-                    <Image Source="{Binding ProductImage}" Width="{Binding Height, ElementName=ImageContainer}" 
+            <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListView, Mode=FindAncestor}
+            , Path=ActualWidth}"
+                        VerticalAlignment="Center"
+                        Margin="0 8"
+                    x:Name="prdContainer">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid x:Name="ImageContainer" MinHeight="107">
+                        <Image Source="{Binding ProductImage}" Width="{Binding Height, ElementName=ImageContainer}" 
                        Height="{Binding Height, ElementName=ImageContainer}" HorizontalAlignment="Center"/>
-                </Grid>
+                    </Grid>
 
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Name}" FontSize="13" TextWrapping="Wrap"/>
-                    <StackPanel Orientation="Horizontal" Margin="5, 9, 0, 0">
-                        <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                        <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}" FontSize="13" TextWrapping="Wrap"
+                               Margin="5 0 0 0"/>
+                        <StackPanel Orientation="Horizontal" Margin="5, 9, 0, 0">
+                            <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                            <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                            <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                        <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                        <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                        <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                        <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                    </StackPanel>
-                </StackPanel>
-                
-                <StackPanel Orientation="Horizontal" Grid.Column="2" 
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" 
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
-                    <TextBlock Text="x" FontSize="13"/>
-                    <TextBlock Text="{Binding Amount}" FontSize="13"/>
-                </StackPanel>
-                
-                <StackPanel Grid.Column="3"
+                        <TextBlock Text="x" FontSize="13"/>
+                        <TextBlock Text="{Binding Amount}" FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3"
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
-                    <TextBlock Text="Subtotal:" FontSize="13"/>
-                    <TextBlock Text="{Binding Subtotal}" FontSize="13"/>
-                </StackPanel>
-            </Grid>
-        </StackPanel>
+                        <TextBlock Text="Subtotal:" FontSize="13"/>
+                        <TextBlock Text="{Binding Subtotal}" FontSize="13"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Button>
     </DataTemplate>
     <!--#endregion-->
 
-    <Style x:Key="ListItemContainer" TargetType="ListViewItem">
-        <Setter Property="Margin" Value="0, 5, 0, 5"/>
+    <Style x:Key="ListPrdContainer" TargetType="ListViewItem">
+        <Setter Property="Margin" Value="0, 0, 0, 10"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Padding" Value="4,1"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
@@ -76,7 +112,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                    <Border x:Name="Bd" BorderBrush="{StaticResource BlurColorBrush}" BorderThickness="0 0.6" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true"
+                            Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor},Path=ActualWidth}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -88,12 +125,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <DataTemplate x:Key="ShopCard" DataType="{x:Type vm:BProduct}">
-        <StackPanel Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=ActualWidth-10}"
+        <StackPanel Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=ActualWidth-20}"
                     HorizontalAlignment="Center">
             <!--#region Header-->
-            <Separator BorderThickness="0.5" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
             <Border Padding="29, 0">
                 <Grid Margin="0, 5">
                     <StackPanel Orientation="Horizontal" MinHeight="50">
@@ -108,12 +144,12 @@
             </Border>
             <!--#endregion-->
             <!--#region Product-->
-            <StackPanel Margin="-5, 0,0,0">
+            <StackPanel>
                 <!--#region Listview Example-->
                 <ListView BorderThickness="0" 
-                          Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=ActualWidth-30}"
-                          ItemContainerStyle="{StaticResource ListItemContainer}" 
-                          Margin="-10, 0, 0, 0"  
+                          HorizontalAlignment="Center"
+                          Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=ActualWidth-30}"
+                          ItemContainerStyle="{StaticResource ListPrdContainer}"
                           ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                           Background="Transparent"
                           ItemsSource="{Binding ProductList}"
@@ -126,12 +162,8 @@
                 <!--#endregion-->
             </StackPanel>
             <!--#endregion-->
-
             <!--#region Footer-->
-            <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top" Margin="0, 0,0,20"/>
-            <Grid >
+            <Grid Margin="0 10 0 15">
                 <StackPanel Orientation="Horizontal">
                     <Button Content="View shop" FontWeight="Regular"
                             Margin="19, 0"
@@ -150,9 +182,6 @@
                                FontSize="{StaticResource FontSizeHeadline3}"/>
                 </StackPanel>
             </Grid>
-            <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top" Margin="0, 20"/>
         </StackPanel>
         <!--#endregion-->
     </DataTemplate>

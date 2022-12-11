@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 
@@ -28,6 +29,7 @@ namespace WPFEcommerceApp {
 		public ICommand OnReOrder { get; }
 		public ICommand OnCancel { get; }
         public ICommand OnBack { get; }
+		public ICommand OnViewProduct { get; }
 
         public ProductDetailsVM(
 			Order order, 
@@ -87,6 +89,9 @@ namespace WPFEcommerceApp {
                     (parameter) => new OrderScreenVM(navigationStore, accountStore, orderStore, successNavService, orderNavService, parameter));
                 nav.Navigate(param);
 			});
+			OnViewProduct = new RelayCommand<object>(p => OrderDetail.Status == "Delivered", p => {
+				MessageBox.Show($"Navigate to {(p as Product).ID}");
+            });
         }
 
     }

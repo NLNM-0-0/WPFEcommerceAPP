@@ -128,7 +128,7 @@
                       ItemTemplate="{StaticResource ShopCard}"
                       ItemsSource="{Binding ShopProduct}"
                       ScrollViewer.CanContentScroll="False"
-                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
             </ListView>

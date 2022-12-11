@@ -54,10 +54,11 @@ namespace WPFEcommerceApp {
 
         public ReviewProductDialog() {
             InitializeComponent();
-            DataContext = this;
-            OnOK = new RelayCommand<object>(p => true, p => {
+            OnOK = new RelayCommand<object>(p => commentBox.Text.Length > 6 && Value > 0, p => {
                 //do something with Product
+                MessageBox.Show($"{Value} and {Param.ID}");
             });
+            DataContext = this;
         }
 
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };

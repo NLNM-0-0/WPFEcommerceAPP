@@ -24,7 +24,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true"
+                    <Border x:Name="Bd" BorderBrush="{StaticResource BlurColorBrush}" BorderThickness="0.6" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true" Margin="0 20 0 0"
                             Width="{c:Binding RelativeSource={RelativeSource AncestorType=TabControl, Mode=FindAncestor},Path=ActualWidth-30}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
@@ -39,9 +39,8 @@
     </Style>
     
     <DataTemplate x:Key="OrderCard" DataType="{x:Type vm:Order}">
-        <StackPanel>
+        <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=ActualWidth}">
             <!--Header-->
-            <Separator BorderThickness="0.5" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
             <Border Padding="15, 0">
                 <Grid Margin="0, 20">
                     <StackPanel Orientation="Horizontal">
@@ -77,10 +76,8 @@
                 </it:Interaction.Triggers>
             </StackPanel>
             <!--Footer-->
-            <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top" Margin="0, 0,0,20"/>
-            <Grid >
+
+            <Grid Margin="0 0 0 10">
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Re-Order" FontWeight="Light"
                             x:Name="Button1"
@@ -97,14 +94,6 @@
                             Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnDetailView}"
                             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}">
                     </Button>
-                    <Button Content="Review" FontWeight="Medium"
-                            x:Name="ReviewButton"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnReviewProduct}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}"
-                            Visibility="Collapsed">
-                    </Button>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
                                                 HorizontalAlignment="Right">
@@ -115,17 +104,11 @@
                                                    FontSize="{StaticResource FontSizeHeadline3}"/>
                 </StackPanel>
             </Grid>
-            <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top" Margin="0, 20"/>
         </StackPanel>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding Status}" Value="Processing">
                 <Setter TargetName="Button1" Property="Content" Value="Cancel"/>
                 <Setter TargetName="Button1" Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnCancel}"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="Delivered">
-                <Setter TargetName="ReviewButton" Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
