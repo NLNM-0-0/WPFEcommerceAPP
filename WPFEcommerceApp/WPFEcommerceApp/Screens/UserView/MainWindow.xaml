@@ -9,7 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow" Height="950" Width="1440"
-        MinWidth="1212.63" MinHeight="800"
+        MinWidth="909.47" MinHeight="600"
         WindowStyle="None"
         x:Name="MainWD"
         WindowStartupLocation="CenterScreen">
@@ -164,6 +164,12 @@
                             <!--Admin-->
                             <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
                                 <local:ShopInformationPage/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminBrandViewModel}">
+                                <local:AdminBrandManager/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminCategoryViewModel}">
+                                <local:AdminCategoryManager/>
                             </DataTemplate>
                         </Grid.Resources>
 

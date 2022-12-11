@@ -36,7 +36,9 @@ namespace WPFEcommerceApp {
                     CreateShopMainNavService(serviceProvider),
                     CreateShopOrderNavService(serviceProvider),
                     CreateShopProductNavService(serviceProvider),
-                    CreateShopRatingNavService(serviceProvider)
+                    CreateShopRatingNavService(serviceProvider),
+                    CreateAdminCategoryMngNavService(serviceProvider),
+                    CreateAdminBrandMngNavService(serviceProvider)
                 )
             );
 
@@ -72,6 +74,8 @@ namespace WPFEcommerceApp {
 
             //Admin
             services.AddTransient<ShopInformationPageViewModel>(s => new ShopInformationPageViewModel());
+            services.AddTransient<AdminCategoryViewModel>(s => new AdminCategoryViewModel());
+            services.AddTransient<AdminBrandViewModel>(s => new AdminBrandViewModel());
 
             //Setup MainWindow
             services.AddSingleton<MainViewModel>();
@@ -117,6 +121,16 @@ namespace WPFEcommerceApp {
             return new NavigationService<ShopInformationPageViewModel>(
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
+        }
+        private INavigationService CreateAdminCategoryMngNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<AdminCategoryViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<AdminCategoryViewModel>);
+        }
+        private INavigationService CreateAdminBrandMngNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<AdminBrandViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<AdminBrandViewModel>);
         }
 
         //Shop

@@ -55,7 +55,9 @@ namespace WPFEcommerceApp {
             INavigationService ShopMainNavigateService,
             INavigationService ShopOrderNavigateService,
             INavigationService ShopProductNavigateService,
-            INavigationService ShopRatingNavigateService) {
+            INavigationService ShopRatingNavigateService,
+            INavigationService AdminBrandNavigateService,
+            INavigationService AdminCategoryNavigateService) {
 
             _accountStore = accountStore;
             _accountStore.AccountChanged += OnAccountChange;
@@ -99,6 +101,12 @@ namespace WPFEcommerceApp {
                 else {
                     if(SelectedIndex == 1) {
                         ShopInformationPageNavigateService.Navigate();
+                    }
+                    else if(SelectedIndex == 4) {
+                        AdminCategoryNavigateService.Navigate();
+                    }
+                    else if(SelectedIndex==5) {
+                        AdminBrandNavigateService.Navigate();
                     }
                 }
             });
