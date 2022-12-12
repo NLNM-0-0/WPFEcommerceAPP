@@ -355,7 +355,7 @@
                 <Grid Grid.Row="1"
                           x:Name="ProductListContainer">
 
-                    <ListView ItemsSource="{Binding ProductList}"
+                    <ListView ItemsSource="{Binding ListOrder}"
                                   Width="{c:Binding ElementName=ProductListContainer, Path=ActualWidth+10}"
                                   ItemTemplate="{StaticResource BProductCardContent}" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}" 

@@ -217,7 +217,7 @@
         </Setter>
     </Style>
 
-    <DataTemplate x:Key="BProductCardContent" DataType="{x:Type vm:BProduct}">
+    <DataTemplate x:Key="BProductCardContent" DataType="{x:Type vm:Order}">
         <Expander x:Name="expand" Style="{StaticResource BProductCard}" 
                   HorizontalAlignment="Center" 
                   Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}

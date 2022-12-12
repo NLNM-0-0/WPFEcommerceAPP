@@ -18,6 +18,9 @@
             <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="{c:Binding Path=Height*0.5, RelativeSource={RelativeSource Mode=Self}}"/>
             <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
             <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource BoxLineColorBrush}"/>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Click"></EventTrigger>
+            </Style.Triggers>
         </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">

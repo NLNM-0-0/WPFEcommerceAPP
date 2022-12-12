@@ -15,22 +15,58 @@ using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
-    public class CheckoutScreenVM : BaseViewModel {
+	public class CheckoutScreenVM : BaseViewModel {
 		private readonly AccountStore _accountStore;
 		private readonly Order _order;
+		public List<Order> ListOrder { get; set; }
 		public MUser CurrentUser => _accountStore?.CurrentAccount;
 
-        #region props private
-        private ObservableCollection<bool> stateArea;
-        private bool paymentState;
-        #endregion
-        #region props
-        public double SubTotal => _order != null ? _order.SubTotal : 0;
-        public double ShipTotal => _order != null ? _order.ShipTotal : 0;
-        public double TotalPayment => _order != null ? _order.OrderTotal : 0;
-        public double Discount => _order != null ? _order.Discount : 0;
+		#region props private
+		private ObservableCollection<bool> stateArea;
+		private bool paymentState;
+		#endregion
+		#region props
+		public double SubTotal {
+			get {
+				if(ListOrder == null) return _order.SubTotal;
+				double total = 0;
+				for(int i = 0; i < ListOrder?.Count; i++) {
+					total += ListOrder[i].SubTotal;
+				}
+				return total;
+			}
+		}
+        public double ShipTotal {
+            get {
+                if(ListOrder == null) return _order.ShipTotal;
+                double total = 0;
+                for(int i = 0; i < ListOrder.Count; i++) {
+                    total += ListOrder[i].ShipTotal;
+                }
+                return total;
+            }
+        }
+        public double TotalPayment {
+            get {
+                if(ListOrder == null) return _order.OrderTotal;
+                double total = 0;
+                for(int i = 0; i < ListOrder.Count; i++) {
+                    total += ListOrder[i].OrderTotal;
+                }
+                return total;
+            }
+        }
+        public double Discount {
+            get {
+                if(ListOrder == null) return _order.Discount;
+                double total = 0;
+                for(int i = 0; i < ListOrder.Count; i++) {
+                    total += ListOrder[i].Discount;
+                }
+                return total;
+            }
+        }
 
-		public ObservableCollection<BProduct> ProductList => _order != null ? new ObservableCollection<BProduct>(_order.ShopProduct) : null;
 		public string UserName => CurrentUser?.Name;
         public string UserPhone => CurrentUser?.PhoneNumber;
         public string UserAddress => CurrentUser?.Address;
@@ -53,18 +89,26 @@ namespace WPFEcommerceApp {
 		public ICommand OnSuccessPayment { get; set; }
 		public ICommand OnPaymentFieldChoice { get; set; }
         public ICommand OnDeliFieldChoice { get; set; }
-
-		public ICommand testCM { get; set; }
         #endregion
 
         public CheckoutScreenVM(
 			INavigationService successNavService, 
 			AccountStore accountStore,
 			OrderStore orderStore,
-			Order order = null) {
+			Order order = null,
+			List<Order> orders = null) {
+
 			_accountStore = accountStore;
 			_accountStore.AccountChanged += OnAccountChange;
 			_order = order;
+			if(orders != null)
+				ListOrder = orders;
+			else {
+				ListOrder = new List<Order>();
+				if(order != null)
+					ListOrder.Add(order);
+			}
+
 			PaymentState = false;
 			StateArea = new ObservableCollection<bool> {
 				true,
