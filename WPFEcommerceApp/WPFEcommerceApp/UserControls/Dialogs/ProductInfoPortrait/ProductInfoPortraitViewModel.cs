@@ -287,11 +287,14 @@ namespace WPFEcommerceApp
             var repository = new GenericDataRepository<Models.Category>();
             Categories = await repository.GetAllAsync();
         }
+
+        //Hoang has changed this function//
+        //La la la la la la la la la la la//
         private async Task LoadRating()
         {
-            var repository = new GenericDataRepository<Models.RatingInfo>();
-            IList<RatingInfo> ratingInfos = (await repository.GetListAsync(x => x.Id == SelectedProduct.Id));
-            Rating = ratingInfos.Average(p=>(p.Rating == null?0:p.Rating)) ?? 0;
+            var repository = new GenericDataRepository<Models.Rating>();
+            IList<Rating> ratingInfos = (await repository.GetListAsync(x => x.Id == SelectedProduct.Id));
+            //Rating = ratingInfos.Average(p=>(p.Rating == null?0:p.Rating)) ?? 0; 
             RatingTimes = ratingInfos.Count();
         }
         private async Task UpdateProduct()

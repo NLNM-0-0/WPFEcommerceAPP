@@ -89,9 +89,11 @@
                         <!--Drag Area-->
                         <Grid x:Name="TitleBarContainer" Background="Transparent">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseLeftButtonDown" SourceName="TitleBarContainer">
-                                    <i:InvokeCommandAction Command="{Binding DragWindowCM}"
-                                                       CommandParameter="{Binding ElementName=MainWD}"/>
+                                <i:EventTrigger EventName="MouseMove">
+                                    <i:CallMethodAction
+                                        TargetObject="{Binding}"
+                                        MethodName="DragWindow"
+                                        />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Grid>

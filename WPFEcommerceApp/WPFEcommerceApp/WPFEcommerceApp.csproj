@@ -120,13 +120,9 @@
     <Compile Include="Models\Rating.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RatingInfo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ShopRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Status.cs" />
@@ -157,10 +153,6 @@
       <DependentUpon>MyProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\MyProfile\MyProfileViewModel.cs" />
-    <Compile Include="Screens\ShopStatistics\Charts.xaml.cs">
-      <DependentUpon>Charts.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -542,10 +534,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\ShopProduct\ShopProduct.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Screens\ShopStatistics\Charts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
