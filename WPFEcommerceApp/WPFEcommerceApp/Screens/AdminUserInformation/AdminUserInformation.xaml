@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AdminUserInformation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="1440">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="50 20">
+            <DockPanel>
+                <TextBlock Text="Users Information"
+                                   FontFamily="{StaticResource Bold}"
+                                   FontSize="{StaticResource FontSizeHeadline}"
+                                   />
+
+                <Button DockPanel.Dock="Right"
+                                Content="Add"
+                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                    <Button.CommandParameter>
+                        <local:AdminAddUserDialog/>
+                    </Button.CommandParameter>
+                </Button>
+
+                <Button DockPanel.Dock="Right" Margin="0 0 5 0"
+                                Content="{Binding RemoveOrUnBanned}"
+                        Command="{Binding RemoveUserCommand}"
+                        CommandParameter="{Binding ElementName=datagrid, Path=SelectedItem}"/>
+
+                <!-- Search bar -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                    <local:SearchBar Width="400" SearchText="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <ComboBox Margin="5 0" SelectedItem="{Binding SearchBy}"
+                              ItemsSource="{Binding SearchByOptions}"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                materialDesign:HintAssist.Hint="Search by"
+                                materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
+                                materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="50 0">
+            <TextBlock Text="{Binding StatusText}" Margin="5 0 5 0"
+                           FontSize="{StaticResource FontSizeText}"/>
+
+            <ToggleButton Margin="5 0 5 0"
+                Style="{StaticResource SwitchToggleButton}"
+                          Background="{StaticResource BlackColorBrush}"
+                          materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
+                          IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="2" Height="700" x:Name="grid" Background="{StaticResource WhiteColorBrush}" 
+              Margin="50 10" HorizontalScrollBarVisibility="Auto" 
+                      ScrollViewer.CanContentScroll="True">
+            <DataGrid ItemsSource="{Binding FilteredUsers}" x:Name="datagrid" 
+                    MaxHeight="{Binding ElementName=grid, Path=ActualHeight}"
+                    AutoGenerateColumns="False" Grid.ColumnSpan="2"
+                      CanUserReorderColumns="False" CanUserAddRows="False"
+                      CanUserResizeColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Width="auto" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="User Name" Width="250" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Full Name" Width="250" Binding="{Binding FullName}"/>
+                    <DataGridTextColumn Header="Email" Width="300" Binding="{Binding Email}"/>
+                    <DataGridTextColumn Header="Phone" Width="auto" Binding="{Binding Phone}"/>
+                    <DataGridTextColumn Header="Birth" Width="auto" Binding="{Binding DOB}"/>
+                    <DataGridTextColumn Header="Gender" Width="auto" Binding="{Binding Gender}"/>
+                    <DataGridTextColumn Header="Address" Width="500" Binding="{Binding Address}"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </ScrollViewer>
+        <Grid.InputBindings>
+            <KeyBinding Key="Enter"
+                            Command="{Binding SearchCommand}"/>
+            <KeyBinding Key="Esc"
+                            Command="{Binding CloseSearchCommand}"/>
+        </Grid.InputBindings>
+    </Grid>
+</UserControl>
