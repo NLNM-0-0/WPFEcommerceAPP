@@ -1,93 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using DataAccessLayer;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
+    [DebuggerDisplay("{"+nameof(GetDebuggerDisplay)+"(),nq}")]
     public class Order {
-        public Order(List<BProduct> orderList,
-            string iD = "000",
-            string status = "Processing",
-            string iDCustomer = null,
-            string iDrating = null,
-            double shipTotal = 0) {
+        public Order(
+            string iD,
+            string iDCustomer,
+            string iDShop,
+            string status,
+            double shipTotal,
+            List<Product> productList,
+            DateTime dateBegin,
+            string shopName,
+            string shopImage) {
+
             ID=iD;
-            Status=status;
-            ShopProduct = orderList;
             IDCustomer=iDCustomer;
-            IDrating=iDrating;
+            IDShop=iDShop;
+            Status=status;
             ShipTotal=shipTotal;
-            SubTotal = 0;
-            OrderTotal = 0;
-            Discount = 0;
+            ProductList=productList;
+            DateBegin=dateBegin;
+            ShopName=shopName;
+            ShopImage=shopImage;
 
-            ProductPreview = new List<Product>();
-            for(int i = 0; i<ShopProduct.Count; i++) {
-                bool flag = false;
-                for(int j = 0; j < ShopProduct[i].ProductList.Count; j++) {
-                    ProductPreview.Add(ShopProduct[i].ProductList[j]);
-                    if(ProductPreview.Count == 2) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if(flag) break;
+            SubTotal=0;
+            Discount=0;
+            OrderTotal=0;
+
+            for(int i = 0; i< ProductList.Count; i++) {
+                SubTotal += ProductList[i].Subtotal;
+                Discount += ProductList[i].Subtotal * ProductList[i].Discount / 100;
             }
 
-            for(int i = 0; i<ShopProduct.Count; i++) {
-                SubTotal += ShopProduct[i].Subtotal;
-                Discount += ShopProduct[i].Subtotal * ShopProduct[i].Discount / 100;
-            }
             OrderTotal = SubTotal + ShipTotal - Discount;
+            
         }
+
         public Order(Order o) {
             ID = o.ID;
             Status = o.Status;
             IDCustomer = o.IDCustomer;
-            IDrating = o.IDrating;
+            IDShop = o.IDShop;
+            ShopName = o.ShopName;
+            ShopImage = o.ShopImage;
             ShipTotal = o.ShipTotal;
+            ProductList = o.ProductList;
+            DateBegin = o.DateBegin;
+            DateEnd = o.DateEnd;
             SubTotal = o.SubTotal;
             Discount = o.Discount;
             OrderTotal = o.OrderTotal;
-            ShopProduct = new List<BProduct>(o.ShopProduct);
-            ProductPreview = new List<Product>(o.ProductPreview);
         }
 
         public string ID { get; set; }
-        public string Status { get; set; }
         public string IDCustomer { get; set; }
-        public string IDrating { get; set; }
-        public List<BProduct> ShopProduct { get; set; }
-        public List<Product> ProductPreview { get; set; }
+        public string IDShop { get; set; }
+        public string ShopName { get; set; }
+        public string ShopImage { get; set; }
+        public string Status { get; set; }
         public double ShipTotal { get; set; }
+        public List<Product> ProductList { get; set; }
+        public Nullable<DateTime> DateBegin { get; set; }
+        public Nullable<DateTime> DateEnd { get; set; }
         public double SubTotal { get; set; }
         public double Discount { get; set; }
         public double OrderTotal { get; set; }
 
-    }
-    public class test {
-        public string ID { get; set; }
-        public string IDCustomer { get; set; }
-        public string IDShop { get; set; }
-        public string Status { get; set; }
-        public double ShipTotal { get; set; }
-        public List<Product> Product { get; set; }
-        public DateTime DateBegin { get; set; }
-        public DateTime DateEnd { get; set; }
-        public double SubTotal { get; set; }
-        public double Discount { get; set; }
-        public double OrderTotal { get; set; }
-        public test(MOrder o) {
-            ID=o.Id;
-            IDCustomer = o.IdCustomer;
-            //IDShop = o.IdShop;
-            Status = o.Status;
-            //ShipTotal = o.ShipTotal;
-            DateBegin = (DateTime) o.DateBegin;
-            DateEnd = (DateTime)o.DateEnd;
-            
+        private string GetDebuggerDisplay() {
+            return ToString();
         }
     }
 }

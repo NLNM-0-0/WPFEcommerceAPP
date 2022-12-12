@@ -17,16 +17,14 @@ namespace WPFEcommerceApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Rating()
         {
-            this.MOrders = new HashSet<MOrder>();
-            this.RatingInfoes = new HashSet<RatingInfo>();
+            this.OrderInfoes = new HashSet<OrderInfo>();
         }
     
         public string Id { get; set; }
         public Nullable<System.DateTime> DateRating { get; set; }
+        public Nullable<int> Rating1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MOrder> MOrders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
+        public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
     }
 }

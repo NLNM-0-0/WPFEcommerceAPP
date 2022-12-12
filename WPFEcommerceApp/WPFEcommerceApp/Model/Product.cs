@@ -14,7 +14,8 @@ namespace WPFEcommerceApp {
             string description = "Nothing",
             double price = 21.85,
             int amount = 10,
-            string iD = null) {
+            string iD = null,
+            double discount = 0) {
             ProductImage=productImage;
             Name=name;
             Size=size;
@@ -24,6 +25,7 @@ namespace WPFEcommerceApp {
             Amount=amount;
             Subtotal=amount * price;
             ID=iD;
+            Discount=discount;
         }
 
         public string ProductImage { get; set; }
@@ -35,7 +37,7 @@ namespace WPFEcommerceApp {
         public int Amount { get; set; }
         public double Subtotal { get; set; }
         public string ID { get; set; }
-
+        public double Discount { get; set; }
 
     }
 }

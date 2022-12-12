@@ -103,34 +103,32 @@ create table MOrder
 (
 	Id varchar(8) primary key,
 	IdCustomer varchar(8) not null, 
-	IdRating varchar(8) null,
+	IdShop varchar(8) not null,
+	ShipTotal int default 0,
 	DateBegin smalldatetime,
 	DateEnd smalldatetime,
 	OrderTotal Bigint not null default 0,
-	Status varchar(20) check (Status in ('Processing', 'Delivering', 'Delivered', 'Cancelled', 'Completed')) default 'Processing'
+	Status varchar(20) check (Status in ('Processing', 'Delivering', 'Delivered', 'Cancelled', 'Completed')) default 'Processing',
+	ShipMethod bit default 0
 )
+
 create table OrderInfo
 (
 	IdOrder varchar(8) not null,
 	IdProduct varchar(8) not null,
+	IdRating varchar(8),
 	ImageProduct varchar(200) null,
 	Size varchar(5),
-	IdShop varchar(8) not null,
 	Count int not null default 0,
 	TotalPrice Bigint not null default 0,
 	primary key(IdOrder, IdProduct) 
 )
-create table RatingInfo
-(
-	Id varchar(8) primary key,
-	IdRating varchar(8) not null,
-	IdProduct varchar(8) not null,
-	Rating int 
-)
+
 create table Rating
 (
 	Id varchar(8) primary key,
-	DateRating smalldatetime
+	DateRating smalldatetime,
+	Rating int 
 )
 create table BrandRequest
 (
@@ -185,15 +183,6 @@ add constraint FK_MOrder_MUser foreign key (IdCustomer) references MUser(Id)
 alter table dbo.OrderInfo
 add constraint FK_OrderInfo_MOrder foreign key (IdOrder) references MOrder(Id)
 
-alter table dbo.MOrder
-add constraint FK_MOrder_Rating foreign key (IdRating) references Rating(Id)
-
-alter table dbo.RatingInfo
-add constraint FK_RatingInfo_Rating foreign key (IdRating) references Rating(Id)
-
-alter table dbo.RatingInfo
-add constraint FK_RatingInfo_Product foreign key (IdProduct) references Product(Id)
-
 alter table dbo.Notification
 add constraint FK_Notification_UserReceiver foreign key (IdReceiver) references MUser(Id)
 
@@ -203,9 +192,11 @@ add constraint FK_Notification_UserSender foreign key (IdSender) references MUse
 alter table dbo.OrderInfo
 add constraint FK_OrderInfo_Product foreign key (IdProduct) references Product(Id)
 
-alter table OrderInfo
-add constraint FK_Orderinfor_Shop foreign key (IdShop) references MUser(Id) 
+alter table MOrder
+add constraint FK_MOrder_Shop foreign key (IdShop) references MUser(Id)
 
+alter table dbo.OrderInfo
+add constraint FK_MOrder_Rating foreign key (IdRating) references Rating(Id)
 
 --MockData
 insert into MUser values
@@ -213,11 +204,15 @@ insert into MUser values
 'a@a.aa', 'im here', 0, '6-11-2003', 'Nothing', 'NotBanned', 'NotBanned', null, null)
 
 insert into MUser values
-('user02', 'Admin', 'Hahaha', '01234569', 
+('user02', 'Admin', 'Tao la Shop', '01234569', 
+'a@a.aa', 'im here', 0, '6-11-2003', 'Nothing', 'NotBanned', 'NotBanned', null, null)
+
+insert into MUser values
+('user03', 'Admin', 'Tao la Admin', '01234569', 
 'a@a.aa', 'im here', 0, '6-11-2003', 'Nothing', 'NotBanned', 'NotBanned', null, null)
 
 insert into Rating values
-('rate01',null)
+('rate01',null,null)
 
 insert into Category values
 ('cate01', 'Category 01', 'NotBanned')
@@ -226,23 +221,28 @@ insert into Brand values
 ('brand1', 'Brand 01', 'NotBanned')
 
 insert into MOrder values
-('order01', 'user01', 'rate01', '12-6-2022', null, 1234, 'Processing')
+('order01', 'user01', 'user02', 123, '12-6-2022', null, 1234, 'Processing')
 
 insert into MOrder values
-('order02', 'user01', 'rate01', '12-6-2022', null, 1234, 'Delivered')
+('order02', 'user01', 'user02', 123, '12-6-2022', null, 1234, 'Delivered')
 
 insert into Product values
 ('prod01', 'Product01','cate01', 'brand1', 'user02', 123, 5, 50, 20, 
 1, 1, 0, 0, 0, 0, 'Dark Smoke', 'Description 0', '12-13-2022', 'NotBanned')
 
-insert into OrderInfo values
-('order01', 'prod01', null, 'XXL', 'user02', 5, 666)
+insert into Product values
+('prod02', 'Ahihi Product','cate01', 'brand1', 'user02', 123, 5, 50, 20, 
+1, 1, 0, 0, 0, 0, 'Dark Smoke', 'Description 0', '12-13-2022', 'NotBanned')
 
 insert into OrderInfo values
-('order02', 'prod01', null, 'XXL', 'user02', 5, 666)
+('order01', 'prod01', 'rate01', null, 'XXL', 5, 666)
+
+insert into OrderInfo values
+('order02', 'prod02', 'rate01', null, 'XXL', 5, 666)
 
 select * from MUser
 select * from Rating
 select * from MOrder
 select * from Product
 select * from OrderInfo
+
