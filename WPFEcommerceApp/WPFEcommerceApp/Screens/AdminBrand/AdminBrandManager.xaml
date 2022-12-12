@@ -12,7 +12,7 @@
     <Grid Margin="0 0 0 50">
         
         <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
-        <StackPanel Margin="95 20">
+        <StackPanel Margin="50 20">
             <DockPanel >
                 <TextBlock Text="Brands"
                                    FontFamily="{StaticResource Bold}"
@@ -57,7 +57,8 @@
             </StackPanel>
 
             <DataGrid ItemsSource="{Binding FilteredBrands}" Margin="0 20" x:Name="datagrid"
-                              MaxHeight="700"
+                              MaxHeight="700" CanUserResizeColumns="False" CanUserAddRows="False"
+                              CanUserReorderColumns="False"
                               AutoGenerateColumns="False"
                       SelectedItem="{Binding SelectedItem}">
                 <DataGrid.Columns>
