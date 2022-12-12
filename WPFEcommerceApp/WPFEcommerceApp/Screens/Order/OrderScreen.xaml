@@ -182,14 +182,14 @@
           Width="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Width}"
           wpf:ScrollBarAssist.ButtonsVisibility="Collapsed" 
           x:Name="container">
-        <Border Padding="70, 40, 70, 25">
+        <Border Padding="70, 40, 70, 40">
             <TabControl x:Name="TabControlContainer" SelectedIndex="{Binding CurrentPage}">
                 <!--Processing-->
                 <TabItem Style="{StaticResource CustomTabItem}" 
                     Header="Processing">
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
-                            <TextBlock Text="No orders in Processing"
+                        <TextBlock Text="No orders in Processing"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage"
                                        VerticalAlignment="Center"
@@ -203,21 +203,21 @@
                                   ScrollViewer.CanContentScroll="False"
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
 
-                            <i:Interaction.Triggers>
-                                <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="0">
-                                    <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Visible"/>
-                                    <i:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetName="ProcessingList"/>
-                                </i:DataTrigger>
-                                <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="1">
-                                    <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Collapsed"/>
-                                    <i:ChangePropertyAction PropertyName="Visibility" Value="Visible" TargetName="ProcessingList"/>
-                                </i:DataTrigger>
-                            </i:Interaction.Triggers>
-                        </Grid>
+                        <i:Interaction.Triggers>
+                            <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="0">
+                                <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Visible"/>
+                                <i:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetName="ProcessingList"/>
+                            </i:DataTrigger>
+                            <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="1">
+                                <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Collapsed"/>
+                                <i:ChangePropertyAction PropertyName="Visibility" Value="Visible" TargetName="ProcessingList"/>
+                            </i:DataTrigger>
+                        </i:Interaction.Triggers>
+                    </Grid>
                 </TabItem>
                 <!--Delivering-->
                 <TabItem Header="Delivering" Style="{StaticResource CustomTabItem}" >
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Delivering"
                                        HorizontalAlignment="Center"
@@ -248,7 +248,7 @@
                 </TabItem>
                 <!--Deliverd-->
                 <TabItem Header="Delivered" Style="{StaticResource CustomTabItem}" >
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
                         <TextBlock Text="No orders in Delivered"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage3"
@@ -278,7 +278,7 @@
                 </TabItem>
                 <!--Cancelled-->
                 <TabItem Header="Cancelled" Style="{StaticResource CustomTabItem}" >
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Cancelled"
                                        HorizontalAlignment="Center"

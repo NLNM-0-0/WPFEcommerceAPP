@@ -116,7 +116,7 @@
                                          CanProcess="False"
                                          Margin="-41,0,0,0"/>
             </StackPanel>
-            <!--List of shops-->
+            <!--List of Product-->
             <ListView Width="{c:Binding ElementName=Header, Path=ActualWidth-60}"
                       HorizontalAlignment="Center"
                       Grid.Row="2"
@@ -124,9 +124,9 @@
                       Cursor="Arrow"
                       x:Name="CancelledList"
                       BorderThickness="0.3" 
-                      ItemContainerStyle="{StaticResource ListItemContainer}"
-                      ItemTemplate="{StaticResource ShopCard}"
-                      ItemsSource="{Binding ShopProduct}"
+                      ItemContainerStyle="{StaticResource ListPrdContainer}"
+                      ItemTemplate="{StaticResource ProductCard}"
+                      ItemsSource="{Binding ProductList}"
                       ScrollViewer.CanContentScroll="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden">
@@ -139,13 +139,34 @@
                         Background="Transparent"
                         x:Name="FuncButton"
                        HorizontalAlignment="Left" 
-                        Margin="25,0" 
+                        Margin="20,0" 
                         FontSize="{StaticResource FontSizeHeadline3}" 
                         Width="120" 
                         Height="45"
                         VerticalAlignment="Center" 
                         FontWeight="Normal"
                         Command="{Binding OnReOrder}"
+                        CommandParameter="{Binding OrderDetail}">
+                    <i:Interaction.Triggers>
+                        <i:DataTrigger Binding="{Binding OrderDetail.Status}" Value="Processing">
+                            <i:ChangePropertyAction TargetName="FuncButton" PropertyName="Content" Value="Cancel"/>
+                            <i:ChangePropertyAction TargetName="FuncButton" PropertyName="Command"
+                                                    Value="{Binding OnCancel}"/>
+                        </i:DataTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+
+                <Button
+                        Content="Visit Shop"
+                        x:Name="ViewshopButton"
+                        HorizontalAlignment="Left"
+                        Margin="0 0 20 0" 
+                        FontSize="{StaticResource FontSizeHeadline3}" 
+                        Width="120" 
+                        Height="45"
+                        VerticalAlignment="Center" 
+                        FontWeight="Light"
+                        Command="{Binding OnVisitShop}"
                         CommandParameter="{Binding OrderDetail}">
                     <i:Interaction.Triggers>
                         <i:DataTrigger Binding="{Binding OrderDetail.Status}" Value="Processing">

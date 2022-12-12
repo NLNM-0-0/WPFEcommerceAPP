@@ -38,7 +38,7 @@
     <vm:MultiValueConverter x:Key="MultiValueConverter"/>
 
     <DataTemplate x:Key="ProductCard" DataType="{x:Type vm:Product}">
-        <Button Width="{i:Binding ElementName=prdContainer, Path=ActualWidth-5}"
+        <Button Width="{i:Binding ElementName=prdContainer, Path=ActualWidth-10}"
                 Height="{i:Binding ElementName=prdContainer, Path=ActualHeight+10}"
                 Style="{StaticResource prdButton}"
                 Command="{Binding RelativeSource={RelativeSource AncestorType=vm:ProductDetails, Mode=FindAncestor}, Path=DataContext.OnViewProduct}"
@@ -126,7 +126,7 @@
         </Setter>
     </Style>
 
-    <DataTemplate x:Key="ShopCard" DataType="{x:Type vm:BProduct}">
+    <DataTemplate x:Key="ShopCard" DataType="{x:Type vm:Order}">
         <StackPanel Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=ActualWidth-20}"
                     HorizontalAlignment="Center">
             <!--#region Header-->
@@ -178,7 +178,7 @@
                             Margin="69,0">
                     <TextBlock Text="Order Total: "
                                FontSize="{StaticResource FontSizeHeadline3}"/>
-                    <TextBlock Text="{Binding Subtotal}"
+                    <TextBlock Text="{Binding SubTotal}"
                                FontSize="{StaticResource FontSizeHeadline3}"/>
                 </StackPanel>
             </Grid>

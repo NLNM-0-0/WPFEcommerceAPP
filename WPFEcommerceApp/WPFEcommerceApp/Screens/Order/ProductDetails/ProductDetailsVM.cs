@@ -25,12 +25,14 @@ namespace WPFEcommerceApp {
 			? 0 : 5;
 
 		public ObservableCollection<bool> OrderStatus { get; set; }
-		public ObservableCollection<BProduct> ShopProduct { get; set; }
+		public ObservableCollection<Product> ProductList { get; set; }
+
 		public ICommand OnReOrder { get; }
 		public ICommand OnCancel { get; }
         public ICommand OnBack { get; }
 		public ICommand OnViewProduct { get; }
 		public ICommand OnReviewProduct { get; }
+		public ICommand OnVisitShop { get; }
 
         public ProductDetailsVM(
 			Order order, 
@@ -39,10 +41,12 @@ namespace WPFEcommerceApp {
             OrderStore orderStore,
 			INavigationService successNavService, 
 			INavigationService orderNavService) {
+
             OrderDetail = order;
 			_orderStore = orderStore;
 
-			ShopProduct = new ObservableCollection<BProduct>(OrderDetail.ShopProduct);
+			ProductList = new ObservableCollection<Product>(OrderDetail.ProductList);
+
 			OrderStatus = new ObservableCollection<bool>() {
 				false, false, false, false, false
 			};
@@ -96,16 +100,18 @@ namespace WPFEcommerceApp {
 			OnReviewProduct = new RelayCommand<object>(p => true, async p => {
                 var t = p as Order;
                 List<ReviewProduct> products = new List<ReviewProduct>();
-                for(int i = 0; i < t.ShopProduct.Count; i++) {
-                    for(int j = 0; j < t.ShopProduct[i].ProductList.Count; j++) {
-                        products.Add(new ReviewProduct(t.ShopProduct[i].ProductList[j], t.ID));
-                    }
+                for(int i = 0; i < t.ProductList.Count; i++) {
+                        products.Add(new ReviewProduct(t.ProductList[i], t.ID));
                 }
                 var view = new ReviewProductDialog() {
                     ProductList = products,
                 };
                 await DialogHost.Show(view, "Main");
             });
+
+			OnVisitShop = new RelayCommand<object>(p => true, p => {
+				MessageBox.Show($"Navigate to Shop {OrderDetail.IDShop}");
+			});
         }
 
     }

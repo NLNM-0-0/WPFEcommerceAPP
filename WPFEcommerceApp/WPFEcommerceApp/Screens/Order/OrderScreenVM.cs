@@ -123,10 +123,8 @@ namespace WPFEcommerceApp {
             OnReviewProduct = new RelayCommand<object>(p => true, async p => {
                 var t = p as Order;
                 List<ReviewProduct> products = new List<ReviewProduct>();
-                for(int i = 0; i < t.ShopProduct.Count; i++) {
-                    for(int j = 0; j < t.ShopProduct[i].ProductList.Count; j++) {
-                        products.Add(new ReviewProduct(t.ShopProduct[i].ProductList[j], t.ID));
-                    }
+                for(int i = 0; i < t.ProductList.Count; i++) {
+                        products.Add(new ReviewProduct(t.ProductList[i], t.ID));
                 }
                 var view = new ReviewProductDialog() {
                     ProductList = products,

@@ -43,18 +43,36 @@
             <!--Header-->
             <Border Padding="15, 0">
                 <Grid Margin="0, 20">
-                    <StackPanel Orientation="Horizontal">
-                        <Grid>
-                            
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Grid Background="Pink"
+                              Width="{c:Binding ElementName=OrderIDText, Path=Height+40}"
+                              Height="{c:Binding ElementName=OrderIDText, Path=Height+40}">
+                            <Image Source="{Binding ShopImage}"
+                                   Width="{c:Binding ElementName=OrderIDText, Path=Height+40}"
+                                   Height="{c:Binding ElementName=OrderIDText, Path=Height+40}"
+                                   HorizontalAlignment="Center"/>
                         </Grid>
-                        <TextBlock Text="{c:Binding \'ID: \' + ID}" 
-                                                   HorizontalAlignment="Left"
-                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                        <TextBlock Text="{Binding ShopName}"
+                                   FontSize="{StaticResource FontSizeHeadline3}"
+                                   Margin="20 0 40 0"/>
                     </StackPanel>
-                    <TextBlock x:Name="statusString" Text="{Binding Status}" 
-                                                 HorizontalAlignment="Right"
-                                                   FontSize="{StaticResource FontSizeHeadline3}"
-                                                   Foreground="{StaticResource SuccessColorBrush}">
+                    
+                    <TextBlock Text="{c:Binding \'ID: \' + ID}" 
+                               Grid.Column="1"
+                                   x:Name="OrderIDText"
+                                   HorizontalAlignment="Center"
+                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                    
+                    <TextBlock x:Name="statusString" Text="{Binding Status}"
+                               Grid.Column="2"
+                               HorizontalAlignment="Right"
+                               FontSize="{StaticResource FontSizeHeadline3}"
+                               Foreground="{StaticResource SuccessColorBrush}">
                         <it:Interaction.Triggers>
                             <it:DataTrigger Binding="{Binding Status}" Value="Cancelled">
                                 <it:ChangePropertyAction PropertyName="Foreground" TargetName="statusString" Value="{StaticResource ErrorColorBrush}"/>
@@ -66,10 +84,10 @@
 
             <!--Product-->
             <StackPanel>
-                <vm:ProductOrderCard DataContext="{Binding ProductPreview[0]}"/>
-                <vm:ProductOrderCard x:Name="product2" DataContext="{Binding ProductPreview[1]}"/>
+                <vm:ProductOrderCard DataContext="{Binding ProductList[0]}"/>
+                <vm:ProductOrderCard x:Name="product2" DataContext="{Binding ProductList[1]}"/>
                 <it:Interaction.Triggers>
-                    <it:DataTrigger Binding="{Binding ProductPreview.Count}" Value="1">
+                    <it:DataTrigger Binding="{Binding ProductList.Count}" Value="1">
                         <it:ChangePropertyAction PropertyName="Visibility" TargetName="product2" Value="Collapsed"/>
                         <it:ChangePropertyAction PropertyName="DataContext" TargetName="product2" Value=""/>
                     </it:DataTrigger>
