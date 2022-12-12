@@ -44,10 +44,10 @@
             <Border Padding="15, 0">
                 <Grid Margin="0, 20">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="ID: " 
-                                                   HorizontalAlignment="Left"
-                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
-                        <TextBlock Text="{Binding ID}" 
+                        <Grid>
+                            
+                        </Grid>
+                        <TextBlock Text="{c:Binding \'ID: \' + ID}" 
                                                    HorizontalAlignment="Left"
                                                    FontSize="{StaticResource FontSizeHeadline3}"/>
                     </StackPanel>

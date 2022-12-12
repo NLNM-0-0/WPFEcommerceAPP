@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class Order {
@@ -65,5 +66,28 @@ namespace WPFEcommerceApp {
         public double Discount { get; set; }
         public double OrderTotal { get; set; }
 
+    }
+    public class test {
+        public string ID { get; set; }
+        public string IDCustomer { get; set; }
+        public string IDShop { get; set; }
+        public string Status { get; set; }
+        public double ShipTotal { get; set; }
+        public List<Product> Product { get; set; }
+        public DateTime DateBegin { get; set; }
+        public DateTime DateEnd { get; set; }
+        public double SubTotal { get; set; }
+        public double Discount { get; set; }
+        public double OrderTotal { get; set; }
+        public test(MOrder o) {
+            ID=o.Id;
+            IDCustomer = o.IdCustomer;
+            //IDShop = o.IdShop;
+            Status = o.Status;
+            //ShipTotal = o.ShipTotal;
+            DateBegin = (DateTime) o.DateBegin;
+            DateEnd = (DateTime)o.DateEnd;
+            
+        }
     }
 }

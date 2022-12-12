@@ -7,7 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WPFEcommerceApp"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1340"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
     <UserControl.Resources>
@@ -124,7 +124,6 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
-
         <!--Header-->
         <Label Content="Checkout"
                FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -135,7 +134,7 @@
                 <ColumnDefinition Width="7*"/>
             </Grid.ColumnDefinitions>
             <!--Left column-->
-            <Grid Margin="53 0 0 73">
+            <Grid Margin="53 0 0 73" x:Name="LeftColumnContainer">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
                     <StackPanel>
                         <ListBox x:Name="AreaContainer">
@@ -307,11 +306,16 @@
                         </ListBox>
                     </StackPanel>
                 </ScrollViewer>
-
             </Grid>
             <!--Right column-->
-            <Grid Grid.Column="1" Margin="67 0 53 73">
-                <StackPanel>
+            <Grid Grid.Column="1" Margin="67 0 53 73"
+                  x:Name="rightColumnContainer">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Height="{Binding ElementName=rightColumnContainer, Path=Height}">
                     <!--Header-->
                     <Grid>
                         <Label Content="Product ordered" FontSize="{StaticResource FontSizeHeadline2}"
@@ -345,22 +349,24 @@
                             <Label Content="{Binding TotalPayment}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                     </Grid >
-                    <!--Product-->
-                    <Grid Margin="0, 23, 0,0" 
+                </StackPanel>
+
+                <!--Product-->
+                <Grid Grid.Row="1"
                           x:Name="ProductListContainer">
-                        <ListView ItemsSource="{Binding ProductList}" 
+
+                    <ListView ItemsSource="{Binding ProductList}"
                                   Width="{c:Binding ElementName=ProductListContainer, Path=ActualWidth+10}"
                                   ItemTemplate="{StaticResource BProductCardContent}" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}" 
                                   BorderThickness="0"
-                                  ScrollViewer.CanContentScroll="False"
-                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                              ScrollViewer.CanContentScroll="False"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    </ListView>
 
-                        </ListView>
-                        <!--<uc:BProductCard/>-->
-                    </Grid>
-                </StackPanel>
+                    <!--<uc:BProductCard/>-->
+                </Grid>
+
             </Grid>
         </Grid>
     </Grid>
