@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="WPFEcommerceApp.CategoryRequestList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="1250"
+             xmlns:materialDesign ="http://materialdesigninxaml.net/winfx/xaml/themes"
+             >
+
+    <Grid Background="Transparent">
+        <Border CornerRadius="15"
+                Background="{StaticResource WhiteColorBrush}"
+                BorderThickness="2"
+                BorderBrush="{StaticResource BlackColorBrush}"
+                x:Name="Container"/>
+        <Grid Margin="5">
+            <Grid.OpacityMask>
+                <VisualBrush Visual="{Binding ElementName=Container}"/>
+            </Grid.OpacityMask>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          materialDesign:ScrollBarAssist.ThumbCornerRadius="20">
+                <ListView ItemsSource="{Binding RequestList.Items}"  
+                          HorizontalContentAlignment="Stretch" BorderThickness="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="5" LastChildFill="False">
+                                <local:CategoryRequestItem DockPanel.Dock="Left" x:Name="selectedItem"/>
+
+                                <Button Style="{StaticResource TransparentButton}" DockPanel.Dock="Right"
+                                                x:Name="button"
+                                                Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                                Command="{Binding DropdownButtonCommand}"
+                                                >
+                                    <Button.Content>
+                                        <fa:FontAwesome Icon="EllipsisV"/>
+                                    </Button.Content>
+                                </Button>
+
+                                <!-- Drop down Popup -->
+                                <Popup IsOpen="{Binding IsDropdown}"
+                                               StaysOpen="False"
+                                               Placement="Left"
+                                               PlacementTarget="{Binding ElementName=button}"
+                                               >
+                                    <Grid Background="{StaticResource WhiteColorBrush}">
+                                        <Border Padding="2" BorderThickness="1"
+                                                BorderBrush="{StaticResource BoxLineColorBrush}">
+
+                                            <StackPanel>
+                                                <Button Style="{StaticResource OutLineBlackButtonRectangle}"
+                                                        BorderThickness="0"
+                                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.RemoveRequestCommand}"
+                                                        CommandParameter="{Binding}">
+                                                    <Button.Content>
+                                                        <TextBlock Text="Remove"/>
+                                                    </Button.Content>
+                                                </Button>
+
+                                                <Button Style="{StaticResource OutLineBlackButtonRectangle}"
+                                                                BorderThickness="0"
+                                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.AddRequestCommand}"
+                                                                CommandParameter="{Binding}">
+                                                    <Button.Content>
+                                                        <TextBlock Text="Accept"/>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
+                                        </Border>
+
+                                    </Grid>
+                                </Popup>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+
+    </Grid>
+
+</UserControl>

@@ -45,8 +45,11 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ToggleButton">
-                            <Grid x:Name="Container" Height="66" Width="325">
-                                <Border x:Name="border" BorderBrush="#a6a6a6" BorderThickness="0.9" CornerRadius="5"  Padding="13, 8, 13, 8">
+                            <Grid x:Name="Container" Height="66">
+                                <Border x:Name="border" BorderBrush="#a6a6a6" 
+                                        BorderThickness="0.9"
+                                        CornerRadius="5"  
+                                        Padding="13, 8, 60, 8">
                                     <StackPanel>
                                         <ContentPresenter Margin="{TemplateBinding Padding}"/>
                                     </StackPanel>
@@ -120,11 +123,10 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
+
         <!--Header-->
         <Label Content="Checkout"
-               FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Top"
-               Margin="0 39 0 34"
-               />
+               FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <!--Content-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -132,7 +134,7 @@
                 <ColumnDefinition Width="7*"/>
             </Grid.ColumnDefinitions>
             <!--Left column-->
-            <Grid Margin="53 0 0 73" Height="612.714">
+            <Grid Margin="53 0 0 73">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
                     <StackPanel>
                         <ListBox x:Name="AreaContainer">
@@ -156,11 +158,18 @@
                             <Expander x:Name="DeliArea" 
                                       Style="{StaticResource CustomExpander}" 
                                       IsExpanded="{Binding StateArea[0]}">
+                                <i:Interaction.Triggers>
+                                    <i:DataTrigger Binding="{Binding ElementName=DeliArea, Path=IsExpanded}" Value="True">
+                                        <i:InvokeCommandAction Command="{Binding OnDeliFieldChoice}" CommandParameter=""/>
+                                    </i:DataTrigger>
+                                </i:Interaction.Triggers>
                                 <Expander.Header>
-                                    <Label Content="Delivery Options" 
-                                           FontSize="{StaticResource FontSizeHeadline2}"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"/>
+                                    <Grid Width="700" Height="50" Cursor="Hand" Background="Transparent">
+                                        <Label Content="Delivery Options" 
+                                               FontSize="{StaticResource FontSizeHeadline2}"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"/>
+                                    </Grid>
                                 </Expander.Header>
                                 <StackPanel>
                                     <!--Address-->
@@ -173,7 +182,7 @@
                                                 <ColumnDefinition Width="80"/>
                                             </Grid.ColumnDefinitions>
                                             <StackPanel>
-                                                <Label Content="{Binding Username}" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="{Binding UserName}" FontSize="{StaticResource FontSizeText}"/>
                                                 <Label Content="{Binding UserPhone}" FontSize="{StaticResource FontSizeText}"/>
                                                 <Label Content="{Binding UserAddress}" FontSize="{StaticResource FontSizeText}"/>
                                             </StackPanel>
@@ -200,10 +209,10 @@
                                         </RadioButton>
                                         <RadioButton GroupName="Shipping" Style="{StaticResource ShippingButton}" HorizontalAlignment="Right">
                                             <StackPanel>
-                                                <Label Content="Free No Rush Shipping" FontSize="{StaticResource FontSizeText}"/>
+                                                <Label Content="Fast Shipping" FontSize="{StaticResource FontSizeText}"/>
                                                 <Label Content="Arrives Mon, Oct 10- Tue, Oct 11"
-                               FontSize="{StaticResource FontSizeDescription}"
-                               Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                                        FontSize="{StaticResource FontSizeDescription}"
+                                                        Foreground="{StaticResource NotAvailableColorBrush}"/>
                                             </StackPanel>
                                         </RadioButton>
                                     </Grid>
@@ -241,10 +250,16 @@
                                       IsEnabled="{Binding PaymentState}" 
                                       IsExpanded="{Binding StateArea[1]}">
                                 <Expander.Header>
-                                    <Label Content="Payment" 
+                                    <Grid Width="700" Height="50" Cursor="Hand" Background="Transparent">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="39*"/>
+                                            <ColumnDefinition Width="101*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Payment" 
                                            FontSize="{StaticResource FontSizeHeadline2}"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"/>
+                                    </Grid>
                                 </Expander.Header>
                                 <StackPanel>
                                     <Label Content="Payment method" FontSize="{StaticResource FontSizeHeadline3}"/>
@@ -321,7 +336,7 @@
                         </Grid>
                     </Grid >
                     <!--Product-->
-                    <Grid Margin="0, 23, 0,0" Background="AliceBlue" Height="372">
+                    <Grid Margin="0, 23, 0,0" Background="AliceBlue" >
                         <ListView ItemsSource="{Binding ProductList}" 
                                   ItemTemplate="{StaticResource BProductCardContent}" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}" 

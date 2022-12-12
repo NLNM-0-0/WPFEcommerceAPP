@@ -172,7 +172,7 @@ namespace WPFEcommerceApp
                 //await userRepository.Add(newUser);
 
                 Shops = new ObservableCollection<MUser>(await userRepository.
-                    GetListAsync(item => item.Role.Equals("Shop")&&item.StatusShop.Equals("NotBanned")));
+                    GetListAsync(item => item.Role.Equals("Shop")&&item.StatusUser.Equals("NotBanned")));
 
                 using (var context = new EcommerceAppEntities())
                 {
@@ -235,7 +235,7 @@ namespace WPFEcommerceApp
             {
                 var removeShop = (MUser)obj;
                 Shops.Remove(removeShop);
-                //removeShop.Status = "Banned";
+                removeShop.Status = "Banned";
                 await new GenericDataRepository<MUser>().Update(removeShop);
             }
             catch { };

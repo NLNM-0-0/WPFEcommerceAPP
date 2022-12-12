@@ -8,45 +8,175 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1440">
+        Title="MainWindow" Height="950" Width="1440"
+        MinWidth="1212.63" MinHeight="800"
+        WindowStyle="None"
+        x:Name="MainWD"
+        WindowStartupLocation="CenterScreen">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      CornerRadius="10"
+                      ResizeBorderThickness="5"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="controlButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="Foreground" Value="{DynamicResource BlackColorBrush}"/>
+            <Setter Property="TextBlock.FontFamily" Value="{StaticResource Regular}"/>
+            <Setter Property="TextBlock.FontSize" Value="{StaticResource FontSizeText}"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Content" Value="Button"/>
+            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="0"/>
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
+            <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource BlackColorBrush}"/>
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="CloseButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid Width="40" Height="40" x:Name="Container" Background="Transparent">
+                            <materialDesign:PackIcon Kind="Close" 
+                                                     x:Name="Icon"
+                                                 VerticalAlignment="Center" 
+                                                 HorizontalAlignment="Center"
+                                                 Width="25" Height="25"
+                                                 Foreground="{StaticResource BlackColorBrush}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Container" Property="Background" Value="{StaticResource ErrorColorBrush}"/>
+                                <Setter TargetName="Icon" Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <materialDesign:DialogHost
         DialogTheme="Inherit"
-        CloseOnClickAway="True">
-       <!-- <Grid>
-            <Grid.Resources>
-                <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
-                    <local:CheckoutScreen/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:OrderScreenVM}">
-                    <local:OrderScreen/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
-                    <local:SuccessScreen/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
-                    <local:ProductDetails/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
-                    <local:ShopMain/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
-                    <local:ShopRating/>
-                </DataTemplate>
-            </Grid.Resources>
+        CloseOnClickAway="True"
+        Identifier="App">
+        <Grid>
+            <!--Drawer-->
             <local:Drawer HorizontalAlignment="Left"
-                          x:Name="Drawer"
-                          DataContext="{Binding DrawerVM}" Panel.ZIndex="100"/>
-            <Grid  Height="80" VerticalAlignment="Top" Background="AliceBlue"/>
-            <ContentControl 
-                x:Name="Content"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Width="1380"
-                Height="800"
-                Content="{Binding CurrentViewModel}"/>
+                      x:Name="Drawer"
+                      DataContext="{Binding DrawerVM}"
+                      Panel.ZIndex="1"/>
+            <!--Right Panel-->
 
-        </Grid>-->
-        <local:Home/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <!--Title Bar-->
+                <Border BorderThickness="0 0 0 0.3" BorderBrush="{StaticResource BlurColorBrush}" 
+                        Grid.Column="1">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <!--Drag Area-->
+                        <Grid x:Name="TitleBarContainer" Background="Transparent">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown" SourceName="TitleBarContainer">
+                                    <i:InvokeCommandAction Command="{Binding DragWindowCM}"
+                                                       CommandParameter="{Binding ElementName=MainWD}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Grid>
+                        <!--HeadBar button area-->
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" 
+                                        Grid.Column="1">
+
+                            <Button Style="{StaticResource controlButton}"
+                                Command="{Binding MinimizeCM}"
+                                CommandParameter="{Binding ElementName=MainWD}">
+                                <materialDesign:PackIcon Kind="Minus" 
+                                                 VerticalAlignment="Center" 
+                                                 HorizontalAlignment="Center"
+                                                 Width="25" Height="25"
+                                                 Foreground="{StaticResource BlackColorBrush}"/>
+                            </Button>
+                            <Button Style="{StaticResource controlButton}"
+                                Command="{Binding MaximizeCM}"
+                                CommandParameter="{Binding ElementName=MainWD}">
+                                <materialDesign:PackIcon Kind="CheckboxBlankOutline" 
+                                                 VerticalAlignment="Center" 
+                                                 HorizontalAlignment="Center"
+                                                 Width="21" Height="21"
+                                                 Foreground="{StaticResource BlackColorBrush}"/>
+                            </Button>
+                            <Button Style="{StaticResource CloseButton}" 
+                                Command="{Binding CloseCM}"
+                                CommandParameter="{Binding ElementName=MainWD}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <!--Content-->
+                <materialDesign:DialogHost
+                            DialogTheme="Inherit"
+                            CloseOnClickAway="True"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Identifier="Main">
+                    <Grid>
+                        <Grid.Resources>
+                            <!--Checkout and order-->
+                            <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
+                                <local:CheckoutScreen/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:OrderScreenVM}">
+                                <local:OrderScreen/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
+                                <local:SuccessScreen/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
+                                <local:ProductDetails/>
+                            </DataTemplate>
+                            <!--Shop-->
+                            <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
+                                <local:ShopMain/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
+                                <local:ShopRating/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:ShopProductViewModel}">
+                                <local:ShopProduct/>
+                            </DataTemplate>
+                            <!--Admin-->
+                            <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
+                                <local:ShopInformationPage/>
+                            </DataTemplate>
+                        </Grid.Resources>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="80"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <local:Header/>
+
+                            <ContentControl
+                                Grid.Row="1"
+                                x:Name="Content"
+                                Content="{Binding CurrentViewModel}"/>
+                        </Grid>
+                    </Grid>
+                </materialDesign:DialogHost>
+            </Grid>
+
+        </Grid>
     </materialDesign:DialogHost>
-
 </Window>

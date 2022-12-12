@@ -24,12 +24,13 @@ namespace WPFEcommerceApp.Models
             this.ShopRequests = new HashSet<ShopRequest>();
             this.Notifications = new HashSet<Notification>();
             this.Notifications1 = new HashSet<Notification>();
+            this.OrderInfoes = new HashSet<OrderInfo>();
             this.Products = new HashSet<Product>();
             this.Products1 = new HashSet<Product>();
         }
     
-        public int Id { get; set; }
-        public string Role { get; set; }
+        public string Id { get; set; }
+        public bool IsAdmin { get; set; }
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
@@ -55,8 +56,7 @@ namespace WPFEcommerceApp.Models
         public virtual ICollection<ShopRequest> ShopRequests { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notification> Notifications { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Notification> Notifications1 { get; set; }
+        public virtual Shop Shop { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

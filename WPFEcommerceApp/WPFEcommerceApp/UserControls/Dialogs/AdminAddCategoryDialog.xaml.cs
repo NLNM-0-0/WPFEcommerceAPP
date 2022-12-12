@@ -13,12 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFEcommerceApp {
+namespace WPFEcommerceApp
+{
     /// <summary>
-    /// Interaction logic for EnterPaymentDialog.xaml
+    /// Interaction logic for AddCategoryDialog.xaml
     /// </summary>
-    public partial class EnterPaymentDialog : UserControl {
-        public EnterPaymentDialog() {
+    public partial class AdminAddCategoryDialog : UserControl
+    {
+        public AdminAddCategoryDialog()
+        {
             InitializeComponent();
         }
     }
