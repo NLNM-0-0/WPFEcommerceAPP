@@ -14,7 +14,7 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
-    public class AdminBrandViewModel : BaseViewModel, IAsyncInitialization
+    public class AdminBrandViewModel : BaseViewModel
     {
         #region Properties
         public GenericDataRepository<Brand> BrandRepository { get; set; }
@@ -67,7 +67,7 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; OnPropertyChanged(); }
+            set { _searchBy = value; Search(); OnPropertyChanged(); }
         }
 
         private string _searchText;
@@ -140,8 +140,6 @@ namespace WPFEcommerceApp
         public ICommand SearchCommand { get; set; }
         public ICommand CloseSearchCommand { get; set; }
 
-        public Task InitializeAsync { get; private set; }
-
         #endregion
 
         #region Constructor
@@ -151,7 +149,7 @@ namespace WPFEcommerceApp
             RequestRepo = new GenericDataRepository<BrandRequest>();
             var repo = new GenericDataRepository<Notification>();
 
-            InitializeAsync = Load();
+            Load();
 
             RequestList = new BrandRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
@@ -172,7 +170,7 @@ namespace WPFEcommerceApp
         #endregion
 
         #region Command Methods
-        public async Task Load()
+        public async void Load()
         {
 
             IsChecked = true;
@@ -192,9 +190,9 @@ namespace WPFEcommerceApp
             RequestList.Items = new ObservableCollection<BrandRequestItemViewModel>(
                         query.Select(item => new BrandRequestItemViewModel
                         {
-                            RequestId = Int32.Parse(item.Id),
-                            Id =  Int32.Parse(item.MUser.Id),
-                            Name = item.Name,
+                            RequestId =item.Id,
+                            Id =  item.MUser.Id,
+                            Name = item.MUser.Name,
                             BrandName = item.Name,
                             SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
                             Reason = item.Reason,
@@ -216,9 +214,9 @@ namespace WPFEcommerceApp
             }
             else
             {
-                await BrandRepository.Add(new Brand { Name = brandName, Status = Status.NotBanned.ToString() });
+                await BrandRepository.Add(new Brand {Id=await GenerateID.Gen(typeof(Brand)) ,Name = brandName, Status = Status.NotBanned.ToString() });
             }
-            await Load();
+            Load();
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
@@ -234,7 +232,7 @@ namespace WPFEcommerceApp
                 removeBrand.Status = Status.NotBanned.ToString();
 
             await BrandRepository.Update(removeBrand);
-            await Load();
+            Load();
         }
 
         public async Task RemoveRequest(object obj)
@@ -245,7 +243,7 @@ namespace WPFEcommerceApp
 
             var removeRequest = await RequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
             await RequestRepo.Remove(removeRequest);
-            await Load();
+            Load();
         }
 
         public async Task AddRequest(object obj)
@@ -266,12 +264,12 @@ namespace WPFEcommerceApp
             }
             else
             {
-                await BrandRepository.Add(new Brand { Name = request.BrandName, Status = Status.NotBanned.ToString() });
+                await BrandRepository.Add(new Brand {Id=await GenerateID.Gen(typeof(Brand)) ,Name = request.BrandName, Status = Status.NotBanned.ToString() });
             }
 
             var removeRequest = await RequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
             await RequestRepo.Remove(removeRequest);
-            await Load();
+            Load();
 
 
         }

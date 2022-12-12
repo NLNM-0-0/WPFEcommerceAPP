@@ -7,8 +7,8 @@ namespace WPFEcommerceApp
     {
         #region Public Properties
 
-        private int _requestId;
-        public int RequestId
+        private string _requestId;
+        public string RequestId
         {
             get => _requestId;
             set
@@ -32,8 +32,8 @@ namespace WPFEcommerceApp
             set { _name = value; OnPropertyChanged(); }
         }
 
-        private int _id;
-        public int Id
+        private string _id;
+        public string Id
         {
             get => _id;
             set
