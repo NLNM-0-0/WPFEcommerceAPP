@@ -102,6 +102,11 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model.Context.cs" />
+    <Compile Include="Models\Model.Context1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -138,11 +143,29 @@
       <DependentUpon>AdminCategoryManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminCategory\AdminCategoryViewModel.cs" />
-    <Compile Include="Screens\AdminCategory\CategoryModel.cs" />
+    <Compile Include="Screens\AdminProduct\AdminProductInformation.xaml.cs">
+      <DependentUpon>AdminProductInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminProduct\AdminProductManagerViewModel.cs" />
     <Compile Include="Screens\AdminShopInformation\ShopInformationPage.xaml.cs">
       <DependentUpon>ShopInformationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminShopInformation\ShopInformationPageViewModel.cs" />
+    <Compile Include="Screens\AdminUserInformation\AdminUserInformation.xaml.cs">
+      <DependentUpon>AdminUserInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminUserInformation\AdminUserManagerViewModel.cs" />
+    <Compile Include="Screens\MyProfile\MyPassword.xaml.cs">
+      <DependentUpon>MyPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\MyProfile\MyProfile.xaml.cs">
+      <DependentUpon>MyProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\MyProfile\MyProfileViewModel.cs" />
+    <Compile Include="Screens\ShopStatistics\Charts.xaml.cs">
+      <DependentUpon>Charts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -174,6 +197,9 @@
     </Compile>
     <Compile Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml.cs">
       <DependentUpon>AdminAddCategoryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\AdminAddUserDialog.xaml.cs">
+      <DependentUpon>AdminAddUserDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml.cs">
       <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
@@ -442,8 +468,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\AdminProduct\AdminProductInformation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\AdminShopInformation\ShopInformationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\AdminUserInformation\AdminUserInformation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\MyProfile\MyPassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\MyProfile\MyProfile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Order\components\Dialog\ReviewProductDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -505,6 +547,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\ShopStatistics\Charts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\UserView\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -554,6 +600,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dialogs\AdminAddUserDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -764,6 +814,9 @@
     </PackageReference>
     <PackageReference Include="FontAwesome.WPF">
       <Version>4.7.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="LiveCharts.Wpf">
+      <Version>0.9.7</Version>
     </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
       <Version>4.6.1</Version>

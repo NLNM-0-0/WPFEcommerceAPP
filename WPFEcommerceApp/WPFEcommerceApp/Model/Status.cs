@@ -6,5 +6,14 @@ namespace WPFEcommerceApp
         NotBanned,
         Banned,
         NotExist
+
+    }
+    public enum OrderStatus
+    {
+        Processing, 
+        Delivering, 
+        Delivered, 
+        Cancelled, 
+        Completed
     }
 }
