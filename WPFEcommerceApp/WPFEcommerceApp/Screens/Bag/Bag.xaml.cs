@@ -16,14 +16,15 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for Register.xaml
+    /// Interaction logic for Bag.xaml
     /// </summary>
-    public partial class Register : UserControl
+    public partial class Bag : UserControl
     {
-        public Register()
+        public Bag()
         {
             InitializeComponent();
-            this.DataContext = new RegisterViewModel();
+            this.DataContext = new BagViewModel();
         }
     }
 }
+

@@ -21,7 +21,7 @@ namespace WPFEcommerceApp
         #endregion
 
         #region Property
-        private ObservableCollection<ImageProduct> _Images;
+       /* private ObservableCollection<ImageProduct> _Images;
         public ObservableCollection<ImageProduct> Images
         {
             get => _Images;
@@ -32,12 +32,12 @@ namespace WPFEcommerceApp
                 {
                     MainImage = Images[0];
                 }
-                for(int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    if(i < _Images.Count)
+                    if (i < _Images.Count)
                     {
                         MiniImagesProduct.Add(_Images[i]);
-                    }    
+                    }
                 }
                 NumberProductRemainder = "+ " + (Images.Count - MiniImagesProduct.Count).ToString();
                 OnPropertyChanged();
@@ -104,7 +104,7 @@ namespace WPFEcommerceApp
                 _Brand = value;
                 OnPropertyChanged();
             }
-        }
+        }*/
 
         //Number of product remainder after displaying mini image
         public string NumberProductRemainder { get; private set; } = "";
@@ -117,7 +117,7 @@ namespace WPFEcommerceApp
         public ProductBlockViewModel(ProductBlock product)
         {
             #region Will change after having database
-            Images = new ObservableCollection<ImageProduct>();
+            /*Images = new ObservableCollection<ImageProduct>();
 
             //Set a default image
             Images.Add(new ImageProduct());
@@ -140,12 +140,17 @@ namespace WPFEcommerceApp
 
             Name = "Product Name";
             Category = "Category";
-            Brand = "Brand";
+            Brand = "Brand";*/
             #endregion
 
             ShowMiniPictureCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                if(Images.Count==1)
+                if(product.ListProductImage == null || product.ListProductImage.Count == 0)
+                {
+                    product.MainImage = Properties.Resources.DefaultProductImage;
+                    return;
+                }
+                if(product.ListProductImage.Count==1)
                 {
                     return;
                 }    
@@ -155,7 +160,12 @@ namespace WPFEcommerceApp
 
             ShowProductMainInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                if (Images.Count == 1)
+                if (product.ListProductImage == null || product.ListProductImage.Count == 0)
+                {
+                    product.MainImage = Properties.Resources.DefaultProductImage;
+                    return;
+                }
+                if (product.ListProductImage.Count == 1)
                 {
                     return;
                 }
@@ -177,7 +187,7 @@ namespace WPFEcommerceApp
 
             ChangeMainPictuceCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                MainImage.Path = (p as Image).Source.ToString();
+                product.MainImage = (p as Image).Source.ToString();
                 OnPropertyChanged();
             });
         }

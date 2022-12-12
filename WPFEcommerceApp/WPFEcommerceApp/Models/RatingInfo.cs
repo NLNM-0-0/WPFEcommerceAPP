@@ -14,9 +14,9 @@ namespace WPFEcommerceApp.Models
     
     public partial class RatingInfo
     {
-        public string Id { get; set; }
-        public string IdRating { get; set; }
-        public string IdProduct { get; set; }
+        public long Id { get; set; }
+        public long IdRating { get; set; }
+        public int IdProduct { get; set; }
         public Nullable<int> Rating { get; set; }
     
         public virtual Product Product { get; set; }

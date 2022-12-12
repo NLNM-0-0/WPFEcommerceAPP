@@ -12,7 +12,7 @@
     <materialDesign:DialogHost
         DialogTheme="Inherit"
         CloseOnClickAway="True">
-        <Grid>
+       <!-- <Grid>
             <Grid.Resources>
                 <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
                     <local:CheckoutScreen/>
@@ -44,7 +44,9 @@
                 Width="1380"
                 Height="800"
                 Content="{Binding CurrentViewModel}"/>
-        </Grid>
+
+        </Grid>-->
+        <local:Home/>
     </materialDesign:DialogHost>
 
 </Window>

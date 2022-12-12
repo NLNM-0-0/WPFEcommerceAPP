@@ -16,14 +16,14 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for Register.xaml
+    /// Interaction logic for Home.xaml
     /// </summary>
-    public partial class Register : UserControl
+    public partial class Home : UserControl
     {
-        public Register()
+        public Home()
         {
             InitializeComponent();
-            this.DataContext = new RegisterViewModel();
+            this.DataContext = new HomeViewModel();
         }
     }
 }

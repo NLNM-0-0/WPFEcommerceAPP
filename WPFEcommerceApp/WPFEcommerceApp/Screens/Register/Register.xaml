@@ -109,6 +109,7 @@
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Email Address"
                     Width="auto"
+                    Text="{Binding Email}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,0">
 
@@ -116,6 +117,7 @@
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Password"
                     Width="auto"
+                 Text="{Binding Password}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,0">
 
@@ -123,6 +125,7 @@
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Phone Number"
                     Width="auto"
+                 Text="{Binding Phone}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,0">
 
@@ -130,13 +133,15 @@
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Your name"
                     Width="auto"
+                 Text="{Binding Name}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,0">
 
         </TextBox>
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
-                    materialDesign:HintAssist.Hint="Region"
+                    materialDesign:HintAssist.Hint="Address"
                     Width="auto"
+                 Text="{Binding Address}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,10">
 
@@ -151,28 +156,29 @@
                 Grid.Column="0"
                 Style="{StaticResource RadioButtonGender}"
                 Margin="30,20,30,0"
-                IsChecked="True"
                 Content="Male"
                 Width="auto"
+                IsChecked="{Binding IsMen}"
                 HorizontalAlignment="Stretch"/>
             <RadioButton
                 Grid.Column="1"
                 Style="{StaticResource RadioButtonGender}"
                 Margin="30,20,30,0"
-                IsChecked="False"
+                IsChecked="{Binding IsWomen}"
                 Content="Female" />
         </Grid>
         <CheckBox
             Margin="30"
             Content="Agree to WANO's Privacy Policy and Terms of Use"
             FontSize="15"
-            Background="{StaticResource SuccessColorBrush}">
+            Background="{StaticResource BlackColorBrush}">
 
         </CheckBox>
         <Button Width="auto"
                 Margin="30"
-                Content="Register">
-
+                Content="Register"
+                Command="{Binding Regist}">
+                
         </Button>
     </StackPanel>
 </UserControl>

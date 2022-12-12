@@ -66,7 +66,7 @@ namespace WPFEcommerceApp
             });
             OnSuccessPayment = new RelayCommand<object>((p) => true, (p) => {
                 DialogHost.CloseDialogCommand.Execute(p, (p as IInputElement));
-                SelectedItem = MainItems[5];
+                SelectedItem = MainItems[0];
             });
         }
     }

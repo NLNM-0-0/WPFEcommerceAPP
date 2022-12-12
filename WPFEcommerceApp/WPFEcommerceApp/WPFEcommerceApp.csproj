@@ -151,6 +151,7 @@
     <Compile Include="Screens\Login\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\Login\LoginViewModel.cs" />
     <Compile Include="Screens\Notification\Notification.xaml.cs">
       <DependentUpon>Notification.xaml</DependentUpon>
     </Compile>
@@ -166,6 +167,7 @@
     <Compile Include="Screens\Register\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\Register\RegisterViewModel.cs" />
     <Compile Include="UserControls\Dialogs\ShopRequestInformationDialog.xaml.cs">
       <DependentUpon>ShopRequestInformationDialog.xaml</DependentUpon>
     </Compile>

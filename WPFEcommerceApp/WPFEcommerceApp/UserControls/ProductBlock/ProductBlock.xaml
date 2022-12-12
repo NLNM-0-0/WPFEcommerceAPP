@@ -6,9 +6,11 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              d:DesignHeight="500" d:DesignWidth="400"
              MaxHeight="500" MaxWidth="400"
-             MinHeight="500" MinWidth="400">
+             Cursor="Hand"
+             x:Name="productBlock">
     <UserControl.Resources>
         <Style x:Key="StackPanelStyle" TargetType="{x:Type StackPanel}">
             <Style.Resources>
@@ -63,7 +65,7 @@
             </Grid.RowDefinitions>
             <Image x:Name="ImageMainProduct"
                     Grid.Row="0"
-                    Source="{Binding MainImage.Path, UpdateSourceTrigger=PropertyChanged}"/>
+                    Source="{Binding ElementName=productBlock, Path=MainImage}"/>
             <Grid Grid.Row="1" x:Name="MiniImages" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -73,7 +75,7 @@
                         Style="{DynamicResource StackPanelStyle}"
                         Orientation="Horizontal"
                         IsHitTestVisible="True">
-                    <ItemsControl ItemsSource="{Binding MiniImagesProduct, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl ItemsSource="{Binding Path=ListProductImage, ElementName=productBlock}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
@@ -85,16 +87,19 @@
                                 Background="Transparent"
                                 Height="40"
                                 Width="40"
-                                IsHitTestVisible="True"
-                                Content="{Binding Image}"
-                                x:Name="MiniImageProductButton">
+                                IsHitTestVisible="True">
+                                    <Button.Content>
+                                        <Image
+                                            x:Name="MiniImageProductButton"
+                                            Source="{Binding}"/>
+                                    </Button.Content>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseMove">
                                             <i:InvokeCommandAction
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                             AncestorType={x:Type UserControl}}, 
                                                             Path=DataContext.ChangeMainPictuceCommand}" 
-                                                CommandParameter="{Binding ElementName=MiniImageProductButton, Path=Content}"/>
+                                                CommandParameter="{Binding ElementName=MiniImageProductButton, Path=Source}"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </Button>
@@ -104,7 +109,7 @@
                 </StackPanel>
                 <TextBlock
                     Grid.Column="1"
-                    Text="{Binding NumberProductRemainder}"
+                    Text="{c:Binding 'ListProductImage.Count - 4', ElementName=productBlock}"
                     Foreground="{StaticResource NotAvailableColorBrush}"
                     FontSize="20"
                     VerticalAlignment="Center"/>
@@ -118,6 +123,10 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" x:Name="ProductMainInfo">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="59*"/>
+                    <ColumnDefinition Width="131*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -125,19 +134,19 @@
                 </Grid.RowDefinitions>
                 <TextBlock 
                     Grid.Row="0"
-                    Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ElementName=productBlock, Path=ProductName}"
                     FontSize="18"
-                    FontWeight="DemiBold"/>
+                    FontWeight="DemiBold" Grid.ColumnSpan="2" Margin="0,0,0,19" Grid.RowSpan="2"/>
                 <TextBlock
                     Grid.Row="1"
-                    Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ElementName=productBlock, Path=Category.Name}"
                     FontSize="16"
-                    Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    Foreground="{StaticResource NotAvailableColorBrush}" Grid.ColumnSpan="2" Margin="0,0,0,19" Grid.RowSpan="2"/>
                 <TextBlock
                     Grid.Row="2"
-                    Text="{Binding Brand, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ElementName=productBlock, Path=Brand.Name}"
                     FontSize="16"
-                    Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    Foreground="{StaticResource NotAvailableColorBrush}" Grid.ColumnSpan="2"/>
             </Grid>
             <StackPanel Grid.Row="3" Orientation="Horizontal">
                 <StackPanel.Resources>
@@ -146,13 +155,13 @@
                     </Style>
                 </StackPanel.Resources>
                 <TextBlock 
-                    Text="PriceBeforeDiscount"
+                    Text="{Binding ElementName=productBlock, Path=Price}"
                     TextDecorations="Strikethrough"
                     FontSize="16"
                     FontWeight="DemiBold"
                     Foreground="{StaticResource NotAvailableColorBrush}"/>
                 <TextBlock 
-                    Text="Price"
+                    Text="{c:Binding '(100 - Sale) * Price / 100'}"
                     FontSize="18"
                     FontWeight="DemiBold"/>
             </StackPanel>
@@ -161,19 +170,27 @@
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseMove">
             <i:InvokeCommandAction 
-            Command="{Binding ShowMiniPictureCommand}" 
+            Command="{Binding ElementName=productBlock, Path=ShowMiniPictureCommand}" 
             CommandParameter="{Binding ElementName=MiniImages}"/>
             <i:InvokeCommandAction
-             Command="{Binding HideProductMainInfoCommand}"
+             Command="{Binding ElementName=productBlock, Path=HideProductMainInfoCommand}"
               CommandParameter="{Binding ElementName=ProductMainInfo}"/>
         </i:EventTrigger>
         <i:EventTrigger EventName="MouseLeave">
             <i:InvokeCommandAction 
-            Command="{Binding HideMiniPictureCommand}" 
+            Command="{Binding ElementName=productBlock, Path= HideMiniPictureCommand}" 
             CommandParameter="{Binding ElementName=MiniImages}"/>
             <i:InvokeCommandAction
-             Command="{Binding ShowProductMainInfoCommand}"
+             Command="{Binding ElementName=productBlock, Path= ShowProductMainInfoCommand}"
               CommandParameter="{Binding ElementName=ProductMainInfo}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseDown" >
+            <i:InvokeCommandAction
+                 Command="{Binding ElementName=productBlock, Path= OpenProductCommand}">
+                <i:InvokeCommandAction.CommandParameter>
+                    <Binding/>
+                </i:InvokeCommandAction.CommandParameter>
+            </i:InvokeCommandAction>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

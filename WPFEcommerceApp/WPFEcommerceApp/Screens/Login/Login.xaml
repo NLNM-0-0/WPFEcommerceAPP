@@ -100,20 +100,21 @@
                     Margin="30"
                     materialDesign:HintAssist.HelperText="" />
                 <PasswordBox
-                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}"            
+                 Style="{StaticResource PasswordOutlinedReveal}"            
                     materialDesign:HintAssist.Hint="Password"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Width="auto"
                     HorizontalContentAlignment="Stretch"
                     Margin="30 0"
-                    materialDesign:HintAssist.HelperText="" />
+                    materialDesign:HintAssist.HelperText="">
+                </PasswordBox>
                 <Grid Margin="30,10,30,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <CheckBox
-                    Background="{StaticResource SuccessColorBrush}"
+                    Background="{StaticResource BlackColorBrush}"
                     Content="Remember me"
                     Foreground="{StaticResource BlackColorBrush}"
                 

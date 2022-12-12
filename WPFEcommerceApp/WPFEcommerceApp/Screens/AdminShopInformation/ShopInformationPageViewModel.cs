@@ -172,7 +172,7 @@ namespace WPFEcommerceApp
                 //await userRepository.Add(newUser);
 
                 Shops = new ObservableCollection<MUser>(await userRepository.
-                    GetListAsync(item => item.Role.Equals("Shop")&&item.Status.Equals("NotBanned")));
+                    GetListAsync(item => item.Role.Equals("Shop")&&item.StatusShop.Equals("NotBanned")));
 
                 using (var context = new EcommerceAppEntities())
                 {
@@ -186,7 +186,7 @@ namespace WPFEcommerceApp
                                         RequestId=request.Id,
                                         IdUser=request.IdUser,
                                         Name=user.Name,
-                                        SourceImageAva=user.SourceImageAve,
+                                        SourceImageAva=user.SourceImageAva,
                                         Description=request.Description,
                                         Email=user.Email,
                                         PhoneNumber=user.PhoneNumber,
@@ -195,8 +195,8 @@ namespace WPFEcommerceApp
                         RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
                             query.Select(item=> new ShopRequestItemViewModel
                             {
-                                RequestId = item.RequestId,
-                                Id=item.IdUser,
+                                RequestId = item.RequestId.ToString(),
+                                Id=item.IdUser.ToString(),
                                 Name=item.Name,
                                 Description=item.Description,
                                 SourceImageAva=new BitmapImage(new Uri(item.SourceImageAva)),
@@ -235,7 +235,7 @@ namespace WPFEcommerceApp
             {
                 var removeShop = (MUser)obj;
                 Shops.Remove(removeShop);
-                removeShop.Status = "Banned";
+                //removeShop.Status = "Banned";
                 await new GenericDataRepository<MUser>().Update(removeShop);
             }
             catch { };
