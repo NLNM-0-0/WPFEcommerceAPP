@@ -12,7 +12,7 @@ using MaterialDesignThemes.Wpf;
 namespace WPFEcommerceApp {
     public class MainViewModel : BaseViewModel {
         private readonly NavigationStore _navigationStore;
-        private PackIcon _iconMaximize { get; set; }
+        static bool IsButtonClosed { get; set; }
         public DrawerVM DrawerVM { get; }
         public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
         public ICommand CloseCM { get; set; }
@@ -28,6 +28,7 @@ namespace WPFEcommerceApp {
             _navigationStore.CurrentVMChanged += OnCurrentVMChanged;
 
             CloseCM = new RelayCommand<object>(p => true, p => {
+                IsButtonClosed = true;
                 var view = new ConfirmDialog() {
                     Param = p,
                     CM = new RelayCommand<object>(t => true, t => {
@@ -42,16 +43,11 @@ namespace WPFEcommerceApp {
                 (p as Window).WindowState = WindowState.Minimized;
             });
             MaximizeCM = new RelayCommand<object>(p => true, p => {
-                var temp = (object[])p;
-                if(_iconMaximize == null)
-                    _iconMaximize = temp[1] as PackIcon;
-                if((temp[0] as Window).WindowState == WindowState.Normal) {
-                    (temp[0] as Window).WindowState = WindowState.Maximized;
-                    (temp[1] as PackIcon).Kind = PackIconKind.CheckboxMultipleBlankOutline;
+                if((p as Window).WindowState == WindowState.Normal) {
+                    (p as Window).WindowState = WindowState.Maximized;
                 }
                 else {
-                    (temp[0] as Window).WindowState = WindowState.Normal;
-                    (temp[1] as PackIcon).Kind = PackIconKind.CheckboxBlankOutline;
+                    (p as Window).WindowState = WindowState.Normal;
                 }
             });
         }
@@ -60,17 +56,16 @@ namespace WPFEcommerceApp {
         }
 
         public void DragWindow(object sender, MouseEventArgs e) {
-            var t = new PackIcon();
             var tmp = getParent(sender as Grid);
             Window w = tmp as Window;
             if(e.LeftButton == MouseButtonState.Pressed) {
                 Point p = e.GetPosition(sender as IInputElement);
                 if(w.WindowState == WindowState.Maximized) {
-                    _iconMaximize.Kind = PackIconKind.CheckboxBlankOutline;
-                    w.Width = w.ActualWidth;
+                    w.Width = 1440;
                     w.Height = 950;
-                    w.Left = p.X < 850 ? 15 
-                             : p.X < 1250 ? 350 : 600;
+                    w.Left = p.X < 850 ? 10 
+                             : p.X < 1250 
+                             ? 350 : 600;
                     w.Top = p.Y - 20;
                     w.WindowStartupLocation = WindowStartupLocation.Manual;
                     w.WindowState = WindowState.Normal;
@@ -79,7 +74,11 @@ namespace WPFEcommerceApp {
             }
         }
         static public void OnClosing(object sender, CancelEventArgs e) {
-            if((sender as Window).WindowState != WindowState.Minimized) return;
+            if(IsButtonClosed) {
+                IsButtonClosed = false;
+                return;
+            }
+            IsButtonClosed= true ;
             e.Cancel = true;
             (sender as Window).WindowState = WindowState.Normal;
             var view = new ConfirmDialog() {

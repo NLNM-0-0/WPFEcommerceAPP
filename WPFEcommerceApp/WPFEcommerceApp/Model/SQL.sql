@@ -234,11 +234,37 @@ insert into Product values
 ('prod02', 'Ahihi Product','cate01', 'brand1', 'user02', 123, 5, 50, 20, 
 1, 1, 0, 0, 0, 0, 'Dark Smoke', 'Description 0', '12-13-2022', 'NotBanned')
 
+insert into Product values
+('prod03', 'Fuck Product','cate01', 'brand1', 'user02', 123, 5, 50, 20, 
+1, 1, 0, 0, 0, 0, 'Dark Smoke', 'Description 0', '12-13-2022', 'NotBanned')
+
+insert into Product values
+('prod04', 'Lel Product','cate01', 'brand1', 'user02', 123, 5, 50, 20, 
+1, 1, 0, 0, 0, 0, 'Dark Smoke', 'Description 0', '12-13-2022', 'NotBanned')
+
 insert into OrderInfo values
 ('order01', 'prod01', 'rate01', null, 'XXL', 5, 666)
 
 insert into OrderInfo values
+('order01', 'prod02', 'rate01', null, 'XXL', 5, 666)
+
+insert into OrderInfo values
+('order01', 'prod03', 'rate01', null, 'XXL', 5, 666)
+
+insert into OrderInfo values
+('order01', 'prod04', 'rate01', null, 'XXL', 5, 666)
+
+insert into OrderInfo values
 ('order02', 'prod02', 'rate01', null, 'XXL', 5, 666)
+
+insert into OrderInfo values
+('order02', 'prod01', 'rate01', null, 'XXL', 5, 666)
+
+insert into OrderInfo values
+('order02', 'prod04', 'rate01', null, 'XXL', 5, 666)
+
+insert into OrderInfo values
+('order02', 'prod03', 'rate01', null, 'XXL', 5, 666)
 
 select * from MUser
 select * from Rating
