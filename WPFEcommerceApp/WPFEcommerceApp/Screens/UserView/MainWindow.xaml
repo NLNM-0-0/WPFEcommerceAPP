@@ -178,6 +178,12 @@
                             <DataTemplate DataType="{x:Type local:AdminCategoryViewModel}">
                                 <local:AdminCategoryManager/>
                             </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminProductManagerViewModel}">
+                                <local:AdminProductInformation/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminUserManagerViewModel}">
+                                <local:AdminUserInformation/>
+                            </DataTemplate>
                         </Grid.Resources>
 
                         <Grid>

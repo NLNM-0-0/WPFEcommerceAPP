@@ -18,6 +18,7 @@ namespace WPFEcommerceApp {
         public App() {
             IServiceCollection services = new ServiceCollection();
 
+            #region Set Store and some initial dependences
             //Set Store and some initial dependences
             var t = new GenericDataRepository<MUser>();
             var u = t.GetSingleAsync(d => d.Id.Equals("user01")).Result;
@@ -38,19 +39,18 @@ namespace WPFEcommerceApp {
                     CreateShopProductNavService(serviceProvider),
                     CreateShopRatingNavService(serviceProvider),
                     CreateAdminCategoryMngNavService(serviceProvider),
-                    CreateAdminBrandMngNavService(serviceProvider)
+                    CreateAdminBrandMngNavService(serviceProvider),
+                    CreateAdminUserMngNavService(serviceProvider),
+                    CreateAdminProductMngNavService(serviceProvider)
                 )
             );
+            #endregion
 
             //Set service
-
-            //It need to be CreateHomeNavService
-            //But I set initial screen is checkout here
-            //just for example
-            services.AddSingleton<INavigationService>(s => CreateCheckoutNavService(serviceProvider));
-
             //setup Transient ViewModel
+
             //Normal
+            #region Checkout and Order
             //Normal - Checkout and Order
             services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(
                     CreateSuccessNavService(s),
@@ -69,15 +69,28 @@ namespace WPFEcommerceApp {
             );
 
             services.AddTransient<SuccessScreenVM>(s => new SuccessScreenVM(CreateCheckoutNavService(serviceProvider))); //Need to be HomeView here
-            //Normal - Shop
+
+            #endregion
+
+            #region Shop
             services.AddTransient<ShopRatingViewModel>(s => new ShopRatingViewModel());
+            #endregion
 
             //Admin
+            #region Admin
             services.AddTransient<ShopInformationPageViewModel>(s => new ShopInformationPageViewModel());
             services.AddTransient<AdminCategoryViewModel>(s => new AdminCategoryViewModel());
             services.AddTransient<AdminBrandViewModel>(s => new AdminBrandViewModel());
+            services.AddTransient<AdminProductManagerViewModel>(s => new AdminProductManagerViewModel());
+            services.AddTransient<AdminUserManagerViewModel>(s => new AdminUserManagerViewModel());
+            #endregion
 
             //Setup MainWindow
+            //It need to be CreateHomeNavService
+            //But I set initial screen is checkout here
+            //just for example
+            services.AddSingleton<INavigationService>(s => CreateCheckoutNavService(serviceProvider));
+
             services.AddSingleton<MainViewModel>();
 
             services.AddSingleton<MainWindow>(s => new MainWindow() {
@@ -98,6 +111,7 @@ namespace WPFEcommerceApp {
             base.OnStartup(e);
         }
 
+        #region Checkout and Payment
         //Checkout and Payment
         private INavigationService CreateCheckoutNavService(IServiceProvider serviceProvider) {
             return new NavigationService<CheckoutScreenVM>(
@@ -114,7 +128,9 @@ namespace WPFEcommerceApp {
                 serviceProvider.GetRequiredService<NavigationStore>(), 
                 serviceProvider.GetRequiredService<SuccessScreenVM>);
         }
+        #endregion
 
+        #region Admin
         //Admin
 
         private INavigationService CreateShopInformationPageNavService(IServiceProvider serviceProvider) {
@@ -133,6 +149,20 @@ namespace WPFEcommerceApp {
                 serviceProvider.GetRequiredService<AdminBrandViewModel>);
         }
 
+        private INavigationService CreateAdminProductMngNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<AdminProductManagerViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<AdminProductManagerViewModel>);
+        }
+
+        private INavigationService CreateAdminUserMngNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<AdminUserManagerViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<AdminUserManagerViewModel>);
+        }
+        #endregion
+
+        #region Shop
         //Shop
         private INavigationService CreateShopMainNavService(IServiceProvider serviceProvider) {
             return new NavigationService<ShopInformationPageViewModel>(
@@ -156,5 +186,6 @@ namespace WPFEcommerceApp {
                 serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopRatingViewModel>);
         }
+        #endregion
     }
 }
