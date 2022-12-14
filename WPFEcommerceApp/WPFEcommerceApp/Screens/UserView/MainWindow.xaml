@@ -18,7 +18,11 @@
                       CornerRadius="10"
                       ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
+    <Window.InputBindings>
+        <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding CloseCM}" CommandParameter="{Binding ElementName=MainWD}"/>
+    </Window.InputBindings>
     <Window.Resources>
+        <local:MultiValueConverter x:Key="MultiValueConverter"/>
         <Style TargetType="{x:Type Button}" x:Key="controlButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
             <Setter Property="Foreground" Value="{DynamicResource BlackColorBrush}"/>
             <Setter Property="TextBlock.FontFamily" Value="{StaticResource Regular}"/>
@@ -54,6 +58,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="materialDesign:PackIcon" x:Key="myPackIcon">
+            <Setter Property="Kind" Value="CheckboxBlankOutline"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=MainWD, Path=WindowState}" Value="Maximized">
+                    <Setter Property="Kind" Value="CheckboxMultipleBlankOutline"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <materialDesign:DialogHost
         DialogTheme="Inherit"
@@ -88,9 +100,11 @@
                         <!--Drag Area-->
                         <Grid x:Name="TitleBarContainer" Background="Transparent">
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseLeftButtonDown" SourceName="TitleBarContainer">
-                                    <i:InvokeCommandAction Command="{Binding DragWindowCM}"
-                                                       CommandParameter="{Binding ElementName=MainWD}"/>
+                                <i:EventTrigger EventName="MouseMove">
+                                    <i:CallMethodAction
+                                        TargetObject="{Binding}"
+                                        MethodName="DragWindow"
+                                        />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Grid>
@@ -108,12 +122,12 @@
                                                  Foreground="{StaticResource BlackColorBrush}"/>
                             </Button>
                             <Button Style="{StaticResource controlButton}"
-                                Command="{Binding MaximizeCM}"
-                                CommandParameter="{Binding ElementName=MainWD}">
-                                <materialDesign:PackIcon Kind="CheckboxBlankOutline" 
+                                Command="{Binding MaximizeCM}" CommandParameter="{Binding ElementName=MainWD}">
+                                <materialDesign:PackIcon Style="{StaticResource myPackIcon}" 
+                                                         x:Name="MaximizeIcon"
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
-                                                 Width="21" Height="21"
+                                                 Width="19" Height="19"
                                                  Foreground="{StaticResource BlackColorBrush}"/>
                             </Button>
                             <Button Style="{StaticResource CloseButton}" 
@@ -157,6 +171,18 @@
                             <!--Admin-->
                             <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
                                 <local:ShopInformationPage/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminBrandViewModel}">
+                                <local:AdminBrandManager/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminCategoryViewModel}">
+                                <local:AdminCategoryManager/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminProductManagerViewModel}">
+                                <local:AdminProductInformation/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type local:AdminUserManagerViewModel}">
+                                <local:AdminUserInformation/>
                             </DataTemplate>
                         </Grid.Resources>
 

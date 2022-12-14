@@ -26,9 +26,11 @@ namespace WPFEcommerceApp.Models
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<Advertisement> Advertisements { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
+        public virtual DbSet<BrandRequest> BrandRequests { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryRequest> CategoryRequests { get; set; }
         public virtual DbSet<ImageProduct> ImageProducts { get; set; }
@@ -38,8 +40,6 @@ namespace WPFEcommerceApp.Models
         public virtual DbSet<OrderInfo> OrderInfoes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
-        public virtual DbSet<RatingInfo> RatingInfoes { get; set; }
         public virtual DbSet<ShopRequest> ShopRequests { get; set; }
-        public virtual DbSet<BrandRequest> BrandRequests { get; set; }
     }
 }

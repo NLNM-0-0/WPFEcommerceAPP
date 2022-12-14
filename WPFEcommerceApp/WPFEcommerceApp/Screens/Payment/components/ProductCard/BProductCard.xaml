@@ -27,9 +27,9 @@
                     <Border Padding="{TemplateBinding Padding}">
                         <Grid Height="65" Background="{StaticResource WhiteColorBrush}">
                             <Grid.Effect>
-                                <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
+                                <DropShadowEffect BlurRadius="18" ShadowDepth="0.25" Opacity="0.15" Color="{StaticResource NotAvailable}"/>
                             </Grid.Effect>
-                            <Border Padding="16, 13, 16, 13">
+                            <Border Padding="16 13">
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" Background="Transparent" SnapsToDevicePixels="False">
                                         <ContentPresenter HorizontalAlignment="Left" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
@@ -59,7 +59,7 @@
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Spin"
                                                              Storyboard.TargetProperty="Angle"
-                                                             From="180" To="0.0" Duration="0:0:0.3"/>
+                                                             From="180" To="360" Duration="0:0:0.3"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -78,15 +78,17 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="BProductCard" TargetType="Expander">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Expander}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="true">
                         <DockPanel>
                             <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStretch="{TemplateBinding FontStretch}" Foreground="{TemplateBinding Foreground}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontFamily="{TemplateBinding FontFamily}" FontWeight="{TemplateBinding FontWeight}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="0" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
 
-                            <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0, 0,0,0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                 <ContentPresenter.LayoutTransform>
                                     <ScaleTransform ScaleY="0"/>
                                 </ContentPresenter.LayoutTransform>
@@ -120,7 +122,7 @@
                             </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -129,56 +131,63 @@
     </Style>
 
     <DataTemplate x:Key="ProductCard" DataType="{x:Type vm:Product}">
-        <Grid Background="{StaticResource WhiteColorBrush}" Width="455" Margin="0, 23, 0, 0">
+        <Grid Background="{StaticResource WhiteColorBrush}" Margin="0, 23, 0, 0"
+              Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}, 
+                Path=ActualWidth-20}"
+              x:Name="Container">
             <Grid.Effect>
-                <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
+                <DropShadowEffect BlurRadius="18" ShadowDepth="0.25" Opacity="0.15" Color="{StaticResource NotAvailable}"/>
             </Grid.Effect>
-            <Border Padding="5"  Width="455">
-                <StackPanel Orientation="Horizontal"  Width="455">
-                    <Image Source="{Binding ProductImage}" Height="125" Width="125" HorizontalAlignment="Left"/>
-                    <Grid  Width="455">
+            <Border Padding="5">
+                <StackPanel Orientation="Horizontal">
+                    <Grid Margin="0 0 10 0">
+                        <Image Source="{Binding ProductImage}" Height="125" Width="125" 
+                               HorizontalAlignment="Center"/>
+                    </Grid>
+                    <Grid Width="{Binding ElementName=Container, Path=ActualWidth}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="45"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Name}"
-                                   Width="300"
                                    HorizontalAlignment="Left"
-                               FontSize="13" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5,0,0,0"/>
+                                   FontSize="13" 
+                                   VerticalAlignment="Center" 
+                                   TextWrapping="Wrap" 
+                                   Margin="5,0,0,0"/>
                         <Grid Grid.Row="1" VerticalAlignment="Top">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="0.5*"/>
+                                <ColumnDefinition Width="0.5*"/>
                             </Grid.ColumnDefinitions>
                             <!--Left column-->
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                    <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                    <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                    <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                </StackPanel>
+                                <TextBlock Text="{i:Binding \'Size: \' + Size}" 
+                                               FontSize="10" 
+                                               Foreground="{StaticResource NotAvailableColorBrush}"
+                                               Margin="5, 5, 0, 0"/>
+                                <TextBlock Text="{i:Binding \'Color: \' + Color}" 
+                                           Margin="5, 5, 0, 0"
+                                           FontSize="10" 
+                                           Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                <TextBlock Text="{i:Binding \'Other details: \' Description}" 
+                                            Margin="5, 5, 0, 0"
+                                            FontSize="10" 
+                                           Foreground="{StaticResource NotAvailableColorBrush}"/>
                             </StackPanel>
                             <!--Right column-->
                             <StackPanel Grid.Column="1">
-                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                    <TextBlock Text="Unit Price: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    <TextBlock Text="{Binding Price}" FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                    <TextBlock Text="Amount: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    <TextBlock Text="{Binding Amount}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                                    <TextBlock Text="Subtotal: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                    <TextBlock Text="{Binding Subtotal}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                </StackPanel>
+                                <TextBlock Text="{i:Binding \'Unit Price: \' + Price}" 
+                                               Margin="5, 5, 0, 0"
+                                               FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                <TextBlock Text="{i:Binding \'Amount: \' + Amount}" 
+                                               FontSize="10" 
+                                               Margin="5, 5, 0, 0"
+                                               Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                <TextBlock Text="{i:Binding \'Subtotal: \' + Subtotal}" 
+                                               Margin="5, 5, 0, 0"
+                                               FontSize="10" 
+                                               Foreground="{StaticResource NotAvailableColorBrush}"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -186,7 +195,7 @@
             </Border>
         </Grid>
     </DataTemplate>
-    
+
     <Style x:Key="ListItemCtn" TargetType="ListViewItem">
         <Setter Property="Margin" Value="0, 0, 0, 0"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -207,31 +216,39 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <DataTemplate x:Key="BProductCardContent" DataType="{x:Type vm:BProduct}">
-        <Expander x:Name="expand" Style="{StaticResource BProductCard}" HorizontalAlignment="Center" Width="466.25">
+
+    <DataTemplate x:Key="BProductCardContent" DataType="{x:Type vm:Order}">
+        <Expander x:Name="expand" Style="{StaticResource BProductCard}" 
+                  HorizontalAlignment="Center" 
+                  Width="{i:Binding RelativeSource={RelativeSource AncestorType=ListView}
+            , Path=ActualWidth-20}">
             <Expander.Header>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{Binding ShopImage}"/>
                     <Label Content="{Binding ShopName}" 
-                   FontSize="{StaticResource FontSizeHeadline3}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSizeHeadline3}"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
                        Margin="5,0,0,0"/>
                 </StackPanel>
             </Expander.Header>
-            <!--<Grid Background="{StaticResource WhiteColorBrush}">
-                <Grid.Effect>
-                    <DropShadowEffect BlurRadius="13" ShadowDepth="0.5" Opacity="0.1" Color="{StaticResource NotAvailable}"/>
-                </Grid.Effect>-->
-                <ListView ItemsSource="{Binding ProductList}" ItemTemplate="{StaticResource ProductCard}"
-                              ItemContainerStyle="{StaticResource ListItemCtn}"
-                              BorderThickness="0"
-                          ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                          PreviewMouseWheel="HandlePreviewMouseWheel"
-                          Cursor="Arrow">
-                </ListView>
-            <!--</Grid>-->
+
+            <ListView ItemsSource="{Binding ProductList}" 
+                          Background="Transparent"
+                          Width="{i:Binding RelativeSource={RelativeSource AncestorType=Expander}
+                        , Path=ActualWidth-5}"
+                          ItemTemplate="{StaticResource ProductCard}"
+                          ItemContainerStyle="{StaticResource ListItemCtn}"
+                          BorderThickness="0"
+                            Cursor="Arrow"
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListView.Template>
+                    <ControlTemplate>
+                        <ItemsPresenter></ItemsPresenter>
+                    </ControlTemplate>
+                </ListView.Template>
+            </ListView>
         </Expander>
     </DataTemplate>
 </ResourceDictionary>
