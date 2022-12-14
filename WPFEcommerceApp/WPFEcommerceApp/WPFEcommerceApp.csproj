@@ -102,11 +102,6 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model.Context.cs" />
-    <Compile Include="Models\Model2.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -128,7 +123,6 @@
     <Compile Include="Models\ShopRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\BProduct.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Status.cs" />
@@ -167,9 +161,6 @@
       <DependentUpon>Charts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
-    <Compile Include="UserControls\Ads\AdsItem.xaml.cs">
-      <DependentUpon>AdsItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -249,6 +240,9 @@
     <Compile Include="UserControls\ProductBlock\ImageProduct.cs" />
     <Compile Include="UserControls\ProductBlock\ProductBlock.xaml.cs">
       <DependentUpon>ProductBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RatingBar\RatingBar.xaml.cs">
+      <DependentUpon>RatingBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ShopRequest\ShopRequestItem.xaml.cs">
       <DependentUpon>ShopRequestItem.xaml</DependentUpon>
@@ -558,10 +552,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screens\ShopStatistics\Charts.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Screens\UserView\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -745,6 +735,10 @@
     <Page Include="UserControls\ProductBlock\ProductBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\RatingBar\RatingBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ShopRequest\ShopRequestItem.xaml">
       <Generator>MSBuild:Compile</Generator>
