@@ -124,7 +124,6 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Product.cs" />
-    <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Status.cs" />
     <Compile Include="Screens\AdminBrand\AdminBrandManager.xaml.cs">
       <DependentUpon>AdminBrandManager.xaml</DependentUpon>
