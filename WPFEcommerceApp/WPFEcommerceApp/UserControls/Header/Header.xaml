@@ -24,18 +24,13 @@
                     DockPanel.Dock="Left" Margin="40 0"/>
 
             <!-- Cart and heart icon -->
-            <Button Style="{StaticResource TransparentButton}" 
-                    Margin="10 0 40 0" DockPanel.Dock="Right"
-                    Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                    Background="{StaticResource WhiteColorBrush}">
-                <fa:FontAwesome Icon="ShoppingBag"/>
-            </Button>
 
             <Button Style="{StaticResource TransparentButton}"
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                    Margin="10" DockPanel.Dock="Right"
+                    Margin="10 10 30 10" DockPanel.Dock="Right"
                     Background="{StaticResource WhiteColorBrush}">
-                <fa:FontAwesome Icon="HeartOutline" FontSize="20"/>
+                <fa:FontAwesome Icon="{Binding Icon}" FontSize="20" ToolTip="{Binding IconTooltip}" 
+                                ToolTipService.InitialShowDelay="100"/>
             </Button>
 
             <Button Style="{StaticResource TransparentButton}"

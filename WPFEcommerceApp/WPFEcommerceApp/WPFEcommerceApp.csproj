@@ -146,6 +146,13 @@
       <DependentUpon>AdminUserInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminUserInformation\AdminUserManagerViewModel.cs" />
+    <Compile Include="Screens\AdsManager\AdsItem.xaml.cs">
+      <DependentUpon>AdsItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdsManager\AdsManager.xaml.cs">
+      <DependentUpon>AdsManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdsManager\AdsManagerViewModel.cs" />
     <Compile Include="Screens\MyProfile\MyPassword.xaml.cs">
       <DependentUpon>MyPassword.xaml</DependentUpon>
     </Compile>
@@ -153,6 +160,10 @@
       <DependentUpon>MyProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\MyProfile\MyProfileViewModel.cs" />
+    <Compile Include="Screens\ShopStatistics\Charts.xaml.cs">
+      <DependentUpon>Charts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -171,6 +182,9 @@
     <Compile Include="UserControls\CategoryRequest\CategoryRequestListViewModel.cs" />
     <Compile Include="Screens\Order\components\Dialog\ReviewProductDialog.xaml.cs">
       <DependentUpon>ReviewProductDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\AddAdsDialog.xaml.cs">
+      <DependentUpon>AddAdsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
@@ -469,6 +483,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\AdsManager\AdsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\AdsManager\AdsManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\MyProfile\MyPassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -537,6 +559,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\ShopStatistics\Charts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\UserView\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -562,6 +588,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\CategoryRequest\CategoryRequestList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dialogs\AddAdsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
