@@ -67,16 +67,16 @@
                     MaxHeight="{Binding ElementName=grid, Path=ActualHeight}"
                     AutoGenerateColumns="False" Grid.ColumnSpan="2"
                       CanUserReorderColumns="False" CanUserAddRows="False"
-                      CanUserResizeColumns="False">
+                      CanUserDeleteRows="False" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="auto" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="User Name" Width="250" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Full Name" Width="250" Binding="{Binding FullName}"/>
-                    <DataGridTextColumn Header="Email" Width="300" Binding="{Binding Email}"/>
-                    <DataGridTextColumn Header="Phone" Width="auto" Binding="{Binding Phone}"/>
-                    <DataGridTextColumn Header="Birth" Width="auto" Binding="{Binding DOB}"/>
-                    <DataGridTextColumn Header="Gender" Width="auto" Binding="{Binding Gender}"/>
-                    <DataGridTextColumn Header="Address" Width="500" Binding="{Binding Address}"/>
+                    <DataGridTextColumn Header="ID" MinWidth="100" MaxWidth="200" Width="auto" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="User Name" Width="250" MinWidth="200" MaxWidth="700" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Full Name" Width="250" MinWidth="200" MaxWidth="700" Binding="{Binding FullName}"/>
+                    <DataGridTextColumn Header="Email" Width="300" MinWidth="200" MaxWidth="700" Binding="{Binding Email}"/>
+                    <DataGridTextColumn Header="Phone" Width="auto" MinWidth="100" MaxWidth="200" Binding="{Binding Phone}"/>
+                    <DataGridTextColumn Header="Birth" Width="auto" MinWidth="80" MaxWidth="200" Binding="{Binding DOB}"/>
+                    <DataGridTextColumn Header="Gender" Width="auto" MinWidth="100" MaxWidth="200" Binding="{Binding Gender}"/>
+                    <DataGridTextColumn Header="Address" Width="500" MinWidth="200" MaxWidth="700" Binding="{Binding Address}"/>
                 </DataGrid.Columns>
 
             </DataGrid>

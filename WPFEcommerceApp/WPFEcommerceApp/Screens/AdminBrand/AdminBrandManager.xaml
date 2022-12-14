@@ -57,13 +57,13 @@
             </StackPanel>
 
             <DataGrid ItemsSource="{Binding FilteredBrands}" Margin="0 20" x:Name="datagrid"
-                              MaxHeight="700" CanUserResizeColumns="False" CanUserAddRows="False"
-                              CanUserReorderColumns="False"
+                              MaxHeight="700" IsReadOnly="True" CanUserAddRows="False"
+                              CanUserReorderColumns="False" CanUserDeleteRows="False"
                               AutoGenerateColumns="False"
                       SelectedItem="{Binding SelectedItem}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="200" Binding="{Binding Id}" SortDirection="Ascending"/>
-                    <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="ID" Width="200" MaxWidth="200" MinWidth="100" Binding="{Binding Id}" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="Name" Width="*" MinWidth="500" Binding="{Binding Name}" SortDirection="Ascending"/>
                 </DataGrid.Columns>
 
 

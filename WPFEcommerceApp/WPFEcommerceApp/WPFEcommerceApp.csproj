@@ -102,10 +102,10 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model.Context.cs" />
-    <Compile Include="Models\Model.Context1.cs">
+    <Compile Include="Models\Model2.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -123,9 +123,6 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Rating.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RatingInfo.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ShopRequest.cs">
@@ -155,6 +152,10 @@
       <DependentUpon>AdminUserInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminUserInformation\AdminUserManagerViewModel.cs" />
+    <Compile Include="Screens\AdsManager\AdsManager.xaml.cs">
+      <DependentUpon>AdsManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdsManager\AdsManagerViewModel.cs" />
     <Compile Include="Screens\MyProfile\MyPassword.xaml.cs">
       <DependentUpon>MyPassword.xaml</DependentUpon>
     </Compile>
@@ -166,6 +167,9 @@
       <DependentUpon>Charts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
+    <Compile Include="UserControls\Ads\AdsItem.xaml.cs">
+      <DependentUpon>AdsItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -184,6 +188,9 @@
     <Compile Include="UserControls\CategoryRequest\CategoryRequestListViewModel.cs" />
     <Compile Include="Screens\Order\components\Dialog\ReviewProductDialog.xaml.cs">
       <DependentUpon>ReviewProductDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\AddAdsDialog.xaml.cs">
+      <DependentUpon>AddAdsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
@@ -479,6 +486,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\AdsManager\AdsManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\MyProfile\MyPassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -563,6 +574,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\Ads\AdsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\BrandRequest\BrandRequestItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -576,6 +591,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\CategoryRequest\CategoryRequestList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dialogs\AddAdsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -832,10 +851,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context1.cs</LastGenOutput>
-    </Content>
     <Content Include="Models\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model2.cs</LastGenOutput>
