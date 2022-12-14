@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AdsManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="1440">
+    
+    <StackPanel Margin="50 20">
+        <DockPanel Margin="0 20">
+            <TextBlock Text="Advertisements"
+                                   FontFamily="{StaticResource Bold}"
+                                   FontSize="{StaticResource FontSizeHeadline}"
+                                   />
+
+            <Button DockPanel.Dock="Right"
+                                Content="Add"
+                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                <Button.CommandParameter>
+                    <local:AddAdsDialog/>
+                </Button.CommandParameter>
+            </Button>
+
+            <Button DockPanel.Dock="Right" Margin="0 0 10 0"
+                    Content="Remove"
+                    Command="{Binding RemoveAdsCommand}"
+                    CommandParameter="{Binding}"
+                    >
+            </Button>
+
+            <Button DockPanel.Dock="Right" Margin="0 0 10 0"
+                    Content="Apply"
+                    Command="{Binding ApplyAdsCommand}"
+                    CommandParameter="{Binding ElementName=datagrid, Path=SelectedItem}">
+            </Button>
+            <!-- Search bar -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <local:SearchBar Width="400"/>
+                <ComboBox Margin="5 0"
+                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            materialDesign:HintAssist.Hint="Search by"
+                            materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
+                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0 30 -10 0" CanContentScroll="True"
+                          materialDesign:ScrollBarAssist.ThumbCornerRadius="20">
+            <ListView ItemsSource="{Binding Ads}" x:Name="itemList" Margin="0 0 10 0"
+                          HorizontalContentAlignment="Stretch" Height="750"
+                          BorderThickness="0"
+                      ItemContainerStyle="{StaticResource MaterialDesignCardsListBoxItem}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <local:AdsItem Height="300"/>
+                            <RadioButton HorizontalAlignment="Right"
+                                         GroupName="radio"
+                                         Margin="0 0 20 0"
+                                         Command="{Binding RelativeSource={
+                                                    RelativeSource Mode=FindAncestor, 
+                                                    AncestorType={x:Type local:AdsManager}}, 
+                                                    Path=DataContext.RadioCommand}"
+                                         CommandParameter="{Binding}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+    </StackPanel>
+</UserControl>
