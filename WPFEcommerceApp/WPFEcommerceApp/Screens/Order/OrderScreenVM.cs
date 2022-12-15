@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
@@ -88,11 +90,13 @@ namespace WPFEcommerceApp {
                 }
 
             ICommand CanCelCM = new RelayCommand<object>((p) => true,async (p) => {
+                MainViewModel.IsLoading = true;
+                
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
-                //CancelledList.Add(p as Order);
-                //ProcessingList.Remove(p as Order);
-			});
+                
+                MainViewModel.IsLoading = false;
+            });
 
             OnCancel = new RelayCommand<object>(p => true, async p => {
                 var view = new ConfirmDialog() {

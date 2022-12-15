@@ -41,7 +41,8 @@ namespace WPFEcommerceApp {
                     CreateAdminCategoryMngNavService(serviceProvider),
                     CreateAdminBrandMngNavService(serviceProvider),
                     CreateAdminUserMngNavService(serviceProvider),
-                    CreateAdminProductMngNavService(serviceProvider)
+                    CreateAdminProductMngNavService(serviceProvider),
+                    CreateProfileNavService(serviceProvider)
                 )
             );
             #endregion
@@ -85,6 +86,13 @@ namespace WPFEcommerceApp {
             services.AddTransient<AdminUserManagerViewModel>(s => new AdminUserManagerViewModel());
             #endregion
 
+            #region Genaral
+            services.AddTransient<MyProfileViewModel>(s => new MyProfileViewModel(
+                serviceProvider.GetRequiredService<AccountStore>())
+            );
+            #endregion
+
+
             //Setup MainWindow
             //It need to be CreateHomeNavService
             //But I set initial screen is checkout here
@@ -110,6 +118,14 @@ namespace WPFEcommerceApp {
 
             base.OnStartup(e);
         }
+
+        #region Genaral
+        private INavigationService CreateProfileNavService(IServiceProvider serviceProvider) {
+            return new NavigationService<MyProfileViewModel>(
+                serviceProvider.GetRequiredService<NavigationStore>(),
+                serviceProvider.GetRequiredService<MyProfileViewModel>);
+        }
+        #endregion
 
         #region Checkout and Payment
         //Checkout and Payment

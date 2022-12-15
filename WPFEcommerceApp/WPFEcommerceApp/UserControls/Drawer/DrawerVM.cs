@@ -59,7 +59,8 @@ namespace WPFEcommerceApp {
             INavigationService AdminBrandNavigateService,
             INavigationService AdminCategoryNavigateService,
             INavigationService AdminUserManagerNavigateService,
-            INavigationService AdminProductManagerNavigateService) {
+            INavigationService AdminProductManagerNavigateService,
+            INavigationService ProfileNavigateService) {
 
             _accountStore = accountStore;
             _accountStore.AccountChanged += OnAccountChange;
@@ -99,6 +100,9 @@ namespace WPFEcommerceApp {
                     else if(SelectedIndex == 4) {
                         ShopMainNavigateService.Navigate();
                     }
+                    else if(SelectedIndex == 5) {
+                        ProfileNavigateService.Navigate();
+                    }
                 }
                 else {
                     if(SelectedIndex == 0) {
@@ -115,6 +119,9 @@ namespace WPFEcommerceApp {
                     }
                     else if(SelectedIndex==5) {
                         AdminBrandNavigateService.Navigate();
+                    }
+                    else {
+                        ProfileNavigateService.Navigate();
                     }
                 }
             });

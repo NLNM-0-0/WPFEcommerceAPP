@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,8 +12,28 @@ using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
     public class MainViewModel : BaseViewModel {
+
+        #region Loading Field
+        private static bool isLoading;
+        public static bool IsLoading {
+            get { return isLoading; }
+            set {
+                if(isLoading != value) {
+                    isLoading = value;
+                    NotifyStaticPropertyChanged();
+                }
+            }
+        }
+
+        public static event PropertyChangedEventHandler StaticPropertyChanged;
+
+        private static void NotifyStaticPropertyChanged([CallerMemberName] string name = null) {
+            StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(name));
+        }
+        #endregion
+
         private readonly NavigationStore _navigationStore;
-        static bool IsButtonClosed { get; set; }
+        
         public DrawerVM DrawerVM { get; }
         public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
         public ICommand CloseCM { get; set; }
@@ -22,22 +43,14 @@ namespace WPFEcommerceApp {
         public MainViewModel(NavigationStore navigationStore,
             DrawerVM drawerVM) {
             DrawerVM = drawerVM;
+            IsLoading = false;
 
             _navigationStore = navigationStore;
 
             _navigationStore.CurrentVMChanged += OnCurrentVMChanged;
 
             CloseCM = new RelayCommand<object>(p => true, p => {
-                IsButtonClosed = true;
-                var view = new ConfirmDialog() {
-                    Param = p,
-                    CM = new RelayCommand<object>(t => true, t => {
-                        (t as Window).Close();
-                    }),
-                    Header = "Are you sure?",
-                    Content = "Your process may not be saved if you close the app. Please check your work before closing the app!"
-                };
-                DialogHost.Show(view, "App");
+                (p as Window).Close();
             });
             MinimizeCM = new RelayCommand<object>(p => true, p => {
                 (p as Window).WindowState = WindowState.Minimized;
@@ -74,16 +87,13 @@ namespace WPFEcommerceApp {
             }
         }
         static public void OnClosing(object sender, CancelEventArgs e) {
-            if(IsButtonClosed) {
-                IsButtonClosed = false;
-                return;
-            }
-            IsButtonClosed= true ;
             e.Cancel = true;
-            (sender as Window).WindowState = WindowState.Normal;
+            if((sender as Window).WindowState == WindowState.Minimized)
+                (sender as Window).WindowState = WindowState.Normal;
             var view = new ConfirmDialog() {
                 Param = sender,
                 CM = new RelayCommand<object>(t => true, t => {
+                    (t as Window).Closing -= MainViewModel.OnClosing;
                     (t as Window).Close();
                 }),
                 Header = "Are you sure?",

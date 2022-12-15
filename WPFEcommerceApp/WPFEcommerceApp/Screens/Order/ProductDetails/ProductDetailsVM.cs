@@ -65,11 +65,14 @@ namespace WPFEcommerceApp {
 
 
             ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
-                //Do something with OrderStore
+				//Do something with OrderStore
+				MainViewModel.IsLoading = true;
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
                 orderNavService.Navigate();
-			});
+                MainViewModel.IsLoading = true;
+
+            });
 			OnCancel = new RelayCommand<object>(p => true, async p => {
 				var view = new ConfirmDialog() {
 					Header = "Are you sure?",
