@@ -36,9 +36,9 @@
                                 materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
                 </StackPanel>
 
-                
+
             </DockPanel>
-            
+
         </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"
@@ -57,25 +57,25 @@
         <Grid Grid.Row="2" x:Name="grid"  Background="{StaticResource WhiteColorBrush}" Margin="50 10">
             <DataGrid ItemsSource="{Binding FilteredProducts}" x:Name="datagrid"
                     MaxHeight="{Binding ElementName=grid, Path=ActualHeight}"
-                    AutoGenerateColumns="False"
+                    AutoGenerateColumns="False" CanUserDeleteRows="False"
                       CanUserAddRows="False" CanUserReorderColumns="False"
-                      CanUserResizeColumns="False">
-                
+                      IsReadOnly="True">
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="Auto" Binding="{Binding Id}" SortDirection="Ascending"/>
-                    <DataGridTextColumn Header="ShopID" Width="Auto" Binding="{Binding IdShop}" SortDirection="Ascending"/>
-                    <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="*">
+                    <DataGridTextColumn Header="ID" Width="Auto" Binding="{Binding Id}" MinWidth="100" MaxWidth="200" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="ShopID" Width="Auto" Binding="{Binding IdShop}" MinWidth="100" MaxWidth="200" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" MinWidth="200" MaxWidth="700" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style>
                                 <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Category" Binding="{Binding Category.Name}" Width="Auto"/>
-                    <DataGridTextColumn Header="Brand" Binding="{Binding Brand.Name}" Width="Auto"/>
-                    <DataGridTextColumn Header="Price" Width="Auto" Binding="{Binding Price}" SortDirection="Ascending"/>
-                    <DataGridTextColumn Header="In Stock" Width="Auto" Binding="{Binding InStock}" SortDirection="Ascending"/>
-                    <DataGridTextColumn Header="Sold" Width="Auto" Binding="{Binding Sold}" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="Category" Binding="{Binding Category.Name}" MinWidth="100" MaxWidth="400" Width="Auto"/>
+                    <DataGridTextColumn Header="Brand" Binding="{Binding Brand.Name}" Width="Auto" MinWidth="100" MaxWidth="400"/>
+                    <DataGridTextColumn Header="Price" Width="Auto" Binding="{Binding Price}" MinWidth="100" MaxWidth="400" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="In Stock" Width="Auto" Binding="{Binding InStock}" MinWidth="100" MaxWidth="400" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="Sold" Width="Auto" Binding="{Binding Sold}" MinWidth="100" MaxWidth="400" SortDirection="Ascending"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

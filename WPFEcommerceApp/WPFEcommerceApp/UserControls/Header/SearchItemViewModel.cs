@@ -23,11 +23,11 @@ namespace WPFEcommerceApp
             get { return _sourceImage; }
             set { _sourceImage = value; OnPropertyChanged(); }
         }
-
+        public object Model { get; set; }
+        public bool IsProduct { get; set; }
         public SearchItemViewModel()
         {
-            SourceImage = null;
-            Name = "A product or shop name";
+            
         }
     }
 }
