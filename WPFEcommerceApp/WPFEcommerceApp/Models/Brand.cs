@@ -20,7 +20,7 @@ namespace WPFEcommerceApp.Models
             this.Products = new HashSet<Product>();
         }
     
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Status { get; set; }
     

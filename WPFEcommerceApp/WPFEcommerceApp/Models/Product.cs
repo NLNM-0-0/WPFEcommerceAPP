@@ -20,15 +20,14 @@ namespace WPFEcommerceApp.Models
             this.Carts = new HashSet<Cart>();
             this.ImageProducts = new HashSet<ImageProduct>();
             this.OrderInfoes = new HashSet<OrderInfo>();
-            this.RatingInfoes = new HashSet<RatingInfo>();
             this.MUsers = new HashSet<MUser>();
         }
     
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-        public int IdCategory { get; set; }
-        public int IdBrand { get; set; }
-        public int IdShop { get; set; }
+        public string IdCategory { get; set; }
+        public string IdBrand { get; set; }
+        public string IdShop { get; set; }
         public long Price { get; set; }
         public int Sale { get; set; }
         public int InStock { get; set; }
@@ -53,8 +52,6 @@ namespace WPFEcommerceApp.Models
         public virtual MUser MUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MUser> MUsers { get; set; }
     }

@@ -22,14 +22,15 @@ namespace WPFEcommerceApp.Models
     
         public string Id { get; set; }
         public string IdCustomer { get; set; }
-        public string IdRating { get; set; }
+        public string IdShop { get; set; }
+        public Nullable<int> ShipTotal { get; set; }
         public Nullable<System.DateTime> DateBegin { get; set; }
         public Nullable<System.DateTime> DateEnd { get; set; }
         public long OrderTotal { get; set; }
         public string Status { get; set; }
     
         public virtual MUser MUser { get; set; }
-        public virtual Rating Rating { get; set; }
+        public virtual MUser MUser1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
     }

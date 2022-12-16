@@ -14,6 +14,8 @@ namespace WPFEcommerceApp.Models
     
     public partial class BrandRequest
     {
+        public string Id { get; set; }
+        public string IdShop { get; set; }
         public string Name { get; set; }
         public string Reason { get; set; }
     

@@ -14,7 +14,7 @@ namespace WPFEcommerceApp.Models
     
     public partial class ImageProduct
     {
-        public int IdProduct { get; set; }
+        public string IdProduct { get; set; }
         public string Source { get; set; }
     
         public virtual Product Product { get; set; }
