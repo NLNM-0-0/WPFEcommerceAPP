@@ -1,0 +1,219 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AdminAddUserDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             mc:Ignorable="d">
+    <materialDesign:DialogHost>
+        <StackPanel Margin="20">
+            <Grid Margin="0 30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                        Grid.ColumnSpan="2"
+                        Text="Add New User"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontFamily="{StaticResource Regular}"
+                        FontSize="{StaticResource FontSizeHeadline}"/>
+                <Button
+                        x:Name="ButtonClose"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Grid.Column="1"
+                        Margin="0 0 10 0"
+                        Padding="0"
+                        Height="30"
+                        Width="30"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
+
+                    <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+                </Button>
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <StackPanel>
+                        <ComboBox Margin="15" ItemsSource="{Binding RoleOptions}"
+                                    materialDesign:HintAssist.Hint="Role"
+                                  x:Name="role"
+                                    VerticalAlignment="Center">
+                            <ComboBox.SelectedItem>
+                                <Binding Path="Role"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule
+                                              ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedItem>
+                        </ComboBox>
+                        <TextBox Margin="15" Text="{Binding NewUser.Gender}"
+                        Width="150"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Gender"
+                        MaxLength="10"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
+                        <DatePicker SelectedDate="{Binding NewUser.DOB}"
+                        Height="55"
+                        Width="150"
+                        Style="{StaticResource OurDatePicker}"
+                        materialDesign:HintAssist.Hint="Birth"
+                        Grid.Column="2"
+                        Margin="15"/>
+
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <StackPanel>
+                        <TextBox DockPanel.Dock="Left"
+                                 x:Name="username"
+                            Width="300" Margin="15"
+                            Style="{StaticResource TextBoxHintBlackBorder}"
+                            materialDesign:HintAssist.Hint="User Name"
+                            MaxLength="27"
+                            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
+                            <Binding
+                                    Path="NewUser.Name"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <TextBox DockPanel.Dock="Left"
+                        Width="300" Margin="15"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Full Name"
+                        MaxLength="27"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
+
+                        <TextBox DockPanel.Dock="Left"
+                                 x:Name="phonenumber"
+                        Width="300" Margin="15"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Phone number"
+                        MaxLength="27"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
+                            <Binding
+                                    Path="NewUser.PhoneNumber"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:PhoneValidateRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <TextBox DockPanel.Dock="Left"
+                                 x:Name="address"
+                        Width="300" Margin="15"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Address"
+                        MaxLength="27"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
+                            <Binding
+                                    Path="NewUser.Address"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <TextBox DockPanel.Dock="Left"
+                                 x:Name="email"
+                        Width="300" Margin="15"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Email"
+                        MaxLength="27"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
+                            <Binding
+                                    Path="NewUser.Email"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+
+                        <TextBox DockPanel.Dock="Left"
+                                 x:Name="description"
+                        Width="300" Margin="15"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Description"
+                        MaxLength="27"
+                        Visibility="{c:Binding 'IsShop',FalseToVisibility=Hidden}"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
+                            <Binding
+                                    Path="NewUser.Description"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <Button Content="Add" Margin="20" x:Name="addButton"
+                    HorizontalAlignment="Right"
+                    Command="{Binding AddUserCommand}">
+                <Button.CommandParameter>
+                    <Binding Path="NewUser"/>
+                </Button.CommandParameter>
+                <!--<Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource OutLineBlackButton}">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsShop}" Value="true"/>
+                                    <Condition Binding="{Binding ElementName=username, Path=(Validation.HasError)}" Value="true"/>
+                                    <Condition Binding="{Binding ElementName=phonenumber, Path=(Validation.HasError)}" Value="true"/>
+                                    <Condition Binding="{Binding ElementName=address, Path=(Validation.HasError)}" Value="true"/>
+                                    <Condition Binding="{Binding ElementName=email, Path=(Validation.HasError)}" Value="true"/>
+                                    <Condition Binding="{Binding ElementName=description, Path=(Validation.HasError)}" Value="true"/>
+                                    <Condition Binding="{Binding ElementName=role, Path=(Validation.HasError)}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>-->
+            </Button>
+        </StackPanel>
+    </materialDesign:DialogHost>
+
+</UserControl>
+
+<!--<i:Interaction.Triggers>
+    <i:DataTrigger Binding="{Binding ElementName=phoneBox, Path=(Validation.HasError)}" Value="True">
+        <i:ChangePropertyAction TargetName="lel" PropertyName="IsEnabled" Value="False"/>
+    </i:DataTrigger>
+    <i:DataTrigger Binding="{Binding ElementName=phoneBox, Path=(Validation.HasError)}" Value="False">
+        <i:ChangePropertyAction TargetName="lel" PropertyName="IsEnabled" Value="True"/>
+    </i:DataTrigger>
+</i:Interaction.Triggers>-->

@@ -169,7 +169,7 @@ namespace WPFEcommerceApp
             {
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.DataContext = new ProductDetailViewModel(this.Product);
-                DialogHost.Show(productDetail);
+                DialogHost.Show(productDetail, "App");
             });
         }
     }

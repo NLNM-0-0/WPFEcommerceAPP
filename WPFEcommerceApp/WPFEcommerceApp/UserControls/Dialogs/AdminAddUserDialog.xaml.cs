@@ -16,16 +16,13 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for Header.xaml
+    /// Interaction logic for ProfileShop.xaml
     /// </summary>
-    public partial class Header : UserControl
+    public partial class AdminAddUserDialog : UserControl
     {
-        private AccountStore accountStore;
-
-        public Header()
+        public AdminAddUserDialog()
         {
             InitializeComponent();
-            this.DataContext=new HeaderViewModel(accountStore);
         }
     }
 }
