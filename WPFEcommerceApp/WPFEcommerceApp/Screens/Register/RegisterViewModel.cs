@@ -13,6 +13,7 @@ namespace WPFEcommerceApp
     internal class RegisterViewModel:BaseViewModel
     {
         public GenericDataRepository<Models.MUser> GenericDataRepository { get; set; }
+        public GenericDataRepository<Models.UserLogin> LoginRepo { get; set; }
         private string _name;
         private string _email;
         private string _password;
@@ -21,6 +22,7 @@ namespace WPFEcommerceApp
         private bool _isMen;
         private bool _isWomen;
         public bool Gt;
+
         public string Name
         {
             get => _name;
@@ -88,20 +90,34 @@ namespace WPFEcommerceApp
             }
         }
         public ICommand Regist { get; set; }
-        private async Task Load()
+        public async Task Load()
         {
+            string idUser = await GenerateID.Gen(typeof(Models.MUser));
             GenericDataRepository<Models.MUser> dataRepository = new GenericDataRepository<Models.MUser>();
+            GenericDataRepository<Models.UserLogin> loginRepository = new GenericDataRepository<Models.UserLogin>();
             try
             {
+                
+                
+               
                 await dataRepository.Add(new Models.MUser()
                 {
+                    Id = idUser,
                     Name = Name,
                     Email = Email,
                     PhoneNumber = Phone,
                     Gender = Gt,
                     Address = Address,
-                    password = Password,
-                    Description = ""
+                    Description = "",
+                    StatusShop = "NotExist",
+                    StatusUser = "NotBanned",
+                    Role = "User"
+                });
+                await loginRepository.Add(new Models.UserLogin()
+                {
+                    IdUser = idUser,
+                    Password = Password,
+                    Username = Email
                 });
             }
             catch(Exception e)
@@ -111,7 +127,7 @@ namespace WPFEcommerceApp
         }
         public RegisterViewModel()
         {
-            Regist = new RelayCommandWithNoParameter(() =>
+            Regist = new RelayCommandWithNoParameter(async () =>
             {
                 Task task = Task.Run(async () => await Load());
                 while (!task.IsCompleted) ;

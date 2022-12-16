@@ -1,6 +1,4 @@
-﻿
-using DataAccessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFEcommerceApp.Models;
 
-namespace WPFEcommerceApp {
+namespace WPFEcommerceApp
+{
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AdsItem.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        public MainWindow() {
+    public partial class AdsItem : UserControl
+    {
+        public AdsItem()
+        {
             InitializeComponent();
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 5;
-            Closing += MainViewModel.OnClosing;
         }
     }
 }

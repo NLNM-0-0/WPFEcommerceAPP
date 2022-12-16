@@ -13,7 +13,7 @@ namespace WPFEcommerceApp
     internal class NotificationViewModel : BaseViewModel
     {
         public GenericDataRepository<Models.Notification> NoteRepo;
-        public int ID = 1;
+        public string ID = "1008";
 
 
 

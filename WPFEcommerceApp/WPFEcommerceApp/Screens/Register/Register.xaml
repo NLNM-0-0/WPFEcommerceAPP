@@ -7,7 +7,10 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             d:DesignHeight="900" d:DesignWidth="780">
+             d:DesignHeight="900" d:DesignWidth="780"
+             Height="500">
+    <ScrollViewer>
+        
     <StackPanel Background="White">
         <StackPanel.Resources>
             <Style x:Key="RadioButtonGender" TargetType="{x:Type RadioButton}">
@@ -181,5 +184,7 @@
                 
         </Button>
     </StackPanel>
+    </ScrollViewer>
+
 </UserControl>
 

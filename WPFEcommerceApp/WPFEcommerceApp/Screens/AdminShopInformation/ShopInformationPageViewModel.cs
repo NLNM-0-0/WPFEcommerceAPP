@@ -17,16 +17,28 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
-    public class ShopInformationPageViewModel: BaseViewModel, IAsyncInitialization
+    public class ShopInformationPageViewModel : BaseViewModel
     {
         #region Public Properties
-        private ObservableCollection<MUser> _shops;
-        public ObservableCollection<MUser> Shops
+        public GenericDataRepository<MUser> userRepo;
+        public GenericDataRepository<ShopRequest> requestRepo;
+
+        private ObservableCollection<MUser> shopsToSearch;
+
+        private ObservableCollection<MUser> bannedShops;
+        private ObservableCollection<MUser> notBannedShops;
+
+        private ObservableCollection<MUser> _filteredShops;
+        public ObservableCollection<MUser> FilteredShops
         {
-            get { return _shops; }
+            get
+            {
+                return _filteredShops;
+            }
+
             set
             {
-                _shops = value;
+                _filteredShops = value;
                 OnPropertyChanged();
             }
         }
@@ -62,7 +74,7 @@ namespace WPFEcommerceApp
             {
                 _requestSelectedItem = value;
                 ShowInformation();
-                
+
                 OnPropertyChanged();
             }
         }
@@ -78,21 +90,6 @@ namespace WPFEcommerceApp
             await DialogHost.Show(view, "show");
         }
 
-        private MUser _datagridSelectedItem;
-
-        public MUser DatagridSelectedItem
-        {
-            get
-            {
-                return _datagridSelectedItem;
-            }
-
-            set
-            {
-                _datagridSelectedItem = value;
-                OnPropertyChanged();
-            }
-        }
 
 
         private string _searchBy;
@@ -100,16 +97,57 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; OnPropertyChanged(); }
+            set { _searchBy = value; Search(); OnPropertyChanged(); }
         }
+
+        public List<string> SearchByOptions { get; set; }
+
         private string searchText;
 
-        public string SearchString
+        public string SearchText
         {
             get { return searchText; }
-            set { searchText = value; OnPropertyChanged(); }
+            set { searchText = value; Search(); OnPropertyChanged(); }
         }
 
+        private bool _isChecked;
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                if (value)
+                {
+                    StatusText = "Not Banned";
+                    FilteredShops = shopsToSearch = notBannedShops;
+                    RemoveOrUnBanned = "Ban";
+                }
+                else
+                {
+                    StatusText = "Banned";
+                    FilteredShops = shopsToSearch = bannedShops;
+                    RemoveOrUnBanned = "Unban";
+                }
+
+                _isChecked = value;
+            }
+        }
+
+        private string _statusText;
+        public string StatusText
+        {
+            get => _statusText;
+            set { _statusText = value; OnPropertyChanged(); }
+        }
+
+        private string _removeOrUnBanned;
+        public string RemoveOrUnBanned
+        {
+            get => _removeOrUnBanned;
+            set { _removeOrUnBanned = value; OnPropertyChanged(); }
+        }
+        private string _lastSearchText;
+        private string _lastSearchOption;
         #endregion
 
         #region Commands
@@ -120,17 +158,23 @@ namespace WPFEcommerceApp
         public ICommand OpenDialogCommand { get; set; }
         public ICommand OpenRequestCommand { get; set; }
         public ICommand ChangeCommand { get; set; }
-        public Task InitializeAsync { get; private set; }
         #endregion
 
         #region Constructor
         public ShopInformationPageViewModel()
         {
-            InitializeAsync = Load();
-            RequestList= new ShopRequestListViewModel();
-            ShopRequestItemViewModel.RemoveRequestCommand = new RelayCommandWithNoParameter(async()=>await RemoveRequest());
-            ShopRequestItemViewModel.AddRequestCommand = new RelayCommandWithNoParameter(async()=>await AddRequest());
-            RemoveShopCommand = new RelayCommand<object>(p => p != null, async(p)=>await RemoveShop(p));
+            userRepo = new GenericDataRepository<MUser>();
+            requestRepo = new GenericDataRepository<ShopRequest>();
+
+            SearchByOptions = new List<string> { "ID", "Name", "Des" };
+            SearchBy = SearchByOptions[1];
+
+            Load();
+
+            RequestList = new ShopRequestListViewModel();
+            ShopRequestItemViewModel.RemoveRequestCommand = new RelayCommandWithNoParameter(async () => await RemoveRequest());
+            ShopRequestItemViewModel.AddRequestCommand = new RelayCommandWithNoParameter(async () => await AddRequest());
+            RemoveShopCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveShop(p));
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
             OpenRequestCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenDialog(p));
@@ -142,7 +186,7 @@ namespace WPFEcommerceApp
             {
                 var temp = (ShopRequestItemViewModel)obj;
 
-                if(RequestSelectedItem == temp)
+                if (RequestSelectedItem == temp)
                 {
                     ShowInformation();
                 }
@@ -151,68 +195,32 @@ namespace WPFEcommerceApp
             catch { }
         }
 
-        public async Task Load()
+        public async void Load()
         {
-            try
-            {
-                var userRepository = new GenericDataRepository<MUser>();
-                //var newUser = new MUser
-                //{
-                //    Id = "Us004",
-                //    Name = "Winter Clothing",
-                //    Role = "User",
-                //    PhoneNumber = "0987654321",
-                //    Email = "goodnight@gmail.com",
-                //    Address = "None",
-                //    Gender = true,
-                //    Description = "None",
-                //    Status = "NotBanned"
+            IsChecked = true;
+            RemoveOrUnBanned = "Ban";
 
-                //};
-                //await userRepository.Add(newUser);
+            notBannedShops = new ObservableCollection<MUser>(await userRepo.
+                GetListAsync(item => item.Role.Equals("Shop") && item.StatusShop.Equals(Status.NotBanned.ToString())));
 
-                Shops = new ObservableCollection<MUser>(await userRepository.
-                    GetListAsync(item => item.Role.Equals("Shop")&&item.StatusUser.Equals("NotBanned")));
+            FilteredShops = shopsToSearch = notBannedShops;
+            bannedShops = new ObservableCollection<MUser>(await userRepo.
+                GetListAsync(item => item.Role.Equals("Shop") && item.StatusShop.Equals(Status.Banned.ToString())));
+            var query = await requestRepo.GetAllAsync(s => s.MUser);
 
-                using (var context = new EcommerceAppEntities())
+            RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
+                query.Select(item => new ShopRequestItemViewModel
                 {
-                    try
-                    {
-                        var query = (from request in context.ShopRequests
-                                    join user in context.MUsers
-                                    on request.IdUser equals user.Id
-                                    select new
-                                    {
-                                        RequestId=request.Id,
-                                        IdUser=request.IdUser,
-                                        Name=user.Name,
-                                        SourceImageAva=user.SourceImageAva,
-                                        Description=request.Description,
-                                        Email=user.Email,
-                                        PhoneNumber=user.PhoneNumber,
-                                        Address=user.Address,
-                                    }).ToList();
-                        RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
-                            query.Select(item=> new ShopRequestItemViewModel
-                            {
-                                RequestId = item.RequestId.ToString(),
-                                Id=item.IdUser.ToString(),
-                                Name=item.Name,
-                                Description=item.Description,
-                                SourceImageAva=new BitmapImage(new Uri(item.SourceImageAva)),
-                                Email=item.Email,
-                                PhoneNumber=item.PhoneNumber,
-                                Address=item.Address
-                            }));
+                    RequestId = item.Id,
+                    Id = item.IdUser,
+                    Name = item.MUser.Name,
+                    Description = item.Description,
+                    SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
+                    Email = item.MUser.Email,
+                    PhoneNumber = item.MUser.PhoneNumber,
+                    Address = item.MUser.Address
+                }));
 
-                    }
-                    catch { }
-                }
-                
-                
-            }
-            catch { }
-           
         }
 
         #endregion
@@ -221,55 +229,79 @@ namespace WPFEcommerceApp
 
         public void Search()
         {
+            if (string.IsNullOrEmpty(SearchBy))
+                FilteredShops = shopsToSearch;
 
+            if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
+                (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+            {
+                FilteredShops = shopsToSearch;
+            }
+
+            if (string.IsNullOrEmpty(SearchText) || shopsToSearch.Count <= 0 || shopsToSearch == null)
+            {
+                FilteredShops = shopsToSearch;
+                return;
+            }
+
+            if (SearchBy == "Name")
+            {
+                _lastSearchOption = "Name";
+                FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
+            }
+            else if (SearchBy == "ID")
+            {
+                _lastSearchOption = "ID";
+                FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
+            }
+            else if(SearchBy=="Des")
+            {
+                _lastSearchOption = "Des";
+                FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Description.ToLower().Contains(SearchText.ToLower())));
+
+            }
         }
 
         public void CloseSearch()
         {
-            SearchString = string.Empty;
+            SearchText = string.Empty;
         }
 
         public async Task RemoveShop(object obj)
         {
-            try
-            {
-                var removeShop = (MUser)obj;
-                Shops.Remove(removeShop);
-                removeShop.Status = "Banned";
-                await new GenericDataRepository<MUser>().Update(removeShop);
-            }
-            catch { };
+            var removeShop = obj as MUser;
+            if (obj == null)
+                return;
+
+            if (removeShop.StatusShop == Status.Banned.ToString())
+                removeShop.StatusShop = Status.NotBanned.ToString();
+            else
+                removeShop.StatusShop = Status.Banned.ToString();
+
+            await userRepo.Update(removeShop);
+            Load();
         }
 
         public async Task RemoveRequest()
         {
-            try
-            {
-                var repo = new GenericDataRepository<ShopRequest>();
-                var item = await repo.GetSingleAsync(t => t.Id.Equals(RequestSelectedItem.RequestId));
-                await repo.Remove(item);
-                await Load();
-                DialogHost.CloseDialogCommand.Execute(null, null);
-            }
-            catch { };
+            var item = await requestRepo.GetSingleAsync(t => t.Id.Equals(RequestSelectedItem.RequestId));
+            await requestRepo.Remove(item);
+            Load();
+            DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public async Task AddRequest()
         {
-            try
-            {
-                var repoShopRequest = new GenericDataRepository<ShopRequest>();
-                var item = await repoShopRequest.GetSingleAsync(t => t.Id.Equals(RequestSelectedItem.RequestId));
+            var item = await requestRepo.GetSingleAsync(t => t.Id.Equals(RequestSelectedItem.RequestId));
 
-                var repoUser = new GenericDataRepository<MUser>();
-                var newShop = await repoUser.GetSingleAsync(user => user.Id.Equals(item.IdUser));
-                newShop.Role = "Shop";
-                await repoUser.Update(newShop);
-                await repoShopRequest.Remove(item);
-                await Load();
-                DialogHost.CloseDialogCommand.Execute(null, null);
-            }
-            catch { }
+            var newShop = await userRepo.GetSingleAsync(user => user.Id.Equals(item.IdUser));
+            newShop.Role = "Shop";
+            newShop.StatusShop = Status.NotBanned.ToString();
+
+            await userRepo.Update(newShop);
+            await requestRepo.Remove(item);
+            Load();
+            DialogHost.CloseDialogCommand.Execute(null, null);
         }
         #endregion
     }

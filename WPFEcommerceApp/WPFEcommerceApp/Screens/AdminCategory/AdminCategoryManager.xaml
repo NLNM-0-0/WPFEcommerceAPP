@@ -11,7 +11,7 @@
     <Grid Margin="0 0 0 50">
 
         <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
-            <StackPanel Margin="95 20">
+            <StackPanel Margin="50 20">
                 <DockPanel>
                     <TextBlock Text="Categories"
                                    FontFamily="{StaticResource Bold}"
@@ -60,11 +60,11 @@
 
 
                 <DataGrid ItemsSource="{Binding FilteredCategories}" x:Name="datagrid" ScrollViewer.CanContentScroll="True"
-                      Margin="0 20" MaxHeight="700" CanUserReorderColumns="False" CanUserResizeColumns="False"
+                      Margin="0 20" MaxHeight="700" CanUserReorderColumns="False" IsReadOnly="True"
                       AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Width="200" Binding="{Binding Id}" SortDirection="Ascending"/>
-                        <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" SortDirection="Ascending"/>
+                        <DataGridTextColumn Header="ID" Width="200" MinWidth="100" MaxWidth="200" Binding="{Binding Id}" SortDirection="Ascending"/>
+                        <DataGridTextColumn Header="Name" Width="*" MinWidth="500" Binding="{Binding Name}" SortDirection="Ascending"/>
                     </DataGrid.Columns>
 
                 </DataGrid>

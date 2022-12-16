@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
+                    xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
                     xmlns:fa= "http://schemas.fontawesome.io/icons/"
                     xmlns:vm="clr-namespace:WPFEcommerceApp"
                     xmlns:it="http://schemas.microsoft.com/xaml/behaviors"
@@ -24,7 +24,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                    <Border x:Name="Bd" BorderBrush="{StaticResource BlurColorBrush}" BorderThickness="0.6" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true" Margin="0 20 0 0"
+                            Width="{c:Binding RelativeSource={RelativeSource AncestorType=TabControl, Mode=FindAncestor},Path=ActualWidth-30}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -36,25 +37,42 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <DataTemplate x:Key="OrderCard" DataType="{x:Type vm:Order}">
-        
-        <!--Header-->
-        <StackPanel Width="1111" Margin="0">
-            <Separator BorderThickness="0.5" BorderBrush="{StaticResource NotAvailableColorBrush}"/>
+        <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=ActualWidth}">
+            <!--Header-->
             <Border Padding="15, 0">
                 <Grid Margin="0, 20">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="ID: " 
-                                                   HorizontalAlignment="Left"
-                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
-                        <TextBlock Text="{Binding ID}" 
-                                                   HorizontalAlignment="Left"
-                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Grid Background="Pink"
+                              Width="{c:Binding ElementName=OrderIDText, Path=Height+40}"
+                              Height="{c:Binding ElementName=OrderIDText, Path=Height+40}">
+                            <Image Source="{Binding ShopImage}"
+                                   Width="{c:Binding ElementName=OrderIDText, Path=Height+40}"
+                                   Height="{c:Binding ElementName=OrderIDText, Path=Height+40}"
+                                   HorizontalAlignment="Center"/>
+                        </Grid>
+                        <TextBlock Text="{Binding ShopName}"
+                                   FontSize="{StaticResource FontSizeHeadline3}"
+                                   Margin="20 0 40 0"/>
                     </StackPanel>
-                    <TextBlock x:Name="statusString" Text="{Binding Status}" 
-                                                 HorizontalAlignment="Right"
-                                                   FontSize="{StaticResource FontSizeHeadline3}"
-                                                   Foreground="{StaticResource SuccessColorBrush}">
+                    
+                    <TextBlock Text="{c:Binding \'ID: \' + ID}" 
+                               Grid.Column="1"
+                                   x:Name="OrderIDText"
+                                   HorizontalAlignment="Center"
+                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                    
+                    <TextBlock x:Name="statusString" Text="{Binding Status}"
+                               Grid.Column="2"
+                               HorizontalAlignment="Right"
+                               FontSize="{StaticResource FontSizeHeadline3}"
+                               Foreground="{StaticResource SuccessColorBrush}">
                         <it:Interaction.Triggers>
                             <it:DataTrigger Binding="{Binding Status}" Value="Cancelled">
                                 <it:ChangePropertyAction PropertyName="Foreground" TargetName="statusString" Value="{StaticResource ErrorColorBrush}"/>
@@ -66,20 +84,18 @@
 
             <!--Product-->
             <StackPanel>
-                <vm:ProductOrderCard DataContext="{Binding ProductPreview[0]}"/>
-                <vm:ProductOrderCard x:Name="product2" DataContext="{Binding ProductPreview[1]}"/>
+                <vm:ProductOrderCard DataContext="{Binding ProductList[0]}"/>
+                <vm:ProductOrderCard x:Name="product2" DataContext="{Binding ProductList[1]}"/>
                 <it:Interaction.Triggers>
-                    <it:DataTrigger Binding="{Binding ProductPreview.Count}" Value="1">
+                    <it:DataTrigger Binding="{Binding ProductList.Count}" Value="1">
                         <it:ChangePropertyAction PropertyName="Visibility" TargetName="product2" Value="Collapsed"/>
                         <it:ChangePropertyAction PropertyName="DataContext" TargetName="product2" Value=""/>
                     </it:DataTrigger>
                 </it:Interaction.Triggers>
             </StackPanel>
             <!--Footer-->
-            <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top" Margin="0, 0,0,20"/>
-            <Grid Width="1118">
+
+            <Grid Margin="0 0 0 10">
                 <StackPanel Orientation="Horizontal">
                     <Button Content="Re-Order" FontWeight="Light"
                             x:Name="Button1"
@@ -114,9 +130,6 @@
                                                    FontSize="{StaticResource FontSizeHeadline3}"/>
                 </StackPanel>
             </Grid>
-            <Separator BorderThickness="1000" BorderBrush="{StaticResource NotAvailableColorBrush}" 
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Top" Margin="0, 20"/>
         </StackPanel>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding Status}" Value="Processing">

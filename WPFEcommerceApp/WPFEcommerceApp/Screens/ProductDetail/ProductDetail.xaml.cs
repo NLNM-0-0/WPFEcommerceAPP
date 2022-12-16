@@ -32,7 +32,7 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             GenericDataRepository<Models.Product> genericDataRepository = new GenericDataRepository<Models.Product>();
-            Product = await genericDataRepository.GetSingleAsync(p => p.Id == 1,
+            Product = await genericDataRepository.GetSingleAsync(p => p.Id == "1",
                                                              p => p.Brand,
                                                               p => p.Category,
                                                               p => p.MUser,
