@@ -172,6 +172,14 @@
           <Property Name="IdUser" Type="varchar" MaxLength="8" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
         </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="20" />
+          <Property Name="Username" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <Association Name="FK__Cart__IdProduct__46E78A0C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
@@ -388,6 +396,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_User_Login">
+          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLogin">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="EcommerceAppModelStoreContainer">
           <EntitySet Name="Advertisement" EntityType="Self.Advertisement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
@@ -404,6 +424,7 @@
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopRequest" EntityType="Self.ShopRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="Self.FK__Cart__IdProduct__46E78A0C">
             <End Role="Product" EntitySet="Product" />
             <End Role="Cart" EntitySet="Cart" />
@@ -476,6 +497,10 @@
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
+          <AssociationSet Name="FK_User_Login" Association="Self.FK_User_Login">
+            <End Role="MUser" EntitySet="MUser" />
+            <End Role="UserLogin" EntitySet="UserLogin" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -496,6 +521,7 @@
           <EntitySet Name="Products" EntityType="EcommerceAppModel.Product" />
           <EntitySet Name="Ratings" EntityType="EcommerceAppModel.Rating" />
           <EntitySet Name="ShopRequests" EntityType="EcommerceAppModel.ShopRequest" />
+          <EntitySet Name="UserLogins" EntityType="EcommerceAppModel.UserLogin" />
           <AssociationSet Name="FK_Product_Brand" Association="EcommerceAppModel.FK_Product_Brand">
             <End Role="Brand" EntitySet="Brands" />
             <End Role="Product" EntitySet="Products" />
@@ -551,6 +577,10 @@
           <AssociationSet Name="FK_Product_Shop" Association="EcommerceAppModel.FK_Product_Shop">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Login" Association="EcommerceAppModel.FK_User_Login">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="UserLogin" EntitySet="UserLogins" />
           </AssociationSet>
           <AssociationSet Name="FK_MOrder_Rating" Association="EcommerceAppModel.FK_MOrder_Rating">
             <End Role="Rating" EntitySet="Ratings" />
@@ -679,6 +709,7 @@
           <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
+          <NavigationProperty Name="UserLogin" Relationship="EcommerceAppModel.FK_User_Login" FromRole="MUser" ToRole="UserLogin" />
           <NavigationProperty Name="Products1" Relationship="EcommerceAppModel.FavouriteProduct" FromRole="MUser" ToRole="Product" />
         </EntityType>
         <EntityType Name="Notification">
@@ -757,6 +788,15 @@
           <Property Name="IdUser" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__72C60C4A" FromRole="ShopRequest" ToRole="MUser" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
         </EntityType>
         <Association Name="FK_Product_Brand">
           <End Type="EcommerceAppModel.Brand" Role="Brand" Multiplicity="1" />
@@ -923,6 +963,18 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="IdShop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Login">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.UserLogin" Role="UserLogin" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLogin">
+              <PropertyRef Name="IdUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1127,6 +1179,15 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="EcommerceAppModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

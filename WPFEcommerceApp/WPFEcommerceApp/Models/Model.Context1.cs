@@ -7,20 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace testDB.Models
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using WPFEcommerceApp.Models;
-
+    
     public partial class EcommerceAppEntities : DbContext
     {
         public EcommerceAppEntities()
             : base("name=EcommerceAppEntities")
         {
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -42,5 +39,6 @@ namespace testDB.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<ShopRequest> ShopRequests { get; set; }
+        public virtual DbSet<UserLogin> UserLogins { get; set; }
     }
 }
