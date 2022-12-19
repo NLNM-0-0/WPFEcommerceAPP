@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
     <Compile Include="Command\NavigateCommand.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -886,6 +887,9 @@
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="FirebaseStorage.net">
+      <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="FontAwesome.WPF">
       <Version>4.7.0.9</Version>

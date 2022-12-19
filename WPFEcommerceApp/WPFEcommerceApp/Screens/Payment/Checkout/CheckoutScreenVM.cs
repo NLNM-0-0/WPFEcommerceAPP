@@ -89,7 +89,7 @@ namespace WPFEcommerceApp {
 		public ICommand OnSuccessPayment { get; set; }
 		public ICommand OnPaymentFieldChoice { get; set; }
         public ICommand OnDeliFieldChoice { get; set; }
-        #endregion
+		#endregion
 
         public CheckoutScreenVM(
 			INavigationService successNavService, 
