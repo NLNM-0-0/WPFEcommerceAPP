@@ -25,9 +25,12 @@ namespace WPFEcommerceApp {
             AccountStore ast = new AccountStore();
             ast.CurrentAccount = u;
 
-            services.AddSingleton<NavigationStore>();
+            AccountStore.instance = ast;
+            OrderStore.instance = new OrderStore();
+            NavigationStore.instance = new NavigationStore();
+
+            //Don't need anymore
             services.AddSingleton<AccountStore>(s => ast);
-            services.AddSingleton<OrderStore>();
 
             services.AddTransient<DrawerVM>(s => new DrawerVM(
                     serviceProvider.GetRequiredService<AccountStore>(),
@@ -54,16 +57,11 @@ namespace WPFEcommerceApp {
             #region Checkout and Order
             //Normal - Checkout and Order
             services.AddTransient<CheckoutScreenVM>(s => new CheckoutScreenVM(
-                    CreateSuccessNavService(s),
-                    s.GetRequiredService<AccountStore>(),
-                    s.GetRequiredService<OrderStore>()
+                    CreateSuccessNavService(s)
                 )
             );
 
             services.AddTransient<OrderScreenVM>(s => new OrderScreenVM(
-                s.GetRequiredService<NavigationStore>(),
-                s.GetRequiredService<AccountStore>(),
-                s.GetRequiredService<OrderStore>(),
                 CreateSuccessNavService(serviceProvider),
                 CreateOrderNavService(serviceProvider)
                 )
@@ -119,10 +117,9 @@ namespace WPFEcommerceApp {
             base.OnStartup(e);
         }
 
-        #region Genaral
+        #region General
         private INavigationService CreateProfileNavService(IServiceProvider serviceProvider) {
             return new NavigationService<MyProfileViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<MyProfileViewModel>);
         }
         #endregion
@@ -131,17 +128,14 @@ namespace WPFEcommerceApp {
         //Checkout and Payment
         private INavigationService CreateCheckoutNavService(IServiceProvider serviceProvider) {
             return new NavigationService<CheckoutScreenVM>(
-                serviceProvider.GetRequiredService<NavigationStore>(), 
                 serviceProvider.GetRequiredService<CheckoutScreenVM>);
         }
         private INavigationService CreateOrderNavService(IServiceProvider serviceProvider) {
             return new NavigationService<OrderScreenVM>(
-                serviceProvider.GetRequiredService<NavigationStore>(), 
                 serviceProvider.GetRequiredService<OrderScreenVM>);
         }
         private INavigationService CreateSuccessNavService(IServiceProvider serviceProvider) {
             return new NavigationService<SuccessScreenVM>(
-                serviceProvider.GetRequiredService<NavigationStore>(), 
                 serviceProvider.GetRequiredService<SuccessScreenVM>);
         }
         #endregion
@@ -151,29 +145,24 @@ namespace WPFEcommerceApp {
 
         private INavigationService CreateShopInformationPageNavService(IServiceProvider serviceProvider) {
             return new NavigationService<ShopInformationPageViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
         }
         private INavigationService CreateAdminCategoryMngNavService(IServiceProvider serviceProvider) {
             return new NavigationService<AdminCategoryViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<AdminCategoryViewModel>);
         }
         private INavigationService CreateAdminBrandMngNavService(IServiceProvider serviceProvider) {
             return new NavigationService<AdminBrandViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<AdminBrandViewModel>);
         }
 
         private INavigationService CreateAdminProductMngNavService(IServiceProvider serviceProvider) {
             return new NavigationService<AdminProductManagerViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<AdminProductManagerViewModel>);
         }
 
         private INavigationService CreateAdminUserMngNavService(IServiceProvider serviceProvider) {
             return new NavigationService<AdminUserManagerViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<AdminUserManagerViewModel>);
         }
         #endregion
@@ -182,24 +171,20 @@ namespace WPFEcommerceApp {
         //Shop
         private INavigationService CreateShopMainNavService(IServiceProvider serviceProvider) {
             return new NavigationService<ShopInformationPageViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
         }
         private INavigationService CreateShopOrderNavService(IServiceProvider serviceProvider) {
             return new NavigationService<ShopInformationPageViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
         }
 
         private INavigationService CreateShopProductNavService(IServiceProvider serviceProvider) {
             return new NavigationService<ShopInformationPageViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopInformationPageViewModel>);
         }
 
         private INavigationService CreateShopRatingNavService(IServiceProvider serviceProvider) {
             return new NavigationService<ShopRatingViewModel>(
-                serviceProvider.GetRequiredService<NavigationStore>(),
                 serviceProvider.GetRequiredService<ShopRatingViewModel>);
         }
         #endregion

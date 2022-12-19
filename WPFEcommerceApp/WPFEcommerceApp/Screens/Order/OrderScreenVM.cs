@@ -56,16 +56,13 @@ namespace WPFEcommerceApp {
         public ICommand OnReviewProduct { get; set; }
 
         public OrderScreenVM(
-            NavigationStore navigationStore,
-            AccountStore accountStore,
-            OrderStore orderStore,
             INavigationService successNavService,
             INavigationService orderNavService,
             int currentPage = 0) {
 
             CurrentPage = currentPage;
 
-            _orderStore = orderStore;
+            _orderStore = OrderStore.instance;
             _orderStore.OrderListChanged += onOrderListChange;
             ProcessingList = new ObservableCollection<Order>();
             DeliveringList = new ObservableCollection<Order>();
@@ -94,8 +91,8 @@ namespace WPFEcommerceApp {
                 
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
-                
-                //MainViewModel.IsLoading = false;
+
+                MainViewModel.IsLoading = false;
             });
 
             OnCancel = new RelayCommand<object>(p => true, async p => {
@@ -110,12 +107,12 @@ namespace WPFEcommerceApp {
 
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
                 var param = p as Order;
-                var nav = new ParamNavigationService<Order, ProductDetailsVM>(navigationStore,
-                    (parameter) => new ProductDetailsVM(parameter, navigationStore, accountStore, orderStore, successNavService, orderNavService));
+                var nav = new ParamNavigationService<Order, ProductDetailsVM>(
+                    (parameter) => new ProductDetailsVM(parameter, successNavService, orderNavService));
                 nav.Navigate(param);
             });
             
-            ICommand ReOrderCM = new ReOrderCM(navigationStore, accountStore, orderStore, successNavService);
+            ICommand ReOrderCM = new ReOrderCM(successNavService);
             OnReorder = new RelayCommand<object>(p => true,async p => {
                 var view = new ConfirmDialog() {
                     CM = ReOrderCM,

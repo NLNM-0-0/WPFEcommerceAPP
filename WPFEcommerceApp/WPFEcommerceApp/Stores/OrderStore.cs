@@ -10,6 +10,7 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class OrderStore {
+		public static OrderStore instance;
 		private readonly AccountStore _accountStore;
 		public MUser user => _accountStore.CurrentAccount;
 
@@ -22,8 +23,8 @@ namespace WPFEcommerceApp {
 				orderList = value;
 			}
 		}
-		public OrderStore(AccountStore account) {
-			_accountStore = account;
+		public OrderStore() {
+			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
 			Load();
 		}

@@ -40,12 +40,12 @@ namespace WPFEcommerceApp {
         public ICommand MinimizeCM { get; set; }
         public ICommand MaximizeCM { get; set; }
 
-        public MainViewModel(NavigationStore navigationStore,
+        public MainViewModel(
             DrawerVM drawerVM) {
             DrawerVM = drawerVM;
             IsLoading = false;
 
-            _navigationStore = navigationStore;
+            _navigationStore = NavigationStore.instance;
 
             _navigationStore.CurrentVMChanged += OnCurrentVMChanged;
 

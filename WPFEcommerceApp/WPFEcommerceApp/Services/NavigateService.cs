@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace WPFEcommerceApp {
     public class NavigationService<TViewModel> : INavigationService
         where TViewModel : BaseViewModel{
-        public NavigationService(NavigationStore navigationStore, CreateViewModel<TViewModel> createVM) {
-            this.navigationStore=navigationStore;
+        public NavigationService(CreateViewModel<TViewModel> createVM) {
+            this.navigationStore=NavigationStore.instance;
             CreateVM=createVM;
         }
 

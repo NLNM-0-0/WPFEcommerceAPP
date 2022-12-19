@@ -92,13 +92,11 @@ namespace WPFEcommerceApp {
         #endregion
 
         public CheckoutScreenVM(
-			INavigationService successNavService, 
-			AccountStore accountStore,
-			OrderStore orderStore,
+			INavigationService successNavService,
 			Order order = null,
 			List<Order> orders = null) {
 
-			_accountStore = accountStore;
+			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
 			_order = order;
 			if(orders != null)
@@ -133,7 +131,7 @@ namespace WPFEcommerceApp {
 
                 var temp = new Order(order);
 				temp.Status = "Processing";
-				await orderStore.Add(temp);
+				await OrderStore.instance.Add(temp);
 				successNavService.Navigate();
                 MainViewModel.IsLoading = false;
 
