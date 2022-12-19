@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="WPFEcommerceApp.Register"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             d:DesignHeight="900" d:DesignWidth="780"
+             Height="500">
+    <ScrollViewer>
+        
+    <StackPanel Background="White">
+        <StackPanel.Resources>
+            <Style x:Key="RadioButtonGender" TargetType="{x:Type RadioButton}">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                <Setter Property="Background" Value="{StaticResource WhiteColorBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource BoxLineColorBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Padding" Value="10 0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignFlatButtonRipple}" />
+                <Setter Property="FontFamily" Value="{StaticResource Light}"/>
+                <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RadioButton}">
+                            <Grid SnapsToDevicePixels="True">
+                                <Border x:Name="border"
+                                    Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    CornerRadius="10" 
+                                    Height="{TemplateBinding Height}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <TextBlock  x:Name="contentPresenter" 
+                                            Focusable="False" 
+                                            HorizontalAlignment='Center'
+                                            Margin="{TemplateBinding Padding}" 
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                            Text="{TemplateBinding Content}"
+                                            FontFamily="{TemplateBinding FontFamily}"
+                                            FontSize="{TemplateBinding FontSize}"
+                                            Foreground="{TemplateBinding Foreground}"/>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource BlackColorBrush}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="{StaticResource WhiteColorBrush}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource BoxLineColorBrush}"/>
+                                </Trigger>
+                                
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </StackPanel.Resources>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+                Grid.ColumnSpan="2"
+                   Text="BECOME A WANO MEMBER" 
+                   TextAlignment="Center"
+                   FontWeight="Bold"
+                   FontSize="30"
+                   Margin="200,30,200,30"
+                   TextWrapping="Wrap"/>
+            <Button
+                        x:Name="ButtonClose"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Grid.Column="1"
+                        Margin="0 0 10 0"
+                        Padding="0"
+                        Height="30"
+                        Width="30"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
+
+                <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+            </Button>
+        </Grid>
+        <TextBlock Text="Create your WANO account and get access to many variety of products"
+                   TextAlignment="Center"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   Margin="100,0,100,30"
+                   TextWrapping="Wrap">
+
+        </TextBlock>
+        <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Email Address"
+                    Width="auto"
+                    Text="{Binding Email}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="30,20,30,0">
+
+        </TextBox>
+        <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Password"
+                    Width="auto"
+                 Text="{Binding Password}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="30,20,30,0">
+
+        </TextBox>
+        <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Phone Number"
+                    Width="auto"
+                 Text="{Binding Phone}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="30,20,30,0">
+
+        </TextBox>
+        <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Your name"
+                    Width="auto"
+                 Text="{Binding Name}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="30,20,30,0">
+
+        </TextBox>
+        <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Address"
+                    Width="auto"
+                 Text="{Binding Address}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="30,20,30,10">
+
+        </TextBox>
+        <Grid
+             Margin="30,0,30,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <RadioButton
+                Grid.Column="0"
+                Style="{StaticResource RadioButtonGender}"
+                Margin="30,20,30,0"
+                Content="Male"
+                Width="auto"
+                IsChecked="{Binding IsMen}"
+                HorizontalAlignment="Stretch"/>
+            <RadioButton
+                Grid.Column="1"
+                Style="{StaticResource RadioButtonGender}"
+                Margin="30,20,30,0"
+                IsChecked="{Binding IsWomen}"
+                Content="Female" />
+        </Grid>
+        <CheckBox
+            Margin="30"
+            Content="Agree to WANO's Privacy Policy and Terms of Use"
+            FontSize="15"
+            Background="{StaticResource BlackColorBrush}">
+
+        </CheckBox>
+        <Button Width="auto"
+                Margin="30"
+                Content="Register"
+                Command="{Binding Regist}">
+                
+        </Button>
+    </StackPanel>
+    </ScrollViewer>
+
+</UserControl>
+

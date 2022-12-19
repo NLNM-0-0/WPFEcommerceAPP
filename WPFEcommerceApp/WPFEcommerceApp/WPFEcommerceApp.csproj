@@ -149,6 +149,25 @@
       <DependentUpon>AdminUserInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminUserInformation\AdminUserManagerViewModel.cs" />
+    <Compile Include="Screens\Bag\Bag.xaml.cs">
+      <DependentUpon>Bag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Bag\BagBlock.cs" />
+    <Compile Include="Screens\Bag\BagBlockUC.xaml.cs">
+      <DependentUpon>BagBlockUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Bag\BagViewModel.cs" />
+    <Compile Include="Screens\ForgotPassword\ForgotPassword.xaml.cs">
+      <DependentUpon>ForgotPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Home\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Home\HomeViewModel.cs" />
+    <Compile Include="Screens\Login\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Login\LoginViewModel.cs" />
     <Compile Include="Screens\MyProfile\MyPassword.xaml.cs">
       <DependentUpon>MyPassword.xaml</DependentUpon>
     </Compile>
@@ -156,6 +175,22 @@
       <DependentUpon>MyProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\MyProfile\MyProfileViewModel.cs" />
+    <Compile Include="Screens\Notification\Notification.xaml.cs">
+      <DependentUpon>Notification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Notification\NotificationBlock.cs" />
+    <Compile Include="Screens\Notification\NotificationBlockUC.xaml.cs">
+      <DependentUpon>NotificationBlockUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Notification\NotificationViewModel.cs" />
+    <Compile Include="Screens\ProductDetail\ProductDetail.xaml.cs">
+      <DependentUpon>ProductDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ProductDetail\ProductDetailViewModel.cs" />
+    <Compile Include="Screens\Register\Register.xaml.cs">
+      <DependentUpon>Register.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Register\RegisterViewModel.cs" />
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -436,6 +471,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\TextBoxes\PasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Components\TextBoxes\TextBoxHintBlackBorder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -475,11 +514,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\Bag\Bag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Bag\BagBlockUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\ForgotPassword\ForgotPassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Home\Home.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Login\Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\MyProfile\MyPassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\MyProfile\MyProfile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Notification\Notification.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Notification\NotificationBlockUC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -536,6 +603,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Payment\SuccessScreen\SuccessScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\ProductDetail\ProductDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Register\Register.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
