@@ -55,10 +55,7 @@ namespace WPFEcommerceApp {
         public ICommand OnReorder { get; set; }
         public ICommand OnReviewProduct { get; set; }
 
-        public OrderScreenVM(
-            INavigationService successNavService,
-            INavigationService orderNavService,
-            int currentPage = 0) {
+        public OrderScreenVM(int currentPage = 0) {
 
             CurrentPage = currentPage;
 
@@ -108,11 +105,11 @@ namespace WPFEcommerceApp {
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
                 var param = p as Order;
                 var nav = new ParamNavigationService<Order, ProductDetailsVM>(
-                    (parameter) => new ProductDetailsVM(parameter, successNavService, orderNavService));
+                    (parameter) => new ProductDetailsVM(parameter));
                 nav.Navigate(param);
             });
             
-            ICommand ReOrderCM = new ReOrderCM(successNavService);
+            ICommand ReOrderCM = new ReOrderCM();
             OnReorder = new RelayCommand<object>(p => true,async p => {
                 var view = new ConfirmDialog() {
                     CM = ReOrderCM,

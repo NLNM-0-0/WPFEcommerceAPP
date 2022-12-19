@@ -92,7 +92,6 @@ namespace WPFEcommerceApp {
         #endregion
 
         public CheckoutScreenVM(
-			INavigationService successNavService,
 			Order order = null,
 			List<Order> orders = null) {
 
@@ -132,7 +131,7 @@ namespace WPFEcommerceApp {
                 var temp = new Order(order);
 				temp.Status = "Processing";
 				await OrderStore.instance.Add(temp);
-				successNavService.Navigate();
+				NavigateProvider.SuccessScreen().Navigate();
                 MainViewModel.IsLoading = false;
 
             });

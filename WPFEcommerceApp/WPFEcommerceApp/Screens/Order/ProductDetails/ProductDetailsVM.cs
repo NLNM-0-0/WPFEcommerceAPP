@@ -34,10 +34,7 @@ namespace WPFEcommerceApp {
 		public ICommand OnReviewProduct { get; }
 		public ICommand OnVisitShop { get; }
 
-        public ProductDetailsVM(
-			Order order,
-			INavigationService successNavService, 
-			INavigationService orderNavService) {
+        public ProductDetailsVM(Order order) {
 
             OrderDetail = order;
 
@@ -50,7 +47,7 @@ namespace WPFEcommerceApp {
 				OrderStatus[i] = true;
 			}
 			//OnReOrder = new ReOrderCM(navigationStore, successNavService);
-			ICommand ReOrderCM = new ReOrderCM(successNavService);
+			ICommand ReOrderCM = new ReOrderCM();
 			OnReOrder = new RelayCommand<object>(p => true, async p => {
 				var view = new ConfirmDialog() {
 					CM = ReOrderCM,
@@ -65,7 +62,7 @@ namespace WPFEcommerceApp {
 
                 (p as Order).Status = "Cancelled";
                 await OrderStore.instance.Update(p as Order);
-                orderNavService.Navigate();
+                NavigateProvider.OrderScreen().Navigate();
 
 				MainViewModel.IsLoading = false;
 
@@ -91,7 +88,7 @@ namespace WPFEcommerceApp {
 							: OrderDetail.Status == "Cancelled"
 							? 3 : 2;
                 var nav = new ParamNavigationService<int, OrderScreenVM>(
-                    (parameter) => new OrderScreenVM(successNavService, orderNavService, parameter));
+                    (parameter) => new OrderScreenVM(parameter));
                 nav.Navigate(param);
 			});
 			OnViewProduct = new RelayCommand<object>(p => true, p => {

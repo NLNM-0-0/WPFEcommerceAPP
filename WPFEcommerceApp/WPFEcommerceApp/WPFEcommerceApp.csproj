@@ -207,6 +207,8 @@
       <DependentUpon>Charts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
+    <Compile Include="Services\DPIService.cs" />
+    <Compile Include="Services\NavigateProvider.cs" />
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
