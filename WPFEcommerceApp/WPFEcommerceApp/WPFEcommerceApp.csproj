@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
     <Compile Include="Command\NavigateCommand.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -102,24 +103,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model.Context.cs" />
-    <Compile Include="Models\Model.Context1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Model.Designer.cs">
       <DependentUpon>Model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -931,6 +917,9 @@
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="FirebaseStorage.net">
+      <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="FontAwesome.WPF">
       <Version>4.7.0.9</Version>

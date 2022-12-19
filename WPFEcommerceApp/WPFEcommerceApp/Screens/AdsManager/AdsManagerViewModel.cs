@@ -94,14 +94,15 @@ namespace WPFEcommerceApp
         }
         public async void AddAds()
         {
-            if (string.IsNullOrEmpty(CurrentAds.Title) || string.IsNullOrEmpty(CurrentAds.SubTitle)
-                || string.IsNullOrEmpty(CurrentAds.Image))
-                return;
+            //VHCMT
+            //if (string.IsNullOrEmpty(CurrentAds.Title) || string.IsNullOrEmpty(CurrentAds.SubTitle)
+            //    || string.IsNullOrEmpty(CurrentAds.Image))
+            //    return;
 
-            CurrentAds.Id = await GenerateID.Gen(typeof(Advertisement));
-            await adsRepo.Add(CurrentAds);
-            Load();
-            DialogHost.CloseDialogCommand.Execute(null, null);
+            //CurrentAds.Id = await GenerateID.Gen(typeof(Advertisement));
+            //await adsRepo.Add(CurrentAds);
+            //Load();
+            //DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public void CancelAds()

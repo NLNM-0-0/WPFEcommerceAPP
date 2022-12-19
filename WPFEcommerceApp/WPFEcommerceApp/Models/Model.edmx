@@ -796,15 +796,6 @@
           <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
         </EntityType>
-        <EntityType Name="UserLogin">
-          <Key>
-            <PropertyRef Name="IdUser" />
-          </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
-        </EntityType>
         <Association Name="FK_Product_Brand">
           <End Type="EcommerceAppModel.Brand" Role="Brand" Multiplicity="1" />
           <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />

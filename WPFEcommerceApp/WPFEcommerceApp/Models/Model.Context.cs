@@ -7,13 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace testDB.Models
+namespace WPFEcommerceApp.Models
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using WPFEcommerceApp.Models;
-
+    
     public partial class EcommerceAppEntities : DbContext
     {
         public EcommerceAppEntities()
@@ -27,7 +26,7 @@ namespace testDB.Models
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<Advertisement> Advertisements { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<BrandRequest> BrandRequests { get; set; }
