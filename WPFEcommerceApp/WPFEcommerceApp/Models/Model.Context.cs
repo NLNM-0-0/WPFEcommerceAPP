@@ -41,5 +41,7 @@ namespace WPFEcommerceApp.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<ShopRequest> ShopRequests { get; set; }
+        public virtual DbSet<UserLogin> UserLogins { get; set; }
+
     }
 }

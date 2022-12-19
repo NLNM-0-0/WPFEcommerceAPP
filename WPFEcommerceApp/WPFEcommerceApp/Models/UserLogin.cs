@@ -12,14 +12,12 @@ namespace WPFEcommerceApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cart
+    public partial class UserLogin
     {
         public string IdUser { get; set; }
-        public string IdProduct { get; set; }
-        public Nullable<int> Amount { get; set; }
-        public string Size { get; set; }
+        public string Password { get; set; }
+        public string Username { get; set; }
     
-        public virtual Product Product { get; set; }
         public virtual MUser MUser { get; set; }
     }
 }
