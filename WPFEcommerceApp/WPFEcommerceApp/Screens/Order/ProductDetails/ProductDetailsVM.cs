@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
@@ -67,10 +68,18 @@ namespace WPFEcommerceApp {
             ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
 				//Do something with OrderStore
 				MainViewModel.IsLoading = true;
+
+                var timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(2000);
+                timer.Tick += delegate {
+                    MainViewModel.IsLoading = false;
+                };
+                timer.Start();
+
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
                 orderNavService.Navigate();
-                MainViewModel.IsLoading = true;
+                //MainViewModel.IsLoading = false;
 
             });
 			OnCancel = new RelayCommand<object>(p => true, async p => {

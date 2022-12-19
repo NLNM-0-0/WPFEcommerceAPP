@@ -21,6 +21,39 @@
         <EntityTypeShape EntityType="EcommerceAppModel.ShopRequest" Width="1.5" PointX="3" PointY="7.375" />
         <EntityTypeShape EntityType="EcommerceAppModel.UserLogin" Width="1.5" PointX="3" PointY="29.75" />
         <AssociationConnector Association="EcommerceAppModel.FK_Product_Brand" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Product_Category" />
+        <AssociationConnector Association="EcommerceAppModel.FK__CategoryR__IdSho__5FB337D6" />
+        <AssociationConnector Association="EcommerceAppModel.FK_CategoryRequest_Shop" />
+        <AssociationConnector Association="EcommerceAppModel.FK_IP_Product" />
+        <AssociationConnector Association="EcommerceAppModel.FK_MOrder_MUser" />
+        <AssociationConnector Association="EcommerceAppModel.FK_MOrder_Rating" />
+        <AssociationConnector Association="EcommerceAppModel.FK_OrderInfo_MOrder" />
+        <AssociationConnector Association="EcommerceAppModel.FK__BrandRequ__IdSho__5AEE82B9" />
+        <AssociationConnector Association="EcommerceAppModel.FK__ShopReque__IdUse__6383C8BA" />
+        <AssociationConnector Association="EcommerceAppModel.FK_BrandRequest_Shop" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Notification_User" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Orderinfor_Shop" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Product_Shop" />
+        <AssociationConnector Association="EcommerceAppModel.FK_OrderInfo_Product" />
+        <AssociationConnector Association="EcommerceAppModel.FK_RatingInfo_Product" />
+        <AssociationConnector Association="EcommerceAppModel.FK_RatingInfo_Rating" />
+        <AssociationConnector Association="EcommerceAppModel.FavouriteProduct" />
+      </Diagram>
+        <EntityTypeShape EntityType="EcommerceAppModel.Advertisement" Width="1.5" PointX="8.2767347657479036" PointY="1.4286773807502713" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Brand" Width="1.5" PointX="11.4169257131484" PointY="28.805095507206904" />
+        <EntityTypeShape EntityType="EcommerceAppModel.BrandRequest" Width="1.5" PointX="5.1863466339122253" PointY="29.149130477173781" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Cart" Width="1.5" PointX="7.0643782071137693" PointY="3.9781453926014461" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Category" Width="1.5" PointX="11.890686761536955" PointY="4.9168187700755981" />
+        <EntityTypeShape EntityType="EcommerceAppModel.CategoryRequest" Width="1.5" PointX="0.63415517501260865" PointY="8.30781801431804" />
+        <EntityTypeShape EntityType="EcommerceAppModel.ImageProduct" Width="1.5" PointX="3.7106710391634472" PointY="31.125138252566167" />
+        <EntityTypeShape EntityType="EcommerceAppModel.MOrder" Width="1.5" PointX="3.7354085332413245" PointY="31.934125915139042" />
+        <EntityTypeShape EntityType="EcommerceAppModel.MUser" Width="1.5" PointX="0.489343755175054" PointY="23.38426638738451" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Notification" Width="1.5" PointX="1.8100590155506782" PointY="6.1791122137471621" />
+        <EntityTypeShape EntityType="EcommerceAppModel.OrderInfo" Width="1.5" PointX="3.5790950747109465" PointY="19.083250591104502" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Product" Width="1.5" PointX="0.54267774920103973" PointY="6.3826142877259358" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Rating" Width="1.5" PointX="3.00140979280761" PointY="12.277268579358825" />
+        <EntityTypeShape EntityType="EcommerceAppModel.ShopRequest" Width="1.5" PointX="6.2523985869495196" PointY="30.104019655894497" />
+        <AssociationConnector Association="EcommerceAppModel.FK_Product_Brand" />
         <AssociationConnector Association="EcommerceAppModel.FK_BrandRequest_Shop" />
         <AssociationConnector Association="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" />
         <AssociationConnector Association="EcommerceAppModel.FK__Cart__IdUser__45F365D3" />
