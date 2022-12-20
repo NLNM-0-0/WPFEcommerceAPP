@@ -11,25 +11,28 @@
         <Grid.Resources>
             <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
         </Grid.Resources>
-        <Border
+        <materialDesign:DialogHost
+            CloseOnClickAway="True"
+            Identifier="Notification">
+            <Border
             BorderBrush="{StaticResource BoxLineColorBrush}"
             BorderThickness="1">
-            <StackPanel
+                <StackPanel
                 Width="540"
                 Margin="30 30">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
                         Grid.ColumnSpan="2"
                         Text="Add new Brand"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         FontFamily="{StaticResource Regular}"
                         FontSize="{StaticResource FontSizeHeadline}"/>
-                    <Button
+                        <Button
                         x:Name="ButtonClose"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Grid.Column="1"
@@ -41,34 +44,34 @@
                         BorderBrush="{StaticResource NotAvailableColorBrush}"
                         BorderThickness="3">
 
-                        <fa:ImageAwesome
+                            <fa:ImageAwesome
                             x:Name="IconButtonClose"
                             Icon="Close"
                             Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
                             Width="10"
                             Height="10"/>
-                    </Button>
-                </Grid>
-                <TextBox
+                        </Button>
+                    </Grid>
+                    <TextBox
                     x:Name="brandTextBox"
                     Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Brand Name"
                     Width="auto"
                     Margin="0 30 0 0"
                     VerticalAlignment="Center">
-                    <TextBox.Text>
-                        <Binding
+                        <TextBox.Text>
+                            <Binding
                             Path="BrandName"
                             UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <local:NotEmptyValidationRule 
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule 
                                     ValidatesOnTargetUpdated="True"/>
-                            </Binding.ValidationRules>
+                                </Binding.ValidationRules>
 
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <TextBox
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <TextBox
                     x:Name="reasonTextBox"
                     Style="{StaticResource TextBoxHintWrapText}"
                     materialDesign:HintAssist.Hint="Reason"
@@ -76,32 +79,39 @@
                     Margin="0 40 0 0"
                     Height="200"
                     VerticalAlignment="Center">
-                    <TextBox.Text>
-                        <Binding
+                        <TextBox.Text>
+                            <Binding
                             Path="Reason"
                             UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <local:NotEmptyValidationRule
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
                                     ValidatesOnTargetUpdated="True"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <Button
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Button
+                        x:Name="addButton"
                     Margin="0 40 0 0"
                     HorizontalAlignment="Right"
                     Width="150"
                     Content="Add brand"
-                    Command="{Binding RequestBrandCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                    <Button.IsEnabled>
-                        <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
-                            <Binding ElementName="brandTextBox" Path="(Validation.HasError)"/>
-                            <Binding ElementName="reasonTextBox" Path="(Validation.HasError)"/>
-                        </MultiBinding>
-                    </Button.IsEnabled>
-                </Button>
-            </StackPanel>
-        </Border>
+                    Command="{Binding RequestBrandCommand}">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                                <Binding ElementName="brandTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="reasonTextBox" Path="(Validation.HasError)"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </materialDesign:DialogHost>
     </Grid>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding KeyDownEnterCommand}"
+            CommandParameter="{Binding ElementName=addButton}"/>
+    </UserControl.InputBindings>
 </UserControl>
