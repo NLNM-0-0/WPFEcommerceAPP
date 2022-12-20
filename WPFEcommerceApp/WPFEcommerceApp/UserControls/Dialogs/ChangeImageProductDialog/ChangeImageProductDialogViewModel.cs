@@ -86,6 +86,10 @@ namespace WPFEcommerceApp
             ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 Image image = p as Image;
+                if(image.Source == null) 
+                {
+                    return;
+                }
                 SelectedImageSource = image.Source.ToString();
                 SelectedImageSource = SelectedImageSource.Substring(8).Replace("/", "\\");
             });
