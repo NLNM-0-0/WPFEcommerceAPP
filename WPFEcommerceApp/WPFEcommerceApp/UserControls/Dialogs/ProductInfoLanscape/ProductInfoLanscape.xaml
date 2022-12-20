@@ -64,7 +64,8 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="0 20 0 0"
-                                Text="Status                                Foreground="{Binding ForegroundStatus, UpdateSourceTrigger=PropertyChanged}"
+                                Text="Status: "
+                                Foreground="{Binding ForegroundStatus, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"
                                 FontFamily="{StaticResource Bold}"
                                 FontSize="{StaticResource FontSizeText}"/>

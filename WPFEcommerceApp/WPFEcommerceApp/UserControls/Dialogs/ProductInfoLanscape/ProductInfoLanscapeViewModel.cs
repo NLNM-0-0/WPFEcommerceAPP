@@ -20,7 +20,7 @@ namespace WPFEcommerceApp
     {
         private readonly AccountStore _accountStore;
         private GenericDataRepository<Category> categoryRepository = new GenericDataRepository<Category>();
-        private GenericDataRepository<Brand>brandRepository = new GenericDataRepository<Brand>();
+        private GenericDataRepository<Brand> brandRepository = new GenericDataRepository<Brand>();
         private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
         public ICommand SaveProductInfoCommand { get; set; }
         public ICommand EditProductInfoCommand { get; set; }
@@ -182,15 +182,15 @@ namespace WPFEcommerceApp
                 {
                     return new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
                 }
-                else if(SelectedProduct.InStock > 0)
+                else if (SelectedProduct.InStock > 0)
                 {
                     return new SolidColorBrush(System.Windows.Media.Color.FromRgb(42, 169, 82));
                 }
                 else
                 {
                     return new SolidColorBrush(System.Windows.Media.Color.FromRgb(253, 197, 0));
-                } 
-                    
+                }
+
             }
         }
         public string Status
@@ -219,24 +219,24 @@ namespace WPFEcommerceApp
             ImageProducts.CollectionChanged += ImageProducts_CollectionChanged;
             if (SelectedProduct.IsOneSize)
             {
-                IsHadOneSize= true;
-            }    
+                IsHadOneSize = true;
+            }
             else
             {
-                IsHadOneSize= false;
-            }    
+                IsHadOneSize = false;
+            }
             Task.Run(async () => { await LoadBrands(); await LoadCategories(); });
             IsEditting = false;
             ImageProducts = new ObservableCollection<string>();
             foreach (var item in SelectedProduct.ImageProducts)
             {
                 ImageProducts.Add(item.Source);
-            }    
+            }
             /*ImageProduct.CollectionChanged += ImageSources_CollectionChanged;*/
-            if(SelectedProduct.Status == "Banned")
+            if (SelectedProduct.Status == "Banned")
             {
                 IsBanned = true;
-            }    
+            }
             else
             {
                 IsBanned = false;
@@ -340,11 +340,11 @@ namespace WPFEcommerceApp
                 SelectedProduct.Name = productTemp.Name;
                 SelectedProduct.Price = productTemp.Price;
                 SelectedProduct.ImageProducts.Clear();
-                foreach(string imageProductSource in ImageProducts)
+                foreach (string imageProductSource in ImageProducts)
                 {
                     Models.ImageProduct imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
                     SelectedProduct.ImageProducts.Add(imageProduct);
-                }    
+                }
                 SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
                 SelectedProduct.IsHadSizeM = productTemp.IsHadSizeM;
                 SelectedProduct.IsHadSizeL = productTemp.IsHadSizeL;
@@ -402,23 +402,23 @@ namespace WPFEcommerceApp
             });
             KeyDownEnterCommand = new RelayCommand<object>(p => p != null, p =>
             {
-                 if(IsBanned)
-                 {
+                if (IsBanned)
+                {
                     OpenContact();
-                 }  
-                 else
-                 {
+                }
+                else
+                {
                     Button button = p as Button;
-                    if(!IsEditting)
+                    if (!IsEditting)
                     {
                         IsEditting = true;
-                    }    
-                    else if(IsEditting && button.IsEnabled)
+                    }
+                    else if (IsEditting && button.IsEnabled)
                     {
                         button.Command.Execute(button.CommandParameter);
                         IsEditting = false;
-                    }    
-                 }    
+                    }
+                }
             });
         }
         private void OpenContact()
