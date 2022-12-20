@@ -17,12 +17,12 @@
             Padding="0"
             materialDesign:HintAssist.Hint=""
             materialDesign:HintAssist.IsFloating="False"
-            Text="Product Name"
             Width="auto"
             HorizontalAlignment="Stretch"
             Foreground="{StaticResource BlackColorBrush}"
             FontFamily="{StaticResource Bold}"
-            FontSize="{StaticResource FontSizeHeadline}"/>
+            FontSize="{StaticResource FontSizeHeadline}"
+            Text="{Binding SelectedProduct.Name}"/>
         <Button
             Command="{Binding OpenProductInfoLandscapeCommand}"
             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
@@ -30,38 +30,29 @@
             Width="auto"
             Content="View product in the window">
         </Button>
-        <TextBox
+        <StackPanel
             Margin="0 30 0 0"
-            Style="{StaticResource TextBoxHintBlackBorder}"
-            materialDesign:HintAssist.Hint="UpdateOn"
-            Width="auto"
-            IsReadOnly="True"/>
-        <TextBox
-            Margin="0 30 0 0"
-            x:Name="textBoxSale"
-            Style="{StaticResource TextBoxHintBlackBorder}"
-            materialDesign:HintAssist.Hint="Deadline"
-            Width="auto"
-            IsReadOnly="True"/>
-
-        <ComboBox
-            Margin="0 30 0 0"
-            materialDesign:HintAssist.Hint="Violation Type"
-            IsReadOnly="True"/>
-        <!---When having the model I will fix it-->
-        <TextBox
-            Margin="0 30 0 0"
-            Style="{StaticResource TextBoxHintWrapText}"
-            materialDesign:HintAssist.Hint="Violation Reason"
-            Width="auto"
-            Height="200"
-            IsReadOnly="True"/>
-        <Button
-            Margin="0 30 0 0"
-            x:Name="saveButton"
-            Grid.Column="2"
-            Content="Contact us"
-            Width="210"
-            HorizontalAlignment="Right"/>
+            Orientation="Horizontal"
+            HorizontalAlignment="Center">
+            <TextBlock
+                VerticalAlignment="Center"
+                Text="Your product have been banned from us. "
+                FontSize="{StaticResource FontSizeText}"
+                FontFamily="{StaticResource Medium}"/>
+            <TextBlock
+                VerticalAlignment="Center"
+                Text=" "
+                FontSize="{StaticResource FontSizeText}"
+                FontFamily="{StaticResource Medium}"/>
+            <Label
+                VerticalAlignment="Center"
+                FontSize="{StaticResource FontSizeText}"
+                FontFamily="{StaticResource Medium}">
+                <Hyperlink
+                    Command="{Binding ContactUsCommand}">
+                    Contact us
+                </Hyperlink>
+            </Label>
+        </StackPanel>
     </StackPanel>
 </UserControl>
