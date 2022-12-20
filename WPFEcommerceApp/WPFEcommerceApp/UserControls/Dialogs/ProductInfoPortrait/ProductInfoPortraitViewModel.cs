@@ -19,12 +19,14 @@ namespace WPFEcommerceApp
 {
     public class ProductInfoPortraitViewModel : BaseViewModel
     {
+        private readonly AccountStore _accountStore;
         public ICommand SaveProductInfoCommand { get; set; }
         public ICommand EditProductInfoCommand { get; set; }
         public ICommand ChangeSelectedImageCommand { get; set; }
         public ICommand OpenChangeImageDialogCommand { get; set; }
         public ICommand OpenProductInfoLandscapeCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
+        public ICommand ChangeStatusCommand { get; set; }
 
         private WPFEcommerceApp.Models.Product selectedProduct;
         public WPFEcommerceApp.Models.Product SelectedProduct
@@ -57,6 +59,7 @@ namespace WPFEcommerceApp
             set
             {
                 selectedImage = value;
+
                 OnPropertyChanged();
             }
         }
@@ -135,8 +138,9 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ProductInfoPortraitViewModel(Models.Product product)
+        public ProductInfoPortraitViewModel(AccountStore accountStore, Models.Product product)
         {
+            _accountStore = accountStore;
             SelectedProduct = product;
             if(SelectedProduct.IsOneSize)
             {
@@ -168,10 +172,15 @@ namespace WPFEcommerceApp
             }
             SaveProductInfoCommand = new RelayCommand<Models.Product>((p) => { return p != null; }, (p) =>
             {
-                Models.Product productTemp = p as Models.Product;
+                Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
                 SelectedProduct.Name = productTemp.Name;
                 SelectedProduct.Price = productTemp.Price;
-                SelectedProduct.ImageProducts = productTemp.ImageProducts;
+                SelectedProduct.ImageProducts.Clear();
+                foreach (string imageProductSource in ImageProducts)
+                {
+                    Models.ImageProduct imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
+                    SelectedProduct.ImageProducts.Add(imageProduct);
+                }
                 SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
                 SelectedProduct.IsHadSizeM = productTemp.IsHadSizeM;
                 SelectedProduct.IsHadSizeL = productTemp.IsHadSizeL;
@@ -182,12 +191,14 @@ namespace WPFEcommerceApp
                 selectedProduct.InStock = productTemp.InStock;
                 selectedProduct.Sold = productTemp.Sold;
                 SelectedProduct.Sale = productTemp.Sale;
-                SelectedProduct.Color = productTemp.Color;
                 SelectedProduct.Description = productTemp.Description;
+                SelectedProduct.Color = productTemp.Color;
                 IsEditting = false;
-
-                Task.Run(async () => { await UpdateImageProduct(); await UpdateProduct(); }) ;
                 product = SelectedProduct;
+                Task t = Task.Run(async () => { await UpdateImageProduct(); await UpdateProduct(); });
+                while (!t.IsCompleted) ;
+                t = Task.Run(async () => { await _accountStore.Update(_accountStore.CurrentAccount); });
+                while (!t.IsCompleted) ;
             });
 
             EditProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
@@ -198,6 +209,10 @@ namespace WPFEcommerceApp
             ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 Image image = p as Image;
+                if(image.Source == null)
+                {
+                    return;
+                }    
                 SelectedImage = image.Source.ToString();
             });
 
@@ -205,34 +220,41 @@ namespace WPFEcommerceApp
             {
                 ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
                 changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
-                DialogHost.Show(changeImageProductDialog);
+                DialogHost.Show(changeImageProductDialog, "App");
             });
 
             OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
-                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(SelectedProduct);
-                DialogHost.Show(productInfoLandscape, null, closeProductInfoLandscape);
-                ImageProducts.Clear();
-                foreach(var item in SelectedProduct.ImageProducts)
-                {
-                    ImageProducts.Add(item.Source);
-                }    
+                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(_accountStore, SelectedProduct);
+                DialogHost.Show(productInfoLandscape, "App", closeProductInfoLandscape);
             });
             CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 Grid grid = p as Grid;
-                foreach(var item in grid.Children)
+                foreach (var item in grid.Children)
                 {
-                    if(item.GetType() == typeof(ToggleButton))
+                    if (item.GetType() == typeof(ToggleButton))
                     {
                         ToggleButton button = (ToggleButton)item;
                         button.IsChecked = !IsHadOneSize;
-                    }    
+                    }
+                }
+            });
+            ChangeStatusCommand = new RelayCommand<object>((p) => p!=null, (p) =>
+            {
+                Button button = p as Button;
+                if(IsEditting && button.IsEnabled)
+                {
+                    button.Command.Execute(button.CommandParameter);
+                    IsEditting = !IsEditting;
+                }    
+                else if(!IsEditting)
+                {
+                    IsEditting = !IsEditting;
                 }    
             });
         }
-
         private void closeProductInfoLandscape(object sender, DialogClosingEventArgs eventArgs)
         {
             ImageProducts.Clear();
@@ -255,7 +277,8 @@ namespace WPFEcommerceApp
                     SelectedImage = ImageProducts.First();
                 }
             }
-            OnPropertyChanged(nameof(SelectedProduct));
+            Task t = Task.Run(async () => await _accountStore.Update(_accountStore.CurrentAccount));
+            while (!t.IsCompleted) ;
         }
 
         private void ImageSources_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -274,52 +297,51 @@ namespace WPFEcommerceApp
                 {
                     SelectedImage = ImageProducts.First();
                 }
-
             }
+            
         }
         private async Task LoadBrands()
         {
             var repository = new GenericDataRepository<Models.Brand>();
-            Brands = await repository.GetAllAsync();
+            Brands = await repository.GetListAsync(b=>b.Status == "NotBanned");
         }
         private async Task LoadCategories()
         {
             var repository = new GenericDataRepository<Models.Category>();
-            Categories = await repository.GetAllAsync();
+            Categories = await repository.GetListAsync(c => c.Status == "NotBanned");
         }
         private async Task LoadRating()
         {
-            var repository = new GenericDataRepository<Models.RatingInfo>();
-            IList<RatingInfo> ratingInfos = (await repository.GetListAsync(x => x.Id == SelectedProduct.Id));
-            Rating = ratingInfos.Average(p=>(p.Rating == null?0:p.Rating)) ?? 0;
+            var repository = new GenericDataRepository<Models.Rating>();
+            IList<Rating> ratingInfos = (await repository.GetListAsync(x => x.OrderInfoes.First().IdProduct == SelectedProduct.Id));
+            Rating = ratingInfos.Average(p=>(p.Rating1 == null?0:p.Rating1)) ?? 0;
             RatingTimes = ratingInfos.Count();
         }
         private async Task UpdateProduct()
         {
             var repository = new GenericDataRepository<Models.Product>();
-            Models.Product product = await repository.GetSingleAsync(p=>p.Id == SelectedProduct.Id);
+            Models.Product product = await repository.GetSingleAsync(p => p.Id == SelectedProduct.Id);
             product.Name = SelectedProduct.Name;
             product.Price = SelectedProduct.Price;
-            product.ImageProducts = SelectedProduct.ImageProducts;
             product.IsHadSizeS = SelectedProduct.IsHadSizeS;
             product.IsHadSizeM = SelectedProduct.IsHadSizeM;
             product.IsHadSizeL = SelectedProduct.IsHadSizeL;
             product.IsHadSizeXL = SelectedProduct.IsHadSizeXL;
             product.IsHadSizeXXL = SelectedProduct.IsHadSizeXXL;
-            product.Category = SelectedProduct.Category;
-            product.Brand = SelectedProduct.Brand;
+            product.IdCategory = SelectedProduct.Category.Id;
+            product.IdBrand = SelectedProduct.Brand.Id;
             product.InStock = SelectedProduct.InStock;
             product.Sold = SelectedProduct.Sold;
             product.Sale = SelectedProduct.Sale;
-            product.Color = SelectedProduct.Color;
             product.Description = SelectedProduct.Description;
+            product.Color = SelectedProduct.Color;
             await repository.Update(product);
         }
         private async Task UpdateImageProduct()
         {
             var repository = new GenericDataRepository<Models.ImageProduct>();
             ICollection<Models.ImageProduct> imageproducts = await repository.GetListAsync(p => p.IdProduct == SelectedProduct.Id);
-            if(imageproducts != null)
+            if (imageproducts != null)
             {
                 foreach (var imageproduct in imageproducts)
                 {
