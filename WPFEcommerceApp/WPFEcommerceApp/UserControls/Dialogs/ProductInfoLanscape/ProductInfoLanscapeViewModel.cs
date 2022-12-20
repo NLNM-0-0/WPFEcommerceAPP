@@ -18,6 +18,10 @@ namespace WPFEcommerceApp
 {
     public class ProductInfoLandscapeViewModel : BaseViewModel
     {
+        private readonly AccountStore _accountStore;
+        private GenericDataRepository<Category> categoryRepository = new GenericDataRepository<Category>();
+        private GenericDataRepository<Brand>brandRepository = new GenericDataRepository<Brand>();
+        private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
         public ICommand SaveProductInfoCommand { get; set; }
         public ICommand EditProductInfoCommand { get; set; }
         public ICommand AddSizeCommand { get; set; }
@@ -28,6 +32,7 @@ namespace WPFEcommerceApp
         public ICommand OpenAddCategoryDialogCommand { get; set; }
         public ICommand ContactCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
+        public ICommand KeyDownEnterCommand { get; set; }
 
         private Models.Product selectedProduct;
         public Models.Product SelectedProduct
@@ -169,8 +174,46 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ProductInfoLandscapeViewModel(Models.Product product)
+        public System.Windows.Media.Brush ForegroundStatus
         {
+            get
+            {
+                if (SelectedProduct.Status == "Banned")
+                {
+                    return new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
+                }
+                else if(SelectedProduct.InStock > 0)
+                {
+                    return new SolidColorBrush(System.Windows.Media.Color.FromRgb(42, 169, 82));
+                }
+                else
+                {
+                    return new SolidColorBrush(System.Windows.Media.Color.FromRgb(253, 197, 0));
+                } 
+                    
+            }
+        }
+        public string Status
+        {
+            get
+            {
+                if (SelectedProduct.Status == "Banned")
+                {
+                    return "Banned";
+                }
+                else if (SelectedProduct.InStock > 0)
+                {
+                    return "In Stock";
+                }
+                else
+                {
+                    return "Out Of Stock";
+                }
+            }
+        }
+        public ProductInfoLandscapeViewModel(AccountStore accountStore, Models.Product product)
+        {
+            _accountStore = accountStore;
             SelectedProduct = product;
             ImageProducts = new ObservableCollection<string>();
             ImageProducts.CollectionChanged += ImageProducts_CollectionChanged;
@@ -315,9 +358,10 @@ namespace WPFEcommerceApp
                 SelectedProduct.Description = productTemp.Description;
                 SelectedProduct.Color = productTemp.Description;
                 IsEditting = false;
-
-                Task.Run(async () => { await UpdateImageProduct(); await UpdateProduct(); });
                 product = SelectedProduct;
+                Task t = Task.Run(async () => { await UpdateImageProduct(); await UpdateProduct(); });
+                product = SelectedProduct;
+                while (!t.IsCompleted) ;
                 var closeDialog = DialogHost.CloseDialogCommand;
                 closeDialog.Execute(null, null);
             });
@@ -335,22 +379,18 @@ namespace WPFEcommerceApp
             OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 AddBrandDialog addBrandDialog = new AddBrandDialog();
-                addBrandDialog.DataContext = new AddBrandDialogViewModel();
+                addBrandDialog.DataContext = new AddBrandDialogViewModel(_accountStore);
                 DialogHost.Show(addBrandDialog, "SecondDialog");
             });
             OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
-                addCategoryDialog.DataContext = new AddCategoryDialogViewModel();
+                addCategoryDialog.DataContext = new AddCategoryDialogViewModel(_accountStore);
                 DialogHost.Show(addCategoryDialog, "SecondDialog");
             });
             ContactCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                //Phan xu ly du lieu chua lam
-
-                //dong Dialog
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(null, null);
+                OpenContact();
             });
             CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -360,6 +400,33 @@ namespace WPFEcommerceApp
                 IsHadSizeXL = !IsHadOneSize;
                 IsHadSizeXXL = !IsHadOneSize;
             });
+            KeyDownEnterCommand = new RelayCommand<object>(p => p != null, p =>
+            {
+                 if(IsBanned)
+                 {
+                    OpenContact();
+                 }  
+                 else
+                 {
+                    Button button = p as Button;
+                    if(!IsEditting)
+                    {
+                        IsEditting = true;
+                    }    
+                    else if(IsEditting && button.IsEnabled)
+                    {
+                        button.Command.Execute(button.CommandParameter);
+                        IsEditting = false;
+                    }    
+                 }    
+            });
+        }
+        private void OpenContact()
+        {
+            NotificationDialog notificationDialog = new NotificationDialog();
+            notificationDialog.Header = "Contact Info";
+            notificationDialog.ContentDialog = "Please contact us with phone number 0585885214 or email 21520339@uit.gm.edu.vn.";
+            DialogHost.Show(notificationDialog, "SecondDialog");
         }
 
         private void ImageProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -369,34 +436,30 @@ namespace WPFEcommerceApp
 
         private async Task LoadCategories()
         {
-            var repository = new GenericDataRepository<Models.Category>();
-            Categories = await repository.GetAllAsync();
+            Categories = await categoryRepository.GetListAsync(c => c.Status == "NotBanned");
         }
         private async Task LoadBrands()
         {
-            var repository = new GenericDataRepository<Models.Brand>();
-            Brands = await repository.GetAllAsync();
+            Brands = await brandRepository.GetListAsync(b => b.Status == "NotBanned");
         }
         private async Task UpdateProduct()
         {
-            var repository = new GenericDataRepository<Models.Product>();
-            Models.Product product = await repository.GetSingleAsync(p => p.Id == SelectedProduct.Id);
+            Models.Product product = await productRepository.GetSingleAsync(p => p.Id == SelectedProduct.Id);
             product.Name = SelectedProduct.Name;
             product.Price = SelectedProduct.Price;
-            //product.ImageProducts = SelectedProduct.ImageProducts;
             product.IsHadSizeS = SelectedProduct.IsHadSizeS;
             product.IsHadSizeM = SelectedProduct.IsHadSizeM;
             product.IsHadSizeL = SelectedProduct.IsHadSizeL;
             product.IsHadSizeXL = SelectedProduct.IsHadSizeXL;
             product.IsHadSizeXXL = SelectedProduct.IsHadSizeXXL;
-            product.Category = SelectedProduct.Category;
-            product.Brand = SelectedProduct.Brand;
+            product.IdCategory = SelectedProduct.Category.Id;
+            product.IdBrand = SelectedProduct.Brand.Id;
             product.InStock = SelectedProduct.InStock;
             product.Sold = SelectedProduct.Sold;
             product.Sale = SelectedProduct.Sale;
             product.Description = SelectedProduct.Description;
             product.Color = SelectedProduct.Color;
-            await repository.Update(product);
+            await productRepository.Update(product);
         }
         private async Task UpdateImageProduct()
         {
@@ -413,8 +476,7 @@ namespace WPFEcommerceApp
             {
                 foreach (Models.ImageProduct imageproduct in SelectedProduct.ImageProducts)
                 {
-                    Models.ImageProduct imageproductTemp = new Models.ImageProduct() { IdProduct = imageproduct.IdProduct, Source = imageproduct.Source};
-                    await repository.Add(imageproductTemp);
+                    await repository.Add(imageproduct);
                 }
             }
         }
