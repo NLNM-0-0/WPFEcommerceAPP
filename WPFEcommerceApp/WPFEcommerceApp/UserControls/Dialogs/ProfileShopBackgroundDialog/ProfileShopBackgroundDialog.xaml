@@ -112,4 +112,9 @@
                 Content="Save"/>
         </StackPanel>
     </materialDesign:DialogHost>
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter"
+                    Command="{Binding SaveBackgroundShopCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"/>
+    </UserControl.InputBindings>
 </UserControl>
