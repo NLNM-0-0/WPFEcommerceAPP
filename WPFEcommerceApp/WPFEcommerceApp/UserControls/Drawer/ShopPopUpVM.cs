@@ -25,12 +25,7 @@ namespace WPFEcommerceApp {
                     else p[i] = false;
                 }
         }
-        public ShopPopUpVM(
-            DrawerVM drawerVM,
-            INavigationService ShopMainNavigateService,
-            INavigationService ShopOrderNavigateService,
-            INavigationService ShopProductNavigateService,
-            INavigationService ShopRatingNavigateService) {
+        public ShopPopUpVM(DrawerVM drawerVM) {
 
             isFirstTime = drawerVM.SelectedIndex == 4;
 
@@ -41,18 +36,18 @@ namespace WPFEcommerceApp {
                 drawerVM.SelectedIndex = 4;
                 var temp = p as string;
                 if(temp == "1") {
-                    ShopMainNavigateService.Navigate();
+                    NavigateProvider.ShopMainScreen().Navigate();
                 }
                 else if(temp == "2") {
-                    ShopOrderNavigateService.Navigate();
+                    NavigateProvider.ShopOrderScreen().Navigate();
                     tempFunc(SelectedIndex, 0, ref isFirstTime);
                 }
                 else if(temp == "3") {
-                    ShopProductNavigateService.Navigate();
+                    NavigateProvider.ShopProductScreen().Navigate();
                     tempFunc(SelectedIndex, 1, ref isFirstTime);
                 }
                 else {
-                    ShopRatingNavigateService.Navigate();
+                    NavigateProvider.ShopRatingScreen().Navigate();
                     tempFunc(SelectedIndex, 2, ref isFirstTime);
                 }
             });

@@ -10,79 +10,80 @@
              d:DesignHeight="1500" d:DesignWidth="1440"
             >
     <Grid Margin="0 0 0 50">
-        
+
         <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
-        <StackPanel Margin="95 20">
-            <DockPanel >
-                <TextBlock Text="Brands"
+            <StackPanel Margin="50 20">
+                <DockPanel >
+                    <TextBlock Text="Brands"
                                    FontFamily="{StaticResource Bold}"
                                    FontSize="{StaticResource FontSizeHeadline}"
                                    />
-                <Button DockPanel.Dock="Right"
+                    <Button DockPanel.Dock="Right"
                                 Content="Add"
                                 Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
-                    <Button.CommandParameter>
-                        <local:AdminAddBrandDialog/>
-                    </Button.CommandParameter>
-                </Button>
+                        <Button.CommandParameter>
+                            <local:AdminAddBrandDialog/>
+                        </Button.CommandParameter>
+                    </Button>
 
-                <Button DockPanel.Dock="Right" Margin="0 0 5 0"
+                    <Button DockPanel.Dock="Right" Margin="0 0 5 0"
                                 Content="{Binding RemoveOrRestore}"
                         Command="{Binding RemoveBrandCommand}"
                         CommandParameter="{Binding ElementName=datagrid, Path=SelectedItem}"/>
-                
-                <!-- Search bar -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                    <!-- Search bar -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
                         <local:SearchBar x:Name="searchbar" Width="400" SearchText="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    
-                    <ComboBox Margin="5 0" SelectedItem="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
+
+                        <ComboBox Margin="5 0" SelectedItem="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding SearchByOptions}"
                             Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                             materialDesign:HintAssist.Hint="Search by"
                             materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
                             materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
-                </StackPanel>
-            </DockPanel>
+                    </StackPanel>
+                </DockPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
                            FontSize="{StaticResource FontSizeText}"/>
 
-                <ToggleButton Margin="5 20 5 0"
+                    <ToggleButton Margin="5 20 5 0"
                 Style="{StaticResource SwitchToggleButton}"
                           Background="{StaticResource BlackColorBrush}"
                           materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
                           IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
+                </StackPanel>
 
-            <DataGrid ItemsSource="{Binding FilteredBrands}" Margin="0 20" x:Name="datagrid"
-                              MaxHeight="700"
+                <DataGrid ItemsSource="{Binding FilteredBrands}" Margin="0 20" x:Name="datagrid"
+                              MaxHeight="700" IsReadOnly="True" CanUserAddRows="False"
+                              CanUserReorderColumns="False" CanUserDeleteRows="False"
                               AutoGenerateColumns="False"
                       SelectedItem="{Binding SelectedItem}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="200" Binding="{Binding Id}" SortDirection="Ascending"/>
-                    <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" SortDirection="Ascending"/>
-                </DataGrid.Columns>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="200" MaxWidth="200" MinWidth="100" Binding="{Binding Id}" SortDirection="Ascending"/>
+                        <DataGridTextColumn Header="Name" Width="*" MinWidth="500" Binding="{Binding Name}" SortDirection="Ascending"/>
+                    </DataGrid.Columns>
 
 
-            </DataGrid>
+                </DataGrid>
 
-            <TextBlock Text="Brand Requests"
+                <TextBlock Text="Brand Requests"
                                Margin="0 20"
                                 FontFamily="{StaticResource Bold}"
                                 FontSize="{StaticResource FontSizeHeadline}"
                                    />
-            <local:BrandRequestList Height="500" Margin="0 20"/>
-            <StackPanel.InputBindings>
-                <KeyBinding Key="Enter"
+                <local:BrandRequestList Height="500" Margin="0 20"/>
+                <StackPanel.InputBindings>
+                    <KeyBinding Key="Enter"
                             Command="{Binding SearchCommand}"/>
-                <KeyBinding Key="Esc"
+                    <KeyBinding Key="Esc"
                             Command="{Binding CloseSearchCommand}"/>
-            </StackPanel.InputBindings>
+                </StackPanel.InputBindings>
 
-        </StackPanel>
-    </ScrollViewer>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 
 </UserControl>

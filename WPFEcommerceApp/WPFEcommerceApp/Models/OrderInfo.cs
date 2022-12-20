@@ -16,14 +16,14 @@ namespace WPFEcommerceApp.Models
     {
         public string IdOrder { get; set; }
         public string IdProduct { get; set; }
+        public string IdRating { get; set; }
         public string ImageProduct { get; set; }
         public string Size { get; set; }
-        public string IdShop { get; set; }
         public int Count { get; set; }
         public long TotalPrice { get; set; }
     
         public virtual MOrder MOrder { get; set; }
-        public virtual MUser MUser { get; set; }
+        public virtual Rating Rating { get; set; }
         public virtual Product Product { get; set; }
     }
 }

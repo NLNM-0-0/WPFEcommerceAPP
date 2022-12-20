@@ -47,26 +47,13 @@ namespace WPFEcommerceApp {
         public ICommand OnShopMouseLeave { get; set; }
         public ShopPopUpVM ShopPopUpDataContext { get; set; }
 
-        public DrawerVM(
-            AccountStore accountStore,
-            INavigationService CheckoutNavigateService,
-            INavigationService OrderNavigateService,
-            INavigationService ShopInformationPageNavigateService,
-            INavigationService ShopMainNavigateService,
-            INavigationService ShopOrderNavigateService,
-            INavigationService ShopProductNavigateService,
-            INavigationService ShopRatingNavigateService) {
+        public DrawerVM() {
 
-            _accountStore = accountStore;
+            _accountStore = AccountStore.instance;
             _accountStore.AccountChanged += OnAccountChange;
 
             CanReload = true;
-            ShopPopUpDataContext = new ShopPopUpVM(
-                this,
-                ShopMainNavigateService,
-                ShopOrderNavigateService,
-                ShopProductNavigateService,
-                ShopRatingNavigateService);
+            ShopPopUpDataContext = new ShopPopUpVM(this);
 
             OnChangeScreen = new RelayCommand<object>((p) => {
                 if(CanReload) return true;
@@ -77,28 +64,39 @@ namespace WPFEcommerceApp {
                 return false;
             }, (p) => {
                 if(CurrentUser == null || CurrentUser.Role != "Admin") {
-                    ShopPopUpDataContext = new ShopPopUpVM(
-                        this,
-                        ShopMainNavigateService,
-                        ShopOrderNavigateService,
-                        ShopProductNavigateService,
-                        ShopRatingNavigateService);
+                    ShopPopUpDataContext = new ShopPopUpVM(this);
 
                     if(SelectedIndex == 0) {
-                        CheckoutNavigateService.Navigate();
+                        NavigateProvider.CheckoutScreen().Navigate();
                     }
                     else if(SelectedIndex == 2) {
-                        //var t = new GenericDataRepository<MUser>();
-                        //_accountStore.CurrentAccount = await t.GetSingleAsync(d => d.Id.Equals("user01"));
-                        OrderNavigateService.Navigate();
+                        NavigateProvider.OrderScreen().Navigate();
                     }
                     else if(SelectedIndex == 4) {
-                        ShopMainNavigateService.Navigate();
+                        NavigateProvider.ShopMainScreen().Navigate();
+                    }
+                    else if(SelectedIndex == 5) {
+                        NavigateProvider.ProfileScreen().Navigate();
                     }
                 }
                 else {
-                    if(SelectedIndex == 1) {
-                        ShopInformationPageNavigateService.Navigate();
+                    if(SelectedIndex == 0) {
+                        NavigateProvider.AdminUserScreen().Navigate();
+                    }
+                    else if(SelectedIndex == 1) {
+                        NavigateProvider.ShopInformationScreen().Navigate();
+                    }
+                    else if(SelectedIndex == 2) {
+                        NavigateProvider.AdminProductScreen().Navigate();
+                    }
+                    else if(SelectedIndex == 4) {
+                        NavigateProvider.AdminCategoryScreen().Navigate();
+                    }
+                    else if(SelectedIndex==5) {
+                        NavigateProvider.AdminBrandScreen().Navigate();
+                    }
+                    else {
+                        NavigateProvider.ProfileScreen().Navigate();
                     }
                 }
             });

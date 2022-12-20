@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
     <Compile Include="Command\NavigateCommand.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -102,6 +103,10 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model.Context.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\Model.Designer.cs">
+      <DependentUpon>Model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -120,13 +125,12 @@
     <Compile Include="Models\Rating.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RatingInfo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ShopRequest.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\BProduct.cs" />
+    <Compile Include="Models\UserLogin.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Status.cs" />
@@ -138,11 +142,73 @@
       <DependentUpon>AdminCategoryManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminCategory\AdminCategoryViewModel.cs" />
-    <Compile Include="Screens\AdminCategory\CategoryModel.cs" />
+    <Compile Include="Screens\AdminProduct\AdminProductInformation.xaml.cs">
+      <DependentUpon>AdminProductInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminProduct\AdminProductManagerViewModel.cs" />
     <Compile Include="Screens\AdminShopInformation\ShopInformationPage.xaml.cs">
       <DependentUpon>ShopInformationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\AdminShopInformation\ShopInformationPageViewModel.cs" />
+    <Compile Include="Screens\AdminUserInformation\AdminUserInformation.xaml.cs">
+      <DependentUpon>AdminUserInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdminUserInformation\AdminUserManagerViewModel.cs" />
+    <Compile Include="Screens\AdsManager\AdsItem.xaml.cs">
+      <DependentUpon>AdsItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdsManager\AdsManager.xaml.cs">
+      <DependentUpon>AdsManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\AdsManager\AdsManagerViewModel.cs" />
+    <Compile Include="Screens\Bag\Bag.xaml.cs">
+      <DependentUpon>Bag.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Bag\BagBlock.cs" />
+    <Compile Include="Screens\Bag\BagBlockUC.xaml.cs">
+      <DependentUpon>BagBlockUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Bag\BagViewModel.cs" />
+    <Compile Include="Screens\ForgotPassword\ForgotPassword.xaml.cs">
+      <DependentUpon>ForgotPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Home\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Home\HomeViewModel.cs" />
+    <Compile Include="Screens\Login\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Login\LoginViewModel.cs" />
+    <Compile Include="Screens\MyProfile\MyPassword.xaml.cs">
+      <DependentUpon>MyPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\MyProfile\MyProfile.xaml.cs">
+      <DependentUpon>MyProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\MyProfile\MyProfileViewModel.cs" />
+    <Compile Include="Screens\Notification\Notification.xaml.cs">
+      <DependentUpon>Notification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Notification\NotificationBlock.cs" />
+    <Compile Include="Screens\Notification\NotificationBlockUC.xaml.cs">
+      <DependentUpon>NotificationBlockUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Notification\NotificationViewModel.cs" />
+    <Compile Include="Screens\ProductDetail\ProductDetail.xaml.cs">
+      <DependentUpon>ProductDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ProductDetail\ProductDetailViewModel.cs" />
+    <Compile Include="Screens\Register\Register.xaml.cs">
+      <DependentUpon>Register.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Register\RegisterViewModel.cs" />
+    <Compile Include="Screens\ShopStatistics\Charts.xaml.cs">
+      <DependentUpon>Charts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
+    <Compile Include="Services\DPIService.cs" />
+    <Compile Include="Services\NavigateProvider.cs" />
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -162,6 +228,9 @@
     <Compile Include="Screens\Order\components\Dialog\ReviewProductDialog.xaml.cs">
       <DependentUpon>ReviewProductDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Dialogs\AddAdsDialog.xaml.cs">
+      <DependentUpon>AddAdsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
     </Compile>
@@ -174,6 +243,9 @@
     </Compile>
     <Compile Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml.cs">
       <DependentUpon>AdminAddCategoryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dialogs\AdminAddUserDialog.xaml.cs">
+      <DependentUpon>AdminAddUserDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml.cs">
       <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
@@ -213,9 +285,15 @@
       <DependentUpon>ShopPopUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Drawer\ShopPopUpVM.cs" />
+    <Compile Include="UserControls\Loading\LoadingScreen.xaml.cs">
+      <DependentUpon>LoadingScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ProductBlock\ImageProduct.cs" />
     <Compile Include="UserControls\ProductBlock\ProductBlock.xaml.cs">
       <DependentUpon>ProductBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RatingBar\RatingBar.xaml.cs">
+      <DependentUpon>RatingBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ShopRequest\ShopRequestItem.xaml.cs">
       <DependentUpon>ShopRequestItem.xaml</DependentUpon>
@@ -237,10 +315,6 @@
     <Compile Include="DataAccessLayer\DbContextExtensions.cs" />
     <Compile Include="DataAccessLayer\GenericDataRepository.cs" />
     <Compile Include="DataAccessLayer\IGenericDataRepository.cs" />
-    <Compile Include="Models\Model.cs" />
-    <Compile Include="Models\Model.Designer.cs">
-      <DependentUpon>Model.cs</DependentUpon>
-    </Compile>
     <Compile Include="Screens\Order\Command\ReOrderCM.cs" />
     <Compile Include="Screens\Order\components\OrderCard.xaml.cs">
       <DependentUpon>OrderCard.xaml</DependentUpon>
@@ -414,6 +488,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\TextBoxes\PasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\TextBoxes\TextBoxHintBlackBorder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -442,12 +520,64 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\AdminProduct\AdminProductInformation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\AdminShopInformation\ShopInformationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Bag\Bag.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Bag\BagBlockUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\ForgotPassword\ForgotPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\AdminUserInformation\AdminUserInformation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\AdsManager\AdsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\AdsManager\AdsManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Home\Home.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Login\Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\MyProfile\MyPassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\MyProfile\MyProfile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Order\components\Dialog\ReviewProductDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Notification\Notification.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Notification\NotificationBlockUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Order\components\OrderCard.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -501,7 +631,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\ProductDetail\ProductDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Register\Register.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screens\ShopProduct\ShopProduct.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\ShopStatistics\Charts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -533,6 +675,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\Dialogs\AddAdsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -554,6 +700,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dialogs\AdminAddUserDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -673,9 +823,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\Loading\LoadingScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ProductBlock\ProductBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\RatingBar\RatingBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ShopRequest\ShopRequestItem.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -723,7 +881,7 @@
     </None>
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model2.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
@@ -762,8 +920,14 @@
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>
     </PackageReference>
+    <PackageReference Include="FirebaseStorage.net">
+      <Version>1.0.3</Version>
+    </PackageReference>
     <PackageReference Include="FontAwesome.WPF">
       <Version>4.7.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="LiveCharts.Wpf">
+      <Version>0.9.7</Version>
     </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
       <Version>4.6.1</Version>
@@ -779,13 +943,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assests\Sounds\LoadingSound.mp3" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model.Context1.cs</LastGenOutput>
     </Content>
     <Content Include="Models\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model2.cs</LastGenOutput>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Model\SQL.sql" />
   </ItemGroup>

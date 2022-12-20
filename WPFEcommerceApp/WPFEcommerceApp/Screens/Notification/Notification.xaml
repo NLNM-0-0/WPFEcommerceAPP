@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="WPFEcommerceApp.Notification"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Grid Background="White">
+        <Grid.Resources>
+            <Style x:Key="RadioButtonMode" TargetType="{x:Type RadioButton}">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{StaticResource NotAvailableColorBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FontFamily" Value="{StaticResource Light}"/>
+                <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RadioButton}">
+                            <Grid SnapsToDevicePixels="True">
+                                <Border x:Name="border"
+                                    Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    Height="{TemplateBinding Height}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <TextBlock  x:Name="contentPresenter" 
+                                            Focusable="False" 
+                                            HorizontalAlignment='Center'
+                                            Margin="{TemplateBinding Padding}" 
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                            Text="{TemplateBinding Content}"
+                                            FontFamily="{TemplateBinding FontFamily}"
+                                            FontSize="{TemplateBinding FontSize}"
+                                            Foreground="{TemplateBinding Foreground}"/>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="true">
+                                    <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+                                    <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline2}"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Foreground" Value="{StaticResource NotAvailableColorBrush}"/>
+                                    <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="WANO'S"
+                       FontSize="{StaticResource FontSizeHeadline2}"
+                       FontWeight="Bold"
+                       Margin="30 50 30 0"
+                       TextWrapping="Wrap"/>
+            <TextBlock Text="NOTIFICATION"
+                       FontSize="{StaticResource FontSizeHeadline2}"
+                       FontWeight="Bold"
+                       Margin="30 10 30 0"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+        <Border  Grid.Column="1"
+                 Margin="0,50, 20, 50"
+                 BorderBrush="{StaticResource BlackColorBrush}"
+                 BorderThickness="1">
+            <ScrollViewer>
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Notifications}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:NotificationBlockUC
+                                    AvaImage="{Binding AvaImage}"
+                                    UserName="{Binding UserName}"
+                                    Date="{Binding Date}"
+                                    NotificationContent="{Binding NotificationContent}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+
+    </Grid>
+</UserControl>
+

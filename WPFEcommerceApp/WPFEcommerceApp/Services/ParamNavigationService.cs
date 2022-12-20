@@ -10,8 +10,8 @@ namespace WPFEcommerceApp {
         private readonly NavigationStore _navigationStore;
         private readonly CreateViewModel<TParameter, TViewModel> _createViewModel;
 
-        public ParamNavigationService(NavigationStore navigationStore, CreateViewModel<TParameter, TViewModel> createViewModel) {
-            _navigationStore = navigationStore;
+        public ParamNavigationService(CreateViewModel<TParameter, TViewModel> createViewModel) {
+            _navigationStore = NavigationStore.instance;
             _createViewModel = createViewModel;
         }
 

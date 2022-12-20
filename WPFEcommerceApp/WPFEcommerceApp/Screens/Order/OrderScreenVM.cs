@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
@@ -41,19 +43,23 @@ namespace WPFEcommerceApp {
             set { cancelList = value; OnPropertyChanged(); }
         }
 
+        private int currentPage;
+
+        public int CurrentPage {
+            get { return currentPage; }
+            set { currentPage = value; }
+        }
+
         public ICommand OnCancel { get; set; }
         public ICommand OnDetailView { get; set; }
         public ICommand OnReorder { get; set; }
         public ICommand OnReviewProduct { get; set; }
 
-        public OrderScreenVM(
-            NavigationStore navigationStore, 
-            AccountStore accountStore,
-            OrderStore orderStore,
-            INavigationService successNavService,
-            INavigationService orderNavService) {
+        public OrderScreenVM(int currentPage = 0) {
 
-            _orderStore = orderStore;
+            CurrentPage = currentPage;
+
+            _orderStore = OrderStore.instance;
             _orderStore.OrderListChanged += onOrderListChange;
             ProcessingList = new ObservableCollection<Order>();
             DeliveringList = new ObservableCollection<Order>();
@@ -62,26 +68,29 @@ namespace WPFEcommerceApp {
 
             if(OrderList != null)
                 for(int i = 0; i < OrderList.Count; i++) {
-                    if(OrderList[i].Status == "Processing") {
+                    string stt = OrderList[i].Status;
+                    if(stt == "Processing") {
                         ProcessingList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivering") {
+                    else if(stt == "Delivering") {
                         DeliveringList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivered") {
+                    else if(stt == "Delivered" || stt == "Completed") {
                         DeliveredList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Cancelled") {
+                    else if(stt == "Cancelled") {
                         CancelledList.Add(OrderList[i]);
                     }
                 }
 
-            ICommand CanCelCM = new RelayCommand<object>((p) => true,async (p) => {
+            ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
+                MainViewModel.IsLoading = true;
+                
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
-                //CancelledList.Add(p as Order);
-                //ProcessingList.Remove(p as Order);
-			});
+
+                MainViewModel.IsLoading = false;
+            });
 
             OnCancel = new RelayCommand<object>(p => true, async p => {
                 var view = new ConfirmDialog() {
@@ -95,12 +104,12 @@ namespace WPFEcommerceApp {
 
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
                 var param = p as Order;
-                var nav = new ParamNavigationService<Order, ProductDetailsVM>(navigationStore,
-                    (parameter) => new ProductDetailsVM(parameter, navigationStore, accountStore, orderStore, successNavService, orderNavService));
+                var nav = new ParamNavigationService<Order, ProductDetailsVM>(
+                    (parameter) => new ProductDetailsVM(parameter));
                 nav.Navigate(param);
             });
             
-            ICommand ReOrderCM = new ReOrderCM(navigationStore, accountStore, orderStore, successNavService);
+            ICommand ReOrderCM = new ReOrderCM();
             OnReorder = new RelayCommand<object>(p => true,async p => {
                 var view = new ConfirmDialog() {
                     CM = ReOrderCM,
@@ -110,7 +119,14 @@ namespace WPFEcommerceApp {
             });
 
             OnReviewProduct = new RelayCommand<object>(p => true, async p => {
-                var view = new ReviewProductDialog();
+                var t = p as Order;
+                List<ReviewProduct> products = new List<ReviewProduct>();
+                for(int i = 0; i < t.ProductList.Count; i++) {
+                        products.Add(new ReviewProduct(t.ProductList[i], t.ID));
+                }
+                var view = new ReviewProductDialog() {
+                    ProductList = products,
+                };
                 await DialogHost.Show(view, "Main");
             });
         }
@@ -122,16 +138,17 @@ namespace WPFEcommerceApp {
             CancelledList.Clear();
             if(OrderList != null)
                 for(int i = 0; i < OrderList.Count; i++) {
-                    if(OrderList[i].Status == "Processing") {
+                    string stt = OrderList[i].Status;
+                    if(stt == "Processing") {
                         ProcessingList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivering") {
+                    else if(stt == "Delivering") {
                         DeliveringList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Delivered") {
+                    else if(stt == "Delivered" || stt == "Completed") {
                         DeliveredList.Add(OrderList[i]);
                     }
-                    else if(OrderList[i].Status == "Cancelled") {
+                    else if(stt == "Cancelled") {
                         CancelledList.Add(OrderList[i]);
                     }
                 }
@@ -140,6 +157,17 @@ namespace WPFEcommerceApp {
         public override void Dispose() {
             _orderStore.OrderListChanged -= onOrderListChange;
             base.Dispose();
+        }
+    }
+
+    public class ReviewProduct {
+        public string IdOrder { get; set; }
+        public Product product { get; set; }
+        public int rating {get; set;}
+        public ReviewProduct(Product product, string IdOrder, int rating = 5) {
+            this.IdOrder = IdOrder;
+            this.product = product;
+            this.rating = rating;
         }
     }
 }

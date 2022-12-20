@@ -13,7 +13,7 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
-    public class AdminCategoryViewModel : BaseViewModel, IAsyncInitialization
+    public class AdminCategoryViewModel : BaseViewModel
     {
         #region Properties
         public GenericDataRepository<Category> cateRepo;
@@ -59,7 +59,7 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; OnPropertyChanged(); }
+            set { _searchBy = value; Search(); OnPropertyChanged(); }
         }
         private string _searchText;
 
@@ -128,7 +128,6 @@ namespace WPFEcommerceApp
         public ICommand SearchCommand { get; set; }
         public ICommand CloseSearchCommand { get; set; }
 
-        public Task InitializeAsync { get; private set; }
 
         #endregion
 
@@ -138,7 +137,7 @@ namespace WPFEcommerceApp
             cateRepo = new GenericDataRepository<Category>();
             cateRequestRepo = new GenericDataRepository<CategoryRequest>();
 
-            InitializeAsync = Load();
+            Load();
 
             RequestList = new CategoryRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
@@ -153,7 +152,7 @@ namespace WPFEcommerceApp
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
         }
 
-        private async Task Load()
+        private async void Load()
         {
             IsChecked = true;
             RemoveOrUnBanned = "Remove";
@@ -173,9 +172,9 @@ namespace WPFEcommerceApp
             RequestList.Items = new ObservableCollection<CategoryRequestItemViewModel>(
                 query.Select(item => new CategoryRequestItemViewModel
                 {
-                    RequestId = Int32.Parse(item.Id),
-                    Id = Int32.Parse(item.MUser.Id),
-                    Name = item.Name,
+                    RequestId = item.Id,
+                    Id = item.MUser.Id,
+                    Name = item.MUser.Name,
                     CategoryName = item.Name,
                     SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
                     Reason = item.Reason,
@@ -201,10 +200,10 @@ namespace WPFEcommerceApp
             }
             else
             {
-                await cateRepo.Add(new Category { Name = cateName, Status = Status.NotBanned.ToString() });
+                await cateRepo.Add(new Category {Id=await GenerateID.Gen(typeof(Category)) ,Name = cateName, Status = Status.NotBanned.ToString() });
             }
 
-            await Load();
+            Load();
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
@@ -220,7 +219,7 @@ namespace WPFEcommerceApp
                 removeCate.Status = Status.NotBanned.ToString();
 
             await cateRepo.Update(removeCate);
-            await Load();
+            Load();
         }
 
         public async void RemoveRequest(object obj)
@@ -231,7 +230,7 @@ namespace WPFEcommerceApp
 
             var removeRequest = await cateRequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
             await cateRequestRepo.Remove(removeRequest);
-            await Load();
+            Load();
         }
 
         public async void AddRequest(object obj)
@@ -251,12 +250,12 @@ namespace WPFEcommerceApp
             }
             else
             {
-                await cateRepo.Add(new Category { Name = request.CategoryName, Status = Status.NotBanned.ToString() });
+                await cateRepo.Add(new Category {Id=await GenerateID.Gen(typeof(Category)) ,Name = request.CategoryName, Status = Status.NotBanned.ToString() });
             }
 
             var removeRequest = await cateRequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
             await cateRequestRepo.Remove(removeRequest);
-            await Load();
+            Load();
         }
 
         public void Search()
@@ -284,7 +283,7 @@ namespace WPFEcommerceApp
             else if (SearchBy == "ID")
             {
                 _lastSearchOption = "ID";
-                FilteredCategories = new ObservableCollection<Category>(categoriesToSearch.Where(br => br.Id.ToString().ToLower().Contains(SearchText.ToLower())));
+                FilteredCategories = new ObservableCollection<Category>(categoriesToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
             }
         }
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFEcommerceApp {
     public class NavigationStore {
+        public static NavigationStore instance;
         public event Action CurrentVMChanged;
 
         public BaseViewModel currentViewModel;

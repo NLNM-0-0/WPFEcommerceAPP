@@ -10,63 +10,74 @@
              x:Name="yeh"
             >
     <materialDesign:DialogHost Identifier="show">
-        
-    <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
-        <StackPanel Margin="95 20">
-            <DockPanel Margin="0 20">
-                <TextBlock Text="Shops Information"
+
+        <Grid Margin="0 0 0 50">
+
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
+                <StackPanel Margin="95 20">
+                    <DockPanel>
+                        <TextBlock Text="Shops Information"
                                    FontFamily="{StaticResource Bold}"
                                    FontSize="{StaticResource FontSizeHeadline}"
                                    />
 
-                <Button DockPanel.Dock="Right" Margin="0 0 5 0"
-                                Content="Remove"
+                        <Button DockPanel.Dock="Right" Margin="0 0 5 0"
+                                Content="{Binding RemoveOrUnBanned}"
                         Command="{Binding RemoveShopCommand}"
                         CommandParameter="{Binding ElementName=datagrid, Path=SelectedItem}"/>
 
-                <!-- Search bar -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <!-- Search bar -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                    <local:SearchBar Width="400" SearchText="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}"/>
-                    <ComboBox Margin="5 0" Text="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
+                            <local:SearchBar Width="400" SearchText="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox Margin="5 0" SelectedItem="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                            materialDesign:HintAssist.Hint="Search by"
+                            materialDesign:HintAssist.Hint="Search by" ItemsSource="{Binding SearchByOptions}"
                             materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
                             materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
-                </StackPanel>
-            </DockPanel>
+                        </StackPanel>
+                    </DockPanel>
 
-            <DataGrid ItemsSource="{Binding Shops, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0 20" x:Name="datagrid"
-                      AutoGenerateColumns="False" MaxHeight="700"
-                      IsReadOnly="True" 
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
+                           FontSize="{StaticResource FontSizeText}"/>
+
+                        <ToggleButton Margin="5 20 5 0"
+                          Style="{StaticResource SwitchToggleButton}"
+                          Background="{StaticResource BlackColorBrush}"
+                          materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
+                          IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding FilteredShops, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" Margin="0 20" x:Name="datagrid"
+                      AutoGenerateColumns="False" MaxHeight="700" CanUserDeleteRows="False"
+                      IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="False"
                       SelectedItem="{Binding DatagridSelectedItem, UpdateSourceTrigger=PropertyChanged}"
                       >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="100" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="Shop Name" Width="250" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Description" Width="350" Binding="{Binding Description}"/>
-                    <DataGridTextColumn Header="Phone number" Width="200" Binding="{Binding PhoneNumber}"/>
-                    <DataGridTextColumn Header="Email" Width="200" Binding="{Binding Email}"/>
-                    <DataGridTextColumn Header="Address" Width="*" Binding="{Binding Address}"/>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Width="Auto" MaxWidth="150" MinWidth="100" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Shop Name" Width="Auto" MaxWidth="500" MinWidth="200" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Description" Width="*" MaxWidth="700" MinWidth="200" Binding="{Binding Description}"/>
+                        </DataGrid.Columns>
 
-                </DataGrid.Columns>
+                    </DataGrid>
 
-            </DataGrid>
-
-            <TextBlock Text="Shop Requests" Margin="0 20"
+                    <TextBlock Text="Shop Requests" Margin="0 20"
                                FontFamily="{StaticResource Bold}"
                                FontSize="{StaticResource FontSizeHeadline}"
                                    />
-            <local:ShopRequestList Height="500" Margin="0 20"/>
+                    <local:ShopRequestList Height="500" Margin="0 20"/>
 
-            <StackPanel.InputBindings>
-                <KeyBinding Key="Enter"
+                    <StackPanel.InputBindings>
+                        <KeyBinding Key="Enter"
                             Command="{Binding SearchCommand}"/>
-                <KeyBinding Key="Esc"
+                        <KeyBinding Key="Esc"
                             Command="{Binding CloseSearchCommand}"/>
-            </StackPanel.InputBindings>
-        </StackPanel>
-    </ScrollViewer>
+                    </StackPanel.InputBindings>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
     </materialDesign:DialogHost>
 
 </UserControl>

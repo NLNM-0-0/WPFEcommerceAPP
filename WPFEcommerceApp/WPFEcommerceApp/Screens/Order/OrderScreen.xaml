@@ -30,11 +30,11 @@
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}"/>
                 <Setter Property="Margin" Value="0"/>
-                <Setter Property="Width" Value="272"/>
-                <Setter Property="Height" Value="60"/>
+                <Setter Property="MinWidth" Value="272"/>
+                <Setter Property="MinHeight" Value="60"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Top"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="FontFamily" Value="{StaticResource Medium}"/>
                 <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline2}"/>
@@ -178,21 +178,23 @@
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <Grid Background="White" wpf:ScrollBarAssist.ButtonsVisibility="Collapsed" x:Name="container">
-        <Border Padding="70, 40, 70, 25">
-            <TabControl Width="{c:Binding ElementName=container, Path=Width-70*2}">
+    <Grid Background="White" 
+          Width="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Width}"
+          wpf:ScrollBarAssist.ButtonsVisibility="Collapsed" 
+          x:Name="container">
+        <Border Padding="70, 40, 70, 40">
+            <TabControl x:Name="TabControlContainer" SelectedIndex="{Binding CurrentPage}">
                 <!--Processing-->
                 <TabItem Style="{StaticResource CustomTabItem}" 
                     Header="Processing">
-
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Processing"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
-                        <ListView Width="1130" Height="639" 
+                        <ListView Width="{c:Binding ElementName=TabControlContainer, Path=Width}"
                                   x:Name="ProcessingList"
                                   BorderThickness="0" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}"
@@ -215,14 +217,14 @@
                 </TabItem>
                 <!--Delivering-->
                 <TabItem Header="Delivering" Style="{StaticResource CustomTabItem}" >
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Delivering"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage2"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
-                        <ListView Width="1130" Height="639" 
+                        <ListView 
                                   x:Name="DeliveringList"
                                   BorderThickness="0" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}"
@@ -246,13 +248,13 @@
                 </TabItem>
                 <!--Deliverd-->
                 <TabItem Header="Delivered" Style="{StaticResource CustomTabItem}" >
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
                         <TextBlock Text="No orders in Delivered"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage3"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
-                        <ListView Width="1130" Height="639" 
+                        <ListView 
                                   x:Name="DeliveredList"
                                   BorderThickness="0" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}"
@@ -276,14 +278,14 @@
                 </TabItem>
                 <!--Cancelled-->
                 <TabItem Header="Cancelled" Style="{StaticResource CustomTabItem}" >
-                    <Grid>
+                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Cancelled"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage4"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
-                        <ListView Width="1130" Height="639" 
+                        <ListView 
                                   x:Name="CancelledList"
                                   BorderThickness="0" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}"
