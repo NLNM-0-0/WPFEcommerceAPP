@@ -90,7 +90,7 @@ namespace WPFEcommerceApp {
             e.Cancel = true;
             if((sender as Window).WindowState == WindowState.Minimized)
                 (sender as Window).WindowState = WindowState.Normal;
-            var view = new ConfirmDialog() {
+            var view = new ConfirmDialogCustom() {
                 Param = sender,
                 CM = new RelayCommand<object>(t => true, t => {
                     (t as Window).Closing -= MainViewModel.OnClosing;
