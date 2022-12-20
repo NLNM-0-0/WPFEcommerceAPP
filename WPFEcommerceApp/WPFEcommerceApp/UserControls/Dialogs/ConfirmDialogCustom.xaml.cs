@@ -28,7 +28,7 @@ namespace WPFEcommerceApp{
 
         // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("HeaderCustom", typeof(string), typeof(ConfirmDialog), new PropertyMetadata("Confirm"));
+            DependencyProperty.Register("Header", typeof(string), typeof(ConfirmDialogCustom), new PropertyMetadata("Confirm"));
 
         public string Content {
             get { return (string)GetValue(ContentProperty); }
@@ -37,7 +37,7 @@ namespace WPFEcommerceApp{
 
         // Using a DependencyProperty as the backing store for Content.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("ContentCustom", typeof(string), typeof(ConfirmDialog), new PropertyMetadata("Are you sure?"));
+            DependencyProperty.Register("Content", typeof(string), typeof(ConfirmDialogCustom), new PropertyMetadata("Are you sure?"));
 
         public ICommand CM {
             get { return (ICommand)GetValue(commandProperty); }
@@ -46,7 +46,7 @@ namespace WPFEcommerceApp{
 
         // Using a DependencyProperty as the backing store for command.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty commandProperty =
-            DependencyProperty.Register("commandCustom", typeof(ICommand), typeof(ConfirmDialog), new PropertyMetadata(null));
+            DependencyProperty.Register("command", typeof(ICommand), typeof(ConfirmDialogCustom), new PropertyMetadata(null));
 
 
 
@@ -57,7 +57,7 @@ namespace WPFEcommerceApp{
 
         // Using a DependencyProperty as the backing store for Param.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ParamProperty =
-            DependencyProperty.Register("ParamCustom", typeof(object), typeof(ConfirmDialog), new PropertyMetadata(null));
+            DependencyProperty.Register("Param", typeof(object), typeof(ConfirmDialogCustom), new PropertyMetadata(null));
 
         public ConfirmDialogCustom() {
             InitializeComponent();
