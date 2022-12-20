@@ -84,8 +84,8 @@ namespace WPFEcommerceApp
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
             SearchCommand = new RelayCommandWithNoParameter(Search);
 
-            
-            Load();
+            //VHCMT
+            //Load();
             SearchText = string.Empty;
 
         }

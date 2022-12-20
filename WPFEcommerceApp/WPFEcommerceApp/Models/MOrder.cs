@@ -27,6 +27,8 @@ namespace WPFEcommerceApp.Models
         public Nullable<System.DateTime> DateBegin { get; set; }
         public Nullable<System.DateTime> DateEnd { get; set; }
         public long OrderTotal { get; set; }
+        public Nullable<int> ShippingMethod { get; set; }
+        public Nullable<int> ShippingSpeedMethod { get; set; }
         public string Status { get; set; }
     
         public virtual MUser MUser { get; set; }

@@ -68,11 +68,16 @@ namespace WPFEcommerceApp {
             DependencyProperty.Register("EditData", typeof(CheckoutScreenVM), typeof(EditInforDialog), new PropertyMetadata(null));
 
         private async void Button_Click(object sender, RoutedEventArgs e) {
+            MainViewModel.IsLoading = true;
+
             var t = accountStore.CurrentAccount;
             t.Name = Username;
             t.PhoneNumber = Phone;
             t.Address = Address;
             await accountStore.Update(t);
+
+            MainViewModel.IsLoading = false;
+
         }
     }
 }

@@ -92,13 +92,10 @@ namespace WPFEcommerceApp {
         #endregion
 
         public CheckoutScreenVM(
-			INavigationService successNavService, 
-			AccountStore accountStore,
-			OrderStore orderStore,
 			Order order = null,
 			List<Order> orders = null) {
 
-			_accountStore = accountStore;
+			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
 			_order = order;
 			if(orders != null)
@@ -128,11 +125,15 @@ namespace WPFEcommerceApp {
             PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(order));
 			OnEditInfor = new RelayCommand<object>((p) => true, (p) => EditInforDialog(p));
 			OnSuccessPayment = new RelayCommand<object>((p) => true, async (p) => {
-				//Do something with store here
-				var temp = new Order(order);
+                //Do something with store here
+                MainViewModel.IsLoading = true;
+
+                var temp = new Order(order);
 				temp.Status = "Processing";
-				await orderStore.Add(temp);
-				successNavService.Navigate();
+				await OrderStore.instance.Add(temp);
+				NavigateProvider.SuccessScreen().Navigate();
+                MainViewModel.IsLoading = false;
+
             });
         }
 

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
         xmlns:local="clr-namespace:WPFEcommerceApp"
         xmlns:fa= "http://schemas.fontawesome.com/icons/"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -72,137 +73,141 @@
         CloseOnClickAway="True"
         Identifier="App">
         <Grid>
-            <!--Drawer-->
-            <local:Drawer HorizontalAlignment="Left"
+            <Grid>
+                <!--Drawer-->
+                <local:Drawer HorizontalAlignment="Left"
                       x:Name="Drawer"
                       DataContext="{Binding DrawerVM}"
                       Panel.ZIndex="1"/>
-            <!--Right Panel-->
+                <!--Right Panel-->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <!--Title Bar-->
-                <Border BorderThickness="0 0 0 0.3" BorderBrush="{StaticResource BlurColorBrush}" 
+                    <!--Title Bar-->
+                    <Border BorderThickness="0 0 0 0.3" BorderBrush="{StaticResource BlurColorBrush}" 
                         Grid.Column="1">
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="9*"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <!--Drag Area-->
-                        <Grid x:Name="TitleBarContainer" Background="Transparent">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseMove">
-                                    <i:CallMethodAction
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <!--Drag Area-->
+                            <Grid x:Name="TitleBarContainer" Background="Transparent">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:CallMethodAction
                                         TargetObject="{Binding}"
                                         MethodName="DragWindow"
                                         />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Grid>
-                        <!--HeadBar button area-->
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" 
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Grid>
+                            <!--HeadBar button area-->
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" 
                                         Grid.Column="1">
 
-                            <Button Style="{StaticResource controlButton}"
+                                <Button Style="{StaticResource controlButton}"
                                 Command="{Binding MinimizeCM}"
                                 CommandParameter="{Binding ElementName=MainWD}">
-                                <materialDesign:PackIcon Kind="Minus" 
+                                    <materialDesign:PackIcon Kind="Minus" 
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
                                                  Width="25" Height="25"
                                                  Foreground="{StaticResource BlackColorBrush}"/>
-                            </Button>
-                            <Button Style="{StaticResource controlButton}"
+                                </Button>
+                                <Button Style="{StaticResource controlButton}"
                                 Command="{Binding MaximizeCM}" CommandParameter="{Binding ElementName=MainWD}">
-                                <materialDesign:PackIcon Style="{StaticResource myPackIcon}" 
+                                    <materialDesign:PackIcon Style="{StaticResource myPackIcon}" 
                                                          x:Name="MaximizeIcon"
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
                                                  Width="19" Height="19"
                                                  Foreground="{StaticResource BlackColorBrush}"/>
-                            </Button>
-                            <Button Style="{StaticResource CloseButton}" 
+                                </Button>
+                                <Button Style="{StaticResource CloseButton}" 
                                 Command="{Binding CloseCM}"
                                 CommandParameter="{Binding ElementName=MainWD}"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-                <!--Content-->
-                <materialDesign:DialogHost
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <!--Content-->
+                    <materialDesign:DialogHost
                             DialogTheme="Inherit"
                             CloseOnClickAway="True"
                             Grid.Row="1"
                             Grid.Column="1"
                             Identifier="Main">
-                    <Grid>
-                        <Grid.Resources>
-                            <!--Checkout and order-->
-                            <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
-                                <local:CheckoutScreen/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:OrderScreenVM}">
-                                <local:OrderScreen/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
-                                <local:SuccessScreen/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
-                                <local:ProductDetails/>
-                            </DataTemplate>
-                            <!--Shop-->
-                            <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
-                                <local:ShopMain/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
-                                <local:ShopRating/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:ShopProductViewModel}">
-                                <local:ShopProduct/>
-                            </DataTemplate>
-                            <!--Admin-->
-                            <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
-                                <local:ShopInformationPage/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:AdminBrandViewModel}">
-                                <local:AdminBrandManager/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:AdminCategoryViewModel}">
-                                <local:AdminCategoryManager/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:AdminProductManagerViewModel}">
-                                <local:AdminProductInformation/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type local:AdminUserManagerViewModel}">
-                                <local:AdminUserInformation/>
-                            </DataTemplate>
-                        </Grid.Resources>
-
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="80"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <DataTemplate DataType="{x:Type local:MyProfileViewModel}">
+                                    <local:MyProfile/>
+                                </DataTemplate>
+                                <!--Checkout and order-->
+                                <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
+                                    <local:CheckoutScreen/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:OrderScreenVM}">
+                                    <local:OrderScreen/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
+                                    <local:SuccessScreen/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
+                                    <local:ProductDetails/>
+                                </DataTemplate>
+                                <!--Shop-->
+                                <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
+                                    <local:ShopMain/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
+                                    <local:ShopRating/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:ShopProductViewModel}">
+                                    <local:ShopProduct/>
+                                </DataTemplate>
+                                <!--Admin-->
+                                <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
+                                    <local:ShopInformationPage/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:AdminBrandViewModel}">
+                                    <local:AdminBrandManager/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:AdminCategoryViewModel}">
+                                    <local:AdminCategoryManager/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:AdminProductManagerViewModel}">
+                                    <local:AdminProductInformation/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type local:AdminUserManagerViewModel}">
+                                    <local:AdminUserInformation/>
+                                </DataTemplate>
+                            </Grid.Resources>
 
-                            <local:Header/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-                            <ContentControl
+                                <local:Header/>
+
+                                <ContentControl
                                 Grid.Row="1"
                                 x:Name="Content"
                                 Content="{Binding CurrentViewModel}"/>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </materialDesign:DialogHost>
+                    </materialDesign:DialogHost>
+                </Grid>
             </Grid>
-
+            <local:LoadingScreen Visibility="{Binding ElementName=MainWD, Path=DataContext.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
     </materialDesign:DialogHost>
 </Window>

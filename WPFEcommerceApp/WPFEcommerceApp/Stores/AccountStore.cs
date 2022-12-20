@@ -9,6 +9,7 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class AccountStore {
+        public static AccountStore instance;
         public event Action AccountChanged;
 
         private MUser currentAccount;

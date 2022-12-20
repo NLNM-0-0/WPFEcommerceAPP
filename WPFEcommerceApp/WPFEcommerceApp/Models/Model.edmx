@@ -10,8 +10,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="SubTitle" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="10" />
+          <Property Name="Position" Type="int" />
           <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="Brand">
@@ -35,15 +35,12 @@
           <Key>
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IdProduct" />
+            <PropertyRef Name="Size" />
           </Key>
           <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdProduct" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Amount" Type="int" />
-          <Property Name="IsChooseSizeS" Type="bit" />
-          <Property Name="IsChooseSizeM" Type="bit" />
-          <Property Name="IsChooseSizeL" Type="bit" />
-          <Property Name="IsChooseSizeXL" Type="bit" />
-          <Property Name="IsChooseSizeXXL" Type="bit" />
+          <Property Name="Size" Type="varchar" MaxLength="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -89,6 +86,8 @@
           <Property Name="DateBegin" Type="smalldatetime" />
           <Property Name="DateEnd" Type="smalldatetime" />
           <Property Name="OrderTotal" Type="bigint" Nullable="false" />
+          <Property Name="ShippingMethod" Type="int" />
+          <Property Name="ShippingSpeedMethod" Type="int" />
           <Property Name="Status" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="MUser">
@@ -204,7 +203,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__72C60C4A">
+        <Association Name="FK__ShopReque__IdUse__6EF57B66">
           <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
           <End Role="ShopRequest" Type="Self.ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -433,7 +432,7 @@
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__72C60C4A" Association="Self.FK__ShopReque__IdUse__72C60C4A">
+          <AssociationSet Name="FK__ShopReque__IdUse__6EF57B66" Association="Self.FK__ShopReque__IdUse__6EF57B66">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="ShopRequest" EntitySet="ShopRequest" />
           </AssociationSet>
@@ -562,7 +561,7 @@
             <End Role="MOrder" EntitySet="MOrders" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__72C60C4A" Association="EcommerceAppModel.FK__ShopReque__IdUse__72C60C4A">
+          <AssociationSet Name="FK__ShopReque__IdUse__6EF57B66" Association="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="ShopRequest" EntitySet="ShopRequests" />
           </AssociationSet>
@@ -600,8 +599,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="SubTitle" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="Int32" />
           <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Brand">
@@ -627,15 +626,12 @@
           <Key>
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IdProduct" />
+            <PropertyRef Name="Size" />
           </Key>
           <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Amount" Type="Int32" />
-          <Property Name="IsChooseSizeS" Type="Boolean" />
-          <Property Name="IsChooseSizeM" Type="Boolean" />
-          <Property Name="IsChooseSizeL" Type="Boolean" />
-          <Property Name="IsChooseSizeXL" Type="Boolean" />
-          <Property Name="IsChooseSizeXXL" Type="Boolean" />
+          <Property Name="Size" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" FromRole="Cart" ToRole="Product" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="Cart" ToRole="MUser" />
         </EntityType>
@@ -678,6 +674,8 @@
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
           <Property Name="DateEnd" Type="DateTime" Precision="0" />
           <Property Name="OrderTotal" Type="Int64" Nullable="false" />
+          <Property Name="ShippingMethod" Type="Int32" />
+          <Property Name="ShippingSpeedMethod" Type="Int32" />
           <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MOrder" ToRole="MUser" />
           <NavigationProperty Name="MUser1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MOrder" ToRole="MUser" />
@@ -705,7 +703,7 @@
           <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
           <NavigationProperty Name="MOrders1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MUser" ToRole="MOrder" />
-          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__72C60C4A" FromRole="MUser" ToRole="ShopRequest" />
+          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66" FromRole="MUser" ToRole="ShopRequest" />
           <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
@@ -787,7 +785,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdUser" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__72C60C4A" FromRole="ShopRequest" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
         <EntityType Name="UserLogin">
           <Key>
@@ -918,7 +916,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__72C60C4A">
+        <Association Name="FK__ShopReque__IdUse__6EF57B66">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
           <End Type="EcommerceAppModel.ShopRequest" Role="ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1016,8 +1014,8 @@
             <EntityTypeMapping TypeName="EcommerceAppModel.Advertisement">
               <MappingFragment StoreEntitySet="Advertisement">
                 <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="SubTitle" ColumnName="SubTitle" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1044,11 +1042,7 @@
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="EcommerceAppModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
-                <ScalarProperty Name="IsChooseSizeXXL" ColumnName="IsChooseSizeXXL" />
-                <ScalarProperty Name="IsChooseSizeXL" ColumnName="IsChooseSizeXL" />
-                <ScalarProperty Name="IsChooseSizeL" ColumnName="IsChooseSizeL" />
-                <ScalarProperty Name="IsChooseSizeM" ColumnName="IsChooseSizeM" />
-                <ScalarProperty Name="IsChooseSizeS" ColumnName="IsChooseSizeS" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
@@ -1086,6 +1080,8 @@
             <EntityTypeMapping TypeName="EcommerceAppModel.MOrder">
               <MappingFragment StoreEntitySet="MOrder">
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ShippingSpeedMethod" ColumnName="ShippingSpeedMethod" />
+                <ScalarProperty Name="ShippingMethod" ColumnName="ShippingMethod" />
                 <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
                 <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
                 <ScalarProperty Name="DateBegin" ColumnName="DateBegin" />

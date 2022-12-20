@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
     public class ProductDetailsVM :BaseViewModel {
-		private readonly OrderStore _orderStore;
 		public Order OrderDetail { get; set; }
         public int Status =>
             OrderDetail == null 
@@ -34,16 +34,9 @@ namespace WPFEcommerceApp {
 		public ICommand OnReviewProduct { get; }
 		public ICommand OnVisitShop { get; }
 
-        public ProductDetailsVM(
-			Order order, 
-			NavigationStore navigationStore,
-            AccountStore accountStore,
-            OrderStore orderStore,
-			INavigationService successNavService, 
-			INavigationService orderNavService) {
+        public ProductDetailsVM(Order order) {
 
             OrderDetail = order;
-			_orderStore = orderStore;
 
 			ProductList = new ObservableCollection<Product>(OrderDetail.ProductList);
 
@@ -54,7 +47,7 @@ namespace WPFEcommerceApp {
 				OrderStatus[i] = true;
 			}
 			//OnReOrder = new ReOrderCM(navigationStore, successNavService);
-			ICommand ReOrderCM = new ReOrderCM(navigationStore, accountStore, orderStore, successNavService);
+			ICommand ReOrderCM = new ReOrderCM();
 			OnReOrder = new RelayCommand<object>(p => true, async p => {
 				var view = new ConfirmDialog() {
 					CM = ReOrderCM,
@@ -65,10 +58,14 @@ namespace WPFEcommerceApp {
 
 
             ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
-                //Do something with OrderStore
+				MainViewModel.IsLoading = true;
+
                 (p as Order).Status = "Cancelled";
-                await _orderStore.Update(p as Order);
-                orderNavService.Navigate();
+                await OrderStore.instance.Update(p as Order);
+                NavigateProvider.OrderScreen().Navigate();
+
+				MainViewModel.IsLoading = false;
+
 			});
 			OnCancel = new RelayCommand<object>(p => true, async p => {
 				var view = new ConfirmDialog() {
@@ -90,8 +87,8 @@ namespace WPFEcommerceApp {
 							? 2
 							: OrderDetail.Status == "Cancelled"
 							? 3 : 2;
-                var nav = new ParamNavigationService<int, OrderScreenVM>(navigationStore,
-                    (parameter) => new OrderScreenVM(navigationStore, accountStore, orderStore, successNavService, orderNavService, parameter));
+                var nav = new ParamNavigationService<int, OrderScreenVM>(
+                    (parameter) => new OrderScreenVM(parameter));
                 nav.Navigate(param);
 			});
 			OnViewProduct = new RelayCommand<object>(p => true, p => {
