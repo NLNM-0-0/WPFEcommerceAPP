@@ -139,5 +139,9 @@
                 Content="Save"/>
         </StackPanel>
     </materialDesign:DialogHost>
-
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter"
+                    Command="{Binding SaveAvaShopCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"/>
+    </UserControl.InputBindings>
 </UserControl>
