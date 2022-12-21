@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
@@ -63,6 +64,8 @@ namespace WPFEcommerceApp {
                 }
                 return false;
             }, (p) => {
+                if(DialogHost.IsDialogOpen("Main"))
+                    DialogHost.Close("Main");
                 if(CurrentUser == null || CurrentUser.Role != "Admin") {
                     ShopPopUpDataContext = new ShopPopUpVM(this);
 

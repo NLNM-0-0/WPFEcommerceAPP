@@ -23,55 +23,61 @@
         <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding CloseCM}" CommandParameter="{Binding ElementName=MainWD}"/>
     </Window.InputBindings>
     <Window.Resources>
-        <local:MultiValueConverter x:Key="MultiValueConverter"/>
-        <Style TargetType="{x:Type Button}" x:Key="controlButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
-            <Setter Property="Foreground" Value="{DynamicResource BlackColorBrush}"/>
-            <Setter Property="TextBlock.FontFamily" Value="{StaticResource Regular}"/>
-            <Setter Property="TextBlock.FontSize" Value="{StaticResource FontSizeText}"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Content" Value="Button"/>
-            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="0"/>
-            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
-            <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource BlackColorBrush}"/>
-        </Style>
-        <Style TargetType="{x:Type Button}" x:Key="CloseButton">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Grid Width="40" Height="40" x:Name="Container" Background="Transparent">
-                            <materialDesign:PackIcon Kind="Close" 
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="DialogStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:MultiValueConverter x:Key="MultiValueConverter"/>
+            <Style TargetType="{x:Type Button}" x:Key="controlButton" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                <Setter Property="Foreground" Value="{DynamicResource BlackColorBrush}"/>
+                <Setter Property="TextBlock.FontFamily" Value="{StaticResource Regular}"/>
+                <Setter Property="TextBlock.FontSize" Value="{StaticResource FontSizeText}"/>
+                <Setter Property="Width" Value="40"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Content" Value="Button"/>
+                <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="0"/>
+                <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp0"/>
+                <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource BlackColorBrush}"/>
+            </Style>
+            <Style TargetType="{x:Type Button}" x:Key="CloseButton">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Grid Width="40" Height="40" x:Name="Container" Background="Transparent">
+                                <materialDesign:PackIcon Kind="Close" 
                                                      x:Name="Icon"
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
                                                  Width="25" Height="25"
                                                  Foreground="{StaticResource BlackColorBrush}"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Container" Property="Background" Value="{StaticResource ErrorColorBrush}"/>
-                                <Setter TargetName="Icon" Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
-                                <Setter Property="Cursor" Value="Hand"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="materialDesign:PackIcon" x:Key="myPackIcon">
-            <Setter Property="Kind" Value="CheckboxBlankOutline"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=MainWD, Path=WindowState}" Value="Maximized">
-                    <Setter Property="Kind" Value="CheckboxMultipleBlankOutline"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Container" Property="Background" Value="{StaticResource ErrorColorBrush}"/>
+                                    <Setter TargetName="Icon" Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="materialDesign:PackIcon" x:Key="myPackIcon">
+                <Setter Property="Kind" Value="CheckboxBlankOutline"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=MainWD, Path=WindowState}" Value="Maximized">
+                        <Setter Property="Kind" Value="CheckboxMultipleBlankOutline"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </Window.Resources>
     <materialDesign:DialogHost
         DialogTheme="Inherit"
         CloseOnClickAway="True"
-        Identifier="App">
+        Identifier="App"
+        Style="{StaticResource CustomStyleDialog}">
         <Grid>
             <Grid>
                 <!--Drawer-->

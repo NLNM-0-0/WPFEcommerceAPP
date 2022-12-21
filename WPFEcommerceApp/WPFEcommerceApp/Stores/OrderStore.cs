@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using DataAccessLayer;
 using WPFEcommerceApp.Models;
 
@@ -26,18 +28,18 @@ namespace WPFEcommerceApp {
 		public OrderStore() {
 			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
-			Load();
-		}
+            Task.Run(async () => await Load());
+        }
 
         private readonly GenericDataRepository<MOrder> orderRepo = new GenericDataRepository<MOrder>();
         private readonly GenericDataRepository<OrderInfo> orderInfoRepo = new GenericDataRepository<OrderInfo>();
         private readonly GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
 
         private void OnAccountChange() {
-			Load();
+			Task.Run(async () => await Load());
             OrderListChanged?.Invoke();
         }
-		public async void Load() {
+		public async Task Load() {
             if(user == null) return;
 			OrderList?.Clear();
 
