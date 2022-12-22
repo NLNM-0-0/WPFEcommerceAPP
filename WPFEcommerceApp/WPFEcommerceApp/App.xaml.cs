@@ -14,17 +14,20 @@ namespace WPFEcommerceApp {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        private readonly IServiceProvider serviceProvider;
+        //private readonly IServiceProvider serviceProvider;
         public App() {
-            serviceProvider = DPIService.serviceProvider;
+            //serviceProvider = DPIService.serviceProvider;
         }
 
         protected override void OnStartup(StartupEventArgs e) {
-            INavigationService initial = serviceProvider.GetRequiredService<INavigationService>();
-            initial.Navigate();
+            //INavigationService initial = serviceProvider.GetRequiredService<INavigationService>();
+            //initial.Navigate();
 
-            MainWindow = serviceProvider.GetRequiredService<MainWindow>();
-            MainWindow.Show();
+            //MainWindow = serviceProvider.GetRequiredService<MainWindow>();
+            //MainWindow.Show();
+
+            SplashScreen splashScreen = new SplashScreen();
+            splashScreen.Show();
 
             base.OnStartup(e);
         }
