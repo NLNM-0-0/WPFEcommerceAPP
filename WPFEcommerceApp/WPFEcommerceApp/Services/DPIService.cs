@@ -9,21 +9,16 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class DPIService {
-        public static IServiceProvider serviceProvider;
-        static DPIService() {
+        //static public DPIService instance;
+        public IServiceProvider serviceProvider;
+        public DPIService() {
             IServiceCollection services = new ServiceCollection();
 
             #region Set Store and some initial dependences
-            //Set Store and some initial dependences
-            var t = new GenericDataRepository<MUser>();
-            var u = t.GetSingleAsync(d => d.Id.Equals("user01")).Result;
 
             AccountStore.instance = new AccountStore();
-            AccountStore.instance.CurrentAccount = u;
-
             OrderStore.instance = new OrderStore();
             NavigationStore.instance = new NavigationStore();
-
 
             services.AddTransient<DrawerVM>();
             #endregion
@@ -72,6 +67,7 @@ namespace WPFEcommerceApp {
             serviceProvider = services.BuildServiceProvider();
 
             NavigateProvider.serviceProvider = serviceProvider;
+            App.serviceProvider = serviceProvider;
         }
     }
 }

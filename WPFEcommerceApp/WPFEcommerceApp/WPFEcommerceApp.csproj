@@ -677,7 +677,7 @@
     </Page>
     <Page Include="Screens\SplashScreen\SplashScreen.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Screens\UserView\DialogStyle.xaml">
       <Generator>MSBuild:Compile</Generator>

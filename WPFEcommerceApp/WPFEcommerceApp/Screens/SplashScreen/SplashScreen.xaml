@@ -12,8 +12,9 @@
         Title="MainWindow" Height="766" Width="1200"
         d:Background="White"
         WindowStyle="None"
-        x:Name="MainWD"
-        WindowStartupLocation="CenterScreen" FontFamily="Helvetica Neue">
+        x:Name="Splash"
+        WindowStartupLocation="CenterScreen" 
+        FontFamily="Helvetica Neue">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
                       CornerRadius="13"
