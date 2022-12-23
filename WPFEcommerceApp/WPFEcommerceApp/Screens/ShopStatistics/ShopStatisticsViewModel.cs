@@ -11,6 +11,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace WPFEcommerceApp
 {
@@ -18,9 +20,8 @@ namespace WPFEcommerceApp
     {
 
         #region Public Properties
-        private readonly AccountStore _accountStore;
-        private string _currentId;
         private GenericDataRepository<OrderInfo> orderinfoRepo;
+        private GenericDataRepository<MOrder> orderRepo;
         public List<OrderInfo> OrderInfos;
 
         private DateTime _fromSelectedDate;
@@ -30,7 +31,6 @@ namespace WPFEcommerceApp
             set
             {
                 _fromSelectedDate = value;
-                Load();
                 OnPropertyChanged();
             }
         }
@@ -43,7 +43,6 @@ namespace WPFEcommerceApp
             set
             {
                 _toSelectedDate = value;
-                Load();
                 OnPropertyChanged();
             }
         }
@@ -62,31 +61,36 @@ namespace WPFEcommerceApp
 
         #endregion
 
-        public ShopStatisticsViewModel(AccountStore accountStore)
-        {
-            _accountStore = accountStore;
-            _currentId = "user02";
-            orderinfoRepo = new GenericDataRepository<OrderInfo>();
-            FromSelectedDate = new DateTime(2022, 1, 1);
-            ToSelectedDate = new DateTime(2022, 12, 1);
+        #region Commands
+        public ICommand LoadCommand { get; set; }
 
-            Load();
+        #endregion
+
+        #region Constructor
+        public ShopStatisticsViewModel()
+        {
+            orderinfoRepo = new GenericDataRepository<OrderInfo>();
+            FromSelectedDate = new DateTime(2022, 11, 1);
+            ToSelectedDate =DateTime.Now;
+            LoadCommand = new RelayCommandWithNoParameter(async () => await Load());
+
+            Task.Run(async()=>await Load());
 
         }
 
-        public async void Load()
+        #endregion
+
+        public async Task Load()
         {
             OrderInfos = new List<OrderInfo>(await orderinfoRepo.GetListAsync(
-                ord => ord.MOrder.IdShop == _currentId,
+                ord => ord.MOrder.IdShop == AccountStore.instance.CurrentAccount.Id,
                 ord => ord.MOrder, ord=>ord.Rating));
-            // Total sale of today
-            //var date=DateTime.Now.Date;
+
             var fromDate = FromSelectedDate.Date;
             var toDate = ToSelectedDate.Date;
 
             #region 4 number on the left
             long totalSale = 0;
-            int ordersNum = 0;
             foreach (var ord in OrderInfos)
             {
                 if (ord.MOrder.Status == OrderStatus.Completed.ToString()||ord.MOrder.Status==OrderStatus.Delivered.ToString())
@@ -98,20 +102,24 @@ namespace WPFEcommerceApp
                             totalSale += ord.TotalPrice;
                     }
                 }
-                else if (!string.IsNullOrEmpty(ord.MOrder.DateBegin.ToString())
-                    && ord.MOrder.DateBegin.Value.Date >= fromDate && ord.MOrder.DateBegin.Value.Date <= toDate
-                    && ord.MOrder.Status == OrderStatus.Processing.ToString())
-                    ordersNum++;
             }
+            orderRepo = new GenericDataRepository<MOrder>();
+            var orders = new List<MOrder>(
+                await orderRepo.GetListAsync(
+                    ord => ord.Status == OrderStatus.Processing.ToString()
+                    && ord.IdShop == AccountStore.instance.CurrentAccount.Id
+                    && ord.DateBegin>=fromDate
+                    && ord.DateBegin<=toDate));
+
             TotalSales = totalSale.ToString();
-            Orders = ordersNum.ToString();
+            Orders = orders.Count.ToString();
 
             #endregion
 
             #region Revenue
 
 
-            var dayCount = (toDate - fromDate).Days / 20;
+            var dayCount = (toDate - fromDate).Days / 30;
             var labels = new List<string>();
 
             if(dayCount<=0)
@@ -207,6 +215,8 @@ namespace WPFEcommerceApp
             {
                 if (ord.MOrder.DateBegin >= fromDate && ord.MOrder.DateBegin <= toDate || ord.MOrder.DateEnd >= fromDate && ord.MOrder.DateEnd <= toDate)
                 {
+                    if (ord.Rating == null)
+                        continue;
                     if (ord.Rating.Rating1 == 1)
                         starList[0]++;
                     else if (ord.Rating.Rating1 == 2)
