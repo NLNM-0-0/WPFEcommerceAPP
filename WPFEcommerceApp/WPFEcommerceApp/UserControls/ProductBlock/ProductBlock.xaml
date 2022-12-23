@@ -5,54 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:WPFEcommerceApp"
-             mc:Ignorable="d" 
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="400"
              MaxHeight="500" MaxWidth="400"
+             MinHeight="500" MinWidth="400"
              Cursor="Hand"
+             ScrollViewer.CanContentScroll="True"
              x:Name="productBlock">
-    <UserControl.Resources>
-        <Style x:Key="StackPanelStyle" TargetType="{x:Type StackPanel}">
-            <Style.Resources>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Height" Value="40"/>
-                    <Setter Property="Width" Value="40"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="10 0"/>
-                    <Setter Property="IsHitTestVisible" Value="True"/>
-                    <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border 
-                                    x:Name="border" 
-                                    Background="{TemplateBinding Background}" 
-                                    BorderBrush="{TemplateBinding BorderBrush}" 
-                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                    SnapsToDevicePixels="true"
-                                    CornerRadius="20">
-                                    <ContentPresenter 
-                                        x:Name="contentPresenter" 
-                                        Focusable="False" 
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                        Margin="{TemplateBinding Padding}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        Content="{TemplateBinding Content}"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource BoxShadowColorBrush}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Style.Resources>
-        </Style>
-    </UserControl.Resources>
     <Grid Background="{StaticResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -63,9 +24,31 @@
                 <RowDefinition Height="350"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Image x:Name="ImageMainProduct"
-                    Grid.Row="0"
-                    Source="{Binding ElementName=productBlock, Path=MainImage}"/>
+            <Border
+                MaxWidth="400"
+                MaxHeight="350"
+                Grid.Row="0"
+                Background="{StaticResource BackgroundColorBrush}">
+                <Image x:Name="ImageMainProduct"
+                       MaxWidth="400"
+                       Stretch="Fill"
+                    Source="{Binding MainImage, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+            <Button
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right"
+                Command="{Binding OpenPageCommand}"
+                Style="{StaticResource TransparentButton}"
+                Foreground="#1290FF"
+                Height="auto"
+                Visibility="{c:Binding 'IsMouseOver',ElementName=productBlock}"
+                Margin="5">
+                <Button.Content>
+                    <fa:FontAwesome
+                        Icon="InfoCircle"
+                        Height="15"/>
+                </Button.Content>
+            </Button>
             <Grid Grid.Row="1" x:Name="MiniImages" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -75,7 +58,7 @@
                         Style="{DynamicResource StackPanelStyle}"
                         Orientation="Horizontal"
                         IsHitTestVisible="True">
-                    <ItemsControl ItemsSource="{Binding Path=ListProductImage, ElementName=productBlock}">
+                    <ItemsControl ItemsSource="{Binding MiniImagesProduct, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
@@ -84,12 +67,17 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button
-                                Background="Transparent"
-                                Height="40"
-                                Width="40"
-                                IsHitTestVisible="True">
+                                    HorizontalAlignment="Center"
+                                    Background="Transparent"
+                                    MaxHeight="40"
+                                    MaxWidth="40"
+                                    IsHitTestVisible="True">
                                     <Button.Content>
                                         <Image
+                                            HorizontalAlignment="Center"
+                                            MaxHeight="40"
+                                            MaxWidth="40"
+                                            Stretch="Fill"
                                             x:Name="MiniImageProductButton"
                                             Source="{Binding}"/>
                                     </Button.Content>
@@ -109,10 +97,11 @@
                 </StackPanel>
                 <TextBlock
                     Grid.Column="1"
-                    Text="{c:Binding 'ListProductImage.Count - 4', ElementName=productBlock}"
+                    Text="{Binding NumberProductRemainder}"
                     Foreground="{StaticResource NotAvailableColorBrush}"
                     FontSize="20"
-                    VerticalAlignment="Center"/>
+                    VerticalAlignment="Center"
+                    Visibility="{c:Binding 'MiniImagesProduct.Count > 4'}"/>
             </Grid>
         </Grid>
         <Grid Margin="10" Grid.Row="1">
@@ -123,10 +112,6 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" x:Name="ProductMainInfo">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="59*"/>
-                    <ColumnDefinition Width="131*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -134,19 +119,19 @@
                 </Grid.RowDefinitions>
                 <TextBlock 
                     Grid.Row="0"
-                    Text="{Binding ElementName=productBlock, Path=ProductName}"
+                    Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="18"
-                    FontWeight="DemiBold" Grid.ColumnSpan="2" Margin="0,0,0,19" Grid.RowSpan="2"/>
+                    FontWeight="DemiBold"/>
                 <TextBlock
                     Grid.Row="1"
-                    Text="{Binding ElementName=productBlock, Path=Category.Name}"
+                    Text="{Binding SelectedProduct.Category.Name, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="16"
-                    Foreground="{StaticResource NotAvailableColorBrush}" Grid.ColumnSpan="2" Margin="0,0,0,19" Grid.RowSpan="2"/>
+                    Foreground="{StaticResource NotAvailableColorBrush}"/>
                 <TextBlock
                     Grid.Row="2"
-                    Text="{Binding ElementName=productBlock, Path=Brand.Name}"
+                    Text="{Binding SelectedProduct.Brand.Name, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="16"
-                    Foreground="{StaticResource NotAvailableColorBrush}" Grid.ColumnSpan="2"/>
+                    Foreground="{StaticResource NotAvailableColorBrush}"/>
             </Grid>
             <StackPanel Grid.Row="3" Orientation="Horizontal">
                 <StackPanel.Resources>
@@ -155,42 +140,38 @@
                     </Style>
                 </StackPanel.Resources>
                 <TextBlock 
-                    Text="{Binding ElementName=productBlock, Path=Price}"
+                    Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
                     TextDecorations="Strikethrough"
                     FontSize="16"
                     FontWeight="DemiBold"
                     Foreground="{StaticResource NotAvailableColorBrush}"/>
                 <TextBlock 
-                    Text="{c:Binding '(100 - Sale) * Price / 100'}"
+                    Text="{c:Binding '(100 - SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
                     FontSize="18"
                     FontWeight="DemiBold"/>
             </StackPanel>
         </Grid>
     </Grid>
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseMove">
+        <i:EventTrigger EventName="MouseEnter">
             <i:InvokeCommandAction 
-            Command="{Binding ElementName=productBlock, Path=ShowMiniPictureCommand}" 
+            Command="{Binding ShowMiniPictureCommand}" 
             CommandParameter="{Binding ElementName=MiniImages}"/>
             <i:InvokeCommandAction
-             Command="{Binding ElementName=productBlock, Path=HideProductMainInfoCommand}"
+             Command="{Binding HideProductMainInfoCommand}"
               CommandParameter="{Binding ElementName=ProductMainInfo}"/>
         </i:EventTrigger>
         <i:EventTrigger EventName="MouseLeave">
             <i:InvokeCommandAction 
-            Command="{Binding ElementName=productBlock, Path= HideMiniPictureCommand}" 
+            Command="{Binding HideMiniPictureCommand}" 
             CommandParameter="{Binding ElementName=MiniImages}"/>
             <i:InvokeCommandAction
-             Command="{Binding ElementName=productBlock, Path= ShowProductMainInfoCommand}"
+             Command="{Binding ShowProductMainInfoCommand}"
               CommandParameter="{Binding ElementName=ProductMainInfo}"/>
         </i:EventTrigger>
-        <i:EventTrigger EventName="MouseDown" >
-            <i:InvokeCommandAction
-                 Command="{Binding ElementName=productBlock, Path= OpenProductCommand}">
-                <i:InvokeCommandAction.CommandParameter>
-                    <Binding/>
-                </i:InvokeCommandAction.CommandParameter>
-            </i:InvokeCommandAction>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction 
+            Command="{Binding OpenDialogCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
