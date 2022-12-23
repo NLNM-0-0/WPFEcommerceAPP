@@ -67,12 +67,12 @@
                                 </Binding>
                             </ComboBox.SelectedItem>
                         </ComboBox>
-                        <TextBox Margin="15" Text="{Binding NewUser.Gender}"
+                        <ComboBox Margin="15" SelectedItem="{Binding NewUser.Gender, Converter={x:Static local:BooleanToGenderConverter.Instance}}"
                         Width="150"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        ItemsSource="{Binding GenderOptions}"
                         materialDesign:HintAssist.Hint="Gender"
-                        MaxLength="10"
-                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
+                        >
+                        </ComboBox>
                         <DatePicker SelectedDate="{Binding NewUser.DOB}"
                         Height="55"
                         Width="150"
@@ -91,7 +91,7 @@
                             Width="300" Margin="15"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             materialDesign:HintAssist.Hint="User Name"
-                            MaxLength="27"
+                            MaxLength="50"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <Binding
                                     Path="NewUser.Name"
@@ -102,19 +102,13 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <TextBox DockPanel.Dock="Left"
-                        Width="300" Margin="15"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Full Name"
-                        MaxLength="27"
-                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
-
+                       
                         <TextBox DockPanel.Dock="Left"
                                  x:Name="phonenumber"
                         Width="300" Margin="15"
                         Style="{StaticResource TextBoxHintBlackBorder}"
                         materialDesign:HintAssist.Hint="Phone number"
-                        MaxLength="27"
+                        MaxLength="20"
                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <Binding
                                     Path="NewUser.PhoneNumber"
@@ -130,7 +124,7 @@
                         Width="300" Margin="15"
                         Style="{StaticResource TextBoxHintBlackBorder}"
                         materialDesign:HintAssist.Hint="Address"
-                        MaxLength="27"
+                        MaxLength="200"
                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <Binding
                                     Path="NewUser.Address"
@@ -146,7 +140,7 @@
                         Width="300" Margin="15"
                         Style="{StaticResource TextBoxHintBlackBorder}"
                         materialDesign:HintAssist.Hint="Email"
-                        MaxLength="27"
+                        MaxLength="100"
                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <Binding
                                     Path="NewUser.Email"
@@ -163,7 +157,7 @@
                         Width="300" Margin="15"
                         Style="{StaticResource TextBoxHintBlackBorder}"
                         materialDesign:HintAssist.Hint="Description"
-                        MaxLength="27"
+                        MaxLength="200"
                         Visibility="{c:Binding 'IsShop',FalseToVisibility=Hidden}"
                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <Binding
@@ -185,35 +179,8 @@
                 <Button.CommandParameter>
                     <Binding Path="NewUser"/>
                 </Button.CommandParameter>
-                <!--<Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource OutLineBlackButton}">
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsShop}" Value="true"/>
-                                    <Condition Binding="{Binding ElementName=username, Path=(Validation.HasError)}" Value="true"/>
-                                    <Condition Binding="{Binding ElementName=phonenumber, Path=(Validation.HasError)}" Value="true"/>
-                                    <Condition Binding="{Binding ElementName=address, Path=(Validation.HasError)}" Value="true"/>
-                                    <Condition Binding="{Binding ElementName=email, Path=(Validation.HasError)}" Value="true"/>
-                                    <Condition Binding="{Binding ElementName=description, Path=(Validation.HasError)}" Value="true"/>
-                                    <Condition Binding="{Binding ElementName=role, Path=(Validation.HasError)}" Value="true"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="IsEnabled" Value="False"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>-->
             </Button>
         </StackPanel>
     </materialDesign:DialogHost>
 
 </UserControl>
-
-<!--<i:Interaction.Triggers>
-    <i:DataTrigger Binding="{Binding ElementName=phoneBox, Path=(Validation.HasError)}" Value="True">
-        <i:ChangePropertyAction TargetName="lel" PropertyName="IsEnabled" Value="False"/>
-    </i:DataTrigger>
-    <i:DataTrigger Binding="{Binding ElementName=phoneBox, Path=(Validation.HasError)}" Value="False">
-        <i:ChangePropertyAction TargetName="lel" PropertyName="IsEnabled" Value="True"/>
-    </i:DataTrigger>
-</i:Interaction.Triggers>-->
