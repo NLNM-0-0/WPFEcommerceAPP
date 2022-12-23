@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="800">
@@ -10,29 +12,25 @@
         <local:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
     </UserControl.Resources>
 
-    <Grid Background="Transparent">
+    <Grid x:Name="grid" Background="Transparent" Height="{cal:Binding Path=ActualWidth*0.35, RelativeSource={RelativeSource Self}}">
 
-        <ScrollViewer
-                        HorizontalScrollBarVisibility="Hidden"
-                        VerticalScrollBarVisibility="Hidden">
-            <Image Width="{Binding ElementName=grid, Path=ActualWidth}"
+        <ScrollViewer CanContentScroll="False"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Disabled">
+            <Image 
                         Stretch="Fill"
                         Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}"
-                        ScrollViewer.CanContentScroll="True">
+                        >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown" >
+                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:AdsManager}}, Path=DataContext.SelectedCommand}">
+                            <i:InvokeCommandAction.CommandParameter>
+                                <Binding/>
+                            </i:InvokeCommandAction.CommandParameter>
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Image>
         </ScrollViewer>
-
-        <StackPanel>
-            <!--<TextBlock Margin="30 30 30 10" TextWrapping="Wrap"
-                                       FontSize="{StaticResource FontSizeHeadline2}"
-                                       FontWeight="DemiBold"
-                                       TextAlignment="Center"
-                                       Text="{Binding Title}"/>
-            <TextBlock Margin="30 0" TextWrapping="Wrap" 
-                                       FontSize="{StaticResource FontSizeText}"
-                                       FontWeight="Regular"
-                                       TextAlignment="Center"
-                                Text="{Binding SubTitle}"/>-->
-        </StackPanel>
     </Grid>
 </UserControl>

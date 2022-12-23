@@ -5,12 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cal="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440">
-    
+    <materialDesign:DialogHost Identifier="adsView">
+        
     <StackPanel Margin="50 20">
-        <DockPanel Margin="0 20">
-            <TextBlock Text="Advertisements"
+        <DockPanel Margin="0 20" LastChildFill="False">
+            <TextBlock Text="Advertisements In Use"
                                    FontFamily="{StaticResource Bold}"
                                    FontSize="{StaticResource FontSizeHeadline}"
                                    />
@@ -26,49 +29,77 @@
             <Button DockPanel.Dock="Right" Margin="0 0 10 0"
                     Content="Remove"
                     Command="{Binding RemoveAdsCommand}"
-                    CommandParameter="{Binding}"
+                    CommandParameter="{Binding SelectedItem}"
                     >
             </Button>
 
-            <Button DockPanel.Dock="Right" Margin="0 0 10 0"
-                    Content="Apply"
-                    Command="{Binding ApplyAdsCommand}"
-                    CommandParameter="{Binding ElementName=datagrid, Path=SelectedItem}">
-            </Button>
-            <!-- Search bar -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                <local:SearchBar Width="400"/>
-                <ComboBox Margin="5 0"
-                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                            materialDesign:HintAssist.Hint="Search by"
-                            materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
-                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
-            </StackPanel>
         </DockPanel>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0 30 -10 0" CanContentScroll="True"
-                          materialDesign:ScrollBarAssist.ThumbCornerRadius="20">
+        <ListView ItemsSource="{Binding InUseAds}" BorderThickness="0" x:Name="miniList"
+                  Focusable="False">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <local:AdsItem Width="{cal:Binding ElementName=miniList, Path=ActualWidth*0.32}"/>
+                    </Grid>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <DockPanel LastChildFill="False">
+            <TextBlock Text="All" Margin="0 30 0 10"
+                                   FontFamily="{StaticResource Bold}"
+                                   FontSize="{StaticResource FontSizeHeadline}"
+                                   />
+            <Button DockPanel.Dock="Right"
+                    Content="Apply"
+                    Command="{Binding ApplyAdsCommand}"
+                    CommandParameter="{Binding SelectedItem}"
+                    >
+            </Button>
+            <ComboBox Margin="10 0" DockPanel.Dock="Right" SelectedItem="{Binding CurrentPos, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding ComboBoxSource}"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            materialDesign:HintAssist.Hint="Position"
+                            materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
+                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}">
+            </ComboBox>
+        </DockPanel>
+        
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0 0 -10 0" CanContentScroll="True"
+                          materialDesign:ScrollBarAssist.ThumbCornerRadius="20"
+                      >
             <ListView ItemsSource="{Binding Ads}" x:Name="itemList" Margin="0 0 10 0"
-                          HorizontalContentAlignment="Stretch" Height="750"
-                          BorderThickness="0"
-                      ItemContainerStyle="{StaticResource MaterialDesignCardsListBoxItem}">
+                      Height="600" HorizontalAlignment="Stretch"
+                      BorderThickness="0" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <local:AdsItem Height="300"/>
-                            <RadioButton HorizontalAlignment="Right"
-                                         GroupName="radio"
-                                         Margin="0 0 20 0"
-                                         Command="{Binding RelativeSource={
-                                                    RelativeSource Mode=FindAncestor, 
-                                                    AncestorType={x:Type local:AdsManager}}, 
-                                                    Path=DataContext.RadioCommand}"
-                                         CommandParameter="{Binding}"/>
-                        </Grid>
+                        <StackPanel>
+                            <local:AdsItem Width="300"/>
+                        </StackPanel>
+                        
+                        
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
             </ListView>
         </ScrollViewer>
+
     </StackPanel>
+    </materialDesign:DialogHost>
+
 </UserControl>
