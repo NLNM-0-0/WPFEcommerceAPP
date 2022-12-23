@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="60" d:DesignWidth="800">
 
         <!-- The header itself -->
     <Grid Height="60">
@@ -21,16 +21,19 @@
             <!-- The WANO icon -->
             <Button Style="{StaticResource TransparentButton}"
                     Height="50" Content="WANO"
-                    DockPanel.Dock="Left" Margin="40 0"/>
+                    DockPanel.Dock="Left" Margin="40 0"
+                    Command="{Binding HomeCommand}"/>
 
             <!-- Cart and heart icon -->
 
             <Button Style="{StaticResource TransparentButton}"
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                     Margin="10 10 30 10" DockPanel.Dock="Right"
-                    Background="{StaticResource WhiteColorBrush}">
+                    Background="{StaticResource WhiteColorBrush}"
+                    Command="{Binding SignInOutCommand}">
                 <fa:FontAwesome Icon="{Binding Icon}" FontSize="20" ToolTip="{Binding IconTooltip}" 
-                                ToolTipService.InitialShowDelay="100"/>
+                                ToolTipService.InitialShowDelay="100">
+                </fa:FontAwesome>
             </Button>
 
             <Button Style="{StaticResource TransparentButton}"

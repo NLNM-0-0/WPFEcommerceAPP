@@ -16,8 +16,9 @@ namespace WPFEcommerceApp
     public class AdminCategoryViewModel : BaseViewModel
     {
         #region Properties
-        public GenericDataRepository<Category> cateRepo;
-        public GenericDataRepository<CategoryRequest> cateRequestRepo;
+        private GenericDataRepository<Category> cateRepo;
+        private GenericDataRepository<CategoryRequest> cateRequestRepo;
+        private GenericDataRepository<Models.Notification> noteRepo;
 
         private ObservableCollection<Category> categoriesToSearch;
 
@@ -134,25 +135,29 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminCategoryViewModel()
         {
+            MainViewModel.IsLoading = true;
             cateRepo = new GenericDataRepository<Category>();
             cateRequestRepo = new GenericDataRepository<CategoryRequest>();
+            noteRepo = new GenericDataRepository<Models.Notification>();
 
-            Load();
+            Task.Run(async () => await Load());
 
             RequestList = new CategoryRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
             SearchBy = SearchByOptions[1];
 
 
-            AddNewCategoryCommand = new RelayCommand<string>(p => p != string.Empty, AddNewCategory);
-            RemoveCategoryCommand = new RelayCommand<object>(p => p != null, RemoveCategory);
-            RemoveRequestCommand = new RelayCommand<object>(p => p != null, RemoveRequest);
-            AddRequestCommand = new RelayCommand<object>(p => p != null, AddRequest);
+            AddNewCategoryCommand = new RelayCommand<string>(p => p != string.Empty, async (p) => await AddNewCategory(p));
+            RemoveCategoryCommand = new RelayCommand<object>(p => p != null, async(p)=>await RemoveCategory(p));
+            RemoveRequestCommand = new RelayCommand<object>(p => p != null,async(p)=>await RemoveRequest(p));
+            AddRequestCommand = new RelayCommand<object>(p => p != null, async(p)=>await AddRequest(p));
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
+            MainViewModel.IsLoading = false;
+
         }
 
-        private async void Load()
+        private async Task Load()
         {
             IsChecked = true;
             RemoveOrUnBanned = "Remove";
@@ -176,7 +181,7 @@ namespace WPFEcommerceApp
                     Id = item.MUser.Id,
                     Name = item.MUser.Name,
                     CategoryName = item.Name,
-                    SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
+                    SourceImageAva = item.MUser.SourceImageAva,
                     Reason = item.Reason,
                 }));
 
@@ -186,8 +191,10 @@ namespace WPFEcommerceApp
 
         #region Command Methods
 
-        public async void AddNewCategory(string cateName)
+        public async Task AddNewCategory(string cateName)
         {
+            MainViewModel.IsLoading = true;
+
             NewName = string.Empty;
             var cate = await cateRepo.GetSingleAsync(item => item.Name.Equals(cateName));
             if (cate != null)
@@ -203,12 +210,16 @@ namespace WPFEcommerceApp
                 await cateRepo.Add(new Category {Id=await GenerateID.Gen(typeof(Category)) ,Name = cateName, Status = Status.NotBanned.ToString() });
             }
 
-            Load();
+            await Load();
+            MainViewModel.IsLoading = false;
+
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
-        public async void RemoveCategory(object obj)
+        public async Task RemoveCategory(object obj)
         {
+            MainViewModel.IsLoading = true;
+
             var removeCate = obj as Category;
             if (removeCate == null)
                 return;
@@ -219,22 +230,39 @@ namespace WPFEcommerceApp
                 removeCate.Status = Status.NotBanned.ToString();
 
             await cateRepo.Update(removeCate);
-            Load();
+            await Load();
+            MainViewModel.IsLoading = false;
+
         }
 
-        public async void RemoveRequest(object obj)
+        public async Task RemoveRequest(object obj)
         {
+            MainViewModel.IsLoading = true;
             var request = obj as CategoryRequestItemViewModel;
             if (request == null)
                 return;
 
             var removeRequest = await cateRequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
+
+            var note = new Models.Notification
+            {
+                Id = await GenerateID.Gen(typeof(Models.Notification)),
+                IdSender = AccountStore.instance.CurrentAccount.Id,
+                IdReceiver = request.Id,
+                Content = "Your category request has been rejected. Contact us for further information.",
+                Date = DateTime.Now,
+            };
+
+            await noteRepo.Add(note);
             await cateRequestRepo.Remove(removeRequest);
-            Load();
+            await Load();
+            MainViewModel.IsLoading = false;
         }
 
-        public async void AddRequest(object obj)
+        public async Task AddRequest(object obj)
         {
+            MainViewModel.IsLoading = true;
+
             var request = obj as CategoryRequestItemViewModel;
             if (request == null)
                 return;
@@ -254,8 +282,22 @@ namespace WPFEcommerceApp
             }
 
             var removeRequest = await cateRequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
+
+            var note = new Models.Notification
+            {
+                Id = await GenerateID.Gen(typeof(Models.Notification)),
+                IdSender = AccountStore.instance.CurrentAccount.Id,
+                IdReceiver = request.Id,
+                Content = "Your category request has been accepted.",
+                Date = DateTime.Now,
+            };
+
+            await noteRepo.Add(note);
             await cateRequestRepo.Remove(removeRequest);
-            Load();
+            await Load();
+
+            MainViewModel.IsLoading = false;
+
         }
 
         public void Search()

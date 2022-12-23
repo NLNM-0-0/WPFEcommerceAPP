@@ -17,8 +17,9 @@ namespace WPFEcommerceApp
     public class AdminBrandViewModel : BaseViewModel
     {
         #region Properties
-        public GenericDataRepository<Brand> BrandRepository { get; set; }
-        public GenericDataRepository<BrandRequest> RequestRepo { get; set; }
+        private GenericDataRepository<Brand> BrandRepository;
+        private GenericDataRepository<BrandRequest> RequestRepo;
+        private GenericDataRepository<Models.Notification> NoteRepo;
 
         private ObservableCollection<Brand> _filteredBrands;
 
@@ -145,11 +146,13 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminBrandViewModel()
         {
+            MainViewModel.IsLoading = true;
+
             BrandRepository = new GenericDataRepository<Brand>();
             RequestRepo = new GenericDataRepository<BrandRequest>();
-            var repo = new GenericDataRepository<Notification>();
+            NoteRepo = new GenericDataRepository<Models.Notification>(); 
 
-            Load();
+            Task.Run(async () => await Load());
 
             RequestList = new BrandRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
@@ -164,15 +167,16 @@ namespace WPFEcommerceApp
 
             _lastSearchText = string.Empty;
             _lastSearchOption = string.Empty;
+            MainViewModel.IsLoading =false;
+
         }
 
 
         #endregion
 
         #region Command Methods
-        public async void Load()
+        public async Task Load()
         {
-
             IsChecked = true;
             RemoveOrRestore = "Remove";
 
@@ -194,14 +198,15 @@ namespace WPFEcommerceApp
                             Id =  item.MUser.Id,
                             Name = item.MUser.Name,
                             BrandName = item.Name,
-                            SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
+                            SourceImageAva = item.MUser.SourceImageAva,
                             Reason = item.Reason,
                         }));
-
 
         }
         public async Task AddNewBrand(string brandName)
         {
+            MainViewModel.IsLoading = true;
+
             NewBrandName = string.Empty;
             var brand = await BrandRepository.GetSingleAsync(item => item.Name.Equals(brandName));
             if (brand != null)
@@ -216,12 +221,17 @@ namespace WPFEcommerceApp
             {
                 await BrandRepository.Add(new Brand {Id=await GenerateID.Gen(typeof(Brand)) ,Name = brandName, Status = Status.NotBanned.ToString() });
             }
-            Load();
+            await Load();
+
+            MainViewModel.IsLoading = false;
+
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public async Task RemoveBrand(object obj)
         {
+            MainViewModel.IsLoading = true;
+
             var removeBrand = obj as Brand;
             if (removeBrand == null)
                 return;
@@ -232,22 +242,46 @@ namespace WPFEcommerceApp
                 removeBrand.Status = Status.NotBanned.ToString();
 
             await BrandRepository.Update(removeBrand);
-            Load();
+            await Load();
+            MainViewModel.IsLoading = false;
+
         }
 
         public async Task RemoveRequest(object obj)
         {
+            MainViewModel.IsLoading = true;
+
             var request = obj as BrandRequestItemViewModel;
             if (request == null)
                 return;
 
+            if (AccountStore.instance.CurrentAccount == null)
+                return;
+
             var removeRequest = await RequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
+
+            var note = new Models.Notification
+            {
+                Id = await GenerateID.Gen(typeof(Models.Notification)),
+                IdSender = AccountStore.instance.CurrentAccount.Id,
+                IdReceiver = request.Id,
+                Content = "Your brand request has been rejected. Contact us for further information.",
+                Date = DateTime.Now,
+            };
+
             await RequestRepo.Remove(removeRequest);
-            Load();
+            await NoteRepo.Add(note);
+            await Load();
+            MainViewModel.IsLoading = false;
+
         }
 
         public async Task AddRequest(object obj)
         {
+            MainViewModel.IsLoading = true;
+
+            if (AccountStore.instance.CurrentAccount == null)
+                return;
 
             var request = obj as BrandRequestItemViewModel;
             if (request == null)
@@ -260,6 +294,7 @@ namespace WPFEcommerceApp
                 {
                     brand.Status = Status.NotBanned.ToString();
                     await BrandRepository.Update(brand);
+
                 }
             }
             else
@@ -267,9 +302,20 @@ namespace WPFEcommerceApp
                 await BrandRepository.Add(new Brand {Id=await GenerateID.Gen(typeof(Brand)) ,Name = request.BrandName, Status = Status.NotBanned.ToString() });
             }
 
+            var note = new Models.Notification
+            {
+                Id = await GenerateID.Gen(typeof(Models.Notification)),
+                IdSender = AccountStore.instance.CurrentAccount.Id,
+                IdReceiver = request.Id,
+                Content = "Your brand request has been accepted.",
+                Date = DateTime.Now,
+            };
+
             var removeRequest = await RequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));
+            await NoteRepo.Add(note);
             await RequestRepo.Remove(removeRequest);
-            Load();
+            await Load();
+            MainViewModel.IsLoading = false;
 
 
         }

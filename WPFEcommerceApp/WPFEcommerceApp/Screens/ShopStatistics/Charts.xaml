@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign ="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440"
@@ -40,18 +41,34 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+
+                <!-- Date picker -->
                 <DatePicker Grid.Row="0" SelectedDate="{Binding FromSelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Width="auto" Margin="0 10" Padding="20 10 -50 10"
                             DisplayDateEnd="{Binding FromSelectedDateMax, Mode=OneWay}"
                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                             materialDesign:HintAssist.Hint="From"
-                            />
+                            >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedDateChanged">
+                            <i:InvokeCommandAction Command="{Binding LoadCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </DatePicker>
                 <DatePicker Grid.Row="1" SelectedDate="{Binding ToSelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Width="auto" Margin="0 10" Padding="20 10 -50 10"
                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                             DisplayDateStart="{Binding ToSelectedDateMin, Mode=OneWay}"
                             materialDesign:HintAssist.Hint="To"
-                            />
+                            >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedDateChanged">
+                            <i:InvokeCommandAction Command="{Binding LoadCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </DatePicker>
+
+                <!-- Total sale -->
                 <materialDesign:Card Grid.Row="2" Padding="20" Margin="0 10">
                     <materialDesign:Card.Background>
                         <LinearGradientBrush EndPoint="0.5, 1" StartPoint="0.5, 0">
@@ -75,6 +92,7 @@
                     </Grid>
                 </materialDesign:Card>
 
+                <!-- Orders -->
                 <materialDesign:Card Grid.Row="3" Padding="20" Margin="0 10">
                     <materialDesign:Card.Background>
                         <LinearGradientBrush EndPoint="0.5, 1" StartPoint="0.5, 0">
@@ -98,6 +116,7 @@
                 </materialDesign:Card>
             </Grid>
 
+            <!-- Revenue graph -->
             <Grid Grid.Column="1">
                 <materialDesign:Card Grid.Row="0" Padding="10" Margin="0 0 0 10">
                     <DockPanel>
@@ -127,6 +146,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+
+            <!-- Order Status graph -->
             <materialDesign:Card Grid.Column="0" Padding="10" Margin="0 10 10 0">
                 <DockPanel>
                     <TextBlock Text="Order Status" DockPanel.Dock="Top" Margin="10"
@@ -145,6 +166,7 @@
 
             </materialDesign:Card>
 
+            <!-- Rating graph -->
             <materialDesign:Card Grid.Column="1" Padding="10" Margin="10 10 0 0">
                 <DockPanel>
                     <TextBlock Text="Rating" DockPanel.Dock="Top" Margin="10"
@@ -169,6 +191,7 @@
 
             </materialDesign:Card>
         </Grid>
+
 
     </Grid>
 </UserControl>

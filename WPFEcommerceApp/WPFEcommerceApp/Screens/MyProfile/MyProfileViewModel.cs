@@ -19,11 +19,10 @@ namespace WPFEcommerceApp
         #region Public Properties
 
         private GenericDataRepository<MUser> userRepo;
-        public MUser ThisUser { get; set; }
         public MUser EditUser { get; set; }
 
-        private ImageSource _sourceImageAva;
-        public ImageSource SourceImageAva
+        private string _sourceImageAva;
+        public string SourceImageAva
         {
             get
             {
@@ -35,8 +34,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ImageSource _sourceImageAvaTemp;
-        public ImageSource SourceImageAvaTemp
+        private string _sourceImageAvaTemp;
+        public string SourceImageAvaTemp
         {
             get
             {
@@ -50,8 +49,8 @@ namespace WPFEcommerceApp
         }
 
 
-        private ImageSource _sourceImageBackground;
-        public ImageSource SourceImageBackground
+        private string _sourceImageBackground;
+        public string SourceImageBackground
         {
             get
             {
@@ -64,8 +63,8 @@ namespace WPFEcommerceApp
             }
         }
 
-        private ImageSource _editSourceImageBackground;
-        public ImageSource EditSourceImageBackground
+        private string _editSourceImageBackground;
+        public string EditSourceImageBackground
         {
             get
             {
@@ -96,13 +95,11 @@ namespace WPFEcommerceApp
 
         #region Constructor
 
-        private readonly AccountStore _accountStore;
-        public MyProfileViewModel(AccountStore accountStore)
+        public MyProfileViewModel()
         {
-            _accountStore = accountStore;
             userRepo = new GenericDataRepository<MUser>();
-            //ThisUser = _accountStore.CurrentAccount;
-            Load();
+
+            Task.Run(async () => await Load());
 
             ChangeAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -111,9 +108,7 @@ namespace WPFEcommerceApp
                 op.ShowDialog();
                 if (op.FileName != "")
                 {
-                    var temp = SourceImageAva;
-                    var src = new Uri(op.FileName);
-                    SourceImageAva = new BitmapImage(src);
+                    SourceImageAva = op.FileName;
 
 
                 }
@@ -121,7 +116,7 @@ namespace WPFEcommerceApp
 
             ChangeToDefaultAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                SourceImageAva = new BitmapImage(new Uri("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWyXl_ES0Jwg7dn_W559ya9pk8X_8B_e9IEQ&usqp=CAU"));
+                SourceImageAva = null;
             });
 
             ChangeBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
@@ -131,65 +126,80 @@ namespace WPFEcommerceApp
                 op.ShowDialog();
                 if (op.FileName != "")
                 {
-                    SourceImageBackground = new BitmapImage(new Uri(op.FileName));
+                    SourceImageBackground = op.FileName;
                 }
             });
             ChangeToDefaultBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                SourceImageBackground = new BitmapImage(new Uri("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFU7U2h0umyF0P6E_yhTX45sGgPEQAbGaJ4g&usqp=CAU"));
+                SourceImageBackground = string.Empty;
             });
-            SaveBackgroundShopCommand = new RelayCommandWithNoParameter(SaveBackground);
+            SaveBackgroundShopCommand = new RelayCommandWithNoParameter(async()=>await SaveBackground());
 
-            SaveProfileCommand = new RelayCommand<object>(p => p != null, SaveProfile);
-            SaveAvaShopCommand = new RelayCommandWithNoParameter(SaveAva);
-            CancelProfileCommand = new RelayCommand<object>(p => p != null, CancelProfile);
+            SaveProfileCommand = new RelayCommand<object>(p => p != null,async(p)=>await SaveProfile(p));
+            SaveAvaShopCommand = new RelayCommandWithNoParameter(async()=>await SaveAva());
+            CancelProfileCommand = new RelayCommand<object>(p => p != null, async (p) => await CancelProfile(p));
         }
         #endregion
 
         #region Command Methods
-        public async void Load()
+        public async Task Load()
         {
-            ThisUser = await userRepo.GetSingleAsync(usr => usr.Id == "user01");
-            EditUser = await userRepo.GetSingleAsync(usr => usr.Id == "user01");
-            if(!string.IsNullOrEmpty(ThisUser.SourceImageAva))
-                SourceImageAvaTemp = new BitmapImage(new Uri(ThisUser.SourceImageAva));
-            if(!string.IsNullOrEmpty(ThisUser.SourceImageBackground))
-                EditSourceImageBackground = new BitmapImage(new Uri(ThisUser.SourceImageBackground));
+            EditUser = await userRepo.GetSingleAsync(usr => usr.Id == AccountStore.instance.CurrentAccount.Id);
+            if (!string.IsNullOrEmpty(AccountStore.instance.CurrentAccount.SourceImageAva))
+            {
+                SourceImageAvaTemp = AccountStore.instance.CurrentAccount.SourceImageAva;
+                SourceImageAva = AccountStore.instance.CurrentAccount.SourceImageAva;
+            }
+            if(!string.IsNullOrEmpty(AccountStore.instance.CurrentAccount.SourceImageBackground))
+            {
+                EditSourceImageBackground = AccountStore.instance.CurrentAccount.SourceImageBackground;
+                SourceImageBackground= AccountStore.instance.CurrentAccount.SourceImageBackground;
+            }
 
         }
 
-        public async void SaveProfile(object obj)
+        public async Task SaveProfile(object obj)
         {
             var user = obj as MUser;
             if (user == null)
                 return;
-            ThisUser = user;
-            await userRepo.Update(user);
-            Load();
+            await AccountStore.instance.Update(user);
+            await Load();
         }
-        public async void SaveAva()
+        public async Task SaveAva()
         {
-            SourceImageAvaTemp = SourceImageAva;
-            ThisUser.SourceImageAva = SourceImageAvaTemp.ToString();
-            await userRepo.Update(ThisUser);
+
+            var link = await FireStorageAPI.Push(SourceImageAva, "User", $"Ava_{AccountStore.instance.CurrentAccount.Id}");
+
+            SourceImageAva = link;
+            SourceImageAvaTemp = link;
+            EditUser.SourceImageAva = link;
+
+            AccountStore.instance.CurrentAccount.SourceImageAva = link;
+            await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
-        public async void SaveBackground()
+        public async Task SaveBackground()
         {
-            EditSourceImageBackground=SourceImageBackground;
-            ThisUser.SourceImageBackground=SourceImageBackground.ToString();
-            await userRepo.Update(ThisUser);
+            var link = await FireStorageAPI.Push(SourceImageBackground, "User", $"Background_{AccountStore.instance.CurrentAccount.Id}");
+
+            SourceImageBackground = link;
+            EditSourceImageBackground = link;
+            EditUser.SourceImageBackground = link;
+
+            AccountStore.instance.CurrentAccount.SourceImageBackground=link;
+            await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
-        public void CancelProfile(object obj)
+        public async Task CancelProfile(object obj)
         {
             var user = obj as MUser;
             if (user == null)
                 return;
 
-            Load();
+            await Load();
 
         }
         #endregion

@@ -16,14 +16,22 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for Header.xaml
+    /// Interaction logic for MyHome.xaml
     /// </summary>
-    public partial class Header : UserControl
+    public partial class MyHome : UserControl
     {
-        public Header()
+        public MyHome()
         {
             InitializeComponent();
-            this.DataContext=new HeaderViewModel();
+            this.DataContext = new MyHomeViewModel();
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var scv = sender as ScrollViewer;
+            if (scv == null) return;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 }
