@@ -10,18 +10,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440">
     <Grid Background="{StaticResource WhiteColorBrush}"
-          Margin="50 0 0 0">
+          >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0"
-                Width="210"
-                VerticalAlignment="Top">
+                VerticalAlignment="Stretch">
             <Border
                     x:Name="MainBorder"
-                    Height="350"
                     CornerRadius="0 0 30 0"
                     ClipToBounds="True"
                     Background="{StaticResource WhiteColorBrush}">
@@ -33,11 +31,11 @@
                 <ScrollViewer
                         HorizontalScrollBarVisibility="Hidden"
                         VerticalScrollBarVisibility="Hidden">
-                    <Image
+                    <Image Height="{Binding ElementName=MainBorder, Path=ActualHeight}" 
+                           Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
                         Stretch="Fill"
-                        Height="350"
                         Source="{Binding EditSourceImageBackground}"
-                        ScrollViewer.CanContentScroll="True">
+                        ScrollViewer.CanContentScroll="False">
                         <Image.OpacityMask>
                             <VisualBrush Visual="{Binding ElementName=MainBorder}"
                                          RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -46,20 +44,17 @@
                 </ScrollViewer>
             </Border>
             <DockPanel
-                    Margin="0 30 0 10">
-                <Button
-                        DockPanel.Dock="Top"
+                    Margin="0 30 0 30">
+                <Button DockPanel.Dock="Top" Style="{StaticResource WhiteButton}"
                         Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                        Style="{StaticResource TransparentButton}"
-                        Height="20"
                         FontFamily="{StaticResource Regular}"
-                        Padding="0"
-                        Width="70"
+                        Padding="5" Height="30"
+                        HorizontalAlignment="Center"
                         Margin="0 0 0 5"
                         FontSize="{StaticResource FontSizeDescription}"
-                        Foreground="#1290FF">
+                        Foreground="{StaticResource BlackColorBrush}">
                     <Button.Content>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="5 0" >
                             <fa:ImageAwesome
                                     Margin="0 0 5 0"
                                     Icon="Edit"
@@ -76,12 +71,12 @@
                         <local:ProfileShopAvaDialog/>
                     </Button.CommandParameter>
                 </Button>
-                <Border
+                <Border BorderThickness="1.5" BorderBrush="{StaticResource BlurColorBrush}"
                         DockPanel.Dock="Top"
                         Background="White"
-                        CornerRadius="50"
-                        Width="100"
-                        Height="100">
+                        CornerRadius="52"
+                        Width="103"
+                        Height="103">
                     <Image
                             Height="100"
                             Width="100"
@@ -95,26 +90,15 @@
                         </Image.Clip>
                     </Image>
                 </Border>
-                <TextBlock
-                        DockPanel.Dock="Top"
-                        Margin="0 15"
-                        MaxWidth="180"
-                        Text="{Binding Name}"
-                        FontFamily="{StaticResource Bold}"
-                        FontSize="{StaticResource FontSizeHeadline2}"
-                        HorizontalAlignment="Center"
-                        TextWrapping="Wrap"/>
-                <Button
+                <Button Width="130" Height="30"
                         DockPanel.Dock="Top"
                         VerticalAlignment="Bottom"
                         Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                        Style="{StaticResource TransparentButton}"
-                        Height="20"
+                        Style="{StaticResource WhiteButton}"
                         FontFamily="{StaticResource Regular}"
                         Padding="0"
-                        Width="125"
                         FontSize="{StaticResource FontSizeDescription}"
-                        Foreground="#1290FF">
+                        >
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome
@@ -123,7 +107,7 @@
                                     Height="10"
                                     VerticalAlignment="Center"
                                     Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
-                            <TextBlock
+                            <TextBlock 
                                     FontFamily="{StaticResource Light}"
                                     Text="Edit Background"
                                     VerticalAlignment="Center"/>
@@ -148,16 +132,6 @@
                             Width="500"
                             materialDesign:HintAssist.Hint="User Name"
                             Text="{Binding EditUser.Name, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
-                <TextBox    Margin="0 15 0 15" x:Name="FullNametb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
-                            materialDesign:HintAssist.Hint="Full Name"
-                            Text="{Binding User.FullName, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="0"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
@@ -245,11 +219,11 @@
                     </Button>
                 </DockPanel>
 
-                
-                
+
+
             </StackPanel>
 
-            
+
         </Grid>
         <Grid.InputBindings>
             <KeyBinding Key="Esc" Command="{Binding CancelProfileCommand}"/>
