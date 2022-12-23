@@ -27,4 +27,11 @@
 
     <Color x:Key="Blur">#757575</Color>
     <SolidColorBrush x:Key="BlurColorBrush" Color="{StaticResource Blur}" Opacity="10"/>
+
+    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource Blur}"/>
+    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource NotAvailable}"/>
+    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource Black}"/>
+    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource White}"/>
+    <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource Black}"/>
+    <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource Background}"/>
 </ResourceDictionary>

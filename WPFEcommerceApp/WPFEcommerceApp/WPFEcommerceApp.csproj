@@ -169,6 +169,10 @@
       <DependentUpon>BagBlockUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Bag\BagViewModel.cs" />
+    <Compile Include="Screens\Favorite\Favorite.xaml.cs">
+      <DependentUpon>Favorite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Favorite\FavoriteViewModel.cs" />
     <Compile Include="Screens\ForgotPassword\ForgotPassword.xaml.cs">
       <DependentUpon>ForgotPassword.xaml</DependentUpon>
     </Compile>
@@ -180,6 +184,10 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Login\LoginViewModel.cs" />
+    <Compile Include="Screens\MyHome\MyHome.xaml.cs">
+      <DependentUpon>MyHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\MyHome\MyHomeViewModel.cs" />
     <Compile Include="Screens\MyProfile\MyPassword.xaml.cs">
       <DependentUpon>MyPassword.xaml</DependentUpon>
     </Compile>
@@ -309,6 +317,7 @@
     <Compile Include="UserControls\UserIconControl\UserIconControl.xaml.cs">
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Converters\BooleanToGenderConverter.cs" />
     <Compile Include="Utils\Converters\FalsesToTrueConverter.cs" />
     <Compile Include="Utils\Converters\MultiValueConverter.cs" />
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
@@ -539,6 +548,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Screens\Favorite\Favorite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\ForgotPassword\ForgotPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -560,6 +573,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Login\Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\MyHome\MyHome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
