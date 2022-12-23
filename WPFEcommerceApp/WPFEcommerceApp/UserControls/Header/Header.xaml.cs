@@ -20,12 +20,10 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class Header : UserControl
     {
-        private AccountStore accountStore;
-
         public Header()
         {
             InitializeComponent();
-            this.DataContext=new HeaderViewModel(accountStore);
+            this.DataContext=new HeaderViewModel();
         }
     }
 }
