@@ -20,8 +20,9 @@ namespace WPFEcommerceApp
     public class ShopInformationPageViewModel : BaseViewModel
     {
         #region Public Properties
-        public GenericDataRepository<MUser> userRepo;
-        public GenericDataRepository<ShopRequest> requestRepo;
+        private GenericDataRepository<MUser> userRepo;
+        private GenericDataRepository<ShopRequest> requestRepo;
+        private GenericDataRepository<Models.Notification> noteRepo;
 
         private ObservableCollection<MUser> shopsToSearch;
 
@@ -163,13 +164,16 @@ namespace WPFEcommerceApp
         #region Constructor
         public ShopInformationPageViewModel()
         {
+            MainViewModel.IsLoading = true;
+
             userRepo = new GenericDataRepository<MUser>();
             requestRepo = new GenericDataRepository<ShopRequest>();
+            noteRepo = new GenericDataRepository<Models.Notification>();
 
             SearchByOptions = new List<string> { "ID", "Name", "Des" };
             SearchBy = SearchByOptions[1];
 
-            Load();
+            Task.Run(async () => await Load());
 
             RequestList = new ShopRequestListViewModel();
             ShopRequestItemViewModel.RemoveRequestCommand = new RelayCommandWithNoParameter(async () => await RemoveRequest());
@@ -178,6 +182,9 @@ namespace WPFEcommerceApp
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
             OpenRequestCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenDialog(p));
+
+            MainViewModel.IsLoading = false;
+
         }
 
         private async Task OpenDialog(object obj)
@@ -195,7 +202,7 @@ namespace WPFEcommerceApp
             catch { }
         }
 
-        public async void Load()
+        public async Task Load()
         {
             IsChecked = true;
             RemoveOrUnBanned = "Ban";
@@ -215,12 +222,11 @@ namespace WPFEcommerceApp
                     Id = item.IdUser,
                     Name = item.MUser.Name,
                     Description = item.Description,
-                    SourceImageAva = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
+                    SourceImageAva = item.MUser.SourceImageAva,
                     Email = item.MUser.Email,
                     PhoneNumber = item.MUser.PhoneNumber,
                     Address = item.MUser.Address
                 }));
-
         }
 
         #endregion
@@ -273,34 +279,105 @@ namespace WPFEcommerceApp
             if (obj == null)
                 return;
 
+            if (AccountStore.instance.CurrentAccount == null)
+                return;
+
+            Models.Notification note;
+
             if (removeShop.StatusShop == Status.Banned.ToString())
+            {
                 removeShop.StatusShop = Status.NotBanned.ToString();
+                note = new Models.Notification
+                {
+                    Id = await GenerateID.Gen(typeof(Models.Notification)),
+                    IdSender = AccountStore.instance.CurrentAccount.Id,
+                    IdReceiver = removeShop.Id,
+                    Content = "Your shop has been unbanned. Feel free to start selling again.",
+                    Date = DateTime.Now,
+                };
+            }
             else
+            {
                 removeShop.StatusShop = Status.Banned.ToString();
+                note = new Models.Notification
+                {
+                    Id = await GenerateID.Gen(typeof(Models.Notification)),
+                    IdSender = AccountStore.instance.CurrentAccount.Id,
+                    IdReceiver = removeShop.Id,
+                    Content = "Your shop has been banned. Contact us for further information.",
+                    Date = DateTime.Now,
+                };
+            }
+
+            MainViewModel.IsLoading = true;
 
             await userRepo.Update(removeShop);
-            Load();
+            await noteRepo.Add(note);
+
+            await Load();
+
+            MainViewModel.IsLoading = false;
+
         }
 
         public async Task RemoveRequest()
         {
+            MainViewModel.IsLoading = true;
+            if (AccountStore.instance.CurrentAccount == null)
+                return;
+
             var item = await requestRepo.GetSingleAsync(t => t.Id.Equals(RequestSelectedItem.RequestId));
+
+            var note = new Models.Notification
+            {
+                Id = await GenerateID.Gen(typeof(Models.Notification)),
+                IdSender = AccountStore.instance.CurrentAccount.Id,
+                IdReceiver = item.IdUser,
+                Content = "Your shop request has been rejected.",
+                Date = DateTime.Now,
+            };
+
             await requestRepo.Remove(item);
-            Load();
+            await noteRepo.Add(note);
+
+            await Load();
+
+            MainViewModel.IsLoading = false;
+
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public async Task AddRequest()
         {
+            if(AccountStore.instance.CurrentAccount==null)
+            {
+                return;
+            }
+
+            MainViewModel.IsLoading = true;
+
             var item = await requestRepo.GetSingleAsync(t => t.Id.Equals(RequestSelectedItem.RequestId));
 
             var newShop = await userRepo.GetSingleAsync(user => user.Id.Equals(item.IdUser));
             newShop.Role = "Shop";
             newShop.StatusShop = Status.NotBanned.ToString();
 
+            var note = new Models.Notification
+            {
+                Id = await GenerateID.Gen(typeof(Models.Notification)),
+                IdSender=AccountStore.instance.CurrentAccount.Id,
+                IdReceiver=item.IdUser,
+                Content="Your request to be a shop has been accepted. Check out your shop and start selling.",
+                Date=DateTime.Now,
+            };
+
             await userRepo.Update(newShop);
             await requestRepo.Remove(item);
-            Load();
+            await noteRepo.Add(note);
+            await Load();
+
+            MainViewModel.IsLoading = false;
+
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
         #endregion
