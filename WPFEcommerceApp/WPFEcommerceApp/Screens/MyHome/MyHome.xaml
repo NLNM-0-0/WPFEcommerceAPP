@@ -1,0 +1,223 @@
+﻿<UserControl x:Class="WPFEcommerceApp.MyHome"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
+    </UserControl.Resources>
+    <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+        <StackPanel>
+            <!-- Banner 1 -->
+            <Grid Height="{cal:Binding RelativeSource={RelativeSource Self},
+                Path=ActualWidth*0.35}"
+                Margin="0 0 0 50">
+
+                <Image 
+                        Stretch="Fill"
+                        Source="{Binding Banner1, Converter={StaticResource StringToImageSourceConverter}}"
+                        >
+
+                </Image>
+            </Grid>
+
+            <!-- Best seller list -->
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="Best Seller"
+                       Margin="20 20 0 0"
+                       FontSize="{StaticResource FontSizeHeadline2}"
+                       FontWeight="SemiBold"
+                       />
+                <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Margin="0 0 20 0"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding RightCommand}" DockPanel.Dock="Right"
+                        CommandParameter="{Binding ElementName=bestSellerList}">
+                    <Button.Content>
+                        <fa:FontAwesome Icon="AngleRight" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Margin="0 0 10 0"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding LeftCommand}" DockPanel.Dock="Right"
+                        CommandParameter="{Binding ElementName=bestSellerList}">
+                    <Button.Content>
+                        <fa:FontAwesome Icon="AngleLeft" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                    </Button.Content>
+                </Button>
+            </DockPanel>
+
+            <ListView ItemsSource="{Binding BestSeller}" Margin="20" x:Name="bestSellerList"
+                  SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
+                  BorderThickness="0"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                        <Setter Property="Margin" Value="5 20"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:ProductBlock/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Banner 2 -->
+            <Grid Height="{cal:Binding RelativeSource={RelativeSource Self},
+                Path=ActualWidth*0.35}"
+                Margin="0 0 0 50">
+
+                <Image 
+                        Stretch="Fill"
+                        Source="{Binding Banner2, Converter={StaticResource StringToImageSourceConverter}}"
+                        >
+
+                </Image>
+            </Grid>
+
+            <!-- Just in list-->
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="Just In" DockPanel.Dock="Left"
+                       Margin="20 20 0 0"
+                       FontSize="{StaticResource FontSizeHeadline2}"
+                       FontWeight="SemiBold"
+                       />
+                <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Margin="0 0 20 0"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding RightCommand}" DockPanel.Dock="Right"
+                        CommandParameter="{Binding ElementName=justInList}">
+                    <Button.Content>
+                        <fa:FontAwesome Icon="AngleRight" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Margin="0 0 10 0"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding LeftCommand}" DockPanel.Dock="Right"
+                        CommandParameter="{Binding ElementName=justInList}">
+                    <Button.Content>
+                        <fa:FontAwesome Icon="AngleLeft" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                    </Button.Content>
+                </Button>
+            </DockPanel>
+
+            <ListView ItemsSource="{Binding JustIn}" Margin="20" x:Name="justInList"
+                  SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
+                  ScrollViewer.CanContentScroll="True"
+                  BorderThickness="0"
+                      >
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                        <Setter Property="Margin" Value="5 20"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:ProductBlock/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+            <!-- Banner 3 -->
+            <Grid Height="{cal:Binding RelativeSource={RelativeSource Self},
+                Path=ActualWidth*0.35}"
+                Margin="0 0 0 50">
+
+                <Image 
+                        Stretch="Fill"
+                        Source="{Binding Banner3, Converter={StaticResource StringToImageSourceConverter}}"
+                        >
+
+                </Image>
+            </Grid>
+
+            <!-- More list -->
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="More" DockPanel.Dock="Left"
+                       Margin="20 20 0 0"
+                       FontSize="{StaticResource FontSizeHeadline2}"
+                       FontWeight="SemiBold"
+                       />
+                <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Margin="0 0 20 0"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding RightCommand}" DockPanel.Dock="Right"
+                        CommandParameter="{Binding ElementName=moreList}">
+                    <Button.Content>
+                        <fa:FontAwesome Icon="AngleRight" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Margin="0 0 10 0"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding LeftCommand}" DockPanel.Dock="Right"
+                        CommandParameter="{Binding ElementName=moreList}">
+                    <Button.Content>
+                        <fa:FontAwesome Icon="AngleLeft" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                    </Button.Content>
+                </Button>
+            </DockPanel>
+            
+            <ListView ItemsSource="{Binding Products}" Margin="20" x:Name="moreList"
+                  SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
+                  ScrollViewer.CanContentScroll="True"
+                  BorderThickness="0"
+                  >
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                        <Setter Property="Margin" Value="5 20"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:ProductBlock/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>
