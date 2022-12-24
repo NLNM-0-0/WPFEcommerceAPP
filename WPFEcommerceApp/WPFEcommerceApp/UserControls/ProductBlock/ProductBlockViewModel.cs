@@ -81,24 +81,35 @@ namespace WPFEcommerceApp
 
         //Number of product remainder after displaying mini image
         public string NumberProductRemainder { get; private set; } = "";
+
+        private bool isShop;
+        public bool IsShop
+        {
+            get => isShop;
+            set
+            {
+                isShop = value;
+            }
+        }
         #endregion
 
         #region Contructor
         public ProductBlockViewModel(Models.Product product)
         {
             SelectedProduct = product;
+            IsShop = false;
             foreach (Models.ImageProduct image in SelectedProduct.ImageProducts)
             {
                 Images.Add(image.Source);
-            }  
-            if(Images.Count > 0) 
+            }
+            if (Images.Count > 0)
             {
                 MainImage = Images[0];
             }
             else
             {
                 MainImage = Properties.Resources.DefaultProductImage;
-            }    
+            }
 
             for (int i = 0; i < 4; i++)
             {
@@ -113,7 +124,7 @@ namespace WPFEcommerceApp
 
             ShowMiniPictureCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                if (Images.Count == 0)
+                if (Images.Count <= 1)
                 {
                     return;
                 }
@@ -135,6 +146,10 @@ namespace WPFEcommerceApp
 
             HideProductMainInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
+                if (Images.Count <= 1)
+                {
+                    return;
+                }
                 Grid grid = (p as Grid);
                 grid.Visibility = Visibility.Collapsed;
             });
@@ -144,13 +159,15 @@ namespace WPFEcommerceApp
                 MainImage = p.ToString();
                 OnPropertyChanged(nameof(MainImage));
             });
-            OpenDialogCommand = new RelayCommandWithNoParameter(() =>
+            OpenDialogCommand = new RelayCommandWithNoParameter(async () =>
             {
+                MainViewModel.IsLoading = true;
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.DataContext = new ProductDetailViewModel(SelectedProduct);
-                DialogHost.Show(productDetail, "App");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(productDetail, "App");
             });
-            OpenPageCommand = new RelayCommandWithNoParameter(() =>
+            OpenPageCommand = new RelayCommand<bool>((p) => { return !p; }, (p) =>
             {
                 MessageBox.Show("Navigate to page product");
             });

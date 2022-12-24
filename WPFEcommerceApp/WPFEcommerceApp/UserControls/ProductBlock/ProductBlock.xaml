@@ -7,12 +7,12 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:materialDesign ="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="400"
-             MaxHeight="500" MaxWidth="400"
-             MinHeight="500" MinWidth="400"
+             d:DesignHeight="500" d:DesignWidth="350"
+             MaxHeight="500" MaxWidth="350"
+             MinHeight="500" MinWidth="350"
              Cursor="Hand"
-             ScrollViewer.CanContentScroll="True"
              x:Name="productBlock">
     <Grid Background="{StaticResource WhiteColorBrush}">
         <Grid.RowDefinitions>
@@ -25,28 +25,37 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Border
-                MaxWidth="400"
+                MaxWidth="350"
                 MaxHeight="350"
                 Grid.Row="0"
                 Background="{StaticResource BackgroundColorBrush}">
                 <Image x:Name="ImageMainProduct"
-                       MaxWidth="400"
+                       MaxWidth="350"
                        Stretch="Fill"
                     Source="{Binding MainImage, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
             <Button
+                Width="auto"
+                BorderBrush="Transparent"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Command="{Binding OpenPageCommand}"
-                Style="{StaticResource TransparentButton}"
-                Foreground="#1290FF"
+                Command="{Binding OpenDialogCommand}"
+                Style="{StaticResource WhiteButton}"
                 Height="auto"
-                Visibility="{c:Binding 'IsMouseOver',ElementName=productBlock}"
+                materialDesign:ButtonAssist.CornerRadius="0"
+                Visibility="{c:Binding 'IsMouseOver and !DataContext.IsShop',ElementName=productBlock}"
                 Margin="5">
                 <Button.Content>
-                    <fa:FontAwesome
-                        Icon="InfoCircle"
-                        Height="15"/>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <materialDesign:PackIcon 
+                            VerticalAlignment="Center"
+                            Kind="SubdirectoryArrowRight" />
+                        <fa:FontAwesome
+                            VerticalAlignment="Center"
+                            Icon="ShoppingCart"
+                            FontSize="20"/>
+                    </StackPanel>
                 </Button.Content>
             </Button>
             <Grid Grid.Row="1" x:Name="MiniImages" Visibility="Collapsed">
@@ -68,10 +77,16 @@
                             <DataTemplate>
                                 <Button
                                     HorizontalAlignment="Center"
-                                    Background="Transparent"
+                                    Background="{StaticResource BackgroundColorBrush}"
                                     MaxHeight="40"
                                     MaxWidth="40"
-                                    IsHitTestVisible="True">
+                                    Width="auto"
+                                    Height="auto"
+                                    materialDesign:ButtonAssist.CornerRadius="0"
+                                    IsHitTestVisible="True"
+                                    Margin="5 5 5 0"
+                                    Padding="0"
+                                    BorderBrush="Transparent">
                                     <Button.Content>
                                         <Image
                                             HorizontalAlignment="Center"
@@ -163,15 +178,16 @@
         </i:EventTrigger>
         <i:EventTrigger EventName="MouseLeave">
             <i:InvokeCommandAction 
-            Command="{Binding HideMiniPictureCommand}" 
-            CommandParameter="{Binding ElementName=MiniImages}"/>
+                Command="{Binding HideMiniPictureCommand}" 
+                CommandParameter="{Binding ElementName=MiniImages}"/>
             <i:InvokeCommandAction
-             Command="{Binding ShowProductMainInfoCommand}"
-              CommandParameter="{Binding ElementName=ProductMainInfo}"/>
+                Command="{Binding ShowProductMainInfoCommand}"
+                CommandParameter="{Binding ElementName=ProductMainInfo}"/>
         </i:EventTrigger>
         <i:EventTrigger EventName="MouseDown">
             <i:InvokeCommandAction 
-            Command="{Binding OpenDialogCommand}"/>
+                Command="{Binding OpenPageCommand}"
+                CommandParameter="{Binding IsShop}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
