@@ -36,9 +36,6 @@ namespace WPFEcommerceApp {
         
         public DrawerVM DrawerVM { get; }
         public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
-        public ICommand CloseCM { get; set; }
-        public ICommand MinimizeCM { get; set; }
-        public ICommand MaximizeCM { get; set; }
 
         public MainViewModel(
             DrawerVM drawerVM) {
@@ -48,44 +45,12 @@ namespace WPFEcommerceApp {
             _navigationStore = NavigationStore.instance;
 
             _navigationStore.CurrentVMChanged += OnCurrentVMChanged;
-
-            CloseCM = new RelayCommand<object>(p => true, p => {
-                (p as Window).Close();
-            });
-            MinimizeCM = new RelayCommand<object>(p => true, p => {
-                (p as Window).WindowState = WindowState.Minimized;
-            });
-            MaximizeCM = new RelayCommand<object>(p => true, p => {
-                if((p as Window).WindowState == WindowState.Normal) {
-                    (p as Window).WindowState = WindowState.Maximized;
-                }
-                else {
-                    (p as Window).WindowState = WindowState.Normal;
-                }
-            });
         }
         private void OnCurrentVMChanged() {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
 
-        public void DragWindow(object sender, MouseEventArgs e) {
-            var tmp = getParent(sender as Grid);
-            Window w = tmp as Window;
-            if(e.LeftButton == MouseButtonState.Pressed) {
-                Point p = e.GetPosition(sender as IInputElement);
-                if(w.WindowState == WindowState.Maximized) {
-                    w.Width = 1440;
-                    w.Height = 950;
-                    w.Left = p.X < 850 ? 10 
-                             : p.X < 1250 
-                             ? 350 : 600;
-                    w.Top = p.Y - 20;
-                    w.WindowStartupLocation = WindowStartupLocation.Manual;
-                    w.WindowState = WindowState.Normal;
-                }
-                w.DragMove();
-            }
-        }
+
         static public void OnClosing(object sender, CancelEventArgs e) {
             e.Cancel = true;
             if((sender as Window).WindowState == WindowState.Minimized)
@@ -102,12 +67,6 @@ namespace WPFEcommerceApp {
             DialogHost.Show(view, "App");
         }
 
-        FrameworkElement getParent(Grid p) {
-            FrameworkElement parent = p;
-            while(parent.Parent != null) {
-                parent = parent.Parent as FrameworkElement;
-            }
-            return parent;
-        }
+
     }
 }

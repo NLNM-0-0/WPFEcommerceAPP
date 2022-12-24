@@ -1,7 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,18 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFEcommerceApp.Models;
 
-namespace WPFEcommerceApp
-{
+namespace WPFEcommerceApp {
     /// <summary>
-    /// Interaction logic for ProductBlock.xaml
+    /// Interaction logic for WindowControlBar.xaml
     /// </summary>
-    public partial class ProductBlock : UserControl
-    {
-        public ProductBlock()
-        {
+    public partial class WindowControlBar : UserControl {
+        public WindowControlBar() {
             InitializeComponent();
+            DataContext = new WindowControlBarVM();
         }
     }
 }
