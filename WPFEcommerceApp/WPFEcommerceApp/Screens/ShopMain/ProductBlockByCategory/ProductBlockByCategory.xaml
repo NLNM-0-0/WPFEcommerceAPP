@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ProductBlockByCategory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:system="clr-namespace:System.Collections;assembly=mscorlib"
+             mc:Ignorable="d"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             x:Name="productBlockByCategory">
+    <Grid
+        SizeChanged="Grid_SizeChanged"
+        Visibility="{c:Binding '!IsHidden'}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid
+            Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="{Binding Header, UpdateSourceTrigger=PropertyChanged}"
+                FontSize="{StaticResource FontSizeHeadline2}"
+                FontFamily="{StaticResource Bold}"
+                FontWeight="Bold"/>
+            <Label
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                FontSize="{StaticResource FontSizeHeadline2}"
+                FontFamily="{StaticResource Bold}"
+                FontWeight="DemiBold"
+                Visibility="{c:Binding 'ActualHeight > 1100 and DataContext.MaxHeightListProducts == 1100', ElementName=productLists}">
+                <Hyperlink
+                    Foreground="#1290FF"
+                    Command="{Binding ChangeToFilterCommand}">
+                    More
+                </Hyperlink>
+            </Label>
+        </Grid>
+        <Grid
+            x:Name="productLists"
+            Grid.Row="3"
+            MaxWidth="{Binding ElementName= productBlockByCategory,Path=ActualWidth}"
+            MaxHeight="{Binding MaxHeightListProducts}">
+            <ListView 
+                BorderThickness="0"
+                ItemsSource="{Binding ProductBlockViewModels}" 
+                Height="auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                ScrollViewer.CanContentScroll="True"
+                HorizontalAlignment="Center"
+                Width="auto"
+                HorizontalContentAlignment="Center"
+                MaxWidth="{Binding ElementName= productBlockByCategory,Path=ActualWidth}"
+                MaxHeight="{Binding MaxHeightListProducts}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                        <Setter Property="Margin" Value="5 20"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel
+                            Width="{c:Binding 'Math.Floor(ActualWidth / 350) * 360',  ElementName=productBlockByCategory}"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:ProductBlock
+                            DataContext="{Binding}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>

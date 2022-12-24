@@ -1,6 +1,8 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,165 +17,330 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
-    public class ShopMainViewModel:BaseViewModel
+    public class ShopMainViewModel : BaseViewModel
     {
-        public ICommand ChangeAvaShopCommand { get; set; }
-        public ICommand ChangeToDefaultAvaShopCommand { get; set; }
-        public ICommand SaveAvaShopCommand { get; set; }
-
-        public ICommand ChangeBackgroundShopCommand { get; set; }
-        public ICommand ChangeToDefaultBackgroundShopCommand { get; set; }
-        public ICommand SaveBackgroundShopCommand { get; set; }
-
-        public ICommand SaveProfileShopCommand { get; set; }
-        public ICommand EditProfileShopCommand { get; set; }
-
-        private string name;
-        public string Name
+        private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
+        private double heightNewProducts;
+        private double heightBestSellerProducts;
+        private double heightFavoriteProducts;
+        private bool isNewProductsCheck;
+        public ICommand OpenEditProfileCommand { get; set; }
+        public ICommand MoveToNewProducts { get; set; }
+        public ICommand MoveToFavoriteProducts { get; set; }
+        public ICommand MoveToBestSellerProducts { get; set; }
+        public ICommand MoveToAllProducts { get; set; }
+        public ICommand ScrollChangedCommand { get; set; }
+        public ICommand LoadedCommand { get; set; }
+        public string SourceImageBackground
         {
             get
             {
-                return name;
-            }
-            set
-            {
-                name = value;
-                OnPropertyChanged();
-            }
-        }
-        private string phoneNumber;
-        public string PhoneNumber
-        {
-            get
-            {
-                return phoneNumber;
-            }
-            set
-            {
-                phoneNumber = value;
-                OnPropertyChanged();
-            }
-        }
-        private string email;
-        public string Email
-        {
-            get
-            {
-                return email;
-            }
-            set
-            {
-                email = value;
-                OnPropertyChanged();
-            }
-        }
-        private string address;
-        public string Address
-        {
-            get
-            {
-                return address;
-            }
-            set
-            {
-                address = value;
-                OnPropertyChanged();
-            }
-        }
-        private string description;
-        public string Description
-        {
-            get
-            {
-                return description;
-            }
-            set
-            {
-                description = value;
-                OnPropertyChanged();
-            }
-        }
-        private ImageSource sourceImageAva;
-        public ImageSource SourceImageAva
-        {
-            get
-            {
-                return sourceImageAva;
-            }
-            set
-            {
-                sourceImageAva = value;
-                OnPropertyChanged();
-            }
-        }
-        private ImageSource sourceImageBackground;
-        public ImageSource SourceImageBackground
-        {
-            get
-            {
-                return sourceImageBackground;
-            }
-            set
-            {
-                sourceImageBackground = value;
-                OnPropertyChanged();
-            }
-        }
-        public ShopMainViewModel(Shop shop)
-        {
-            Name = shop.Name;
-            PhoneNumber = shop.PhoneNumber;
-            Email = shop.Email;
-            Address = shop.Address;
-            Description = shop.Description;
-            //SourceImageAva = shop.SourceImageAva;
-            //SourceImageBackground = shop.SourceImageBackground;
-
-            ChangeAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) => 
-            {
-                OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png";
-                op.ShowDialog();
-                if(op.FileName != "")
+                if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageBackground))
                 {
-                    SourceImageAva = new BitmapImage(new Uri(op.FileName));
-                }    
-            });
-            ChangeToDefaultAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                //SourceImageAva = Shop.DefaultSourceImageAva;
-            });
-            SaveAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                DialogHost.CloseDialogCommand.Execute(null, null);
-            });
-
-            ChangeBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png";
-                op.ShowDialog();
-                if (op.FileName != "")
+                    return Properties.Resources.DefaultShopBackgroundImage;
+                }
+                else
                 {
-                    SourceImageBackground = new BitmapImage(new Uri(op.FileName));
+                    return Shop.SourceImageBackground;
+                }
+            }
+        }
+        public string SourceImageAva
+        {
+            get
+            {
+                if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageAva))
+                {
+                    return Properties.Resources.DefaultShopAvaImage;
+                }
+                else
+                {
+                    return Shop.SourceImageAva;
+                }
+            }
+        }
+        private MUser shop;
+        public MUser Shop
+        {
+            get => shop;
+            set
+            {
+                shop = value;
+                OnPropertyChanged();
+            }
+        }
+        private double averageRating;
+        public double AverageRating
+        {
+            get => averageRating;
+            set
+            {
+                averageRating = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<Models.Product> allProducts;
+        public ObservableCollection<Models.Product> AllProducts
+        {
+            get => allProducts;
+            set
+            {
+                allProducts = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<Models.Product> newProducts;
+        public ObservableCollection<Models.Product> NewProducts
+        {
+            get => newProducts;
+            set
+            {
+                newProducts = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<Models.Product> favoriteProducts;
+        public ObservableCollection<Models.Product> FavoriteProducts
+        {
+            get => favoriteProducts;
+            set
+            {
+                favoriteProducts = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<Models.Product> bestSelledProducts;
+        public ObservableCollection<Models.Product> BestSelledProducts
+        {
+            get => bestSelledProducts;
+            set
+            {
+                bestSelledProducts = value;
+                OnPropertyChanged();
+            }
+        }
+        private ProductBlockByCategoryViewModel allProductBlock;
+        public ProductBlockByCategoryViewModel AllProductBlock
+        {
+            get => allProductBlock;
+            set
+            {
+                allProductBlock = value;
+                OnPropertyChanged();
+            }
+        }
+        private ProductBlockByCategoryViewModel favoriteProductBlock;
+        public ProductBlockByCategoryViewModel FavoriteProductBlock
+        {
+            get => favoriteProductBlock;
+            set
+            {
+                favoriteProductBlock = value;
+                OnPropertyChanged();
+            }
+        }
+        private ProductBlockByCategoryViewModel bestSelledProductBlock;
+        public ProductBlockByCategoryViewModel BestSelledProductBlock
+        {
+            get => bestSelledProductBlock;
+            set
+            {
+                bestSelledProductBlock = value;
+                OnPropertyChanged();
+            }
+        }
+        private ProductBlockByCategoryViewModel newProductBlock;
+        public ProductBlockByCategoryViewModel NewProductBlock
+        {
+            get => newProductBlock;
+            set
+            {
+                newProductBlock = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isShop;
+        public bool IsShop
+        {
+            get => isShop;
+            set
+            {
+                isShop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsNewProductsCheck
+        {
+            get => isNewProductsCheck;
+            set
+            {
+                isNewProductsCheck = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isBestSellerProductsCheck;
+        public bool IsBestSellerProductsCheck
+        {
+            get => isBestSellerProductsCheck;
+            set
+            {
+                isBestSellerProductsCheck = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isFavoriteProductsCheck;
+        public bool IsFavoriteProductsCheck
+        {
+            get => isFavoriteProductsCheck;
+            set
+            {
+                isFavoriteProductsCheck = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isAllProductsCheck;
+        public bool IsAllProductsCheck
+        {
+            get => isAllProductsCheck;
+            set
+            {
+                isAllProductsCheck = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ShopMainViewModel(Models.MUser user)
+        {
+            if (AccountStore.instance.CurrentAccount.Id == user.Id)
+            {
+                Shop = AccountStore.instance.CurrentAccount;
+                AccountStore.instance.AccountChanged += _accountStore_AccountChanged;
+                IsShop = true;
+            }
+            else
+            {
+                Shop = user;
+                IsShop = false;
+            }
+            
+            Task task = Task.Run(async () => await LoadAllProduct());
+            while(!task.IsCompleted) { }
+            
+            AllProductBlock = new ProductBlockByCategoryViewModel("All", AllProducts, AllProducts.Count == 0, true, IsShop);
+            NewProductBlock = new ProductBlockByCategoryViewModel("New Products", NewProducts, NewProducts.Count == 0, false, IsShop);
+            BestSelledProductBlock = new ProductBlockByCategoryViewModel("Best Seller Products", BestSelledProducts, BestSelledProducts.Count == 0, false, IsShop);
+            FavoriteProductBlock = new ProductBlockByCategoryViewModel("Favorite Products", FavoriteProducts, FavoriteProducts.Count == 0, true, IsShop);
+            OpenEditProfileCommand = new RelayCommandWithNoParameter(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                ProfileShopDialog profileShopDialog = new ProfileShopDialog();
+                profileShopDialog.DataContext = new ProfileShopDialogViewModel();
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(profileShopDialog, "Main");
+            });
+            LoadedCommand = new RelayCommand<Tuple<double, double, double>>((p) => { return p != null; }, p =>
+            {
+                Tuple<double, double, double> tuple = p as Tuple<double, double, double>;
+                heightNewProducts = (double)tuple.Item1;
+                heightBestSellerProducts = (double)tuple.Item2;
+                heightFavoriteProducts = (double)tuple.Item3;
+                IsNewProductsCheck = true;
+            });
+            ScrollChangedCommand = new RelayCommand<object>((p) => { return p != null; }, p =>
+            {
+                ScrollViewer scrollViewer = p as ScrollViewer;
+                double offset = (double)scrollViewer.VerticalOffset;
+                if (offset < heightNewProducts)
+                {
+                    IsNewProductsCheck = true;
+                    if (NewProductBlock.FullProducts.Count == 0)
+                    {
+                        IsNewProductsCheck = false;
+                    }
+                }
+                else if (offset < heightNewProducts + heightBestSellerProducts)
+                {
+                    IsBestSellerProductsCheck = true;
+                    if (BestSelledProductBlock.FullProducts.Count == 0)
+                    {
+                        IsBestSellerProductsCheck = false;
+                    }
+                }
+                else if (offset < heightNewProducts + heightBestSellerProducts + heightFavoriteProducts)
+                {
+                    IsFavoriteProductsCheck = true;
+                    if (FavoriteProductBlock.FullProducts.Count == 0)
+                    {
+                        IsFavoriteProductsCheck = false;
+                    }
+                }
+                else
+                {
+                    IsAllProductsCheck = true;
+                    if (AllProductBlock.FullProducts.Count == 0)
+                    {
+                        IsAllProductsCheck = false;
+                    }
                 }
             });
-            ChangeToDefaultBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            MoveToNewProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
             {
-                SourceImageBackground = Shop.DefaultSourceImageBackground;
+                ScrollViewer scrollViewer = p as ScrollViewer;
+                scrollViewer.ScrollToTop();
             });
-            SaveBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            MoveToBestSellerProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
             {
-                DialogHost.CloseDialogCommand.Execute(null, null);
+                ScrollViewer scrollViewer = p as ScrollViewer;
+                scrollViewer.ScrollToVerticalOffset(heightNewProducts);
             });
-            SaveProfileShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            MoveToFavoriteProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
             {
-                (p as System.Windows.Controls.Button).IsEnabled = true;
+                ScrollViewer scrollViewer = p as ScrollViewer;
+                scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts);
             });
-            EditProfileShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            MoveToAllProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
             {
-                (p as System.Windows.Controls.Button).IsEnabled = false;
+                ScrollViewer scrollViewer = p as ScrollViewer;
+                scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightFavoriteProducts);
             });
+        }
+
+        private void _accountStore_AccountChanged()
+        {
+            Shop = AccountStore.instance.CurrentAccount;
+            OnPropertyChanged(nameof(Shop));
+            OnPropertyChanged(nameof(SourceImageAva));
+            OnPropertyChanged(nameof(SourceImageBackground));
+        }
+
+        private async Task LoadAllProduct()
+        {
+            AllProducts = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => p.IdShop == Shop.Id,
+                                                                                                        p => p.Brand,
+                                                                                                        p => p.Category,
+                                                                                                        p => p.ImageProducts,
+                                                                                                        p => p.OrderInfoes,
+                                                                                                        p => p.OrderInfoes.Select(oi => oi.Rating),
+                                                                                                        p => p.MUsers,
+                                                                                                        p => p.ImageProducts));
+            int number = 0;
+            long sumRating = 0;
+            foreach (Models.Product product in AllProducts)
+            {
+                foreach (Models.OrderInfo orderInfo in product.OrderInfoes)
+                {
+                    if (orderInfo.Rating != null)
+                    {
+                        sumRating += orderInfo.Rating.Rating1 ?? 0;
+                        number += 1;
+                    }
+                }
+            }
+            AverageRating = sumRating * 1.0 / number;
+            FavoriteProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.MUsers.Count != 0).ToList().OrderByDescending(p => p.MUsers.Count));
+            BestSelledProducts = new ObservableCollection<Models.Product>(AllProducts.OrderByDescending(p => p.OrderInfoes.Count));
+            NewProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => (DateTime.Now - p.DateOfSale) <= new TimeSpan(7, 0, 0, 0)).ToList().OrderByDescending(p => p.DateOfSale));
         }
     }
 }

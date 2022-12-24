@@ -11,7 +11,6 @@ namespace WPFEcommerceApp
 {
     public class RegisterShopDialogViewModel: BaseViewModel
     {
-        private readonly AccountStore _accountStore;
         public GenericDataRepository<Models.ShopRequest> shopRequestRepository = new GenericDataRepository<Models.ShopRequest>();
         public ICommand RegisterCommand { get; set; }
         private string description;
@@ -23,20 +22,21 @@ namespace WPFEcommerceApp
                 description = value;
             }
         }
-        public RegisterShopDialogViewModel(AccountStore accountStore)
+        public RegisterShopDialogViewModel()
         {
-            _accountStore = accountStore;
-            RegisterCommand = new RelayCommand<bool>((p)=>!p, p =>
+            RegisterCommand = new RelayCommand<bool>((p)=>!p, async (p) =>
             {
-                Task.Run(async () => await RegisterShop());
+                MainViewModel.IsLoading = true;
+                await RegisterShop();
                 DialogHost.CloseDialogCommand.Execute(true, null);
+                MainViewModel.IsLoading = false;
             });
         }
         private async Task RegisterShop()
         {
             Models.ShopRequest shopRequest = new Models.ShopRequest();
             shopRequest.Id = await GenerateID.Gen(typeof(Models.ShopRequest));
-            shopRequest.IdUser = _accountStore.CurrentAccount.Id;
+            shopRequest.IdUser = AccountStore.instance.CurrentAccount.Id;
             shopRequest.Description = Description;
             await shopRequestRepository.Add(shopRequest);
         }

@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -17,7 +18,6 @@ namespace WPFEcommerceApp
 {
     public class ProfileShopDialogViewModel: BaseViewModel
     {
-        private readonly AccountStore _accountStore;
         private GenericDataRepository<Models.MUser> userRepository= new GenericDataRepository<Models.MUser>();
         public ICommand OpenProfileShopBackgroundDialog { get; set; }
         public ICommand OpenProfileShopAvaDialog { get; set; }
@@ -64,9 +64,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ProfileShopDialogViewModel(AccountStore accountStore)
+        public ProfileShopDialogViewModel()
         {
-            _accountStore = accountStore;
             Task task = Task.Run(async () => await LoadTempData());
             while (!task.IsCompleted) ;
             if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageAva))
@@ -85,31 +84,47 @@ namespace WPFEcommerceApp
             {
                 SourceImageBackground = Shop.SourceImageBackground;
             }
-            OpenProfileShopBackgroundDialog = new RelayCommandWithNoParameter(() =>
+            OpenProfileShopBackgroundDialog = new RelayCommandWithNoParameter(async () =>
             {
+                MainViewModel.IsLoading = true;
                 ProfileShopBackgroundDialog profileShopBackgroundDialog = new ProfileShopBackgroundDialog();
                 profileShopBackgroundDialog.DataContext = new ProfileShopBackgroundDialogViewModel(Shop);
-                DialogHost.Show(profileShopBackgroundDialog, "SecondDialog", null, null, LoadBackground);
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(profileShopBackgroundDialog, "SecondDialog", null, null, LoadBackground);
             });
-            OpenProfileShopAvaDialog = new RelayCommandWithNoParameter(() =>
+            OpenProfileShopAvaDialog = new RelayCommandWithNoParameter(async () =>
             {
+                MainViewModel.IsLoading = true;
                 ProfileShopAvaDialog profileShopAvaDialog = new ProfileShopAvaDialog();
                 profileShopAvaDialog.DataContext = new ProfileShopAvaDialogViewModel(Shop);
-                DialogHost.Show(profileShopAvaDialog, "SecondDialog", null, null, LoadAva);
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(profileShopAvaDialog, "SecondDialog", null, null, LoadAva);
             });
-            SaveProfileShopCommand = new RelayCommandWithNoParameter(() =>
+            SaveProfileShopCommand = new RelayCommandWithNoParameter(async () => 
             {
-                ChangeToEdittable();
+                MainViewModel.IsLoading = true;
+                IsEditing = false;
+                var link = await FireStorageAPI.Push(SourceImageBackground, "User", $"Background_{Shop.Id}");
+                Shop.SourceImageBackground = link;
+                link = await FireStorageAPI.Push(SourceImageAva, "User", $"Ava_{Shop.Id}");
+                Shop.SourceImageAva = link;
+                await AccountStore.instance.Update(Shop);
+                await LoadTempData();
+                MainViewModel.IsLoading = false;
             });
             EditProfileShopCommand = new RelayCommandWithNoParameter(() =>
             {
                 IsEditing = true;
             });
-            ChangeEditStatusCommand = new RelayCommand<bool?>((p) => p!=null,(p)=>
+            ChangeEditStatusCommand = new RelayCommand<bool?>((p) => p!=null, async (p)=>
             {
                 if(IsEditing && (p??false))
                 {
-                    ChangeToEdittable();
+                    MainViewModel.IsLoading = true;
+                    IsEditing = false;
+                    await AccountStore.instance.Update(Shop);
+                    await LoadTempData();
+                    MainViewModel.IsLoading = false;
                 }
                 else if(!isEditing)
                 {
@@ -117,18 +132,8 @@ namespace WPFEcommerceApp
                 }    
             });
         }
-        private void ChangeToEdittable()
-        {
-            IsEditing = false;
-            Task.Run(async () =>
-            {
-                await _accountStore.Update(Shop);
-                await LoadTempData();
-            });
-        }
         private void LoadBackground(object sender, DialogClosedEventArgs eventArgs)
         {
-            Task.Run(async () => await UpdateAccountStore());
             OnPropertyChanged(nameof(Shop));
             if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageBackground))
             {
@@ -143,7 +148,6 @@ namespace WPFEcommerceApp
         }
         private void LoadAva(object sender, DialogClosedEventArgs eventArgs)
         {
-            Task.Run(async () => await UpdateAccountStore());
             OnPropertyChanged(nameof(Shop));
             if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageAva))
             {
@@ -158,11 +162,7 @@ namespace WPFEcommerceApp
 
         public async Task LoadTempData()
         {
-            Shop = await userRepository.GetSingleAsync(u => u.Id == _accountStore.CurrentAccount.Id);
-        }
-        public async Task UpdateAccountStore()
-        {
-            await _accountStore.Update(Shop);
+            Shop = await userRepository.GetSingleAsync(u => u.Id == AccountStore.instance.CurrentAccount.Id);
         }
     }
 }
