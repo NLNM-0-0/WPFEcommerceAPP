@@ -33,7 +33,7 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             var repo = new GenericDataRepository<MUser>();
-            var t = await repo.GetSingleAsync(x => x.Id == "user03",
+            var t = await repo.GetSingleAsync(x => x.Id == "user02",
                                         x => x.Products,
                                         x => x.Products.Select(p => p.ImageProducts),
                                         x => x.Products.Select(p => p.Brand),
