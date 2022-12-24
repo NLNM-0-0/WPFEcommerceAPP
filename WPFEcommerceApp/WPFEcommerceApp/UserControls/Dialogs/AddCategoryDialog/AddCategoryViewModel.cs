@@ -13,7 +13,6 @@ namespace WPFEcommerceApp
 {
     public class AddCategoryDialogViewModel : BaseViewModel
     {
-        private readonly AccountStore _accountStore;
         private GenericDataRepository<Models.CategoryRequest> categoryRequestReposition =new GenericDataRepository<Models.CategoryRequest>();
         private string categoryName = "";
         public string CategoryName
@@ -38,19 +37,17 @@ namespace WPFEcommerceApp
         private string stringCloseDialog = "";
         public ICommand RequestCategoryCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
-        public AddCategoryDialogViewModel(AccountStore accountStore)
+        public AddCategoryDialogViewModel()
         {
-            _accountStore = accountStore;
-            RequestCategoryCommand = new RelayCommandWithNoParameter(()=>
+            RequestCategoryCommand = new RelayCommandWithNoParameter(async ()=>
             {
-                Task task = Task.Run(async () => await AddCategoryRequest());
-                while (!task.IsCompleted) ;
+                await AddCategoryRequest();
                 NotificationDialog notification = new NotificationDialog()
                 {
                     Header = "Notification",
                     ContentDialog = stringCloseDialog
                 };
-                DialogHost.Show(notification, "Notification");
+                await DialogHost.Show(notification, "Notification");
             });
             KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
@@ -68,7 +65,7 @@ namespace WPFEcommerceApp
                 await categoryRequestReposition.Add(new CategoryRequest()
                 {
                     Id = await GenerateID.Gen(typeof(Category)),
-                    IdShop = _accountStore.CurrentAccount.Id,
+                    IdShop = AccountStore.instance.CurrentAccount.Id,
                     Name = CategoryName,
                     Reason = this.Reason
                 }) ;

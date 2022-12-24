@@ -25,23 +25,22 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class ShopProduct : UserControl
     {
-        private ShopProductViewModel viewModel = new ShopProductViewModel(null);
-
         public ShopProduct()
         {
             InitializeComponent();
             Task task = Task.Run(async () => await Load());
-            while (!task.IsCompleted) {  }
-            this.DataContext = viewModel;
+            while (!task.IsCompleted) { }
+            this.DataContext = new ShopProductViewModel();
         }
         public async Task Load()
         {
-            var repository = new GenericDataRepository<Models.MUser>();
-            //viewModel = new ShopProductViewModel(await repository.GetSingleAsync(x => x.Id == "user01",
-                                                                                //x => x.Products,
-                                                                                //x => x.Products.Select(p=>p.ImageProducts),
-                                                                                //x => x.Products.Select(p => p.Brand),
-                                                                               // x => x.Products.Select(p => p.Category)));
+            var repo = new GenericDataRepository<MUser>();
+            var t = await repo.GetSingleAsync(x => x.Id == "user02",
+                                        x => x.Products,
+                                        x => x.Products.Select(p => p.ImageProducts),
+                                        x => x.Products.Select(p => p.Brand),
+                                        x => x.Products.Select(p => p.Category));
+            AccountStore.instance.CurrentAccount = t;
         }
     }
 }

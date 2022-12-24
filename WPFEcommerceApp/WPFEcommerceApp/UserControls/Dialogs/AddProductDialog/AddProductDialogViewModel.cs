@@ -18,10 +18,10 @@ namespace WPFEcommerceApp
 {
     internal class AddProductDialogViewModel : BaseViewModel
     {
-        private readonly AccountStore _accountStore;
         private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
         private GenericDataRepository<Models.Category> categoryRepository = new GenericDataRepository<Models.Category>();
         private GenericDataRepository<Models.Brand> brandRepository = new GenericDataRepository<Models.Brand>();
+        private GenericDataRepository<Models.ImageProduct> imageProductRepository = new GenericDataRepository<Models.ImageProduct>();
         public ICommand AddSizeCommand { get; set; }
         public ICommand DeleteSizeCommand { get; set; }
         public ICommand RequestProductCommand { get; set; }
@@ -81,7 +81,7 @@ namespace WPFEcommerceApp
         }
         private Category selectedCategory;
         public Category SelectedCategory
-        { 
+        {
             get
             {
                 return selectedCategory;
@@ -233,10 +233,9 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        
-        public AddProductDialogViewModel(AccountStore accountStore)
+
+        public AddProductDialogViewModel()
         {
-            _accountStore = accountStore;
             LoadData();
             AddSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -292,29 +291,62 @@ namespace WPFEcommerceApp
                     IsHadSizeXXL = false;
                 }
             });
-            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 ChangeImageProductDialog addBrandDialog = new ChangeImageProductDialog();
                 addBrandDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
-                DialogHost.Show(addBrandDialog, "SecondDialog");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(addBrandDialog, "SecondDialog");
             });
-            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                AddBrandDialog addBrandDialog = new AddBrandDialog();
-                addBrandDialog.DataContext = new AddBrandDialogViewModel(_accountStore);
-                DialogHost.Show(addBrandDialog, "SecondDialog");
+            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) => 
+            { 
+                MainViewModel.IsLoading = true; 
+                AddBrandDialog addBrandDialog = new AddBrandDialog(); 
+                addBrandDialog.DataContext = new AddBrandDialogViewModel(); 
+                MainViewModel.IsLoading = false; 
+                await DialogHost.Show(addBrandDialog, "SecondDialog"); 
             });
-            OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
-                addCategoryDialog.DataContext = new AddCategoryDialogViewModel(_accountStore);
-                DialogHost.Show(addCategoryDialog, "SecondDialog");
+                addCategoryDialog.DataContext = new AddCategoryDialogViewModel();
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(addCategoryDialog, "SecondDialog");
             });
-            RequestProductCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            RequestProductCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
-                //Lưu dữ liêu xuống data base
-                Task.Run(async () => await AddProduct());
-                //Tắt dialogHost
+                MainViewModel.IsLoading = true;
+                string id = await GenerateID.Gen(typeof(Product));
+                await productRepository.Add(new Models.Product()
+                {
+                    Id = id,
+                    Name = ProductName,
+                    IdShop = AccountStore.instance.CurrentAccount.Id,
+                    IdCategory = SelectedCategory.Id,
+                    IdBrand = SelectedBrand.Id,
+                    Price = long.Parse(Price),
+                    Sale = int.Parse(Sale),
+                    InStock = int.Parse(InStock),
+                    Sold = 0,
+                    IsOneSize = IsHadOneSize,
+                    IsHadSizeS = this.IsHadSizeS,
+                    IsHadSizeM = this.IsHadSizeM,
+                    IsHadSizeL = this.IsHadSizeL,
+                    IsHadSizeXL = this.IsHadSizeXL,
+                    IsHadSizeXXL = this.IsHadSizeXXL,
+                    Color = this.Color,
+                    Description = this.Description,
+                    DateOfSale = DateTime.Now,
+                    Status = "NotBanned"
+                });
+                foreach (string source in ImageProducts)
+                {
+                    
+                    await imageProductRepository.Add(new Models.ImageProduct() { IdProduct = id, Source = source });
+                }
+                MainViewModel.IsLoading = false;
                 var closeDialog = DialogHost.CloseDialogCommand;
                 closeDialog.Execute(null, null);
             });
@@ -335,7 +367,7 @@ namespace WPFEcommerceApp
                 }
             });
         }
-        public void LoadData()
+        public async void LoadData()
         {
             ImageProducts = new ObservableCollection<string>();
             IsHadSizeS = false;
@@ -344,48 +376,8 @@ namespace WPFEcommerceApp
             IsHadSizeXL = false;
             IsHadSizeXXL = false;
             IsHadOneSize = false;
-            Task task = Task.Run(async () => { await LoadCategories(); await LoadBrands(); });
-        }
-        private async Task AddProduct()
-        {
-            Models.Product product = new Models.Product();
-            product.Name = ProductName;
-            product.Price = long.Parse(Price);
-            product.IdCategory = SelectedCategory.Id;
-            product.IdBrand = SelectedBrand.Id;
-            product.InStock = int.Parse(InStock);
-            product.Sale = int.Parse(Sale);
-            product.Description = Description;
-            product.Color = color;
-            product.IsHadSizeM = IsHadSizeM;
-            product.IsHadSizeL = IsHadSizeL;
-            product.IsHadSizeXL = IsHadSizeXL;
-            product.IsHadSizeXXL = IsHadSizeXXL;
-            product.IsHadSizeS = IsHadSizeS;
-            product.IsOneSize = IsHadOneSize;
-            await productRepository.Add(new Models.Product()
-            {
-                Id = await GenerateID.Gen(typeof(Product)),
-                Name = ProductName,
-                IdShop = _accountStore.CurrentAccount.Id,
-                IdCategory = SelectedCategory.Id,
-                IdBrand = SelectedBrand.Id,
-                Price = long.Parse(Price),
-                Sale = int.Parse(Sale),
-                InStock = int.Parse(InStock),
-                Sold = 0,
-                IsOneSize = IsHadOneSize,
-                IsHadSizeS = this.IsHadSizeS,
-                IsHadSizeM = this.IsHadSizeM,
-                IsHadSizeL = this.IsHadSizeL,
-                IsHadSizeXL = this.IsHadSizeXL,
-                IsHadSizeXXL = this.IsHadSizeXXL,
-                Color = this.Color,
-                Description = this.Description,
-                DateOfSale = DateTime.Now,
-                Status = "NotBanned"
-            }) ;
-            await _accountStore.Update(_accountStore.CurrentAccount);
+            await LoadCategories();
+            await LoadBrands();
         }
         private async Task LoadCategories()
         {

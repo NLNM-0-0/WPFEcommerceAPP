@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,7 +20,11 @@ namespace WPFEcommerceApp
 {
     public class ProductInfoPortraitViewModel : BaseViewModel
     {
-        private readonly AccountStore _accountStore;
+        public event Action SelectedProductChanged;
+        private void OnSelectedProductChange()
+        {
+            SelectedProductChanged?.Invoke();
+        }
         public ICommand SaveProductInfoCommand { get; set; }
         public ICommand EditProductInfoCommand { get; set; }
         public ICommand ChangeSelectedImageCommand { get; set; }
@@ -41,11 +46,10 @@ namespace WPFEcommerceApp
             }
             set
             {
+                MainViewModel.IsLoading = true;
                 selectedProduct = value;
-                Task task = Task.Run(async () =>
-                {
-                    await LoadRating();
-                });
+                LoadRating();
+                MainViewModel.IsLoading = false;
                 OnPropertyChanged();
             }
         }
@@ -88,8 +92,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private IList<Models.Brand> brands;
-        public IList<Models.Brand> Brands
+        private ObservableCollection<Models.Brand> brands;
+        public ObservableCollection<Models.Brand> Brands
         {
             get => brands;
             set
@@ -98,8 +102,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private IList<Models.Category> categories;
-        public IList<Models.Category> Categories
+        private ObservableCollection<Models.Category> categories;
+        public ObservableCollection<Models.Category> Categories
         {
             get => categories;
             set
@@ -138,9 +142,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ProductInfoPortraitViewModel(AccountStore accountStore, Models.Product product)
+        public ProductInfoPortraitViewModel(Models.Product product)
         {
-            _accountStore = accountStore;
             SelectedProduct = product;
             if(SelectedProduct.IsOneSize)
             {
@@ -170,8 +173,9 @@ namespace WPFEcommerceApp
             {
                 SelectedImage = ImageProducts.First();
             }
-            SaveProductInfoCommand = new RelayCommand<Models.Product>((p) => { return p != null; }, (p) =>
+            SaveProductInfoCommand = new RelayCommand<Models.Product>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
                 SelectedProduct.Name = productTemp.Name;
                 SelectedProduct.Price = productTemp.Price;
@@ -187,7 +191,9 @@ namespace WPFEcommerceApp
                 SelectedProduct.IsHadSizeXL = productTemp.IsHadSizeXL;
                 SelectedProduct.IsHadSizeXXL = productTemp.IsHadSizeXXL;
                 SelectedProduct.Category = productTemp.Category;
+                SelectedProduct.IdCategory = productTemp.IdCategory;
                 selectedProduct.Brand = productTemp.Brand;
+                SelectedProduct.IdBrand = productTemp.IdBrand;
                 selectedProduct.InStock = productTemp.InStock;
                 selectedProduct.Sold = productTemp.Sold;
                 SelectedProduct.Sale = productTemp.Sale;
@@ -195,10 +201,10 @@ namespace WPFEcommerceApp
                 SelectedProduct.Color = productTemp.Color;
                 IsEditting = false;
                 product = SelectedProduct;
-                Task t = Task.Run(async () => { await UpdateImageProduct(); await UpdateProduct(); });
-                while (!t.IsCompleted) ;
-                t = Task.Run(async () => { await _accountStore.Update(_accountStore.CurrentAccount); });
-                while (!t.IsCompleted) ;
+                await UpdateImageProduct(); 
+                await UpdateProduct();
+                product = SelectedProduct;
+                MainViewModel.IsLoading = false;
             });
 
             EditProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
@@ -216,18 +222,22 @@ namespace WPFEcommerceApp
                 SelectedImage = image.Source.ToString();
             });
 
-            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
                 changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
-                DialogHost.Show(changeImageProductDialog, "App");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(changeImageProductDialog, "Main", closeChangeImageDialog);
             });
 
-            OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
-                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(_accountStore, SelectedProduct);
-                DialogHost.Show(productInfoLandscape, "App", closeProductInfoLandscape);
+                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(SelectedProduct);
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(productInfoLandscape, "Main", closeProductInfoLandscape);
             });
             CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -243,7 +253,7 @@ namespace WPFEcommerceApp
             });
             ChangeStatusCommand = new RelayCommand<object>((p) => p!=null, (p) =>
             {
-                Button button = p as Button;
+                System.Windows.Controls.Button button = p as System.Windows.Controls.Button;
                 if(IsEditting && button.IsEnabled)
                 {
                     button.Command.Execute(button.CommandParameter);
@@ -255,6 +265,26 @@ namespace WPFEcommerceApp
                 }    
             });
         }
+
+        private void closeChangeImageDialog(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if (ImageProducts.Count > 0 && SelectedImage == Properties.Resources.DefaultProductImage)
+            {
+                SelectedImage = ImageProducts.First();
+            }
+            else if (SelectedImage != Properties.Resources.DefaultProductImage && !ImageProducts.Contains(SelectedImage))
+            {
+                if (ImageProducts.Count == 0)
+                {
+                    SelectedImage = Properties.Resources.DefaultProductImage;
+                }
+                else
+                {
+                    SelectedImage = ImageProducts.First();
+                }
+            }
+        }
+
         private void closeProductInfoLandscape(object sender, DialogClosingEventArgs eventArgs)
         {
             ImageProducts.Clear();
@@ -277,43 +307,22 @@ namespace WPFEcommerceApp
                     SelectedImage = ImageProducts.First();
                 }
             }
-            Task t = Task.Run(async () => await _accountStore.Update(_accountStore.CurrentAccount));
-            while (!t.IsCompleted) ;
-        }
-
-        private void ImageSources_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (ImageProducts.Count > 0 && SelectedImage == Properties.Resources.DefaultProductImage)
-            {
-                SelectedImage = ImageProducts.First();
-            }
-            else if (SelectedImage != Properties.Resources.DefaultProductImage && !ImageProducts.Contains(SelectedImage))
-            {
-                if (ImageProducts.Count == 0)
-                {
-                    SelectedImage = Properties.Resources.DefaultProductImage;
-                }
-                else
-                {
-                    SelectedImage = ImageProducts.First();
-                }
-            }
-            
+            OnSelectedProductChange();
         }
         private async Task LoadBrands()
         {
             var repository = new GenericDataRepository<Models.Brand>();
-            Brands = await repository.GetListAsync(b=>b.Status == "NotBanned");
+            Brands = new ObservableCollection<Models.Brand>(await repository.GetListAsync(b=>b.Status == "NotBanned"));
         }
         private async Task LoadCategories()
         {
             var repository = new GenericDataRepository<Models.Category>();
-            Categories = await repository.GetListAsync(c => c.Status == "NotBanned");
+            Categories = new ObservableCollection<Models.Category>(await repository.GetListAsync(c => c.Status == "NotBanned"));
         }
-        private async Task LoadRating()
+        private async void LoadRating()
         {
             var repository = new GenericDataRepository<Models.Rating>();
-            IList<Rating> ratingInfos = (await repository.GetListAsync(x => x.OrderInfoes.First().IdProduct == SelectedProduct.Id));
+            IList<Rating> ratingInfos = (await repository.GetListAsync(x => x.OrderInfoes.Count != 0 && x.OrderInfoes.First().IdProduct == SelectedProduct.Id));
             Rating = ratingInfos.Average(p=>(p.Rating1 == null?0:p.Rating1)) ?? 0;
             RatingTimes = ratingInfos.Count();
         }

@@ -15,7 +15,6 @@ namespace WPFEcommerceApp
 {
     public class AddBrandDialogViewModel : BaseViewModel
     {
-        private readonly AccountStore _accountStore;
         private GenericDataRepository<Models.BrandRequest> brandRequestReposition = new GenericDataRepository<BrandRequest>();
         private string brandName = "";
         public string BrandName
@@ -40,19 +39,17 @@ namespace WPFEcommerceApp
         private string stringCloseDialog ="";
         public ICommand RequestBrandCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
-        public AddBrandDialogViewModel(AccountStore accountStore)
+        public AddBrandDialogViewModel()
         {
-            _accountStore = accountStore;
-            RequestBrandCommand = new RelayCommandWithNoParameter(()=>
+            RequestBrandCommand = new RelayCommandWithNoParameter(async ()=>
             { 
-                Task task = Task.Run(async () => await AddBrandRequest());
-                while (!task.IsCompleted) ;
+                await AddBrandRequest();
                 NotificationDialog notification = new NotificationDialog()
                 {
                     Header = "Notification",
                     ContentDialog = stringCloseDialog
                 };
-                DialogHost.Show(notification, "Notification");
+                await DialogHost.Show(notification, "Notification");
             });
             KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
@@ -70,7 +67,7 @@ namespace WPFEcommerceApp
                 await brandRequestReposition.Add(new BrandRequest()
                 {
                     Id =  await GenerateID.Gen(typeof(Brand)),
-                    IdShop = _accountStore.CurrentAccount.Id,
+                    IdShop = AccountStore.instance.CurrentAccount.Id,
                     Name = BrandName,
                     Reason = this.Reason
                 });

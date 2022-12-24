@@ -86,5 +86,23 @@ namespace WPFEcommerceApp.Properties {
                 return ResourceManager.GetString("DefaultShopBackgroundImage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WanoSupport@gmail.com.
+        /// </summary>
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 01234567890.
+        /// </summary>
+        internal static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
     }
 }

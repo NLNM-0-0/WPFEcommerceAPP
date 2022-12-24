@@ -10,7 +10,8 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:fa="http://schemas.fontawesome.io/icons/">
     <materialDesign:DialogHost
-        Identifier="SecondDialog">
+        Identifier="SecondDialog"
+        CloseOnClickAway="True">
         <Grid>
             <Grid.Resources>
                 <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
