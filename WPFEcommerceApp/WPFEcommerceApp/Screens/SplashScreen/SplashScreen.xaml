@@ -26,7 +26,34 @@
         </ResourceDictionary>
     </Window.Resources>
     <StackPanel>
-        <TextBlock Text="W A N O" FontSize="100" HorizontalAlignment="Center" Margin="0 169 0 0" FontStretch="ExtraCondensed" FontWeight="SemiBold"/>
+        <!--<TextBlock
+                            Text="W A N O"
+                            Foreground="White"
+                            FontSize="28"
+                            Background="Transparent"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                            --><!--// Shadow Effect //--><!--
+            <TextBlock.Effect>
+                <DropShadowEffect  BlurRadius="10"
+                                                   ShadowDepth="1"
+                                                   Direction="-90"
+                                                   Color="White"/>
+            </TextBlock.Effect>
+        </TextBlock>-->
+        <TextBlock Text="W A N O" 
+                   FontSize="100" 
+                   HorizontalAlignment="Center" 
+                   Margin="0 169 0 0" 
+                   FontStretch="ExtraCondensed" 
+                   FontWeight="SemiBold">
+            <TextBlock.Effect>
+                <DropShadowEffect  BlurRadius="50"
+                                                   ShadowDepth="0.1"
+                                                   Direction="69"
+                                                   Color="LightGray"/>
+            </TextBlock.Effect>
+        </TextBlock>
         <Grid >
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                              Foreground="{DynamicResource BlackColorBrush}"
@@ -34,7 +61,7 @@
                              Value="0"
                          Margin="0 100 0 0">
                 <ProgressBar.LayoutTransform>
-                    <ScaleTransform ScaleX="3.9" ScaleY="3.9"/>
+                    <ScaleTransform ScaleX="3.3" ScaleY="3.3"/>
                 </ProgressBar.LayoutTransform>
             </ProgressBar>
         </Grid>

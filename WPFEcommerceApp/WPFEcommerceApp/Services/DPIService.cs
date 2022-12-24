@@ -48,7 +48,7 @@ namespace WPFEcommerceApp {
             #endregion
 
             #region General
-            services.AddTransient<MyProfileViewModel>(s => new MyProfileViewModel(AccountStore.instance));
+            services.AddTransient<MyProfileViewModel>();
             #endregion
 
 

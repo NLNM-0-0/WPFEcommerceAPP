@@ -40,6 +40,7 @@ namespace WPFEcommerceApp {
             OrderListChanged?.Invoke();
         }
 		public async Task Load() {
+			MainViewModel.IsLoading = true;
             if(user == null) return;
 			OrderList?.Clear();
 
@@ -104,9 +105,10 @@ namespace WPFEcommerceApp {
 				OrderList.Add(ordertemp);
 			}
             OrderListChanged?.Invoke();
+            MainViewModel.IsLoading = false;
         }
 
-		MOrder GenerateOrder(Order p) {
+        MOrder GenerateOrder(Order p) {
             MOrder temp = new MOrder();
             temp.Id = p.ID;
             temp.IdCustomer = p.IDCustomer;
@@ -141,28 +143,34 @@ namespace WPFEcommerceApp {
             OrderListChanged?.Invoke();
         }
         public async Task Add(Order p) {
-			p.ID = await GenerateID.Gen(typeof(MOrder));
+            MainViewModel.IsLoading = true;
+            p.ID = await GenerateID.Gen(typeof(MOrder));
             OrderList.Add(p);
 			MOrder temp = GenerateOrder(p);
 			await orderRepo.Add(temp);
 
             await genOrderInfor(p, "Add");
+            MainViewModel.IsLoading = false;
         }
-		public async Task Remove(Order p) {
+        public async Task Remove(Order p) {
+            MainViewModel.IsLoading = true;
             OrderList.Remove(p);
             MOrder temp = GenerateOrder(p);
             await orderRepo.Remove(temp);
 
 			await genOrderInfor(p, "Remove");
+			MainViewModel.IsLoading = false;
         }
         public async Task Update(Order p) {
-			for(int i = 0; i < OrderList.Count; i++) {
+            MainViewModel.IsLoading = true;
+            for(int i = 0; i < OrderList.Count; i++) {
 				if(OrderList[i].ID == p.ID) OrderList[i] = p;
 			}
             MOrder temp = GenerateOrder(p);
             await orderRepo.Update(temp);
 
 			await genOrderInfor(p, "Update");
+            MainViewModel.IsLoading = false;
         }
     }
 }
