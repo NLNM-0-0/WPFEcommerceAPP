@@ -91,7 +91,6 @@ namespace WPFEcommerceApp
                     return;
                 }
                 SelectedImageSource = image.Source.ToString();
-                SelectedImageSource = SelectedImageSource.Substring(8).Replace("/", "\\");
             });
             AddImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
