@@ -37,7 +37,7 @@
                 FontSize="{StaticResource FontSizeHeadline2}"
                 FontFamily="{StaticResource Bold}"
                 FontWeight="DemiBold"
-                Visibility="{c:Binding 'ActualHeight > 1100 and DataContext.MaxHeightListProducts == 1100', ElementName=productLists}">
+                Visibility="{c:Binding '(DataContext.ProductBlockViewModels.Count / (Math.Floor(ActualWidth / 360))) > 2 and DataContext.MaxHeightListProducts == 1100', ElementName=productBlockByCategory}">
                 <Hyperlink
                     Foreground="#1290FF"
                     Command="{Binding ChangeToFilterCommand}">
@@ -46,10 +46,8 @@
             </Label>
         </Grid>
         <Grid
-            x:Name="productLists"
             Grid.Row="3"
-            MaxWidth="{Binding ElementName= productBlockByCategory,Path=ActualWidth}"
-            MaxHeight="{Binding MaxHeightListProducts}">
+            MaxWidth="{Binding ElementName = productBlockByCategory,Path=ActualWidth}">
             <ListView 
                 BorderThickness="0"
                 ItemsSource="{Binding ProductBlockViewModels}" 
@@ -60,8 +58,8 @@
                 HorizontalAlignment="Center"
                 Width="auto"
                 HorizontalContentAlignment="Center"
-                MaxWidth="{Binding ElementName= productBlockByCategory,Path=ActualWidth}"
-                MaxHeight="{Binding MaxHeightListProducts}">
+                MaxHeight="{Binding MaxHeightListProducts}"
+                MaxWidth="{Binding ElementName= productBlockByCategory,Path=ActualWidth}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
                         <Setter Property="Margin" Value="5 20"/>
@@ -70,10 +68,9 @@
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel
-                            Width="{c:Binding 'Math.Floor(ActualWidth / 350) * 360',  ElementName=productBlockByCategory}"/>
+                            Width="{c:Binding 'Math.Floor(ActualWidth / 360) * 360',  ElementName=productBlockByCategory}"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
-
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <local:ProductBlock
