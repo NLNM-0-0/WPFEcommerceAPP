@@ -3,6 +3,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
+using System.IO;
 using System.IO.Packaging;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -104,10 +105,18 @@ namespace WPFEcommerceApp
             {
                 MainViewModel.IsLoading = true;
                 IsEditing = false;
-                var link = await FireStorageAPI.Push(SourceImageBackground, "User", $"Background_{Shop.Id}");
-                Shop.SourceImageBackground = link;
-                link = await FireStorageAPI.Push(SourceImageAva, "User", $"Ava_{Shop.Id}");
-                Shop.SourceImageAva = link;
+                Tuple<bool, string> link = await FireStorageAPI.PushFromFile(SourceImageBackground, "User", $"Background_{Shop.Id}");
+                if(link.Item1)
+                {
+                    Shop.SourceImageBackground = link.Item2;
+                }    
+
+
+                link = await FireStorageAPI.PushFromFile(SourceImageAva, "User", $"Ava_{Shop.Id}");
+                if(link.Item1)
+                {
+                    Shop.SourceImageAva = link.Item2;
+                }    
                 await AccountStore.instance.Update(Shop);
                 await LoadTempData();
                 MainViewModel.IsLoading = false;

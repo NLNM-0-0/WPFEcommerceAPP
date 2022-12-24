@@ -3,6 +3,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -340,8 +341,17 @@ namespace WPFEcommerceApp
                 SelectedProduct.ImageProducts.Clear();
                 foreach (string imageProductSource in ImageProducts)
                 {
-                    var link = await FireStorageAPI.Push(imageProductSource, "Product", $"{SelectedProduct.Id}");
-                    Models.ImageProduct imageProduct = new Models.ImageProduct() { Source = link, IdProduct = SelectedProduct.Id };
+                    Tuple<bool, string> link;
+                    link = await FireStorageAPI.PushFromFile(imageProductSource, "Product", $"{SelectedProduct.Id}");
+                    Models.ImageProduct imageProduct;
+                    if (link.Item1)
+                    {
+                        imageProduct = new Models.ImageProduct() { Source = link.Item2, IdProduct = SelectedProduct.Id };
+                    }    
+                    else
+                    {
+                        imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
+                    }    
                     SelectedProduct.ImageProducts.Add(imageProduct);
                 }
                 SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
