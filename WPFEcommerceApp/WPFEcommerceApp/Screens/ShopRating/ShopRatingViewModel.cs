@@ -140,13 +140,14 @@ namespace WPFEcommerceApp
         public ShopRatingViewModel(AccountStore accountStore)
         {
             _accountStore = accountStore;
-            Task.Run(async () =>
+            Load();
+            Task t = Task.Run(async () =>
             {
                 await LoadListData();
                 await LoadBrand();
                 await LoadCategory();
             });
-            Load();
+            while(!t.IsCompleted);
             DisplayShopRatingBlockModels = ShopRatingBlockModels;
             ChangeRatingStarStyleCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {

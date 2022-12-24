@@ -338,14 +338,16 @@
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="From"
                             Grid.Column="4"
-                            SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
+                            SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDateEnd="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
                         <DatePicker
                             Height="55"
                             Width="auto"
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="To"
                             Grid.Column="6"
-                            SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
+                            SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDateStart="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                     <Grid 
                         Grid.Column="0"
