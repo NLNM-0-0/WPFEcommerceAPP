@@ -66,11 +66,11 @@
                                         </VisualState>
                                         <VisualState x:Name="Disabled">
                                             <Storyboard>
-                                                <DoubleAnimation 
+                                                <ColorAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="PreviousIcon" 
-                                                            To=".5" 
-                                                            Storyboard.TargetProperty="(Shape.Fill).(Brush.Opacity)"/>
+                                                            To="{StaticResource White}" 
+                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"/>
                                             </Storyboard>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -107,11 +107,11 @@
                                         </VisualState>
                                         <VisualState x:Name="Disabled">
                                             <Storyboard>
-                                                <DoubleAnimation 
+                                                <ColorAnimation 
                                                             Duration="0" 
                                                             Storyboard.TargetName="NextIcon" 
-                                                            To=".5" 
-                                                            Storyboard.TargetProperty="(Shape.Fill).(Brush.Opacity)"/>
+                                                            To="{StaticResource White}" 
+                                                            Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"/>
                                             </Storyboard>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -304,15 +304,18 @@
                 </Grid>
             </Border>
             <Rectangle 
-                    x:Name="PART_DisabledVisual" 
-                    Fill="{StaticResource NotAvailableColorBrush}" 
+                    x:Name="PART_DisabledVisual"  
                     Opacity="0" 
                     RadiusX="2"
                     RadiusY="2" 
                     Stroke="{StaticResource NotAvailableColorBrush}" 
                     Stretch="Fill" 
                     StrokeThickness="1" 
-                    Visibility="Collapsed"/>
+                    Visibility="Collapsed">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource NotAvailable}"/>
+                </Rectangle.Fill>
+            </Rectangle>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled" Value="False">
