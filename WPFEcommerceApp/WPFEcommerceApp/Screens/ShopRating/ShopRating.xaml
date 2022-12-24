@@ -10,7 +10,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1340">
     <UserControl.Resources>
-
         <Style x:Key="OurComboBox" TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
             <Setter Property="materialDesign:TextFieldAssist.TextFieldCornerRadius" Value="5" />
             <Setter Property="Padding" Value="15" />
@@ -277,8 +276,15 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <StackPanel Background="Transparent">
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <TextBlock
+            Grid.Row="0"
            Text="Rating"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -286,7 +292,8 @@
             Margin="0 30"/>
         <Border Background="{StaticResource BackgroundColorBrush}"
                 Padding="50 30"
-                Margin="0 0 0 30">
+                Margin="0 0 0 30"
+                Grid.Row="1">
             <Grid>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -304,8 +311,11 @@
                         Margin="0 0 0 30">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBox
@@ -313,54 +323,64 @@
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Grid.Column="0"
                             materialDesign:HintAssist.Hint="Product Name"
-                            Margin="0 0 15 0"
-                            Text="{Binding ProductName}"/>
+                            Text="{Binding ProductName,UpdateSourceTrigger=PropertyChanged}">
+                        </TextBox>
                         <TextBox
                             Width="auto"
                             Style="{StaticResource TextBoxHintBlackBorder}"
-                            Grid.Column="1"
+                            Grid.Column="2"
                             materialDesign:HintAssist.Hint="UserName"
-                            Margin="0 0 15 0"
-                            Text="{Binding UserName}"/>
+                            Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
                         <DatePicker
+                            x:Name="datePickerStart"
                             Height="55"
                             Width="auto"
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="From"
-                            Grid.Column="2"
-                            Margin="0 0 15 0"
-                            Text="{Binding DateFrom}"/>
+                            Grid.Column="4"
+                            SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
                         <DatePicker
                             Height="55"
                             Width="auto"
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="To"
-                            Grid.Column="3"
-                            Text="{Binding DateTo}"/>
+                            Grid.Column="6"
+                            SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                     <Grid 
                         Grid.Column="0"
                         Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="45"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <ComboBox
+                            ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource OurComboBox}"
                             materialDesign:HintAssist.Hint="Category"
+                            DisplayMemberPath="Name"
                             Grid.Column="0"
-                            Margin="0 0 15 0"
-                            Text="{Binding Category}"/>
+                            Text="{Binding SelectedCategory.Name, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.SelectedItem>
+                                <Binding Path="SelectedCategory" UpdateSourceTrigger="PropertyChanged"/>
+                            </ComboBox.SelectedItem>
+                        </ComboBox>
                         <ComboBox
+                            ItemsSource="{Binding Brands, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource OurComboBox}"
+                            DisplayMemberPath="Name"
                             materialDesign:HintAssist.Hint="Brand"
-                            Grid.Column="1"
-                            Margin="0 0 15 0"
-                            Text="{Binding Brand}"/>
+                            Grid.Column="2"
+                            Text="{Binding SelectedBrand.Name, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.SelectedItem>
+                                <Binding Path="SelectedBrand" UpdateSourceTrigger="PropertyChanged"/>
+                            </ComboBox.SelectedItem>
+                        </ComboBox>
                         <Grid 
-                            Margin="45 0 0 0"
-                            Grid.Column="2">
+                            Grid.Column="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -425,7 +445,8 @@
                         Grid.Row="0"
                         Margin="20 0 0 30">
                         <Button Content="Search"
-                                Height="40"/>
+                                Height="40"
+                                Command="{Binding SearchCommand}"/>
                     </Grid>
                     <Grid 
                         Grid.Column="1"
@@ -439,38 +460,40 @@
                 </Grid>
             </Grid>
         </Border>
-        <Border
-            Margin="0 0 0 30"
-            Padding="50 0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <RadioButton
-                    Style="{StaticResource RadioTabButton}"
-                    Grid.Column="0"
-                    Content="All"
-                    IsChecked="{Binding StatusStyles[0]}"
-                    Command="{Binding ChangeRatingStatusCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-                <RadioButton
-                    Style="{StaticResource RadioTabButton}"
-                    Grid.Column="1"
-                    Content="To Reply"
-                    IsChecked="{Binding StatusStyles[1]}"
-                     Command="{Binding ChangeRatingStatusCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-                <RadioButton
-                    Style="{StaticResource RadioTabButton}"
-                    Grid.Column="2"
-                    Content="Replied"
-                    IsChecked="{Binding StatusStyles[2]}"
-                     Command="{Binding ChangeRatingStatusCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+        <ScrollViewer
+            Grid.Row="2">
+            <Grid 
+                Background="Transparent"
+                Margin="50 0"
+                ScrollViewer.CanContentScroll="True">
+                <StackPanel 
+                        IsHitTestVisible="True">
+                    <ItemsControl ItemsSource="{Binding DisplayShopRatingBlockModels, UpdateSourceTrigger=PropertyChanged}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:ShopRatingBlock
+                                    Margin="0 0 0 20"
+                                    Customer="{Binding Customer}"
+                                    Product ="{Binding OrderInfo.Product}"
+                                    Rating="{Binding OrderInfo.Rating.Rating1}"
+                                    Order ="{Binding Order}"
+                                    DateRating="{Binding OrderInfo.Rating.DateRating}"
+                                    CustomerImageAva="{Binding SourceImageAva}"
+                                    ProductImage="{Binding ImageProduct}"
+                                    Grid.Column="0"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </Grid>
-        </Border>
-
-    </StackPanel>
+        </ScrollViewer>
+        <Grid
+            Grid.Row="3"
+            Height="20"/>
+    </Grid>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding SearchCommand}"/>
+    </UserControl.InputBindings>
 </UserControl>
