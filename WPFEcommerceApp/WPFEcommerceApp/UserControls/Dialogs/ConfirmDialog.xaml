@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             mc:Ignorable="d" Width="590">
-    <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="auto" Height="auto">
-        <StackPanel>
+             mc:Ignorable="d" d:DesignWidth="590">
+    <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="590" Height="auto">
+        <StackPanel x:Name="content">
             <Grid>
                 <TextBlock Text="{Binding Header}" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
                 <Button HorizontalAlignment="Right"

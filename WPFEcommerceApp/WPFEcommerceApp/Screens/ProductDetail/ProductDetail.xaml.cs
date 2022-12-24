@@ -21,22 +21,10 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class ProductDetail : UserControl
     {
-        public Models.Product Product { get; set; }
         public ProductDetail()
         {
             InitializeComponent();
-            Task task = Task.Run(async () => await Load());
-            while (!task.IsCompleted) ;
-            this.DataContext = new ProductDetailViewModel(Product);
-        }
-        public async Task Load()
-        {
-            GenericDataRepository<Models.Product> genericDataRepository = new GenericDataRepository<Models.Product>();
-            Product = await genericDataRepository.GetSingleAsync(p => p.Id == "1",
-                                                             p => p.Brand,
-                                                              p => p.Category,
-                                                              p => p.MUser,
-                                                              p => p.ImageProducts);
+            
         }
     }
 }

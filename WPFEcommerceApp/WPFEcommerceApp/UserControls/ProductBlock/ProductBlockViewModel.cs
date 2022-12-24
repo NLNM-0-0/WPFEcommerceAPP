@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
-    internal class ProductBlockViewModel : BaseViewModel
+    public class ProductBlockViewModel : BaseViewModel
     {
         #region Command
         public ICommand ChangeMainPictuceCommand { get; set; }
@@ -19,11 +20,13 @@ namespace WPFEcommerceApp
         public ICommand HideMiniPictureCommand { get; set; }
         public ICommand ShowProductMainInfoCommand { get; set; }
         public ICommand HideProductMainInfoCommand { get; set; }
+        public ICommand OpenDialogCommand { get; set; }
+        public ICommand OpenPageCommand { get; set; }
         #endregion
 
         #region Property
-       /* private ObservableCollection<ImageProduct> _Images;
-        public ObservableCollection<ImageProduct> Images
+        private ObservableCollection<string> _Images = new ObservableCollection<string>();
+        public ObservableCollection<string> Images
         {
             get => _Images;
             set
@@ -44,8 +47,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<ImageProduct> _MiniImagesProduct = new ObservableCollection<ImageProduct>();
-        public ObservableCollection<ImageProduct> MiniImagesProduct
+        private ObservableCollection<string> _MiniImagesProduct = new ObservableCollection<string>();
+        public ObservableCollection<string> MiniImagesProduct
         {
             get => _MiniImagesProduct;
             private set
@@ -54,8 +57,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ImageProduct _MainImage;
-        public ImageProduct MainImage
+        private string _MainImage;
+        public string MainImage
         {
             get => _MainImage;
             set
@@ -65,111 +68,61 @@ namespace WPFEcommerceApp
             }
         }
 
-        private string _Name;
-        public string Name
+        private Models.Product selectedProduct;
+        public Models.Product SelectedProduct
         {
-            get
-            {
-                return _Name;
-            }
+            get => selectedProduct;
             set
             {
-                _Name = value;
+                selectedProduct = value;
                 OnPropertyChanged();
             }
         }
-
-        private string _Category;
-        public string Category
-        {
-            get
-            {
-                return _Category;
-            }
-            set
-            {
-                _Category = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _Brand;
-        public string Brand
-        {
-            get
-            {
-                return _Brand;
-            }
-            set
-            {
-                _Brand = value;
-                OnPropertyChanged();
-            }
-        }*/
 
         //Number of product remainder after displaying mini image
         public string NumberProductRemainder { get; private set; } = "";
         #endregion
 
         #region Contructor
-
-        //đáng lẽ ở đây truyền 1 thể hiện của model mới đúng
-        //mà chưa có nên tui ghi v tượng trưng thui
-        public ProductBlockViewModel(ProductBlock product)
+        public ProductBlockViewModel(Models.Product product)
         {
-            #region Will change after having database
-            /*Images = new ObservableCollection<ImageProduct>();
-
-            //Set a default image
-            Images.Add(new ImageProduct());
-            Images.Add(new ImageProduct("https://thuviendohoa.vn/upload/images/items/hinh-anh-ao-phong-nam-mau-trang-png-514.webp"));
-            Images.Add(new ImageProduct());
-            Images.Add(new ImageProduct());
-            Images.Add(new ImageProduct());
-            Images.Add(new ImageProduct());
-
-            MainImage = Images[0];
+            SelectedProduct = product;
+            foreach (Models.ImageProduct image in SelectedProduct.ImageProducts)
+            {
+                Images.Add(image.Source);
+            }  
+            if(Images.Count > 0) 
+            {
+                MainImage = Images[0];
+            }
+            else
+            {
+                MainImage = Properties.Resources.DefaultProductImage;
+            }    
 
             for (int i = 0; i < 4; i++)
             {
-                if (i < _Images.Count)
+                if (i < Images.Count)
                 {
-                    MiniImagesProduct.Add(_Images[i]);
+                    MiniImagesProduct.Add(Images[i]);
                 }
             }
-            NumberProductRemainder = "+ " + (Images.Count - MiniImagesProduct.Count).ToString();
 
-            Name = "Product Name";
-            Category = "Category";
-            Brand = "Brand";*/
+            NumberProductRemainder = "+ " + (Images.Count - MiniImagesProduct.Count).ToString();
             #endregion
 
             ShowMiniPictureCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                if(product.ListProductImage == null || product.ListProductImage.Count == 0)
+                if (Images.Count == 0)
                 {
-                    product.MainImage = Properties.Resources.DefaultProductImage;
                     return;
                 }
-                if(product.ListProductImage.Count==1)
-                {
-                    return;
-                }    
                 Grid grid = (p as Grid);
                 grid.Visibility = Visibility.Visible;
             });
 
             ShowProductMainInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                if (product.ListProductImage == null || product.ListProductImage.Count == 0)
-                {
-                    product.MainImage = Properties.Resources.DefaultProductImage;
-                    return;
-                }
-                if (product.ListProductImage.Count == 1)
-                {
-                    return;
-                }
                 Grid grid = (p as Grid);
                 grid.Visibility = Visibility.Visible;
             });
@@ -188,10 +141,19 @@ namespace WPFEcommerceApp
 
             ChangeMainPictuceCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                product.MainImage = (p as Image).Source.ToString();
-                OnPropertyChanged();
+                MainImage = p.ToString();
+                OnPropertyChanged(nameof(MainImage));
+            });
+            OpenDialogCommand = new RelayCommandWithNoParameter(() =>
+            {
+                ProductDetail productDetail = new ProductDetail();
+                productDetail.DataContext = new ProductDetailViewModel(SelectedProduct);
+                DialogHost.Show(productDetail, "App");
+            });
+            OpenPageCommand = new RelayCommandWithNoParameter(() =>
+            {
+                MessageBox.Show("Navigate to page product");
             });
         }
-        #endregion
     }
 }

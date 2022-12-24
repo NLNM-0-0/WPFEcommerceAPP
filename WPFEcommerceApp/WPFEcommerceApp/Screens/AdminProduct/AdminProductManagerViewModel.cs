@@ -156,8 +156,10 @@ namespace WPFEcommerceApp
             SearchText = string.Empty;
         }
 
-        public async void RemoveProduct(object obj)
+        public async Task RemoveProduct(object obj)
         {
+            MainViewModel.IsLoading = true;
+
             var removeProduct = obj as Models.Product;
             if (removeProduct == null)
                 return;
@@ -168,7 +170,9 @@ namespace WPFEcommerceApp
                 removeProduct.Status = Status.NotBanned.ToString();
 
             await productRepo.Update(removeProduct);
-            Load();
+            await Load();
+            MainViewModel.IsLoading = false;
+
         }
 
         #endregion
@@ -176,17 +180,20 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminProductManagerViewModel()
         {
+            MainViewModel.IsLoading = true;
             productRepo=new GenericDataRepository<Models.Product>();
             SearchByOptions = new List<string> { "ID", "ShopID", "Name", "Category", "Brand" };
 
-            Load();
+            Task.Run(async () =>await Load());
 
-            RemoveProductCommand = new RelayCommand<object>(p => p != null, RemoveProduct);
+            RemoveProductCommand = new RelayCommand<object>(p => p != null,async(p)=>await RemoveProduct(p));
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
+            MainViewModel.IsLoading = false;
+
         }
 
-        private async void Load()
+        private async Task Load()
         {
             IsChecked = true;
             RemoveOrUnBanned = "Remove";

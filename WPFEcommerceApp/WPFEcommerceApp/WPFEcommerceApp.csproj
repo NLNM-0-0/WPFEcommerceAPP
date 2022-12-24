@@ -169,6 +169,10 @@
       <DependentUpon>BagBlockUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Bag\BagViewModel.cs" />
+    <Compile Include="Screens\Favorite\Favorite.xaml.cs">
+      <DependentUpon>Favorite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Favorite\FavoriteViewModel.cs" />
     <Compile Include="Screens\ForgotPassword\ForgotPassword.xaml.cs">
       <DependentUpon>ForgotPassword.xaml</DependentUpon>
     </Compile>
@@ -180,6 +184,10 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Login\LoginViewModel.cs" />
+    <Compile Include="Screens\MyHome\MyHome.xaml.cs">
+      <DependentUpon>MyHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\MyHome\MyHomeViewModel.cs" />
     <Compile Include="Screens\MyProfile\MyPassword.xaml.cs">
       <DependentUpon>MyPassword.xaml</DependentUpon>
     </Compile>
@@ -207,6 +215,10 @@
       <DependentUpon>Charts.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopStatistics\ShopStatisticsViewModel.cs" />
+    <Compile Include="Screens\SplashScreen\SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\SplashScreen\SplashScreenVM.cs" />
     <Compile Include="Services\DPIService.cs" />
     <Compile Include="Services\NavigateProvider.cs" />
     <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
@@ -251,6 +263,9 @@
       <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialogViewModel.cs" />
+    <Compile Include="UserControls\Dialogs\ConfirmDialogCustom.xaml.cs">
+      <DependentUpon>ConfirmDialogCustom.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
@@ -306,6 +321,11 @@
     <Compile Include="UserControls\UserIconControl\UserIconControl.xaml.cs">
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Converters\BooleanToGenderConverter.cs" />
+    <Compile Include="UserControls\WindowControlBar\WindowControlBar.xaml.cs">
+      <DependentUpon>WindowControlBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WindowControlBar\WindowControlBarVM.cs" />
     <Compile Include="Utils\Converters\FalsesToTrueConverter.cs" />
     <Compile Include="Utils\Converters\MultiValueConverter.cs" />
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
@@ -536,6 +556,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Screens\Favorite\Favorite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\ForgotPassword\ForgotPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -557,6 +581,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\Login\Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\MyHome\MyHome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -647,6 +675,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screens\SplashScreen\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Screens\UserView\DialogStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\UserView\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -708,6 +744,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dialogs\ConfirmDialogCustom.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -847,6 +887,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\WindowControlBar\WindowControlBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -939,7 +983,7 @@
       <Version>1.1.39</Version>
     </PackageReference>
     <PackageReference Include="PropertyChanged.Fody">
-      <Version>4.0.3</Version>
+      <Version>4.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

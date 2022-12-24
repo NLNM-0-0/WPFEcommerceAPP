@@ -187,6 +187,7 @@
                 <!--Processing-->
                 <TabItem Style="{StaticResource CustomTabItem}" 
                     Header="Processing">
+                    
                     <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Processing"
@@ -216,7 +217,7 @@
                     </Grid>
                 </TabItem>
                 <!--Delivering-->
-                <TabItem Header="Delivering" Style="{StaticResource CustomTabItem}" >
+                <TabItem Header="Delivering" Style="{StaticResource CustomTabItem}">
                     <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Delivering"
@@ -293,7 +294,6 @@
                                   ItemsSource="{Binding CancelledList}"
                                   ScrollViewer.CanContentScroll="False"
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden">
-
                         </ListView>
                         <i:Interaction.Triggers>
                             <i:DataTrigger Binding="{Binding CancelledList.Count}" Value="0">

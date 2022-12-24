@@ -24,18 +24,24 @@
                     <StackPanel Margin="0 5 0 0">
                         <Grid>
                             <ScrollViewer VerticalScrollBarVisibility="Auto" Height="200">
-                                <ListBox ItemsSource="{Binding ItemsSource}" >
+                                <ListBox ItemsSource="{Binding ItemsSource}"
+                                         HorizontalContentAlignment="Stretch">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem" 
                                            BasedOn="{StaticResource MaterialDesignNavigationListBoxItem}">
-                                            <Setter Property="Margin" Value="8 0"/>
+                                            <Setter Property="Margin" Value="0 0 8 0"/>
                                         </Style>
                                     </ListBox.ItemContainerStyle>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <local:SearchItem />
+                                            <local:SearchItem Height="40"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
+                                    <ListBox.Template>
+                                        <ControlTemplate>
+                                            <ItemsPresenter/>
+                                        </ControlTemplate>
+                                    </ListBox.Template>
                                 </ListBox>
                             </ScrollViewer>
                         </Grid>

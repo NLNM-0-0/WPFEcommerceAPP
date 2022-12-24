@@ -14,19 +14,41 @@ namespace WPFEcommerceApp {
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        private readonly IServiceProvider serviceProvider;
+        public static IServiceProvider serviceProvider;
+
         public App() {
-            serviceProvider = DPIService.serviceProvider;
         }
 
         protected override void OnStartup(StartupEventArgs e) {
-            INavigationService initial = serviceProvider.GetRequiredService<INavigationService>();
-            initial.Navigate();
-
-            MainWindow = serviceProvider.GetRequiredService<MainWindow>();
-            MainWindow.Show();
-
             base.OnStartup(e);
+
+            SplashScreen splashScreen = new SplashScreen();
+            splashScreen.Show();
+
+            Task.Run(async () => {
+                DPIService dpi = new DPIService();
+                await load();
+            }).ContinueWith(_ => {
+                    MainWindow = null;
+                    INavigationService initial = serviceProvider.GetRequiredService<INavigationService>();
+                    initial.Navigate();
+                    var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+                    //Subcribe access SplashScreen from MainWindow
+                    mainWindow.Loaded += (sender, args) => {
+                        splashScreen.Close();
+                        splashScreen = null;
+                    };
+
+                    MainWindow = mainWindow;
+                    mainWindow.ShowDialog();
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        //All the shit need to be load in here
+        async Task load() {
+            var t = new GenericDataRepository<MUser>();
+            var u = await t.GetSingleAsync(d => d.Id.Equals("user01"));
+            AccountStore.instance.CurrentAccount = u;
         }
     }
 }

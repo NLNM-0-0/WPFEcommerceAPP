@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using DataAccessLayer;
 using WPFEcommerceApp.Models;
 
@@ -12,7 +14,7 @@ namespace WPFEcommerceApp {
     public class OrderStore {
 		public static OrderStore instance;
 		private readonly AccountStore _accountStore;
-		public MUser user => _accountStore.CurrentAccount;
+		public MUser user => _accountStore?.CurrentAccount;
 
 		public event Action OrderListChanged;
 
@@ -26,18 +28,19 @@ namespace WPFEcommerceApp {
 		public OrderStore() {
 			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
-			Load();
-		}
+            Task.Run(async () => await Load());
+        }
 
         private readonly GenericDataRepository<MOrder> orderRepo = new GenericDataRepository<MOrder>();
         private readonly GenericDataRepository<OrderInfo> orderInfoRepo = new GenericDataRepository<OrderInfo>();
         private readonly GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
 
         private void OnAccountChange() {
-			Load();
+			Task.Run(async () => await Load());
             OrderListChanged?.Invoke();
         }
-		public async void Load() {
+		public async Task Load() {
+			MainViewModel.IsLoading = true;
             if(user == null) return;
 			OrderList?.Clear();
 
@@ -58,7 +61,12 @@ namespace WPFEcommerceApp {
 			foreach(var listOI in listOrderInfor) { 
 				List<Product> listProduct = new List<Product>();
 				foreach(var oi in listOI) {
-					var productTemp = await orderInfoRepo.GetSingleAsync(d => d.IdOrder == oi.IdOrder && d.IdProduct == oi.IdProduct, d => d.Product, d => d.Rating);
+					var productTemp = await orderInfoRepo.GetSingleAsync(
+						d => d.IdOrder == oi.IdOrder && 
+						d.IdProduct == oi.IdProduct, 
+						d => d.Product, 
+						d => d.Rating
+					);
 					Models.Product product = new Models.Product();
 					product = productTemp.Product;
 
@@ -97,93 +105,72 @@ namespace WPFEcommerceApp {
 				OrderList.Add(ordertemp);
 			}
             OrderListChanged?.Invoke();
+            MainViewModel.IsLoading = false;
+        }
+
+        MOrder GenerateOrder(Order p) {
+            MOrder temp = new MOrder();
+            temp.Id = p.ID;
+            temp.IdCustomer = p.IDCustomer;
+            temp.IdShop = p.IDShop;
+            temp.ShipTotal = (int)p.ShipTotal;
+            temp.DateBegin = p.DateBegin;
+            temp.DateEnd = p.DateEnd;
+            temp.OrderTotal = (int)p.OrderTotal;
+            temp.Status = p.Status;
+			return temp;
+        }
+
+		async Task genOrderInfor (Order p, string type) {
+            List<Product> products = p.ProductList;
+            for(int i = 0; i < products.Count; i++) {
+                OrderInfo orderInfo = new OrderInfo() {
+                    IdOrder = p.ID,
+                    IdProduct = products[i].ID,
+                    IdRating = null,
+                    ImageProduct = products[i].ProductImage,
+                    Size = products[i].Size,
+                    Count = products[i].Amount,
+                    TotalPrice = (int)p.OrderTotal
+                };
+				if(type == "Add")
+					await orderInfoRepo.Add(orderInfo);
+				else if(type == "Remove")
+                    await orderInfoRepo.Remove(orderInfo);
+				else if(type == "Update")
+                    await orderInfoRepo.Update(orderInfo);
+            }
+            OrderListChanged?.Invoke();
         }
         public async Task Add(Order p) {
-			p.ID = await GenerateID.Gen(typeof(MOrder));
+            MainViewModel.IsLoading = true;
+            p.ID = await GenerateID.Gen(typeof(MOrder));
             OrderList.Add(p);
-			MOrder temp = new MOrder();
-			temp.Id = p.ID;
-			temp.IdCustomer = p.IDCustomer;
-			temp.IdShop = p.IDShop;
-			temp.ShipTotal = (int) p.ShipTotal;
-			temp.DateBegin = p.DateBegin;
-			temp.DateEnd = p.DateEnd;
-			temp.OrderTotal = (int) p.OrderTotal;
-			temp.Status = p.Status;
+			MOrder temp = GenerateOrder(p);
 			await orderRepo.Add(temp);
 
-			List<Product> products = p.ProductList;
-			for(int i = 0; i < products.Count; i++) {
-				OrderInfo orderInfo = new OrderInfo() {
-					IdOrder = p.ID,
-					IdProduct = products[i].ID,
-					IdRating = null,
-					ImageProduct = products[i].ProductImage,
-					Size = products[i].Size,
-					Count = products[i].Amount,
-					TotalPrice = (int)p.OrderTotal
-				};
-				await orderInfoRepo.Add(orderInfo);
-			}
-            OrderListChanged?.Invoke();
+            await genOrderInfor(p, "Add");
+            MainViewModel.IsLoading = false;
         }
-		public async Task Remove(Order p) {
+        public async Task Remove(Order p) {
+            MainViewModel.IsLoading = true;
             OrderList.Remove(p);
-            MOrder temp = new MOrder();
-            temp.Id = p.ID;
-            temp.IdCustomer = p.IDCustomer;
-            temp.IdShop = p.IDShop;
-            temp.ShipTotal = (int)p.ShipTotal;
-            temp.DateBegin = p.DateBegin;
-            temp.DateEnd = p.DateEnd;
-            temp.OrderTotal = (int)p.OrderTotal;
-            temp.Status = p.Status;
+            MOrder temp = GenerateOrder(p);
             await orderRepo.Remove(temp);
 
-            List<Product> products = p.ProductList;
-            for(int i = 0; i < products.Count; i++) {
-                OrderInfo orderInfo = new OrderInfo() {
-                    IdOrder = p.ID,
-                    IdProduct = products[i].ID,
-                    IdRating = null,
-                    ImageProduct = products[i].ProductImage,
-                    Size = products[i].Size,
-                    Count = products[i].Amount,
-                    TotalPrice = (int)p.OrderTotal
-                };
-                await orderInfoRepo.Remove(orderInfo);
-            }
-            OrderListChanged?.Invoke();
+			await genOrderInfor(p, "Remove");
+			MainViewModel.IsLoading = false;
         }
         public async Task Update(Order p) {
-			for(int i = 0; i < OrderList.Count; i++) {
+            MainViewModel.IsLoading = true;
+            for(int i = 0; i < OrderList.Count; i++) {
 				if(OrderList[i].ID == p.ID) OrderList[i] = p;
 			}
-            MOrder temp = new MOrder();
-            temp.Id = p.ID;
-            temp.IdCustomer = p.IDCustomer;
-            temp.IdShop = p.IDShop;
-            temp.ShipTotal = (int)p.ShipTotal;
-            temp.DateBegin = p.DateBegin;
-            temp.DateEnd = p.DateEnd;
-            temp.OrderTotal = (int)p.OrderTotal;
-            temp.Status = p.Status;
+            MOrder temp = GenerateOrder(p);
             await orderRepo.Update(temp);
 
-            List<Product> products = p.ProductList;
-            for(int i = 0; i < products.Count; i++) {
-                OrderInfo orderInfo = new OrderInfo() {
-                    IdOrder = p.ID,
-                    IdProduct = products[i].ID,
-                    IdRating = null,
-                    ImageProduct = products[i].ProductImage,
-                    Size = products[i].Size,
-                    Count = products[i].Amount,
-                    TotalPrice = (int)p.OrderTotal
-                };
-                await orderInfoRepo.Update(orderInfo);
-            }
-            OrderListChanged?.Invoke();
+			await genOrderInfor(p, "Update");
+            MainViewModel.IsLoading = false;
         }
     }
 }

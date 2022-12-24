@@ -13,7 +13,10 @@
 
         <Grid Margin="0 0 0 50">
 
-            <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="True" Background="{StaticResource WhiteColorBrush}">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" 
+                          CanContentScroll="True" 
+                          Background="{StaticResource WhiteColorBrush}"
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <StackPanel Margin="95 20">
                     <DockPanel>
                         <TextBlock Text="Shops Information"
@@ -56,8 +59,8 @@
                       >
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Width="Auto" MaxWidth="150" MinWidth="100" Binding="{Binding Id}"/>
-                            <DataGridTextColumn Header="Shop Name" Width="Auto" MaxWidth="500" MinWidth="200" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Description" Width="*" MaxWidth="700" MinWidth="200" Binding="{Binding Description}"/>
+                            <DataGridTextColumn Header="Shop Name" Width="Auto" MaxWidth="600" MinWidth="200" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Description" Width="*" MaxWidth="1000" MinWidth="200" Binding="{Binding Description}"/>
                         </DataGrid.Columns>
 
                     </DataGrid>

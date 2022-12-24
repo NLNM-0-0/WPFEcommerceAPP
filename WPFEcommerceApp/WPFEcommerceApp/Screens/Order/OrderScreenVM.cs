@@ -56,6 +56,7 @@ namespace WPFEcommerceApp {
         public ICommand OnReviewProduct { get; set; }
 
         public OrderScreenVM(int currentPage = 0) {
+            MainViewModel.IsLoading = true;
 
             CurrentPage = currentPage;
 
@@ -129,9 +130,11 @@ namespace WPFEcommerceApp {
                 };
                 await DialogHost.Show(view, "Main");
             });
+            MainViewModel.IsLoading = false;
         }
 
         private void onOrderListChange() {
+            MainViewModel.IsLoading = true;
             ProcessingList.Clear();
             DeliveringList.Clear();
             DeliveredList.Clear();
@@ -152,6 +155,7 @@ namespace WPFEcommerceApp {
                         CancelledList.Add(OrderList[i]);
                     }
                 }
+            MainViewModel.IsLoading = false;
         }
 
         public override void Dispose() {

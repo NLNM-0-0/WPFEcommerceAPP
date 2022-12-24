@@ -16,7 +16,7 @@ namespace WPFEcommerceApp
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(parameter!=null)
+            if(value!=null)
             {
                 return new BitmapImage(new Uri((string)value));
             }    

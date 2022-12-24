@@ -1,11 +1,13 @@
 ﻿
 
 using DataAccessLayer;
+using LiveCharts;
 using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.AccessControl;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WPFEcommerceApp.Models;
 
@@ -100,6 +102,7 @@ namespace WPFEcommerceApp
             set { _removeOrUnBanned = value; OnPropertyChanged(); }
         }
         public List<string> RoleOptions { get; set; }
+        public List<string> GenderOptions { get; set; }
 
         public bool IsShop { get; set; }
         private bool _isShop
@@ -121,18 +124,22 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminUserManagerViewModel()
         {
+            MainViewModel.IsLoading = true;
             userRepo = new GenericDataRepository<MUser>();
             SearchByOptions = new List<string> { "ID", "Name" };
             RoleOptions = new List<string> { "User", "Shop", "Admin" };
-            Load();
+            GenderOptions = new List<string> { "Male", "Female" };
 
-            RemoveUserCommand = new RelayCommand<object>(p => p != null, RemoveUser);
+            Task.Run(async () => await Load());
+
+            RemoveUserCommand = new RelayCommand<object>(p => p != null, async(p)=>await RemoveUser(p));
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
-            AddUserCommand = new RelayCommand<object>((p)=>CheckNewUser(p),AddUser);
+            AddUserCommand = new RelayCommand<object>((p)=>CheckNewUser(p), async(p)=>await AddUser(p));
+            MainViewModel.IsLoading = false;
         }
 
-        private async void Load()
+        private async Task Load()
         {
             NewUser = new MUser();
             Role = string.Empty;
@@ -149,8 +156,10 @@ namespace WPFEcommerceApp
         #region Command Methods
 
 
-        public async void RemoveUser(object obj)
+        public async Task RemoveUser(object obj)
         {
+            MainViewModel.IsLoading = true;
+
             var removeUser = obj as MUser;
             if (removeUser == null)
                 return;
@@ -161,7 +170,9 @@ namespace WPFEcommerceApp
                 removeUser.StatusUser = Status.NotBanned.ToString();
 
             await userRepo.Update(removeUser);
-            Load();
+            await Load();
+            MainViewModel.IsLoading = false;
+
         }
 
         public void Search()
@@ -198,11 +209,12 @@ namespace WPFEcommerceApp
             SearchText = string.Empty;
         }
 
-        public async void AddUser(object p)
+        public async Task AddUser(object p)
         {
+            MainViewModel.IsLoading = true;
+
             var user = p as MUser;
             user.Role = Role;
-
             user.Id =await GenerateID.Gen(typeof(MUser));
             user.StatusUser = Status.NotBanned.ToString();
             if (Role == "Shop")
@@ -213,7 +225,12 @@ namespace WPFEcommerceApp
                 user.Description = string.Empty;
             }
                 await userRepo.Add(user);
-            Load();
+            await Load();
+
+            MainViewModel.IsLoading = false;
+
+            Role = null;
+            NewUser = new MUser();
             DialogHost.CloseDialogCommand.Execute(null, null);
 
         }

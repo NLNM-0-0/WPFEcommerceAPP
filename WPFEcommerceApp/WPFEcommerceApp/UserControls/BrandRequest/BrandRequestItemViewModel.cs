@@ -38,8 +38,8 @@ namespace WPFEcommerceApp
                 _id = value; OnPropertyChanged();
             }
         }
-        private ImageSource _sourceImageAva;
-        public ImageSource SourceImageAva
+        private string _sourceImageAva;
+        public string SourceImageAva
         {
             get { return _sourceImageAva; }
             set { _sourceImageAva = value; OnPropertyChanged(); }

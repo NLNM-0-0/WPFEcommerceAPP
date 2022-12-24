@@ -265,14 +265,7 @@
                     
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <local:ProductBlock Height="500" Width="350"
-                                    ListProductImage="{Binding ImageProducts}"
-                                    ProductName="{Binding Name}"
-                                    Brand="{Binding Brand}"
-                                    Category="{Binding Category}"
-                                    Price="{Binding Price}"
-                                    Sale="{Binding Sale}"
-                                    Product="{Binding}"/>
+                            <local:ProductBlock Height="500" Width="350"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

@@ -14,8 +14,7 @@ namespace WPFEcommerceApp
         public Charts()
         {
             InitializeComponent();
-            var store = new AccountStore();
-            this.DataContext = new ShopStatisticsViewModel(store);
+            this.DataContext = new ShopStatisticsViewModel();
         }
 
         

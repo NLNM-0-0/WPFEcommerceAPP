@@ -48,18 +48,7 @@
                             Height="10"/>
                         </Button>
                     </Grid>
-                    <TextBox x:Name="title" Text="{Binding CurrentAds.Title, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource TextBoxHintBlackBorder}"
-                    materialDesign:HintAssist.Hint="Title"
-                    Width="auto"
-                    Margin="0 30 0 0"
-                    VerticalAlignment="Center"/>
-                    <TextBox x:Name="subtitle" Text="{Binding CurrentAds.Subtitle, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource TextBoxHintWrapText}"
-                    materialDesign:HintAssist.Hint="Subtitle"
-                    Width="auto"
-                    Margin="0 30 0 0"
-                    VerticalAlignment="Center"/>
+                    
                     <Button HorizontalAlignment="Right" Margin="0 30 0 5"
                         Style="{StaticResource TransparentButton}"
                         Command="{Binding AddBackgroundImageCommand}"
@@ -78,30 +67,18 @@
                         VerticalScrollBarVisibility="Hidden">
                             <Image Width="{Binding ElementName=grid, Path=ActualWidth}"
                         Stretch="Fill"
-                        Source="{Binding SourceImage}"
+                        Source="{Binding Image}"
                         ScrollViewer.CanContentScroll="True">
                             </Image>
                         </ScrollViewer>
-
-                        <StackPanel>
-                            <TextBlock Margin="30 30 30 10" TextWrapping="Wrap" 
-                                       FontSize="{StaticResource FontSizeHeadline2}"
-                                       FontWeight="DemiBold"
-                                       TextAlignment="Center"
-                                       Text="{Binding ElementName=title, Path=Text}"/>
-                            <TextBlock Margin="0" TextWrapping="Wrap" 
-                                       FontSize="{StaticResource FontSizeText}"
-                                       FontWeight="Regular"
-                                       TextAlignment="Center"
-                                Text="{Binding ElementName=subtitle,Path=Text}"/>
-                        </StackPanel>
                     </Grid>
 
                     <DockPanel LastChildFill="False">
                         <Button DockPanel.Dock="Right"
                                 Margin="5 30 0 0"
                                 Content="Add"
-                                Command="{Binding AddAdsCommand}"/>
+                                Command="{Binding AddAdsCommand}"
+                                CommandParameter="{Binding Image}"/>
                         <Button DockPanel.Dock="Right"
                                 Margin="0 30 5 0"
                                 Content="Cancel"

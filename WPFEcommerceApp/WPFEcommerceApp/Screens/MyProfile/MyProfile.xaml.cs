@@ -20,8 +20,7 @@ namespace WPFEcommerceApp
         public MyProfile()
         {
             InitializeComponent();
-            var store = new AccountStore();
-            this.DataContext = new MyProfileViewModel(store);
+            this.DataContext = new MyProfileViewModel();
         }
     }
 }

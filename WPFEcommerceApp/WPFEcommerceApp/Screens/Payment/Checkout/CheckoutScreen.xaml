@@ -127,6 +127,7 @@
         <!--Header-->
         <Label Content="Checkout"
                FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Content="Test" Visibility="Hidden" Command="{Binding TestFeature}" CommandParameter=""/>
         <!--Content-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
