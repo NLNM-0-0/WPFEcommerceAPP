@@ -39,9 +39,9 @@ namespace WPFEcommerceApp
             {
                 MainViewModel.IsLoading = true;
                 ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
-                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(SelectedProduct) { IsBanned = true }; ;
-                await DialogHost.Show(productInfoLandscape, "Main");
+                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(SelectedProduct) { IsBanned = true };
                 MainViewModel.IsLoading = false;
+                await DialogHost.Show(productInfoLandscape, "Main");
             });
             ContactUsCommand = new RelayCommandWithNoParameter(async () =>
             {
@@ -49,8 +49,8 @@ namespace WPFEcommerceApp
                 NotificationDialog notificationDialog = new NotificationDialog();
                 notificationDialog.Header = "Contact Info";
                 notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
-                await DialogHost.Show(notificationDialog, "Main");
                 MainViewModel.IsLoading = false;
+                await DialogHost.Show(notificationDialog, "Main");
             });
         }
     }
