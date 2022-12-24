@@ -26,7 +26,6 @@ namespace WPFEcommerceApp
             Category,
             Brand,
             InStock,
-            Sold,
             Sale,
             Color,
             Description
@@ -48,7 +47,6 @@ namespace WPFEcommerceApp
                 Models.Category category = (Models.Category)values[(int)productInfo.Category];
                 Models.Brand brand = (Models.Brand)values[(int)productInfo.Brand];
                 string inStock = (string)values[(int)productInfo.InStock];
-                string sold = (string)values[(int)productInfo.Sold];
                 string sale = (string)values[(int)productInfo.Sale];
                 string color = (string)values[(int)productInfo.Color];
                 string description = (string)values[(int)productInfo.Description];
@@ -70,7 +68,7 @@ namespace WPFEcommerceApp
                 else
                 {
                     product.ImageProducts = new List<Models.ImageProduct>();
-                }    
+                }
                 product.IsOneSize = isOneSize;
                 product.IsHadSizeS = isHadSizeS;
                 product.IsHadSizeM = isHadSizeM;
@@ -80,7 +78,6 @@ namespace WPFEcommerceApp
                 product.Category = category;
                 product.Brand = brand;
                 product.InStock = int.Parse(inStock == "" ? "0" : inStock);
-                product.Sold = int.Parse(sold == "" ? "0" : sold);
                 product.Sale = int.Parse(sale == "" ? "0" : sale);
                 product.Color = color;
                 product.Description = description;
