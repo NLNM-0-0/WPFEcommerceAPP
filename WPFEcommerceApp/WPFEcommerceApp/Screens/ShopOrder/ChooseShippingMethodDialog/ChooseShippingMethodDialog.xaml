@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ChooseShippingMethodDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d" 
+            d:DesignWidth="600"
+             x:Name="chooseShippingMethodDialog">
+    <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="auto" Height="auto">
+        <StackPanel>
+            <Grid>
+                <TextBlock Text="Choose shipping method" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
+                <Button HorizontalAlignment="Right"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        x:Name="ButtonClose"
+                        Margin="0 0 10 0"
+                        Height="30"
+                        Width="30"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
+
+                    <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Opacity="1"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+                </Button>
+            </Grid>
+            <Grid
+                Margin="0 20 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid
+                    x:Name="PostOfficeChooseGrid">
+                    <Button
+                        Style="{StaticResource TransparentButton}"
+                        Height="{Binding ElementName=PostOfficeChooseGrid, Path=ActualWidth}"
+                        materialDesign:ButtonAssist.CornerRadius="0"
+                        Command="{Binding ChooseCommand}"
+                        CommandParameter="{Binding ElementName=postTextBox, Path=Text}">
+                        <Button.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <materialDesign:PackIcon
+                                    Foreground="{StaticResource BlackColorBrush}"
+                                    Height="180"
+                                    Width="180"
+                                    Kind="MailboxOutline"
+                                    HorizontalAlignment="Center"
+                                    Grid.Row="0"/>
+                                <TextBlock
+                                    x:Name="postTextBox"
+                                    Text="Post"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    HorizontalAlignment="Center"
+                                    Grid.Row="1"/>
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+                <Grid
+                    x:Name="ShipperTakeItChooseGrid"
+                    Grid.Column="2">
+                    <Button
+                        Style="{StaticResource TransparentButton}"
+                        Height="{Binding ElementName=ShipperTakeItChooseGrid, Path=ActualWidth}"
+                        materialDesign:ButtonAssist.CornerRadius="0"
+                        Command="{Binding ChooseCommand}"
+                        CommandParameter="{Binding ElementName=shipperTextBox, Path=Text}">
+                        <Button.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <materialDesign:PackIcon
+                                    Foreground="{StaticResource BlackColorBrush}"
+                                    Height="180"
+                                    Width="180"
+                                    Kind="Motorbike"
+                                    HorizontalAlignment="Center"
+                                    Grid.Row="0"/>
+                                <TextBlock
+                                    x:Name="shipperTextBox"
+                                    Text="Shipper"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    HorizontalAlignment="Center"
+                                    Grid.Row="1"/>
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

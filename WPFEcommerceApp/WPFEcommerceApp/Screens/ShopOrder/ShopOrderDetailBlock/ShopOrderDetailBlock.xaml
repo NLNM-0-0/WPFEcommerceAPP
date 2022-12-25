@@ -1,0 +1,141 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ShopOrderDetailBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             mc:Ignorable="d"
+             x:Name="shopRatingBlock"
+             ScrollViewer.CanContentScroll="True">
+    <Border
+        BorderBrush="{StaticResource NotAvailableColorBrush}"
+        BorderThickness="0 1 0 0"
+        Background="Transparent"
+        Padding="0 10">
+        <Grid
+            Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="15"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="15"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"
+                  HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Image
+                    Height="100"
+                    Width="100"
+                    Stretch="UniformToFill"
+                    Margin="0 0 10 0"
+                    Source="{Binding ProductImage}">
+                </Image>
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center">
+                    <TextBlock 
+                        VerticalAlignment="Center"
+                        Text="{Binding OrderInfo.Product.Name}" 
+                        FontFamily="{StaticResource Bold}"
+                        FontSize="{StaticResource FontSizeText}"
+                        FontWeight="DemiBold"
+                        Margin="0 10 0 10"
+                        Grid.Column="1"/>
+                    <StackPanel
+                        Margin="0 10 0 10"
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                        <TextBlock 
+                            VerticalAlignment="Center"
+                            Text="Size: " 
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            FontFamily="{StaticResource Bold}"
+                            FontSize="{StaticResource FontSizeText}"/>
+                        <TextBlock 
+                            VerticalAlignment="Center"
+                            Text="{Binding OrderInfo.Size}" 
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            FontFamily="{StaticResource Bold}"
+                            FontSize="{StaticResource FontSizeText}"/>
+                    </StackPanel>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Text="Rating: "
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            FontFamily="{StaticResource Bold}"
+                            FontSize="{StaticResource FontSizeText}"
+                            Visibility="{c:Binding 'Rating > 0'}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="15"
+                            Icon="Star"
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            Visibility="{c:Binding 'Rating >= 1'}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="15"
+                            Icon="Star"
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            Visibility="{c:Binding 'Rating >= 2'}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="15"
+                            Icon="Star"
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            Visibility="{c:Binding 'Rating >= 3'}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="15"
+                            Icon="Star"
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            Visibility="{c:Binding 'Rating >= 4'}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="15"
+                            Icon="Star"
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            Visibility="{c:Binding 'Rating >= 5'}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+            </Grid>
+            <StackPanel
+                VerticalAlignment="Center"
+                Grid.Column="2"
+                Orientation="Horizontal">
+                <TextBlock
+                    Text="x"
+                    FontFamily="{StaticResource Medium}"
+                    FontSize="{StaticResource FontSizeText}"/>
+                <TextBlock
+                    Text="{Binding OrderInfo.Count}"
+                    FontFamily="{StaticResource Medium}"
+                    FontSize="{StaticResource FontSizeText}"/>
+            </StackPanel>
+            <StackPanel
+                VerticalAlignment="Center"
+                Grid.Column="4"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+                <TextBlock
+                    Text="{Binding OrderInfo.TotalPrice}"
+                    FontFamily="{StaticResource Medium}"
+                    FontSize="{StaticResource FontSizeText}"/>
+                <TextBlock
+                    Text="đ"
+                    FontFamily="{StaticResource Medium}"
+                    FontSize="{StaticResource FontSizeText}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

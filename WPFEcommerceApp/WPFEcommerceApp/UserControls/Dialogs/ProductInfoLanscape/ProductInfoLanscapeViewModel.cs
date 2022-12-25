@@ -3,6 +3,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,9 @@ namespace WPFEcommerceApp
 {
     public class ProductInfoLandscapeViewModel : BaseViewModel
     {
+        private GenericDataRepository<Category> categoryRepository = new GenericDataRepository<Category>();
+        private GenericDataRepository<Brand> brandRepository = new GenericDataRepository<Brand>();
+        private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
         public ICommand SaveProductInfoCommand { get; set; }
         public ICommand EditProductInfoCommand { get; set; }
         public ICommand AddSizeCommand { get; set; }
@@ -28,6 +32,7 @@ namespace WPFEcommerceApp
         public ICommand OpenAddCategoryDialogCommand { get; set; }
         public ICommand ContactCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
+        public ICommand KeyDownEnterCommand { get; set; }
 
         private Models.Product selectedProduct;
         public Models.Product SelectedProduct
@@ -62,8 +67,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private IList<Brand> brands;
-        public IList<Brand> Brands
+        private ObservableCollection<Brand> brands;
+        public ObservableCollection<Brand> Brands
         {
             get
             {
@@ -75,8 +80,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private IList<Category> categories;
-        public IList<Category> Categories
+        private ObservableCollection<Category> categories;
+        public ObservableCollection<Category> Categories
         {
             get
             {
@@ -169,6 +174,43 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        public System.Windows.Media.Brush ForegroundStatus
+        {
+            get
+            {
+                if (SelectedProduct.Status == "Banned")
+                {
+                    return new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
+                }
+                else if (SelectedProduct.InStock > 0)
+                {
+                    return new SolidColorBrush(System.Windows.Media.Color.FromRgb(42, 169, 82));
+                }
+                else
+                {
+                    return new SolidColorBrush(System.Windows.Media.Color.FromRgb(253, 197, 0));
+                }
+
+            }
+        }
+        public string Status
+        {
+            get
+            {
+                if (SelectedProduct.Status == "Banned")
+                {
+                    return "Banned";
+                }
+                else if (SelectedProduct.InStock > 0)
+                {
+                    return "In Stock";
+                }
+                else
+                {
+                    return "Out Of Stock";
+                }
+            }
+        }
         public ProductInfoLandscapeViewModel(Models.Product product)
         {
             SelectedProduct = product;
@@ -176,24 +218,23 @@ namespace WPFEcommerceApp
             ImageProducts.CollectionChanged += ImageProducts_CollectionChanged;
             if (SelectedProduct.IsOneSize)
             {
-                IsHadOneSize= true;
-            }    
+                IsHadOneSize = true;
+            }
             else
             {
-                IsHadOneSize= false;
-            }    
+                IsHadOneSize = false;
+            }
             Task.Run(async () => { await LoadBrands(); await LoadCategories(); });
             IsEditting = false;
             ImageProducts = new ObservableCollection<string>();
             foreach (var item in SelectedProduct.ImageProducts)
             {
                 ImageProducts.Add(item.Source);
-            }    
-            /*ImageProduct.CollectionChanged += ImageSources_CollectionChanged;*/
-            if(SelectedProduct.Status == "Banned")
+            }
+            if (SelectedProduct.Status == "Banned")
             {
                 IsBanned = true;
-            }    
+            }
             else
             {
                 IsBanned = false;
@@ -291,33 +332,48 @@ namespace WPFEcommerceApp
                     IsHadSizeXXL = false;
                 }
             });
-            SaveProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            SaveProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 WPFEcommerceApp.Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
                 SelectedProduct.Name = productTemp.Name;
                 SelectedProduct.Price = productTemp.Price;
                 SelectedProduct.ImageProducts.Clear();
-                foreach(string imageProductSource in ImageProducts)
+                foreach (string imageProductSource in ImageProducts)
                 {
-                    Models.ImageProduct imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
+                    Tuple<bool, string> link;
+                    link = await FireStorageAPI.PushFromFile(imageProductSource, "Product", $"{SelectedProduct.Id}");
+                    Models.ImageProduct imageProduct;
+                    if (link.Item1)
+                    {
+                        imageProduct = new Models.ImageProduct() { Source = link.Item2, IdProduct = SelectedProduct.Id };
+                    }    
+                    else
+                    {
+                        imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
+                    }    
                     SelectedProduct.ImageProducts.Add(imageProduct);
-                }    
+                }
                 SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
                 SelectedProduct.IsHadSizeM = productTemp.IsHadSizeM;
                 SelectedProduct.IsHadSizeL = productTemp.IsHadSizeL;
                 SelectedProduct.IsHadSizeXL = productTemp.IsHadSizeXL;
                 SelectedProduct.IsHadSizeXXL = productTemp.IsHadSizeXXL;
                 SelectedProduct.Category = productTemp.Category;
+                SelectedProduct.IdCategory = productTemp.IdCategory;
                 selectedProduct.Brand = productTemp.Brand;
+                SelectedProduct.IdBrand = productTemp.IdBrand;
                 selectedProduct.InStock = productTemp.InStock;
                 selectedProduct.Sold = productTemp.Sold;
                 SelectedProduct.Sale = productTemp.Sale;
                 SelectedProduct.Description = productTemp.Description;
                 SelectedProduct.Color = productTemp.Description;
                 IsEditting = false;
-
-                Task.Run(async () => { await UpdateImageProduct(); await UpdateProduct(); });
                 product = SelectedProduct;
+                await UpdateImageProduct(); 
+                await UpdateProduct();
+                product = SelectedProduct;
+                MainViewModel.IsLoading = false;
                 var closeDialog = DialogHost.CloseDialogCommand;
                 closeDialog.Execute(null, null);
             });
@@ -326,31 +382,33 @@ namespace WPFEcommerceApp
             {
                 IsEditting = true;
             });
-            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
                 changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
-                DialogHost.Show(changeImageProductDialog, "SecondDialog");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(changeImageProductDialog, "SecondDialog");
             });
-            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 AddBrandDialog addBrandDialog = new AddBrandDialog();
                 addBrandDialog.DataContext = new AddBrandDialogViewModel();
-                DialogHost.Show(addBrandDialog, "SecondDialog");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(addBrandDialog, "SecondDialog");
             });
-            OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
                 addCategoryDialog.DataContext = new AddCategoryDialogViewModel();
-                DialogHost.Show(addCategoryDialog, "SecondDialog");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(addCategoryDialog, "SecondDialog");
             });
-            ContactCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            ContactCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
-                //Phan xu ly du lieu chua lam
-
-                //dong Dialog
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(null, null);
+                await OpenContact();
             });
             CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -360,6 +418,35 @@ namespace WPFEcommerceApp
                 IsHadSizeXL = !IsHadOneSize;
                 IsHadSizeXXL = !IsHadOneSize;
             });
+            KeyDownEnterCommand = new RelayCommand<object>(p => p != null, async (p) =>
+            {
+                if (IsBanned)
+                {
+                    await OpenContact();
+                }
+                else
+                {
+                    Button button = p as Button;
+                    if (!IsEditting)
+                    {
+                        IsEditting = true;
+                    }
+                    else if (IsEditting && button.IsEnabled)
+                    {
+                        button.Command.Execute(button.CommandParameter);
+                        IsEditting = false;
+                    }
+                }
+            });
+        }
+        private async Task OpenContact()
+        {
+            MainViewModel.IsLoading = true;
+            NotificationDialog notificationDialog = new NotificationDialog();
+            notificationDialog.Header = "Contact Info";
+            notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
+            MainViewModel.IsLoading = false;
+            await DialogHost.Show(notificationDialog, "SecondDialog");
         }
 
         private void ImageProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -369,26 +456,24 @@ namespace WPFEcommerceApp
 
         private async Task LoadCategories()
         {
-            var repository = new GenericDataRepository<Models.Category>();
-            Categories = await repository.GetAllAsync();
+            Categories = new ObservableCollection<Models.Category>(await categoryRepository.GetListAsync(c => c.Status == "NotBanned"));
         }
         private async Task LoadBrands()
         {
-            var repository = new GenericDataRepository<Models.Brand>();
-            Brands = await repository.GetAllAsync();
+            Brands = new ObservableCollection<Models.Brand>(await brandRepository.GetListAsync(b => b.Status == "NotBanned"));
         }
         private async Task UpdateProduct()
         {
-            var repository = new GenericDataRepository<Models.Product>();
-            Models.Product product = await repository.GetSingleAsync(p => p.Id == SelectedProduct.Id);
+            Models.Product product = await productRepository.GetSingleAsync(p => p.Id == SelectedProduct.Id);
             product.Name = SelectedProduct.Name;
             product.Price = SelectedProduct.Price;
-            //product.ImageProducts = SelectedProduct.ImageProducts;
             product.IsHadSizeS = SelectedProduct.IsHadSizeS;
             product.IsHadSizeM = SelectedProduct.IsHadSizeM;
             product.IsHadSizeL = SelectedProduct.IsHadSizeL;
             product.IsHadSizeXL = SelectedProduct.IsHadSizeXL;
             product.IsHadSizeXXL = SelectedProduct.IsHadSizeXXL;
+            product.IdCategory = SelectedProduct.Category.Id;
+            product.IdBrand = SelectedProduct.Brand.Id;
             product.Category = SelectedProduct.Category;
             product.Brand = SelectedProduct.Brand;
             product.InStock = SelectedProduct.InStock;
@@ -396,7 +481,7 @@ namespace WPFEcommerceApp
             product.Sale = SelectedProduct.Sale;
             product.Description = SelectedProduct.Description;
             product.Color = SelectedProduct.Color;
-            await repository.Update(product);
+            await productRepository.Update(product);
         }
         private async Task UpdateImageProduct()
         {
@@ -413,8 +498,7 @@ namespace WPFEcommerceApp
             {
                 foreach (Models.ImageProduct imageproduct in SelectedProduct.ImageProducts)
                 {
-                    Models.ImageProduct imageproductTemp = new Models.ImageProduct() { IdProduct = imageproduct.IdProduct, Source = imageproduct.Source};
-                    await repository.Add(imageproductTemp);
+                    await repository.Add(imageproduct);
                 }
             }
         }

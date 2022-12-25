@@ -20,8 +20,16 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class ProductInfoLandscape : UserControl
     {
+        public static readonly DependencyProperty IsCanEditProperty = DependencyProperty.Register(
+        "IsCanEdit", typeof(Boolean), typeof(ProductInfoLandscape), new FrameworkPropertyMetadata(default(Boolean)));
+        public Boolean IsCanEdit
+        {
+            get => (Boolean)GetValue(IsCanEditProperty);
+            set => SetValue(IsCanEditProperty, value);
+        }
         public ProductInfoLandscape()
         {
+            this.IsCanEdit = true;
             InitializeComponent();
         }
 

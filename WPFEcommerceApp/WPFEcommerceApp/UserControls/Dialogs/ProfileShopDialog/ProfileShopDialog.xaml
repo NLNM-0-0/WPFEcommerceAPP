@@ -7,20 +7,35 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
-             mc:Ignorable="d">
-    <materialDesign:DialogHost>
-        <DockPanel
+             mc:Ignorable="d"
+             x:Name="profileShopDialog">
+    <materialDesign:DialogHost
+        DialogTheme="Inherit"
+        Identifier="SecondDialog">
+        <Grid
             Width="800"
             Height="400">
+            <Grid.Resources>
+                <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <Grid
+                Grid.Column="0"
                 Width="210"
                 VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
                 <Border
                     x:Name="MainBorder"
-                    Height="350"
+                    MaxHeight="350"
                     CornerRadius="0 0 30 0"
                     ClipToBounds="True"
-                    Background="{StaticResource WhiteColorBrush}">
+                    Background="{StaticResource BoxShadowColorBrush}">
                 </Border>
                 <Border>
                     <Border.OpacityMask>
@@ -28,11 +43,12 @@
                     </Border.OpacityMask>
                     <ScrollViewer
                         HorizontalScrollBarVisibility="Hidden"
-                        VerticalScrollBarVisibility="Hidden">
+                        VerticalScrollBarVisibility="Hidden"
+                        CanContentScroll="False">
                         <Image
                         Stretch="Fill"
                         Height="350"
-                        Source="{Binding SourceImageBackground}"
+                        Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         ScrollViewer.CanContentScroll="True">
                             <Image.OpacityMask>
                                 <VisualBrush Visual="{Binding ElementName=MainBorder}"
@@ -41,16 +57,23 @@
                         </Image>
                     </ScrollViewer>
                 </Border>
-                <DockPanel
+                <Grid
                     Margin="0 30 0 10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
                     <Button
-                        DockPanel.Dock="Top"
-                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                        Style="{StaticResource TransparentButton}"
-                        Height="20"
-                        FontFamily="{StaticResource Regular}"
-                        Padding="0"
-                        Width="70"
+                        Grid.Row="0"
+                        Command="{Binding OpenProfileShopAvaDialog}"
+                        Padding="20 0"
+                        Width="auto"
+                        Style="{StaticResource WhiteButton}"
+                        HorizontalAlignment="Center"
+                        Height="auto"
+                        materialDesign:ButtonAssist.CornerRadius="10"                        FontFamily="{StaticResource Regular}"
                         Margin="0 0 0 5"
                         FontSize="{StaticResource FontSizeDescription}"
                         Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
@@ -69,47 +92,54 @@
                                     VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button.Content>
-                        <Button.CommandParameter>
-                            <local:ProfileShopAvaDialog/>
-                        </Button.CommandParameter>
                     </Button>
                     <Border
-                        DockPanel.Dock="Top"
+                        Grid.Row="1"
+                        BorderBrush="{StaticResource BoxLineColorBrush}"
+                        BorderThickness="1"
                         Background="White"
                         CornerRadius="50"
                         Width="100"
                         Height="100">
                         <Image
-                            Height="100"
-                            Width="100"
+                            Height="98"
+                            Width="98"
                             Stretch="Fill"
-                            Source="{Binding SourceImageAva}">
+                            Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                             <Image.Clip>
                                 <EllipseGeometry
-                                    Center="50 50"
-                                    RadiusX="50"
-                                    RadiusY="50"/>
+                                    Center="49 49"
+                                    RadiusX="49"
+                                    RadiusY="49"/>
                             </Image.Clip>
                         </Image>
                     </Border>
-                    <TextBlock
-                        DockPanel.Dock="Top"
-                        Margin="0 15"
-                        MaxWidth="180"
-                        Text="{Binding Name}"
-                        FontFamily="{StaticResource Bold}"
-                        FontSize="{StaticResource FontSizeHeadline2}"
-                        HorizontalAlignment="Center"
-                        TextWrapping="Wrap"/>
+                    <Border
+                        Grid.Row="2"
+                        Padding="5 0"
+                        HorizontalAlignment="Center">
+                        <TextBlock
+                            DockPanel.Dock="Top"
+                            Margin="0 15"
+                            MaxWidth="180"
+                            Text="{Binding ElementName=nameTextBox, Path=Text}"
+                            FontFamily="{StaticResource Bold}"
+                            FontSize="{StaticResource FontSizeHeadline2}"
+                            HorizontalAlignment="Center"
+                            TextWrapping="Wrap"
+                            TextTrimming="WordEllipsis"/>
+                    </Border>
+                    
                     <Button
-                        DockPanel.Dock="Top"
+                        Grid.Row="3"
                         VerticalAlignment="Bottom"
-                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                        Style="{StaticResource TransparentButton}"
+                        Command="{Binding OpenProfileShopBackgroundDialog}"
+                        Style="{StaticResource WhiteButton}"
                         Height="20"
                         FontFamily="{StaticResource Regular}"
-                        Padding="0"
-                        Width="125"
+                        Padding="20 0"
+                        Width="auto"
+                        HorizontalAlignment="Center"
                         FontSize="{StaticResource FontSizeDescription}"
                         Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
                         Foreground="#1290FF">
@@ -127,13 +157,11 @@
                                     VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button.Content>
-                        <Button.CommandParameter>
-                            <local:ProfileShopBackgroundDialog/>
-                        </Button.CommandParameter>
                     </Button>
-                </DockPanel>
+                </Grid>
             </Grid>
             <Grid
+                Grid.Column="1"
                 Margin="30">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -155,33 +183,66 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBox
+                            x:Name="nameTextBox"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Name shop"
-                            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="0"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
+                            MaxLength="100">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="Shop.Name"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <TextBox
+                            x:Name="phoneTextBox"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Phone number"
-                            Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="1"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="11"/>
+                            MaxLength="11">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="Shop.PhoneNumber"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <TextBox
+                            x:Name="emailTextBox"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Email"
-                            Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="2"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"/>
+                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="Shop.Email"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                     </Grid>
                     <Grid 
                         Grid.Column="2">
@@ -190,25 +251,47 @@
                             <RowDefinition Height="3*"/>
                         </Grid.RowDefinitions>
                         <TextBox
+                            x:Name="addressTextBox"
                         Style="{StaticResource TextBoxHintWrapText}"
                             Width="auto"
                             Height="100"
                             materialDesign:HintAssist.Hint="Address"
-                            Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="0"
                             VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"/>
+                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="Shop.Address"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <TextBox
+                            x:Name="descriptionTextBox"
                             Style="{StaticResource TextBoxHintWrapText}"
                             Height="100"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Description"
-                            Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="1"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="200"/>
+                            MaxLength="200">
+                            <TextBox.Text>
+                                <Binding
+                                    Path="Shop.Description"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                     </Grid>
 
                 </Grid>
@@ -221,25 +304,37 @@
                     <Button
                         x:Name="EditButton"
                         Command="{Binding EditProfileShopCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                         Grid.Column="0"
                         Width="100"
                         Content="Edit"
                         HorizontalAlignment="Right"
-                        IsEnabled="False"
+                        IsEnabled="{i:Binding !IsEditing}"
                         Margin="0 0 30 0"/>
                     <Button
                         x:Name="SaveButton"
                         Command="{Binding SaveProfileShopCommand}"
-                        CommandParameter="{Binding ElementName=EditButton}"
                         Grid.Column="1"
                         Width="100"
                         Content="Save"
-                        HorizontalAlignment="Right"
-                        IsEnabled="{i:Binding Path=!IsEnabled, ElementName=EditButton}"/>
+                        HorizontalAlignment="Right">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                                <Binding ElementName="nameTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="phoneTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="emailTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="addressTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="EditButton" Path="IsEnabled"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                 </Grid>
             </Grid>
-        </DockPanel>
+        </Grid>
     </materialDesign:DialogHost>
-
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter"
+                    Command="{Binding ChangeEditStatusCommand}"
+                    CommandParameter="{Binding ElementName=SaveButton, Path=IsEnabled}"/>
+    </UserControl.InputBindings>
 </UserControl>

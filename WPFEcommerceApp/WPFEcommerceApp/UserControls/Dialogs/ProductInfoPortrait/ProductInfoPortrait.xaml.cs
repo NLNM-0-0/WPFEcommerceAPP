@@ -20,18 +20,6 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class ProductInfoPortrait : UserControl
     {
-        /*public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(
-            "Status", typeof(ProductStatus), typeof(ProductInfoPortrait), new FrameworkPropertyMetadata(default(ProductStatus)));
-        public ProductStatus Status
-        {
-            get => (ProductStatus)GetValue(StatusProperty);
-            set => SetValue(StatusProperty, value);
-        }
-        public ProductInfoPortrait()
-        {
-            InitializeComponent();
-            this.Status = ProductStatus.NotBanned;
-        }*/
         public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(
             "Status", typeof(string), typeof(ProductInfoPortrait), new FrameworkPropertyMetadata(default(string)));
         public string Status

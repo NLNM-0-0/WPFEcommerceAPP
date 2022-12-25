@@ -65,18 +65,18 @@
                             <TextBlock
                                 Margin="0 20 0 0"
                                 Text="Status: "
-                                Foreground="{Binding ElementName=statusTextBlock, Path=Foreground}"
+                                Foreground="{Binding ForegroundStatus, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"
                                 FontFamily="{StaticResource Bold}"
                                 FontSize="{StaticResource FontSizeText}"/>
                             <TextBlock
                                 x:Name="statusTextBlock"
                                 Margin="0 20 0 0"
-                                Text="{Binding SelectedProduct.Status, UpdateSourceTrigger=Explicit}"
+                                Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Right"
                                 FontFamily="{StaticResource Bold}"
-                                FontSize="{StaticResource FontSizeText}">
-                                <!--Foreground="{i:Binding '!IsBanned ? \'#2AA952\' : \'#DB3022\''}">-->
+                                FontSize="{StaticResource FontSizeText}"
+                                Foreground="{Binding ForegroundStatus, UpdateSourceTrigger=PropertyChanged}">
                             </TextBlock>
                         </StackPanel>
                     </Grid>
@@ -116,7 +116,8 @@
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
                                             ValidatesOnTargetUpdated="True"
-                                            Type="DoubleType"/>
+                                            Type="DoubleType"
+                                            Min="0"/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -331,14 +332,15 @@
                                         Width="455"
                                         Margin="0 0 10 0"
                                         VerticalAlignment="Center"
-                                        IsEnabled="{i:Binding IsEditting}"
                                         ItemsSource="{Binding Categories}"
                                         DisplayMemberPath="Name"
+                                        IsEnabled="{Binding IsEditting}"
+                                        Text="{Binding SelectedProduct.Category.Name}"
                                         IsSynchronizedWithCurrentItem="True">
                                         <ComboBox.SelectedItem>
                                             <Binding
-                                            Path="SelectedProduct.Category"
-                                            UpdateSourceTrigger="Explicit">
+                                                Path="SelectedProduct.Category"
+                                                UpdateSourceTrigger="Explicit">
                                             </Binding>
                                         </ComboBox.SelectedItem>
                                     </ComboBox>
@@ -362,7 +364,7 @@
                                     Margin="0 10 0 0"
                                     Text="*If you can't find the category, press button add new and we will update"
                                     FontFamily="{StaticResource Medium}"
-                                    Foreground="{StaticResource ErrorColorBrush}"/>
+                                    Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
                             </StackPanel>
                             <StackPanel Width="500"
                                 Margin="0 38 0 0">
@@ -373,9 +375,10 @@
                                         Width="455"
                                         Margin="0 0 10 0"
                                         VerticalAlignment="Center"
-                                        IsEnabled="{i:Binding IsEditting}"
+                                        IsEnabled="{Binding IsEditting}"
                                         ItemsSource="{Binding Brands}"
                                         DisplayMemberPath="Name"
+                                        Text="{Binding SelectedProduct.Brand.Name}"
                                         IsSynchronizedWithCurrentItem="True">
                                         <ComboBox.SelectedItem>
                                             <Binding
@@ -405,7 +408,7 @@
                                 Margin="0 10 0 0"
                                 Text="*If you can't find the category, press button add new and we will update"
                                 FontFamily="{StaticResource Medium}"
-                                Foreground="{StaticResource ErrorColorBrush}"/>
+                                Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
                         </StackPanel>
                         <StackPanel
                             Grid.Column="2">
@@ -422,26 +425,8 @@
                                         UpdateSourceTrigger="Explicit">
                                         <Binding.ValidationRules>
                                             <local:NumberTextBoxValidation
-                                                ValidatesOnTargetUpdated="True"/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-                            <TextBox
-                                x:Name="soldTextBox"
-                                Width="auto"
-                                Style="{StaticResource TextBoxHintBlackBorder}"
-                                materialDesign:HintAssist.Hint="Sold"
-                                Margin="0 20"
-                                IsReadOnly="True"
-                                TextChanged="textBox_TextChanged">
-                                <TextBox.Text>
-                                    <Binding 
-                                        Path="SelectedProduct.Sold"
-                                        UpdateSourceTrigger="Explicit">
-                                        <Binding.ValidationRules>
-                                            <local:NumberTextBoxValidation
-                                                ValidatesOnTargetUpdated="True"/>
+                                                ValidatesOnTargetUpdated="True"
+                                                Min="0"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -449,6 +434,7 @@
                             <TextBox
                                 x:Name="saleTextBox"
                                 Width="auto"
+                                Margin="0 20"
                                 Style="{StaticResource TextBoxHintBlackBorder}"
                                 materialDesign:HintAssist.Hint="Sale"
                                 IsReadOnly="{i:Binding !IsEditting}"
@@ -463,6 +449,20 @@
                                                 Min="0"
                                                 Max="100"/>
                                         </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <TextBox
+                                x:Name="soldTextBox"
+                                Width="auto"
+                                Style="{StaticResource TextBoxHintBlackBorder}"
+                                materialDesign:HintAssist.Hint="Sold"
+                                IsReadOnly="True"
+                                Background="{StaticResource BackgroundColorBrush}">
+                                <TextBox.Text>
+                                    <Binding 
+                                        Path="SelectedProduct.Sold"
+                                        UpdateSourceTrigger="PropertyChanged">
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
@@ -539,18 +539,19 @@
                         </FrameworkElement>
                         <Grid
                             Grid.Column="1"
-                            Visibility="{i:Binding !IsBanned}"/>
+                            Visibility="{i:Binding '!DataContext.IsBanned and IsCanEdit', ElementName=productInfoLandscape}"/>
                         <Button
-                            Visibility="{i:Binding !IsBanned}"
+                            Visibility="{i:Binding '!DataContext.IsBanned and IsCanEdit', ElementName=productInfoLandscape}"
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             Width="170"
                             Content="Edit"
-                            IsEnabled="{i:Binding !IsEditting}"
+                            IsEnabled="{i:Binding '!IsEditting'}"
                             Command="{Binding EditProductInfoCommand}"
                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
                         <Button
-                            Visibility="{i:Binding !IsBanned}"
+                            x:Name="saveButton"
+                            Visibility="{i:Binding '!DataContext.IsBanned and IsCanEdit', ElementName=productInfoLandscape}"
                             Grid.Column="4"
                             HorizontalAlignment="Right"
                             Width="170"
@@ -586,7 +587,6 @@
                                     <Binding ElementName="categoryComboBox" Path="SelectedItem"/>
                                     <Binding ElementName="brandComboBox" Path="SelectedItem"/>
                                     <Binding ElementName="inStockTextBox" Path="Text"/>
-                                    <Binding ElementName="soldTextBox" Path="Text"/>
                                     <Binding ElementName="saleTextBox" Path="Text"/>
                                     <Binding ElementName="colorTextBox" Path="Text"/>
                                     <Binding ElementName="descriptionTextBox" Path="Text"/>
@@ -599,4 +599,10 @@
             </Border>
         </Grid>
     </materialDesign:DialogHost>
+    <UserControl.InputBindings>
+        <KeyBinding 
+            Key="Enter"
+            Command="{Binding KeyDownEnterCommand}"
+            CommandParameter="{Binding ElementName=saveButton}"/>
+    </UserControl.InputBindings>
 </UserControl>

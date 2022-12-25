@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WPFEcommerceApp.ProductInfoPortrait"
+﻿   <UserControl x:Class="WPFEcommerceApp.ProductInfoPortrait"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -194,7 +194,7 @@
                     FontSize="{StaticResource FontSizeHeadline3}"
                     FontFamily="{StaticResource Medium}"/>
             </Grid>
-            
+
             <CheckBox
                 x:Name="freeSizeCheckBox"
                 Grid.Column="1"
@@ -209,7 +209,7 @@
                 Command="{Binding CheckOneSizeCommand}"
                 CommandParameter="{Binding ElementName=sizeGrid}"/>
         </Grid>
-        
+
         <Grid
             x:Name="sizeGrid"
             Margin="0 10 0 0"
@@ -294,7 +294,8 @@
                         <Binding.ValidationRules>
                             <local:NumberTextBoxValidation
                                 Type="DoubleType"
-                                ValidatesOnTargetUpdated="True"/>
+                                ValidatesOnTargetUpdated="True"
+                                Min="0"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -313,7 +314,9 @@
                         UpdateSourceTrigger="Explicit">
                         <Binding.ValidationRules>
                             <local:NumberTextBoxValidation
-                                ValidatesOnTargetUpdated="True"/>
+                                ValidatesOnTargetUpdated="True"
+                                Min="0"
+                                Max="100"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -339,7 +342,8 @@
                         UpdateSourceTrigger="Explicit">
                         <Binding.ValidationRules>
                             <local:NumberTextBoxValidation
-                                ValidatesOnTargetUpdated="True"/>
+                                ValidatesOnTargetUpdated="True"
+                                Min="0"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -350,16 +354,12 @@
                 Style="{StaticResource TextBoxHintBlackBorder}"
                 materialDesign:HintAssist.Hint="Sold"
                 Width="auto"
-                IsReadOnly="False"
-                TextChanged="textBox_TextChanged">
+                IsReadOnly="True"
+                Background="{StaticResource BackgroundColorBrush}">
                 <TextBox.Text>
                     <Binding
                         Path="SelectedProduct.Sold"
-                        UpdateSourceTrigger="Explicit">
-                        <Binding.ValidationRules>
-                            <local:NumberTextBoxValidation
-                                ValidatesOnTargetUpdated="True"/>
-                        </Binding.ValidationRules>
+                        UpdateSourceTrigger="PropertyChanged">
                     </Binding>
                 </TextBox.Text>
             </TextBox>
@@ -371,15 +371,12 @@
             ItemsSource="{Binding Categories}"
             DisplayMemberPath="Name"
             IsSynchronizedWithCurrentItem="True"
-            IsEnabled="{Binding IsEditting}">
+            IsEnabled="{Binding IsEditting}"
+            Text="{Binding SelectedProduct.Category.Name}">
             <ComboBox.SelectedItem>
                 <Binding
                     Path="SelectedProduct.Category"
                     UpdateSourceTrigger="Explicit">
-                    <Binding.ValidationRules>
-                        <local:NotEmptyValidationRule
-                            ValidatesOnTargetUpdated="True"/>
-                    </Binding.ValidationRules>
                 </Binding>
             </ComboBox.SelectedItem>
         </ComboBox>
@@ -391,15 +388,12 @@
             ItemsSource="{Binding Brands}"
             DisplayMemberPath="Name"
             IsSynchronizedWithCurrentItem="True"
-            IsEnabled="{Binding IsEditting}">
+            IsEnabled="{Binding IsEditting}"
+            Text="{Binding SelectedProduct.Brand.Name}">
             <ComboBox.SelectedItem>
                 <Binding
                     Path="SelectedProduct.Brand"
                     UpdateSourceTrigger="Explicit">
-                    <Binding.ValidationRules>
-                        <local:NotEmptyValidationRule
-                            ValidatesOnTargetUpdated="True"/>
-                    </Binding.ValidationRules>
                 </Binding>
             </ComboBox.SelectedItem>
         </ComboBox>
@@ -480,7 +474,6 @@
                         <Binding ElementName="priceTextBox" Path="(Validation.HasError)"/>
                         <Binding ElementName="inStockTextBox" Path="(Validation.HasError)"/>
                         <Binding ElementName="saleTextBox" Path="(Validation.HasError)"/>
-                        <Binding ElementName="soldTextBox" Path="(Validation.HasError)"/>
                         <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
                         <Binding ElementName="colorTextBox" Path="(Validation.HasError)"/>
                         <Binding ElementName="IsHadSize" Path="Tag"/>
@@ -504,7 +497,6 @@
                         <Binding ElementName="categoryComboBox" Path="SelectedItem"/>
                         <Binding ElementName="brandComboBox" Path="SelectedItem"/>
                         <Binding ElementName="inStockTextBox" Path="Text"/>
-                        <Binding ElementName="soldTextBox" Path="Text"/>
                         <Binding ElementName="saleTextBox" Path="Text"/>
                         <Binding ElementName="colorTextBox" Path="Text"/>
                         <Binding ElementName="descriptionTextBox" Path="Text"/>
@@ -512,5 +504,14 @@
                 </Button.CommandParameter>
             </Button>
         </Grid>
-        </StackPanel>
+    </StackPanel>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding ChangeStatusCommand}">
+            <KeyBinding.CommandParameter>
+                <Binding ElementName="saveButton"/>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+    </UserControl.InputBindings>
 </UserControl>

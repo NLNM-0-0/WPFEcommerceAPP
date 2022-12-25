@@ -6,10 +6,14 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignWidth="600">
     <materialDesign:DialogHost>
         <Grid>
+            <Grid.Resources>
+                <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
+            </Grid.Resources>
             <Border
                 BorderBrush="{StaticResource BoxLineColorBrush}"
                 BorderThickness="1">
@@ -49,49 +53,47 @@
                         </Button>
                     </Grid>
                     <TextBox
-                        Margin="0 30 0 0"
-                        Width="auto"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Shop Name"
-                        MaxLength="27"
-                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
-
-                    <TextBox
-                        Margin="0 30 0 0"
-                        Width="auto"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Phone Number"
-                        MaxLength="11"
-                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
-
-                    <TextBox
-                        Margin="0 30 0 0"
-                        Width="auto"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Email"/>
-
-                    <TextBox
-                        Margin="0 30 0 0"
-                        Width="auto"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Address"/>
-
-                    <TextBox
+                        x:Name="descriptionTextBox"
                         Margin="0 30 0 0"
                         Width="auto"
                         Style="{StaticResource TextBoxHintWrapText}"
                         materialDesign:HintAssist.Hint="Description"
                         Height="150"
                         MaxLength="200"
-                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"/>
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
+                        <TextBox.Text>
+                            <Binding
+                                Path="Description"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                        ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
 
                     <Button
+                        x:Name="registerButton"
                         Margin="0 30 0 0"
                         HorizontalAlignment="Right"
                         Width="170"
-                        Content="Register"/>
+                        Content="Register"
+                        Command="{Binding RegisterCommand}"
+                        CommandParameter="{Binding ElementName=descriptionTextBox, Path=(Validation.HasError)}">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                                <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                 </StackPanel>
             </Border>
         </Grid>
     </materialDesign:DialogHost>
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter"
+                    Command="{Binding RegisterCommand}"
+                    CommandParameter="{Binding ElementName=descriptionTextBox, Path=(Validation.HasError)}"/>
+    </UserControl.InputBindings>
 </UserControl>

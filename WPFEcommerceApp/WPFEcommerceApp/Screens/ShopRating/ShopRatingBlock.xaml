@@ -1,0 +1,185 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ShopRatingBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             mc:Ignorable="d"
+             x:Name="shopRatingBlock"
+             ScrollViewer.CanContentScroll="True">
+    <Border
+        BorderBrush="{StaticResource NotAvailableColorBrush}"
+        BorderThickness="1"
+        Background="Transparent">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid
+                Grid.Row="0"
+                Background="{StaticResource NotAvailableColorBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Column="0"
+                    Margin="20 0"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Foreground="{StaticResource WhiteColorBrush}"
+                        Text="UserName: "
+                        FontFamily="{StaticResource Medium}"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        VerticalAlignment="Center"/>
+                    <Grid Margin="10 5 0 5">
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <Border
+                                Background="{StaticResource WhiteColorBrush}"
+                                CornerRadius="10"
+                                Width="20"
+                                Height="20">
+                                <ScrollViewer>
+                                    <Image
+                                        Height="20"
+                                        Width="20"
+                                        Stretch="UniformToFill"
+                                        Source="{Binding Path=CustomerImageAva, ElementName=shopRatingBlock, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <Image.Clip>
+                                            <EllipseGeometry
+                                                Center="10 10"
+                                                RadiusX="10"
+                                                RadiusY="10"/>
+                                        </Image.Clip>
+                                    </Image>
+                                </ScrollViewer>
+                            </Border>
+                            <TextBlock 
+                                Foreground="{StaticResource WhiteColorBrush}"
+                                Text="{Binding ElementName=shopRatingBlock, Path=Customer.Name}" TextWrapping="Wrap"
+                                Margin="5 4 5 2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontWeight="Medium"
+                                FontSize="{StaticResource FontSizeDescription}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                <StackPanel
+                    Margin="20 0"
+                    HorizontalAlignment="Right"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Foreground="{StaticResource WhiteColorBrush}"
+                        Text="IdOrder: "
+                        FontFamily="{StaticResource Medium}"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Foreground="{StaticResource WhiteColorBrush}"
+                        Text="{Binding ElementName=shopRatingBlock, Path=Order.Id}"
+                        FontFamily="{StaticResource Bold}"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        FontWeight="Bold"
+                        VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+            <Grid
+                    Margin="20 10"
+                    Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0"
+                          HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Image
+                            Height="65"
+                            Width="65"
+                            Stretch="UniformToFill"
+                            Margin="0 0 10 0"
+                            Source="{Binding Path=ProductImage, ElementName=shopRatingBlock, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True,Mode=TwoWay}">
+                        </Image>
+                        <StackPanel
+                            Grid.Column="1">
+                            <TextBlock Text="{Binding ElementName=shopRatingBlock, Path=Product.Name}" 
+                                   FontFamily="{StaticResource Bold}"
+                                   FontSize="{StaticResource FontSizeHeadline3}"
+                                   FontWeight="Medium"
+                                   Margin="0 10 0 10"/>
+                            <TextBlock Text="{Binding ElementName=shopRatingBlock, Path=Product.Description}" 
+                                   FontFamily="{StaticResource Bold}"
+                                   FontSize="{StaticResource FontSizeDescription}"
+                                   FontWeight="Regular"
+                                   TextWrapping="WrapWithOverflow"/>
+                        </StackPanel>
+                    </Grid>
+                <Grid
+                    Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="20"
+                            Icon="Star"
+                            Visibility="{c:Binding 'Rating >= 1', ElementName=shopRatingBlock}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="20"
+                            Icon="Star"
+                            Visibility="{c:Binding 'Rating >= 2', ElementName=shopRatingBlock}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="20"
+                            Icon="Star"
+                            Visibility="{c:Binding 'Rating >= 3', ElementName=shopRatingBlock}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="20"
+                            Icon="Star"
+                            Visibility="{c:Binding 'Rating >= 4', ElementName=shopRatingBlock}"/>
+                        <fa:ImageAwesome
+                            Margin="0 0 5 0"
+                            Height="20"
+                            Icon="Star"
+                            Visibility="{c:Binding 'Rating >= 5', ElementName=shopRatingBlock}"/>
+                    </StackPanel>
+                    <TextBlock
+                        Grid.Row="1"
+                        Text="{Binding ElementName=shopRatingBlock, Path=DateRating}"
+                        FontFamily="{StaticResource Medium}"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        VerticalAlignment="Center"/>
+                </Grid>
+                    
+                </Grid>
+            </Grid>
+    </Border>
+    <!--<i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDown" >
+                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ShopInformationPage}}, Path=DataContext.OpenRequestCommand}">
+                    <i:InvokeCommandAction.CommandParameter>
+                        <Binding ElementName="shopRatingBlock" Path="Product"/>
+                    </i:InvokeCommandAction.CommandParameter>
+                </i:InvokeCommandAction>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>-->
+</UserControl>

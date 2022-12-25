@@ -10,7 +10,8 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:fa="http://schemas.fontawesome.io/icons/">
     <materialDesign:DialogHost
-        Identifier="SecondDialog">
+        Identifier="SecondDialog"
+        CloseOnClickAway="True">
         <Grid>
             <Grid.Resources>
                 <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
@@ -66,7 +67,7 @@
                             VerticalAlignment="Center">
                             <TextBox.Text>
                                 <Binding
-                                    Path="RegisterProduct.Name"
+                                    Path="ProductName"
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NotEmptyValidationRule
@@ -82,7 +83,7 @@
                             materialDesign:HintAssist.Hint="Price">
                             <TextBox.Text>
                                 <Binding
-                                    Path="RegisterProduct.Price"
+                                    Path="Price"
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
@@ -102,10 +103,10 @@
                         <Grid
                             Grid.Column="0"
                             Width="500"
-                            Height="146">
+                            VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid
                                 Grid.Row="0">
@@ -135,9 +136,9 @@
                                 Grid.Row="1"
                                 Margin="0 10 0 0">
                                 <StackPanel
-                                    x:Name="imageStackPanel"
-                                    Orientation="Horizontal">
-                                    <ItemsControl ItemsSource="{Binding RegisterProduct.ImageSources, UpdateSourceTrigger=PropertyChanged}">
+                                Orientation="Horizontal">
+                                    <ItemsControl ItemsSource="{Binding ImageProducts, UpdateSourceTrigger=PropertyChanged}"
+                                                  x:Name="imagesPanel">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel
@@ -165,76 +166,121 @@
                         </Grid>
                         <Grid
                             Grid.Column="2"
-                            x:Name="gridSize">
+                            VerticalAlignment="Top">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid
+                                    Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid
+                                        Height="{Binding ElementName=freeSizeCheckBox, Path=Height}">
+                                    <TextBlock
+                                            Text="Size"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Grid.Column="0"
+                                            FontSize="{StaticResource FontSizeHeadline3}"
+                                            FontFamily="{StaticResource Bold}"/>
+                                </Grid>
+
+                                <CheckBox
+                                        x:Name="freeSizeCheckBox"
+                                        Grid.Column="1"
+                                        Margin="10 0 0 0"
+                                        Style="{StaticResource MaterialDesignLightCheckBox}"
+                                        IsChecked="{Binding IsHadOneSize, UpdateSourceTrigger=PropertyChanged}"
+                                        Content="Free Size"
+                                        FontFamily="{StaticResource Medium}"
+                                        FontSize="{StaticResource FontSizeText}"
+                                        Background="{StaticResource BlackColorBrush}"
+                                        Command="{Binding CheckOneSizeCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                            </Grid>
+                            <Grid
+                                x:Name="selectSizeGrid"
                                 VerticalAlignment="Top"
-                                Grid.Row="0">
+                                Grid.Row="1"
+                                Visibility="{i:Binding !IsHadOneSize}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <ComboBox
-                                x:Name="ComboBoxSize" 
-                                HorizontalAlignment="Stretch"
-                                materialDesign:HintAssist.Hint="Size">
-                                    <ComboBoxItem Content="S" Visibility="{i:Binding !RegisterProduct.IsHadSizeS, FalseToVisibility=Collapsed}"/>
-                                    <ComboBoxItem Content="M" Visibility="{i:Binding !RegisterProduct.IsHadSizeM, FalseToVisibility=Collapsed}"/>
-                                    <ComboBoxItem Content="L" Visibility="{i:Binding !RegisterProduct.IsHadSizeL, FalseToVisibility=Collapsed}"/>
-                                    <ComboBoxItem Content="XL" Visibility="{i:Binding !RegisterProduct.IsHadSizeXL, FalseToVisibility=Collapsed}"/>
-                                    <ComboBoxItem Content="XXL" Visibility="{i:Binding !RegisterProduct.IsHadSizeXXL, FalseToVisibility=Collapsed}"/>
+                                    x:Name="ComboBoxSize"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="1"
+                                    materialDesign:HintAssist.Hint="Size"
+                                    materialDesign:HintAssist.IsFloating="False">
+                                    <ComboBoxItem Content="S" Visibility="{i:Binding !IsHadSizeS, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="M" Visibility="{i:Binding !IsHadSizeM, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="L" Visibility="{i:Binding !IsHadSizeL, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="XL" Visibility="{i:Binding !IsHadSizeXL, FalseToVisibility=Collapsed}"/>
+                                    <ComboBoxItem Content="XXL" Visibility="{i:Binding !IsHadSizeXXL, FalseToVisibility=Collapsed}"/>
                                 </ComboBox>
                                 <Button
                                     Command="{Binding AddSizeCommand}"
                                     CommandParameter="{Binding ElementName=ComboBoxSize}"
                                     Style="{StaticResource ButtonRectangle}"
-                                    Grid.Column="1"
-                                    Margin="30 0 0 0"
+                                    Grid.Column="2"
+                                    Margin="30,7,0,7"
                                     Width="70"
                                     Content="+ Add"/>
                             </Grid>
                             <WrapPanel
                                 Margin="0 5 0 0"
-                                Grid.Row="1"
+                                Grid.Row="2"
                                 VerticalAlignment="Top">
                                 <addProductDialogNamespace:SizeBlock 
+                                    x:Name="sizeBlockS"
                                     Command="{Binding DeleteSizeCommand}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                     Width="90"
                                     Size="S"
                                     Margin="0 0 10 5"
-                                    Visibility="{i:Binding RegisterProduct.IsHadSizeS, FalseToVisibility=Collapsed}"/>
+                                    Visibility="{i:Binding IsHadSizeS, UpdateSourceTrigger=PropertyChanged}"
+                                    IsCanDelete="True"/>
                                 <addProductDialogNamespace:SizeBlock 
+                                    x:Name="sizeBlockM"
                                     Command="{Binding DeleteSizeCommand}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                     Width="90"
                                     Size="M"
                                     Margin="0 0 10 5"
-                                    Visibility="{i:Binding RegisterProduct.IsHadSizeM, FalseToVisibility=Collapsed}"/>
+                                    Visibility="{i:Binding IsHadSizeM, UpdateSourceTrigger=PropertyChanged}"
+                                    IsCanDelete="True"/>
                                 <addProductDialogNamespace:SizeBlock 
+                                    x:Name="sizeBlockL"
                                     Command="{Binding DeleteSizeCommand}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                     Width="90"
                                     Size="L"
                                     Margin="0 0 10 5"
-                                    Visibility="{i:Binding RegisterProduct.IsHadSizeL, FalseToVisibility=Collapsed}"/>
+                                    Visibility="{i:Binding IsHadSizeL, UpdateSourceTrigger=PropertyChanged}"
+                                    IsCanDelete="True"/>
                                 <addProductDialogNamespace:SizeBlock 
+                                    x:Name="sizeBlockXL"
                                     Command="{Binding DeleteSizeCommand}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                     Width="90"
                                     Size="XL"
                                     Margin="0 0 10 5"
-                                    Visibility="{i:Binding RegisterProduct.IsHadSizeXL, FalseToVisibility=Collapsed}"/>
+                                    Visibility="{i:Binding IsHadSizeXL, UpdateSourceTrigger=PropertyChanged}"
+                                    IsCanDelete="True"/>
                                 <addProductDialogNamespace:SizeBlock 
+                                    x:Name="sizeBlockXXL"
                                     Command="{Binding DeleteSizeCommand}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                     Width="100"
                                     Size="XXL"
                                     Margin="0 0 10 5"
-                                    Visibility="{i:Binding RegisterProduct.IsHadSizeXXL, FalseToVisibility=Collapsed}"/>
+                                    Visibility="{i:Binding IsHadSizeXXL, UpdateSourceTrigger=PropertyChanged}"
+                                    IsCanDelete="True"/>
                             </WrapPanel>
                         </Grid>
                     </Grid>
@@ -244,22 +290,21 @@
                                 Margin="0 0 30 0">
                             <DockPanel>
                                 <ComboBox
-                                    x:Name="categoryComboBox"
-                                    materialDesign:HintAssist.Hint="Category"
-                                    Width="455"
-                                    Margin="0 0 10 0"
-                                    VerticalAlignment="Center">
-                                    <ComboBox.Text>
+                                        x:Name="categoryComboBox"
+                                        materialDesign:HintAssist.Hint="Category"
+                                        Width="455"
+                                        Margin="0 0 10 0"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{Binding Categories,UpdateSourceTrigger=PropertyChanged}"
+                                        DisplayMemberPath="Name"
+                                        Text="{Binding SelectedCategory.Name}"
+                                        IsSynchronizedWithCurrentItem="True">
+                                    <ComboBox.SelectedItem>
                                         <Binding
-                                            Path="RegisterProduct.Category"
-                                            UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <local:NotEmptyValidationRule
-                                                    ErrorMessage="*If you can't find the category, press button add new and we will update"
-                                                    ValidatesOnTargetUpdated="True"/>
-                                            </Binding.ValidationRules>
+                                                Path="SelectedCategory"
+                                                UpdateSourceTrigger="PropertyChanged">
                                         </Binding>
-                                    </ComboBox.Text>
+                                    </ComboBox.SelectedItem>
                                 </ComboBox>
                                 <Button
                                     VerticalAlignment="Center"
@@ -276,6 +321,11 @@
                                     </fa:ImageAwesome>
                                 </Button>
                             </DockPanel>
+                            <TextBlock
+                                    Margin="0 10 0 0"
+                                    Text="*If you can't find the category, press button add new and we will update"
+                                    FontFamily="{StaticResource Medium}"
+                                    Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
                         </StackPanel>
 
                         <TextBox
@@ -286,7 +336,7 @@
                             materialDesign:HintAssist.Hint="In Stock">
                             <TextBox.Text>
                                 <Binding
-                                    Path="RegisterProduct.InStock"
+                                    Path="InStock"
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
@@ -303,22 +353,21 @@
                             Margin="0 0 30 0">
                             <DockPanel>
                                 <ComboBox
-                                    x:Name="brandComboBox"
-                                    materialDesign:HintAssist.Hint="Brand"
-                                    Width="455"
-                                    Margin="0 0 10 0"
-                                    VerticalAlignment="Center">
-                                    <ComboBox.Text>
+                                        x:Name="brandComboBox"
+                                        materialDesign:HintAssist.Hint="Brand"
+                                        Width="455"
+                                        Margin="0 0 10 0"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{Binding Brands,UpdateSourceTrigger=PropertyChanged}"
+                                        DisplayMemberPath="Name"
+                                        Text="{Binding SelectedBrand.Name}"
+                                        IsSynchronizedWithCurrentItem="True">
+                                    <ComboBox.SelectedItem>
                                         <Binding
-                                            Path="RegisterProduct.Brand"
-                                            UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <local:NotEmptyValidationRule
-                                                    ErrorMessage="*If you can't find the brand, press button add new and we will update"
-                                                    ValidatesOnTargetUpdated="True"/>
-                                            </Binding.ValidationRules>
+                                                Path="SelectedBrand"
+                                                UpdateSourceTrigger="PropertyChanged">
                                         </Binding>
-                                    </ComboBox.Text>
+                                    </ComboBox.SelectedItem>
                                 </ComboBox>
                                 <Button
                                     VerticalAlignment="Center"
@@ -335,6 +384,11 @@
                                     </fa:ImageAwesome>
                                 </Button>
                             </DockPanel>
+                            <TextBlock
+                                Margin="0 10 0 0"
+                                Text="*If you can't find the category, press button add new and we will update"
+                                FontFamily="{StaticResource Medium}"
+                                Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
                         </StackPanel>
 
                         <TextBox
@@ -345,7 +399,7 @@
                             materialDesign:HintAssist.Hint="Sale">
                             <TextBox.Text>
                                 <Binding
-                                    Path="RegisterProduct.Sale"
+                                    Path="Sale"
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
@@ -359,6 +413,23 @@
                         </TextBox>
                     </DockPanel>
                     <TextBox
+                        x:Name="colorTextBox"
+                        Margin="0 30 0 0"
+                        Style="{StaticResource TextBoxHintWrapText}"
+                        materialDesign:HintAssist.Hint="Color"
+                        Width="auto">
+                        <TextBox.Text>
+                            <Binding
+                                Path="Color"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                        ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <TextBox
                         x:Name="descriptionTextBox"
                         Margin="0 30 0 0"
                         Style="{StaticResource TextBoxHintWrapText}"
@@ -367,7 +438,7 @@
                         Height="140">
                         <TextBox.Text>
                             <Binding
-                                Path="RegisterProduct.Description"
+                                Path="Description"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NotEmptyValidationRule
@@ -379,15 +450,17 @@
                     <FrameworkElement x:Name="IsHadSize">
                         <FrameworkElement.Tag>
                             <MultiBinding Converter="{StaticResource TrueFromBooleansToFalseConverter}">
-                                <Binding Path="RegisterProduct.IsHadSizeS"/>
-                                <Binding Path="RegisterProduct.IsHadSizeM"/>
-                                <Binding Path="RegisterProduct.IsHadSizeL"/>
-                                <Binding Path="RegisterProduct.IsHadSizeXL"/>
-                                <Binding Path="RegisterProduct.IsHadSizeXXL"/>
+                                <Binding Path="IsHadOneSize"/>
+                                <Binding Path="IsHadSizeS"/>
+                                <Binding Path="IsHadSizeM"/>
+                                <Binding Path="IsHadSizeL"/>
+                                <Binding Path="IsHadSizeXL"/>
+                                <Binding Path="IsHadSizeXXL"/>
                             </MultiBinding>
                         </FrameworkElement.Tag>
                     </FrameworkElement>
                     <Button
+                        x:Name="addButton"
                         Margin="0 30 0 0"
                         HorizontalAlignment="Right"
                         Width="170"
@@ -401,6 +474,7 @@
                                 <Binding ElementName="inStockTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="saleTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
+                                <Binding ElementName="colorTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="IsHadSize" Path="Tag"/>
                                 <Binding ElementName="categoryComboBox" Path="SelectedIndex" Converter="{StaticResource NumberToBooleanConverter}" ConverterParameter="-1"/>
                                 <Binding ElementName="brandComboBox" Path="SelectedIndex" Converter="{StaticResource NumberToBooleanConverter}" ConverterParameter="-1"/>
@@ -411,4 +485,10 @@
             </Border>
         </Grid>
     </materialDesign:DialogHost>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding KeyDownEnterCommand}"
+            CommandParameter="{Binding ElementName=addButton}"/>
+    </UserControl.InputBindings>
 </UserControl>

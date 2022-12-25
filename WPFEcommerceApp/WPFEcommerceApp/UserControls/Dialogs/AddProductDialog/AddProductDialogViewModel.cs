@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,22 +18,18 @@ namespace WPFEcommerceApp
 {
     internal class AddProductDialogViewModel : BaseViewModel
     {
+        private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
+        private GenericDataRepository<Models.Category> categoryRepository = new GenericDataRepository<Models.Category>();
+        private GenericDataRepository<Models.Brand> brandRepository = new GenericDataRepository<Models.Brand>();
+        private GenericDataRepository<Models.ImageProduct> imageProductRepository = new GenericDataRepository<Models.ImageProduct>();
         public ICommand AddSizeCommand { get; set; }
         public ICommand DeleteSizeCommand { get; set; }
         public ICommand RequestProductCommand { get; set; }
         public ICommand OpenAddBrandDialogCommand { get; set; }
         public ICommand OpenAddCategoryDialogCommand { get; set; }
         public ICommand OpenChangeImageDialogCommand { get; set; }
-        private Models.Product registerProduct;
-        public Models.Product RegisterProduct
-        {
-            get => registerProduct;
-            set
-            {
-                registerProduct = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICommand CheckOneSizeCommand { get; set; }
+        public ICommand KeyDownEnterCommand { get; set; }
         private ObservableCollection<string> imageProducts;
         public ObservableCollection<string> ImageProducts
         {
@@ -43,10 +40,203 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private IList<Brand> brands;
+        public IList<Brand> Brands
+        {
+            get
+            {
+                return brands;
+            }
+            set
+            {
+                brands = value;
+                OnPropertyChanged();
+            }
+        }
+        private IList<Category> categories;
+        public IList<Category> Categories
+        {
+            get
+            {
+                return categories;
+            }
+            set
+            {
+                categories = value;
+                OnPropertyChanged();
+            }
+        }
+        private Brand selectedBrand;
+        public Brand SelectedBrand
+        {
+            get
+            {
+                return selectedBrand;
+            }
+            set
+            {
+                selectedBrand = value;
+                OnPropertyChanged();
+            }
+        }
+        private Category selectedCategory;
+        public Category SelectedCategory
+        {
+            get
+            {
+                return selectedCategory;
+            }
+            set
+            {
+                selectedCategory = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isEditting;
+        public bool IsEditting
+        {
+            get => isEditting;
+            set
+            {
+                isEditting = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isBanned;
+        public bool IsBanned
+        {
+            get => isBanned;
+            set
+            {
+                isBanned = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isHadSizeS;
+        public bool IsHadSizeS
+        {
+            get => isHadSizeS;
+            set
+            {
+                isHadSizeS = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isHadSizeM;
+        public bool IsHadSizeM
+        {
+            get => isHadSizeM;
+            set
+            {
+                isHadSizeM = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isHadSizeL;
+        public bool IsHadSizeL
+        {
+            get => isHadSizeL;
+            set
+            {
+                isHadSizeL = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private bool isHadSizeXL;
+        public bool IsHadSizeXL
+        {
+            get => isHadSizeXL;
+            set
+            {
+                isHadSizeXL = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isHadSizeXXL;
+        public bool IsHadSizeXXL
+        {
+            get => isHadSizeXXL;
+            set
+            {
+                isHadSizeXXL = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isHadOneSize;
+        public bool IsHadOneSize
+        {
+            get => isHadOneSize;
+            set
+            {
+                isHadOneSize = value;
+                OnPropertyChanged();
+            }
+        }
+        private string productName;
+        public string ProductName
+        {
+            get => productName;
+            set
+            {
+                productName = value;
+                OnPropertyChanged();
+            }
+        }
+        private string price;
+        public string Price
+        {
+            get => price;
+            set
+            {
+                price = value;
+                OnPropertyChanged();
+            }
+        }
+        private string instock;
+        public string InStock
+        {
+            get => instock;
+            set
+            {
+                instock = value;
+                OnPropertyChanged();
+            }
+        }
+        private string sale;
+        public string Sale
+        {
+            get => sale;
+            set
+            {
+                sale = value;
+                OnPropertyChanged();
+            }
+        }
+        private string description;
+        public string Description
+        {
+            get => description;
+            set
+            {
+                description = value;
+                OnPropertyChanged();
+            }
+        }
+        private string color;
+        public string Color
+        {
+            get => color;
+            set
+            {
+                color = value;
+                OnPropertyChanged();
+            }
+        }
+
         public AddProductDialogViewModel()
         {
-            RegisterProduct = new Models.Product();
-            ImageProducts = new ObservableCollection<string>();  
+            LoadData();
             AddSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 ComboBoxItem comboBoxItem = (ComboBoxItem)((p as System.Windows.Controls.ComboBox).SelectedItem);
@@ -55,23 +245,23 @@ namespace WPFEcommerceApp
                 {
                     if (comboBoxItem.Content.ToString() == "S")
                     {
-                        RegisterProduct.IsHadSizeS = true;
+                        IsHadSizeS = true;
                     }
                     else if (comboBoxItem.Content.ToString() == "M")
                     {
-                        RegisterProduct.IsHadSizeM = true;
+                        IsHadSizeM = true;
                     }
                     else if (comboBoxItem.Content.ToString() == "L")
                     {
-                        RegisterProduct.IsHadSizeL = true;
+                        IsHadSizeL = true;
                     }
                     else if (comboBoxItem.Content.ToString() == "XL")
                     {
-                        RegisterProduct.IsHadSizeXL = true;
+                        IsHadSizeXL = true;
                     }
                     else if (comboBoxItem.Content.ToString() == "XXL")
                     {
-                        RegisterProduct.IsHadSizeXXL = true;
+                        IsHadSizeXXL = true;
                     }
                 }
             });
@@ -82,52 +272,120 @@ namespace WPFEcommerceApp
                 string size = sizeBlock.Size.ToString();
                 if (size == "S")
                 {
-                    RegisterProduct.IsHadSizeS = false;
+                    IsHadSizeS = false;
                 }
                 else if (size == "M")
                 {
-                    RegisterProduct.IsHadSizeM = false;
+                    IsHadSizeM = false;
                 }
                 else if (size == "L")
                 {
-                    RegisterProduct.IsHadSizeL = false;
+                    IsHadSizeL = false;
                 }
                 else if (size == "XL")
                 {
-                    RegisterProduct.IsHadSizeXL = false;
+                    IsHadSizeXL = false;
                 }
                 else if (size == "XXL")
                 {
-                    RegisterProduct.IsHadSizeXXL = false;
+                    IsHadSizeXXL = false;
                 }
             });
-            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 ChangeImageProductDialog addBrandDialog = new ChangeImageProductDialog();
                 addBrandDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
-                DialogHost.Show(addBrandDialog, "SecondDialog");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(addBrandDialog, "SecondDialog");
             });
-            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                AddBrandDialog addBrandDialog = new AddBrandDialog();
-                addBrandDialog.DataContext = new AddBrandDialogViewModel();
-                DialogHost.Show(addBrandDialog, "SecondDialog");
+            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) => 
+            { 
+                MainViewModel.IsLoading = true; 
+                AddBrandDialog addBrandDialog = new AddBrandDialog(); 
+                addBrandDialog.DataContext = new AddBrandDialogViewModel(); 
+                MainViewModel.IsLoading = false; 
+                await DialogHost.Show(addBrandDialog, "SecondDialog"); 
             });
-            OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                MainViewModel.IsLoading = true;
                 AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
                 addCategoryDialog.DataContext = new AddCategoryDialogViewModel();
-                DialogHost.Show(addCategoryDialog, "SecondDialog");
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(addCategoryDialog, "SecondDialog");
             });
-            RequestProductCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            RequestProductCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
-                //Lưu dữ liêu xuống data base
-
-                //Tắt dialogHost
-                /*DialogHost.Close(typeof(AddProductDialog));*/
+                MainViewModel.IsLoading = true;
+                string id = await GenerateID.Gen(typeof(Product));
+                await productRepository.Add(new Models.Product()
+                {
+                    Id = id,
+                    Name = ProductName,
+                    IdShop = AccountStore.instance.CurrentAccount.Id,
+                    IdCategory = SelectedCategory.Id,
+                    IdBrand = SelectedBrand.Id,
+                    Price = long.Parse(Price),
+                    Sale = int.Parse(Sale),
+                    InStock = int.Parse(InStock),
+                    Sold = 0,
+                    IsOneSize = IsHadOneSize,
+                    IsHadSizeS = this.IsHadSizeS,
+                    IsHadSizeM = this.IsHadSizeM,
+                    IsHadSizeL = this.IsHadSizeL,
+                    IsHadSizeXL = this.IsHadSizeXL,
+                    IsHadSizeXXL = this.IsHadSizeXXL,
+                    Color = this.Color,
+                    Description = this.Description,
+                    DateOfSale = DateTime.Now,
+                    Status = "NotBanned"
+                });
+                foreach (string source in ImageProducts)
+                {
+                    
+                    await imageProductRepository.Add(new Models.ImageProduct() { IdProduct = id, Source = source });
+                }
+                MainViewModel.IsLoading = false;
                 var closeDialog = DialogHost.CloseDialogCommand;
                 closeDialog.Execute(null, null);
             });
+            CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            {
+                IsHadSizeL = !IsHadOneSize;
+                IsHadSizeM = !IsHadOneSize;
+                IsHadSizeS = !IsHadOneSize;
+                IsHadSizeXL = !IsHadOneSize;
+                IsHadSizeXXL = !IsHadOneSize;
+            });
+            KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>
+            {
+                System.Windows.Controls.Button button = p as System.Windows.Controls.Button;
+                if (button.IsEnabled)
+                {
+                    button.Command.Execute(null);
+                }
+            });
+        }
+        public async void LoadData()
+        {
+            ImageProducts = new ObservableCollection<string>();
+            IsHadSizeS = false;
+            IsHadSizeM = false;
+            IsHadSizeL = false;
+            IsHadSizeXL = false;
+            IsHadSizeXXL = false;
+            IsHadOneSize = false;
+            await LoadCategories();
+            await LoadBrands();
+        }
+        private async Task LoadCategories()
+        {
+            Categories = await categoryRepository.GetListAsync(c => c.Status == "NotBanned");
+        }
+        private async Task LoadBrands()
+        {
+            Brands = await brandRepository.GetListAsync(b => b.Status == "NotBanned");
         }
     }
 }

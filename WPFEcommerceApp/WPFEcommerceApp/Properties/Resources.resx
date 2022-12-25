@@ -126,4 +126,10 @@
   <data name="DefaultShopBackgroundImage" xml:space="preserve">
     <value>https://htmlcolorcodes.com/assets/images/colors/light-gray-color-solid-background-1920x1080.png</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>WanoSupport@gmail.com</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>01234567890</value>
+  </data>
 </root>

@@ -1,6 +1,8 @@
 ﻿using WPFEcommerceApp.Models;
 using System.Windows.Controls;
-
+using System.Threading.Tasks;
+using DataAccessLayer;
+using System.Linq;
 
 namespace WPFEcommerceApp
 {
@@ -12,14 +14,14 @@ namespace WPFEcommerceApp
         public ShopMain()
         {
             InitializeComponent();
-            this.DataContext = new ShopMainViewModel(new Shop()
-            {
-                Name = "Shop Name",
-                PhoneNumber = "12345678910",
-                Email = "123@gmail.com",
-                Address = "duong cay mit thanh pho cay xoai",
-                Description = "dhajdhasjdahsjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhasjdhsajdhsajdhsajdhasjdhasjhạdhasjdhajdhsajdhasjdhsajdhasjdhasjdhj"
-            });
+        }
+
+        private void scroll_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            var scv = sender as ScrollViewer;
+            if (scv == null) return;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 }

@@ -8,137 +8,286 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1340">
-    <StackPanel Background="Transparent">
-        <TextBlock
+    <materialDesign:DialogHost
+        Identifier="SecondDialog"
+        CloseOnClickAway="True">
+        <Grid Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+            Grid.Row="0"
            Text="Order"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FontSize="{StaticResource FontSizeHeadline}"
             Margin="0 30"/>
-        <Border Background="{StaticResource BackgroundColorBrush}"
+            <Border Background="{StaticResource BackgroundColorBrush}"
                 Padding="50 30"
-                Margin="0 0 0 30">
-            <Grid>
+                Margin="0 0 0 30"
+                Grid.Row="1">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <!-- SearchFilter1-->
-                    <Grid 
-                        Grid.Column="0">
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4*"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
+                        <!-- SearchFilter1-->
+                        <Grid 
+                        Grid.Column="0">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="15"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox
+                            <Grid Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                x:Name="searchByComboBox"
                                 Height="{Binding ElementName=textBoxSearch, Path=ActualHeight}"
                                 materialDesign:TextFieldAssist.TextFieldCornerRadius="5 0 0 5"
                                 Grid.Column="0"
                                 IsEditable="True"
-                                materialDesign:HintAssist.Hint="SortBy">
-                            </ComboBox>
-                            <Grid Grid.Column="1">
-                                <TextBox 
+                                materialDesign:HintAssist.Hint="Search By"
+                                BorderThickness="1 1 0 1"
+                                SelectedValuePath="Content"
+                                SelectedValue="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBoxItem Content="Id"/>
+                                    <ComboBoxItem Content="Product Name"/>
+                                    <ComboBoxItem Content="Customer Name"/>
+                                </ComboBox>
+                                <Grid Grid.Column="1">
+                                    <TextBox 
                                     x:Name="textBoxSearch"
                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="0 5 5 0"
                                     Width="auto"
                                     Style="{StaticResource TextBoxHintBlackBorder}"
                                     MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
-                                    materialDesign:HintAssist.Hint="Product Name"/>
+                                    materialDesign:HintAssist.Hint="{Binding ElementName=searchByComboBox, Path=Text}"
+                                    Text="{Binding SearchByValue, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
                             </Grid>
+                            <DatePicker
+                                Height="55"
+                                Width="auto"
+                                Style="{StaticResource OurDatePicker}"
+                                materialDesign:HintAssist.Hint="From"
+                                Grid.Column="2"
+                                SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"
+                                DisplayDateEnd="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DatePicker
+                                Height="55"
+                                Width="auto"
+                                Style="{StaticResource OurDatePicker}"
+                                materialDesign:HintAssist.Hint="To"
+                                Grid.Column="4"
+                                SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"
+                                DisplayDateStart="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
-                        <DatePicker
-                            Height="55"
-                            Width="auto"
-                            Style="{StaticResource OurDatePicker}"
-                            materialDesign:HintAssist.Hint="From"
-                            Grid.Column="1"
-                            Margin="15 0 0 0"/>
-                        <DatePicker
-                            Height="55"
-                            Width="auto"
-                            Style="{StaticResource OurDatePicker}"
-                            materialDesign:HintAssist.Hint="To"
-                            Grid.Column="2"
-                            Margin="15 0 0 0"/>
-                    </Grid>
-                    <Grid 
-                        Grid.Column="1"
-                        Margin="20 0 0 0">
                         <Button Content="Search"
                                 Height="40"
-                                VerticalAlignment="Center"/>
+                                VerticalAlignment="Center"
+                                Grid.Column="2"
+                                Command="{Binding SearchCommand}"/>
+                        <Button
+                        Grid.Column="4"
+                        Content="Reset"
+                        Height="40"
+                        VerticalAlignment="Center"
+                        Command="{Binding ResetCommand}"/>
                     </Grid>
                 </Grid>
-            </Grid>
-        </Border>
-        <Border
+            </Border>
+            <Border
             Margin="0 0 0 20"
-            Padding="50 0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <RadioButton 
+            Padding="50 0"
+            Grid.Row="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton 
                     Style="{StaticResource RadioTabButton}"
                     Content="All" 
                     Grid.Column="0"
-                    IsChecked="True"/>
-                <RadioButton 
+                    IsChecked="{Binding StatusSearchAll}"/>
+                    <RadioButton 
                     Style="{StaticResource RadioTabButton}"
-                    Content="To Ship" 
-                    Grid.Column="1"/>
-                <RadioButton 
+                    Grid.Column="1"
+                    IsChecked="{Binding StatusSearchProcessing}">
+                        <RadioButton.Content>
+                            <StackPanel
+                            Orientation="Horizontal">
+                                <TextBlock
+                                Text="Processing"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"/>
+                                <TextBlock
+                                Text=" ("
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'ProcessingShopOrderBlockModels.Count > 0'}"/>
+                                <TextBlock
+                                Text="{Binding ProcessingShopOrderBlockModels.Count}"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'ProcessingShopOrderBlockModels.Count > 0'}"/>
+                                <TextBlock
+                                Text=")"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'ProcessingShopOrderBlockModels.Count > 0'}"/>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton 
                     Style="{StaticResource RadioTabButton}"
-                    Content="Shipping" 
-                    Grid.Column="2"/>
-                <RadioButton 
+                    Grid.Column="2"
+                    IsChecked="{Binding StatusSearchDelivering}">
+                        <RadioButton.Content>
+                            <StackPanel
+                            Orientation="Horizontal">
+                                <TextBlock
+                                Text="Delivering"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"/>
+                                <TextBlock
+                                Text=" ("
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'DeliveringShopOrderBlockModels.Count > 0'}"/>
+                                <TextBlock
+                                Text="{Binding DeliveringShopOrderBlockModels.Count}"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'DeliveringShopOrderBlockModels.Count > 0'}"/>
+                                <TextBlock
+                                Text=")"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'DeliveringShopOrderBlockModels.Count > 0'}"/>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton 
                     x:Name="completedRadioButton"
                     Style="{StaticResource RadioTabButton}"
-                    Content="Completed" 
-                    Grid.Column="3"/>
-                <RadioButton 
+                    Grid.Column="3"
+                    IsChecked="{Binding StatusSearchDelivered}">
+                        <RadioButton.Content>
+                            <StackPanel
+                            Orientation="Horizontal">
+                                <TextBlock
+                                Text="Delivered"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"/>
+                                <TextBlock
+                                Text=" ("
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'DeliveredShopOrderBlockModels.Count > 0'}"/>
+                                <TextBlock
+                                Text="{Binding DeliveredShopOrderBlockModels.Count}"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'DeliveredShopOrderBlockModels.Count > 0'}"/>
+                                <TextBlock
+                                Text=")"
+                                FontSize="{StaticResource FontSizeText}"
+                                FontFamily="{StaticResource Regular}"
+                                Visibility="{i:Binding 'DeliveredShopOrderBlockModels.Count > 0'}"/>
+                            </StackPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton 
                     Style="{StaticResource RadioTabButton}"
-                    Content="Canceled" 
-                    Grid.Column="4"/>
-            </Grid>
-        </Border>
-        <DockPanel
+                    Content="Completed" 
+                    Grid.Column="4"
+                    IsChecked="{Binding StatusSearchCompleted}"/>
+                    <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="Cancelled" 
+                    Grid.Column="5"
+                    IsChecked="{Binding StatusSearchCancelled}"/>
+                </Grid>
+            </Border>
+            <DockPanel
             Margin="50 0 50 30"
-            LastChildFill="False">
-            <TextBlock
+            LastChildFill="False"
+            Grid.Row="3">
+                <TextBlock
                 Text="Sum: "
                 Foreground="{StaticResource SuccessColorBrush}"
                 FontSize="{StaticResource FontSizeHeadline2}"
                 FontFamily="{StaticResource Bold}"
                 FontWeight="DemiBold"/>
-            <TextBlock
-                Text="90"
+                <TextBlock
+                Text="{Binding SearchedShopOrderBlockModels.Count}"
                 Foreground="{StaticResource SuccessColorBrush}"
                 FontSize="{StaticResource FontSizeHeadline2}"
                 FontFamily="{StaticResource Bold}"
                 FontWeight="DemiBold"/>
-            <TextBlock
+                <TextBlock
                 Text=" orders"
                 Foreground="{StaticResource SuccessColorBrush}"
                 FontSize="{StaticResource FontSizeHeadline2}"
                 FontFamily="{StaticResource Bold}"
                 FontWeight="DemiBold"/>
-            <Button
-                Visibility="{i:Binding Path=IsChecked, ElementName=completedRadioButton}"
-                Content="Export"
-                DockPanel.Dock="Right"/>
-        </DockPanel>
-    </StackPanel>
+            </DockPanel>
+            <ScrollViewer
+                Grid.Row="4">
+                <Grid 
+                    Background="Transparent"
+                    Margin="50 0"
+                    ScrollViewer.CanContentScroll="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel 
+                        Grid.Column="0"
+                        IsHitTestVisible="True"
+                        ScrollViewer.CanContentScroll="True">
+                        <ItemsControl ItemsSource="{Binding SearchedShopOrderBlockModels, UpdateSourceTrigger=PropertyChanged}"
+                                      ScrollViewer.CanContentScroll="True">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:ShopOrderBlock
+                                        ScrollViewer.CanContentScroll="True"
+                                        Margin="0 0 0 30"
+                                        DataContext="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+            <Grid
+            Grid.Row="5"
+            Height="20"/>
+        </Grid>
+    </materialDesign:DialogHost>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding SearchCommand}"/>
+    </UserControl.InputBindings>
 </UserControl>

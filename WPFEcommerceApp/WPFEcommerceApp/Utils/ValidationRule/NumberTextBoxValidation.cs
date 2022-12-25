@@ -29,7 +29,7 @@ namespace WPFEcommerceApp
             {
                 if (String.IsNullOrEmpty(errorMinMaxMessage))
                 {
-                    errorMinMaxMessage = $"Please enter a number between {Min} and {Max}";
+                    errorMinMaxMessage = $"Enter number between {Min} and {Max}";
                 }
                 return errorMinMaxMessage;
             }
@@ -43,6 +43,12 @@ namespace WPFEcommerceApp
                 return type;
             }
             set => type = value;
+        }
+        private bool isCanEmpty = false;
+        public bool IsCanEmpty
+        {
+            get => isCanEmpty;
+            set => isCanEmpty = value;
         }
         private double min = double.MinValue;
         public double Min
@@ -62,10 +68,24 @@ namespace WPFEcommerceApp
             Regex regex = new Regex("[^0-9.-]+");
             if (string.IsNullOrEmpty((value ?? "").ToString()))
             {
-                return new ValidationResult(false, ErrorNumerMessage);
+                if (!IsCanEmpty)
+                {
+                    return new ValidationResult(false, ErrorNumerMessage);
+                }
+                else
+                {
+                    return ValidationResult.ValidResult;
+                }
             }
             else
             {
+                if (IsCanEmpty)
+                {
+                    if ((value ?? "").ToString() == "")
+                    {
+                        return ValidationResult.ValidResult;
+                    }
+                }
                 string resultString = (value ?? "").ToString();
                 double resultNumber;
                 if (double.TryParse(resultString, out resultNumber))

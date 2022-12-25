@@ -10,6 +10,8 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:ShopProductStatusConverter x:Key="ShopProductStatusConverter"/>
+        <local:ShopProductStatusColorConverter x:Key="ShopProductStatusColorConverter"/>
         <Style x:Key="RoundButtonAdd" TargetType="{x:Type ToggleButton}">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Width" Value="50"/>
@@ -129,15 +131,33 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="statusDataRow" TargetType="TextBlock">
+            <Setter Property="Foreground">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource ShopProductStatusColorConverter}">
+                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" Path="Item.Status" />
+                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" Path="Item.InStock"/>
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Background="Transparent"
+        <Grid Background="Transparent"
                     Grid.ColumnSpan="2">
-            <Border Padding="50 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border Padding="50 0" Grid.Row="0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -209,8 +229,9 @@
                 </Grid>
             </Border>
             <Border Background="{StaticResource BackgroundColorBrush}"
-                Padding="50 30"
-                Margin="0 0 0 30">
+                    Padding="50 30"
+                    Margin="0 0 0 30"
+                    Grid.Row="1">
                 <Grid>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -231,18 +252,6 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0">
-                                <!--<ComboBox
-                                    x:Name="sortByComboBox"
-                                    Height="{Binding ElementName=textBoxSearch, Path=ActualHeight}"
-                                    materialDesign:TextFieldAssist.TextFieldCornerRadius="5 0 0 5"
-                                    Grid.Column="0"
-                                    IsEditable="True"
-                                    materialDesign:HintAssist.Hint="SortBy">
-                                    <ComboBoxItem Content="ID"/>
-                                    <ComboBoxItem Content="Name"/>
-                                    <ComboBoxItem Content="Category"/>
-                                    <ComboBoxItem Content="Brand"/>
-                                </ComboBox>-->
                                 <TextBox 
                                     x:Name="textBoxSearch"
                                     Text="{Binding ProductNameSearch}"
@@ -263,32 +272,51 @@
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
-                                Grid.Column="0"
-                                Text="Price"
-                                VerticalAlignment="Center"
-                                FontSize="{StaticResource FontSizeText}"/>
+                                    Grid.Column="0"
+                                    Text="Price"
+                                    VerticalAlignment="Center"
+                                    FontSize="{StaticResource FontSizeText}"/>
                                 <Grid Grid.Column="1">
                                     <TextBox 
-                                Style="{StaticResource TextBoxHintBlackBorder}"
-                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
-                                materialDesign:HintAssist.Hint="Min"
-                                        Text="{Binding MinPriceSearch}"/>
+                                        Style="{StaticResource TextBoxHintBlackBorder}"
+                                        MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                        materialDesign:HintAssist.Hint="Min">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="MinPriceSearch"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <local:NumberTextBoxValidation
+                                                        IsCanEmpty="True"
+                                                        Min="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
                                 </Grid>
-
                                 <TextBlock
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Text="-"
-                                Foreground="{StaticResource NotAvailableColorBrush}"
-                                FontSize="{StaticResource FontSizeHeadline}"/>
-
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Text="-"
+                                        Foreground="{StaticResource NotAvailableColorBrush}"
+                                        FontSize="{StaticResource FontSizeHeadline}"/>
                                 <Grid Grid.Column="3">
                                     <TextBox 
-                                Style="{StaticResource TextBoxHintBlackBorder}"
-                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
-                                materialDesign:HintAssist.Hint="Max"
-                                       Text="{Binding MaxPriceSearch}"/>
+                                        Style="{StaticResource TextBoxHintBlackBorder}"
+                                        MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                        materialDesign:HintAssist.Hint="Max">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="MaxPriceSearch"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <local:NumberTextBoxValidation
+                                                        IsCanEmpty="True"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -301,19 +329,29 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <ComboBox
-                                Text="{Binding CategorySearch}"
+                                Text="{Binding CategorySearch.Name}"
                                 materialDesign:HintAssist.Hint="Category"
                                 Grid.Column="0"
                                 ItemsSource="{Binding Categories}"
                                 DisplayMemberPath="Name">
+                                <ComboBox.SelectedItem>
+                                    <Binding
+                                        Path="CategorySearch"
+                                        UpdateSourceTrigger="PropertyChanged"/>
+                                </ComboBox.SelectedItem>
                             </ComboBox>
                             <ComboBox
-                                Text="{Binding BrandSearch}"
+                                Text="{Binding BrandSearch.Name}"
                                 materialDesign:HintAssist.Hint="Brand"
                                 Margin="30 0 0 0"
                                 Grid.Column="1"
                                 ItemsSource="{Binding Brands}"
                                 DisplayMemberPath="Name">
+                                <ComboBox.SelectedItem>
+                                    <Binding
+                                        Path="BrandSearch"
+                                        UpdateSourceTrigger="PropertyChanged"/>
+                                </ComboBox.SelectedItem>
                             </ComboBox>
                             <Grid 
                             Grid.Column="2"
@@ -332,47 +370,69 @@
                                 FontSize="{StaticResource FontSizeText}"/>
                                 <Grid Grid.Column="1">
                                     <TextBox 
-                                Style="{StaticResource TextBoxHintBlackBorder}"
-                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
-                                materialDesign:HintAssist.Hint="Min"
-                                        Text="{Binding MinInStockSearch}"/>
+                                        Style="{StaticResource TextBoxHintBlackBorder}"
+                                        MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                        materialDesign:HintAssist.Hint="Min">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="MinInStockSearch"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <local:NumberTextBoxValidation
+                                                        IsCanEmpty="True"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
                                 </Grid>
 
                                 <TextBlock
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Text="-"
-                                Foreground="{StaticResource NotAvailableColorBrush}"
-                                FontSize="{StaticResource FontSizeHeadline}"/>
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Text="-"
+                                    Foreground="{StaticResource NotAvailableColorBrush}"
+                                    FontSize="{StaticResource FontSizeHeadline}"/>
 
                                 <Grid Grid.Column="3">
                                     <TextBox 
-                                Style="{StaticResource TextBoxHintBlackBorder}"
-                                MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
-                                materialDesign:HintAssist.Hint="Max"
-                                        Text="{Binding MaxInStockSearch}"/>
+                                        Style="{StaticResource TextBoxHintBlackBorder}"
+                                        MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                        materialDesign:HintAssist.Hint="Max">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="MaxInStockSearch"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <local:NumberTextBoxValidation
+                                                        IsCanEmpty="True"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid 
-                        Grid.Column="1"
-                        Grid.Row="0"
-                        Margin="20 0 0 30">
-                            <Button Content="Search"/>
-                        </Grid>
-                        <Grid 
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        Margin="20 0 0 0">
-                            <Button Content="Reset"/>
-                        </Grid>
+                        <Button 
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Margin="20 0 0 30"
+                            Content="Search"
+                            Command="{Binding SearchProductCommand}"/>
+                        <Button
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="20 0 0 0"
+                            Content="Reset"
+                            Command="{Binding ResetCommand}">
+                        </Button>
                     </Grid>
                 </Grid>
             </Border>
             <Border
-            Margin="0 0 0 30"
-            Padding="50 0">
+                Margin="0 0 0 30"
+                Padding="50 0"
+                Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -381,42 +441,63 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <RadioButton
-                    Style="{StaticResource RadioTabButton}"
-                    Grid.Column="0"
-                    Content="All"
-                    IsChecked="True"/>
+                        Style="{StaticResource RadioTabButton}"
+                        Grid.Column="0"
+                        Content="All"
+                        IsChecked="{Binding StatusAllSearch}"/>
                     <RadioButton
-                    Style="{StaticResource RadioTabButton}"
-                    Grid.Column="1"
-                    Content="On Sale"/>
+                        Style="{StaticResource RadioTabButton}"
+                        Grid.Column="1"
+                        Content="On Sale"
+                        IsChecked="{Binding StatusOnSaleSearch}"/>
                     <RadioButton
-                    Style="{StaticResource RadioTabButton}"
-                    Grid.Column="2"
-                    Content="Out Of Stock"/>
+                        Style="{StaticResource RadioTabButton}"
+                        Grid.Column="2"
+                        Content="Out Of Stock"
+                        IsChecked="{Binding StatusOutOfStockSearch}"/>
                     <RadioButton
-                    Style="{StaticResource RadioTabButton}"
-                    Grid.Column="3"
-                    Content="Banned"/>
+                        Style="{StaticResource RadioTabButton}"
+                        Grid.Column="3"
+                        Content="Banned"
+                        IsChecked="{Binding StatusBannedSearch}"/>
                 </Grid>
             </Border>
-            <DataGrid
-                x:Name="dataGrid"
-                Padding="50 0" 
-                ItemsSource="{Binding Shop.Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                AutoGenerateColumns="False"
-                IsSynchronizedWithCurrentItem ="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="2*" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                    <DataGridTextColumn Header="Name" Width="5*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                    <DataGridTextColumn Header="Category" Width="4*" Binding="{Binding Category.Name, Mode=OneWay}"/>
-                    <DataGridTextColumn Header="Brand" Width="4*" Binding="{Binding Brand.Name, Mode=OneWay}"/>
-                    <DataGridTextColumn Header="Price" Width="3*" Binding="{Binding Price, UpdateSourceTrigger=PropertyChanged}"/>
-                    <DataGridTextColumn Header="InStock" Width="3*" Binding="{Binding InStock, UpdateSourceTrigger=PropertyChanged}"/>
-                    <DataGridTextColumn Header="Sold" Width="3*" Binding="{Binding Sold, UpdateSourceTrigger=PropertyChanged}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+            <Grid
+                Grid.Row="3"
+                Background="Transparent">
+                <DataGrid
+                            x:Name="dataGrid"
+                            Padding="50 0" 
+                            ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                            SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                            AutoGenerateColumns="False"
+                            IsSynchronizedWithCurrentItem ="True"
+                            ScrollViewer.CanContentScroll="True" 
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="2*" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Name" Width="4*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Category" Width="3*" Binding="{Binding Category.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Brand" Width="3*" Binding="{Binding Brand.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Price" Width="3*" Binding="{i:Binding 'Price * (100 - Sale) / 100', UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="InStock" Width="3*" Binding="{Binding InStock, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Sold" Width="3*" Binding="{Binding Sold, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Status" Width="3*" ElementStyle="{StaticResource statusDataRow}">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding Converter="{StaticResource ShopProductStatusConverter}" >
+                                    <Binding Path="Status"/>
+                                    <Binding Path="InStock"/>
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            <Grid
+                Grid.Row="4"
+                Height="20"/>
+        </Grid>
         <Grid
             Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -425,7 +506,7 @@
             </Grid.ColumnDefinitions>
             <ToggleButton
                 IsEnabled="{i:Binding '(SelectedIndex!=-1)', ElementName=dataGrid}"
-                IsChecked="False"
+                IsChecked="{Binding IsOpenProductInfoPortrait}"
                 x:Name="OpenDrawerToggleButton"
                 Grid.Column="0"
                 Style="{StaticResource ToggleButtonSlide}"/>
@@ -433,9 +514,6 @@
                 x:Name="productInfoPortraitGrid"
                 Grid.Column="1">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                    <!--<local:ProductInfoPortrait
-                        DataContext="{Binding ProductInfoPortraitViewModel}"
-                        Visibility="{i:Binding IsChecked, ElementName=OpenDrawerToggleButton}"/>-->
                     <ContentControl
                         Width="500"
                         Visibility="{i:Binding IsChecked, ElementName=OpenDrawerToggleButton}"
@@ -445,5 +523,9 @@
             </Grid>
         </Grid>
     </Grid>
-
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding SearchProductCommand}"/>
+    </UserControl.InputBindings>
 </UserControl>
