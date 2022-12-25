@@ -10,7 +10,7 @@ using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp {
-    public class ProductDetailsVM :BaseViewModel {
+    public class OrderDetailsVM :BaseViewModel {
 		public Order OrderDetail { get; set; }
         public int Status =>
             OrderDetail == null 
@@ -34,7 +34,7 @@ namespace WPFEcommerceApp {
 		public ICommand OnReviewProduct { get; }
 		public ICommand OnVisitShop { get; }
 
-        public ProductDetailsVM(Order order) {
+        public OrderDetailsVM(Order order) {
 
             OrderDetail = order;
 
@@ -87,9 +87,7 @@ namespace WPFEcommerceApp {
 							? 2
 							: OrderDetail.Status == "Cancelled"
 							? 3 : 2;
-                var nav = new ParamNavigationService<int, OrderScreenVM>(
-                    (parameter) => new OrderScreenVM(parameter));
-                nav.Navigate(param);
+				NavigateProvider.OrderParamScreen().Navigate(param);
 			});
 			OnViewProduct = new RelayCommand<object>(p => true, p => {
 				MessageBox.Show($"Navigate to {(p as Product).ID}");

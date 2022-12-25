@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 namespace WPFEcommerceApp {
     public class ReOrderCM : CommandBase {
         public override void Execute(object p) {
-            var nav = new ParamNavigationService<Order, CheckoutScreenVM>(
-                    (parameter) => new CheckoutScreenVM(parameter));
-            nav.Navigate(p as Order);
+
+            NavigateProvider.CheckoutScreen().Navigate(p);
         }
     }
 }

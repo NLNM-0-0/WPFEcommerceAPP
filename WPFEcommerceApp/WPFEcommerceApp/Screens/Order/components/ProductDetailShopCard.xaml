@@ -41,7 +41,7 @@
         <Button Width="{i:Binding ElementName=prdContainer, Path=ActualWidth-10}"
                 Height="{i:Binding ElementName=prdContainer, Path=ActualHeight+10}"
                 Style="{StaticResource prdButton}"
-                Command="{Binding RelativeSource={RelativeSource AncestorType=vm:ProductDetails, Mode=FindAncestor}, Path=DataContext.OnViewProduct}"
+                Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderDetails, Mode=FindAncestor}, Path=DataContext.OnViewProduct}"
                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}">
 
             <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListView, Mode=FindAncestor}
@@ -169,7 +169,7 @@
                             Margin="19, 0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=vm:ProductDetails, Mode=FindAncestor}, Path=DataContext.OnViewShop}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderDetails, Mode=FindAncestor}, Path=DataContext.OnViewShop}"
                             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}">
                     </Button>
                 </StackPanel>

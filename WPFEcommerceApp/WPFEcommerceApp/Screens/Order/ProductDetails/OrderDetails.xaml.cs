@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace WPFEcommerceApp {
     /// <summary>
-    /// Interaction logic for ProductDetails.xaml
+    /// Interaction logic for OrderDetails.xaml
     /// </summary>
-    public partial class ProductDetails : UserControl {
-        public ProductDetails() {
+    public partial class OrderDetails : UserControl {
+        public OrderDetails() {
             InitializeComponent();
         }
     }

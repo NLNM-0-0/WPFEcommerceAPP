@@ -104,10 +104,7 @@ namespace WPFEcommerceApp {
             });
 
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
-                var param = p as Order;
-                var nav = new ParamNavigationService<Order, ProductDetailsVM>(
-                    (parameter) => new ProductDetailsVM(parameter));
-                nav.Navigate(param);
+                NavigateProvider.OrderDetailScreen().Navigate(p);
             });
             
             ICommand ReOrderCM = new ReOrderCM();
