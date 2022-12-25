@@ -70,16 +70,25 @@ namespace WPFEcommerceApp {
                     ShopPopUpDataContext = new ShopPopUpVM(this);
 
                     if(SelectedIndex == 0) {
-                        NavigateProvider.CheckoutScreen().Navigate();
+                        NavigateProvider.HomeScreen().Navigate();
+                    }
+                    else if(SelectedIndex == 1) {
+                        NavigateProvider.BagScreen().Navigate();
                     }
                     else if(SelectedIndex == 2) {
                         NavigateProvider.OrderScreen().Navigate();
                     }
+                    else if(SelectedIndex == 3) {
+                        NavigateProvider.FavouriteScreen().Navigate();
+                    }
                     else if(SelectedIndex == 4) {
-                        NavigateProvider.ShopMainScreen().Navigate();
+                        //Unknown
                     }
                     else if(SelectedIndex == 5) {
                         NavigateProvider.ProfileScreen().Navigate();
+                    }
+                    else {
+                        //Unknown
                     }
                 }
                 else {

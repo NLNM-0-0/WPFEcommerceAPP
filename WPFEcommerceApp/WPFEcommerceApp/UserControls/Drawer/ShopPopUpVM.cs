@@ -36,7 +36,7 @@ namespace WPFEcommerceApp {
                 drawerVM.SelectedIndex = 4;
                 var temp = p as string;
                 if(temp == "1") {
-                    NavigateProvider.ShopMainScreen().Navigate();
+                    //Unknown
                 }
                 else if(temp == "2") {
                     NavigateProvider.ShopOrderScreen().Navigate();
