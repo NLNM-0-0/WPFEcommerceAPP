@@ -394,10 +394,10 @@
       <DependentUpon>OrderScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Order\OrderScreenVM.cs" />
-    <Compile Include="Screens\Order\ProductDetails\ProductDetails.xaml.cs">
-      <DependentUpon>ProductDetails.xaml</DependentUpon>
+    <Compile Include="Screens\Order\ProductDetails\OrderDetails.xaml.cs">
+      <DependentUpon>OrderDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Order\ProductDetails\ProductDetailsVM.cs" />
+    <Compile Include="Screens\Order\ProductDetails\OrderDetailsVM.cs" />
     <Compile Include="Screens\Payment\Checkout\CheckoutScreen.xaml.cs">
       <DependentUpon>CheckoutScreen.xaml</DependentUpon>
     </Compile>
@@ -669,7 +669,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screens\Order\ProductDetails\ProductDetails.xaml">
+    <Page Include="Screens\Order\ProductDetails\OrderDetails.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

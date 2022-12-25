@@ -29,7 +29,6 @@ namespace WPFEcommerceApp {
             //Normal
             #region Checkout and Order
             //Normal - Checkout and Order
-            services.AddTransient<CheckoutScreenVM>();
             services.AddTransient<OrderScreenVM>();
             services.AddTransient<SuccessScreenVM>();
             #endregion
@@ -64,7 +63,7 @@ namespace WPFEcommerceApp {
             //It need to be CreateHomeNavService
             //But I set initial screen is checkout here
             //just for example
-            services.AddSingleton<INavigationService>(s => NavigateProvider.CheckoutScreen());
+            services.AddSingleton<INavigationService>(s => NavigateProvider.SuccessScreen());
 
             services.AddSingleton<MainViewModel>();
 

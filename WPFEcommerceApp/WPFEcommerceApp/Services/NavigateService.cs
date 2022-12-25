@@ -18,5 +18,8 @@ namespace WPFEcommerceApp {
         public void Navigate() {
             navigationStore.CurrentViewModel = CreateVM();
         }
+        public void Navigate(object o) {
+            throw new NotImplementedException();
+        }
     }
 }

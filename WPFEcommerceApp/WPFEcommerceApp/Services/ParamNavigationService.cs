@@ -5,17 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WPFEcommerceApp {
-    public class ParamNavigationService<TParameter, TViewModel>
+    public class ParamNavigationService<TViewModel> : INavigationService
         where TViewModel : BaseViewModel{
         private readonly NavigationStore _navigationStore;
-        private readonly CreateViewModel<TParameter, TViewModel> _createViewModel;
+        private readonly CreateParamVM<TViewModel> _createViewModel;
 
-        public ParamNavigationService(CreateViewModel<TParameter, TViewModel> createViewModel) {
+        public ParamNavigationService(CreateParamVM<TViewModel> createViewModel) {
             _navigationStore = NavigationStore.instance;
             _createViewModel = createViewModel;
         }
 
-        public void Navigate(TParameter parameter) {
+        public void Navigate() { 
+            throw new NotImplementedException();
+        }
+        public void Navigate(object parameter) {
             _navigationStore.CurrentViewModel = _createViewModel(parameter);
         }
     }

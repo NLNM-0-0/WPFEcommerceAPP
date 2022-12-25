@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 namespace WPFEcommerceApp {
     public interface INavigationService {
         void Navigate();
+        void Navigate(object o);
     }
 }

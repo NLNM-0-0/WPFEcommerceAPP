@@ -36,8 +36,8 @@
     <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
         <local:SuccessScreen/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
-        <local:ProductDetails/>
+    <DataTemplate DataType="{x:Type local:OrderDetailsVM}">
+        <local:OrderDetails/>
     </DataTemplate>
     <!--#endregion-->
     

@@ -35,8 +35,12 @@ namespace WPFEcommerceApp {
         #region Checkout and Payment
         //Checkout and Payment
         static public INavigationService CheckoutScreen() {
-            return new NavigationService<CheckoutScreenVM>(
-                serviceProvider.GetRequiredService<CheckoutScreenVM>);
+            return new ParamNavigationService<CheckoutScreenVM>(
+                (p) => new CheckoutScreenVM(p as Order));
+        }
+        static public INavigationService OrderParamScreen() {
+            return new ParamNavigationService<OrderScreenVM>(
+                (p) => new OrderScreenVM((int)p));
         }
         static public INavigationService OrderScreen() {
             return new NavigationService<OrderScreenVM>(
@@ -45,6 +49,10 @@ namespace WPFEcommerceApp {
         static public INavigationService SuccessScreen() {
             return new NavigationService<SuccessScreenVM>(
                 serviceProvider.GetRequiredService<SuccessScreenVM>);
+        }
+        static public INavigationService OrderDetailScreen() {
+            return new ParamNavigationService<OrderDetailsVM>(
+                    (parameter) => new OrderDetailsVM(parameter as Order));
         }
         #endregion
 

@@ -17,5 +17,8 @@ namespace WPFEcommerceApp {
                 navigationService.Navigate();
             }
         }
+        public void Navigate(object o) {
+            throw new NotImplementedException();
+        }
     }
 }
