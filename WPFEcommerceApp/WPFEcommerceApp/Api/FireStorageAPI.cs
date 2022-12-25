@@ -39,22 +39,28 @@ namespace WPFEcommerceApp {
                 return new Tuple<bool, string>(false, "");
 
             if(OldPath != null && OldPath.Length > 0) {
-                var delContent = "N/A";
-                try {
-                    using(var http = await storage.Options.CreateHttpClientAsync().ConfigureAwait(false)) {
-                        var del = await http.DeleteAsync(new Uri(OldPath)).ConfigureAwait(false);
-                        delContent = await del.Content.ReadAsStringAsync().ConfigureAwait(false);
-                        del.EnsureSuccessStatusCode();
-                    }
-                }
-                catch(Exception ex) {
-                    throw new FirebaseStorageException(OldPath, delContent, ex);
-                }
+                await Delete(OldPath);
             }
 
             var res = await Push(Path, Root, Name, child);
             return new Tuple<bool, string>(true, res);
         }
+
+        public static async Task<bool> Delete(string Path) {
+            var delContent = "N/A";
+            try {
+                using(var http = await storage.Options.CreateHttpClientAsync().ConfigureAwait(false)) {
+                    var del = await http.DeleteAsync(new Uri(Path)).ConfigureAwait(false);
+                    delContent = await del.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    del.EnsureSuccessStatusCode();
+                }
+            }
+            catch(Exception ex) {
+                throw new FirebaseStorageException(Path, delContent, ex);
+            }
+            return true;
+        }
+
         static async Task<bool> Exist(FirebaseStorageReference ins) {
             try {
                 await ins.GetMetaDataAsync();
