@@ -64,48 +64,7 @@
                             Identifier="Main">
                         <Grid>
                             <Grid.Resources>
-                                <DataTemplate DataType="{x:Type local:MyProfileViewModel}">
-                                    <local:MyProfile/>
-                                </DataTemplate>
-                                <!--Checkout and order-->
-                                <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
-                                    <local:CheckoutScreen/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:OrderScreenVM}">
-                                    <local:OrderScreen/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
-                                    <local:SuccessScreen/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
-                                    <local:ProductDetails/>
-                                </DataTemplate>
-                                <!--Shop-->
-                                <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
-                                    <local:ShopMain/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
-                                    <local:ShopRating/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:ShopProductViewModel}">
-                                    <local:ShopProduct/>
-                                </DataTemplate>
-                                <!--Admin-->
-                                <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
-                                    <local:ShopInformationPage/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:AdminBrandViewModel}">
-                                    <local:AdminBrandManager/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:AdminCategoryViewModel}">
-                                    <local:AdminCategoryManager/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:AdminProductManagerViewModel}">
-                                    <local:AdminProductInformation/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type local:AdminUserManagerViewModel}">
-                                    <local:AdminUserInformation/>
-                                </DataTemplate>
+                                <ResourceDictionary Source="ScreensDT.xaml"/>
                             </Grid.Resources>
 
                             <Grid>

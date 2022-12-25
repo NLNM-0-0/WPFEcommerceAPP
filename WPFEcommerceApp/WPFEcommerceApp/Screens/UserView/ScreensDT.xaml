@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WPFEcommerceApp">
+    
+    <!--#region General-->
+    <DataTemplate DataType="{x:Type local:MyProfileViewModel}">
+        <local:MyProfile/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:BagViewModel}">
+        <local:Bag/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:FavoriteViewModel}">
+        <local:Favorite/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:HomeViewModel}">
+        <local:Home/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LoginViewModel}">
+        <local:Login/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:NotificationViewModel}">
+        <local:Notification/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ProductDetailViewModel}">
+        <local:ProductDetail/>
+    </DataTemplate>
+    <!--#endregion-->
+    
+    <!--#region Checkout and order-->
+    <DataTemplate DataType="{x:Type local:CheckoutScreenVM}">
+        <local:CheckoutScreen/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:OrderScreenVM}">
+        <local:OrderScreen/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SuccessScreenVM}">
+        <local:SuccessScreen/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ProductDetailsVM}">
+        <local:ProductDetails/>
+    </DataTemplate>
+    <!--#endregion-->
+    
+    <!--#region Shop-->
+    <DataTemplate DataType="{x:Type local:ShopMainViewModel}">
+        <local:ShopMain/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ShopRatingViewModel}">
+        <local:ShopRating/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ShopProductViewModel}">
+        <local:ShopProduct/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ShopOrderViewModel}">
+        <local:ShopOrder/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ShopViewViewModel}">
+        <local:ShopView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:MyHomeViewModel}">
+        <local:MyHome/>
+    </DataTemplate>
+    <!--#endregion-->
+    
+    <!--#region Admin-->
+    <DataTemplate DataType="{x:Type local:ShopInformationPageViewModel}">
+        <local:ShopInformationPage/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:AdminBrandViewModel}">
+        <local:AdminBrandManager/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:AdminCategoryViewModel}">
+        <local:AdminCategoryManager/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:AdminProductManagerViewModel}">
+        <local:AdminProductInformation/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:AdminUserManagerViewModel}">
+        <local:AdminUserInformation/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:AdsManagerViewModel}">
+        <local:AdsManager/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:ShopStatisticsViewModel}">
+        <local:Charts/>
+    </DataTemplate>
+    <!--#endregion-->
+
+</ResourceDictionary>
