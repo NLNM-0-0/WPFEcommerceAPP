@@ -23,7 +23,8 @@ namespace WPFEcommerceApp
         public Bag()
         {
             InitializeComponent();
-            this.DataContext = new BagViewModel();
+            AccountStore accountStore = new AccountStore();
+            this.DataContext = new BagViewModel(accountStore);
         }
     }
 }

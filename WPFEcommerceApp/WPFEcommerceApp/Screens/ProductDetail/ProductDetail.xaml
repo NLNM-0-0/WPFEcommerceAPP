@@ -11,7 +11,7 @@
              d:DesignHeight="900" d:DesignWidth="1440">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="2.75*"></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0"
@@ -105,7 +105,7 @@
                        Foreground="{StaticResource BlackColorBrush}">
 
             </TextBlock>
-            <Grid Margin="40,20,40,0">
+            <Grid Margin="25,20,25,40">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -113,58 +113,72 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition Width="1.25*"/>
                     </Grid.ColumnDefinitions>
                     <RadioButton Content="S"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="0"
                                  materialDesign:ButtonAssist.CornerRadius="5"
-                                 Margin="5"
-                                 IsChecked="{Binding SelectedProduct.IsHadSizeS}">
+                                 Margin="2"
+                                 IsChecked="{Binding IsHadSizeS}">
                     </RadioButton>
                     <RadioButton Content="M"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="1"
                                  materialDesign:ButtonAssist.CornerRadius="5"
-                                 Margin="5"
-                                 IsChecked="{Binding SelectedProduct.IsHadSizeM}">
+                                 Margin="2"
+                                 IsChecked="{Binding IsHadSizeM}">
                     </RadioButton>
                     <RadioButton Content="L"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="2"
                                  materialDesign:ButtonAssist.CornerRadius="5"
-                                 Margin="5"
-                                 IsChecked="{Binding SelectedProduct.IsHadSizeL}">
+                                 Margin="2"
+                                 IsChecked="{Binding IsHadSizeL}">
                     </RadioButton>
                     <RadioButton Content="XL"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="3"
                                  materialDesign:ButtonAssist.CornerRadius="5"
-                                 Margin="5"
-                                 IsChecked="{Binding SelectedProduct.IsHadSizeXL}">
+                                 Margin="2"
+                                 IsChecked="{Binding IsHadSizeXL}">
                     </RadioButton>
                     <RadioButton Content="XXL"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="4"
                                  materialDesign:ButtonAssist.CornerRadius="5"
-                                 Margin="5"
-                                 IsChecked="{Binding SelectedProduct.IsHadSizeXXL}">
+                                 Margin="2"
+                                 IsChecked="{Binding IsHadSizeXXL}">
+                    </RadioButton>
+                    <RadioButton Content="OneSize"
+                                 Style="{StaticResource RadioButtonFill}"
+                                 Grid.Column="5"
+                                 materialDesign:ButtonAssist.CornerRadius="5"
+                                 Margin="2"
+                                 IsChecked="{Binding IsHadOneSize}">
                     </RadioButton>
                 </Grid>
             </Grid>
             <Button Content="Add to bag"
                     Width="auto"
+                    Command="{Binding AddToBagCommand}"
+                    CommandParameter="{Binding AddToBagCommand}"
                     Margin="50,50,50,0">
 
             </Button>
             <Button
                 Style="{StaticResource WhiteButton}"
                 Content="Favourite"
-                    Width="auto"
-                    Margin="50,20,50,0">
+                Command="{Binding FavouriteCommand}"
+                CommandParameter="{Binding FavouriteCommand}"
+                Width="auto"
+                Margin="50,20,50,0">
 
             </Button>
             <Button Content="Buy now"
                     Width="auto"
+                    Command="{Binding BuyNowCommand}"
+                    CommandParameter="{Binding BuyNowCommand}"
                     Margin="50,50,50,0">
 
             </Button>

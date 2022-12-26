@@ -1,8 +1,11 @@
 ﻿using DataAccessLayer;
+using LiveCharts.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,13 +24,27 @@ namespace WPFEcommerceApp
         private string _address;
         private bool _isMen;
         private bool _isWomen;
+        private bool _isCheckAgree;
         public bool Gt;
 
+        public bool IsCheckAgree
+        {
+            get => _isCheckAgree;
+            set
+            {
+                _isCheckAgree = value;
+                OnPropertyChanged();
+            }
+        }
         public string Name
         {
             get => _name;
             set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("*Can not empty");
+                }
                 _name = value;
                 OnPropertyChanged();
             }
@@ -37,6 +54,18 @@ namespace WPFEcommerceApp
             get => _email;
             set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("*Can not empty");
+                }
+                string rgStr = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
+                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
+                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+                Regex regex = new Regex(rgStr);
+                if (!regex.IsMatch(value))
+                {
+                    throw new ArgumentException("*Wrong type");
+                }
                 _email = value;
                 OnPropertyChanged();
             }
@@ -67,6 +96,10 @@ namespace WPFEcommerceApp
         {
             get => _password; set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("*Can not empty");
+                }
                 _password = value;
                 OnPropertyChanged();
             }
@@ -76,6 +109,20 @@ namespace WPFEcommerceApp
             get => _phone;
             set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("*Can not empty");
+                }
+                if(value.Length <= 6 || value.Length >= 12)
+                {
+                    throw new ArgumentException("*Wrong type");
+                }
+                string rgStr = @"^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$";
+                Regex regex = new Regex(rgStr);
+                if (!regex.IsMatch(value))
+                {
+                    throw new ArgumentException("*Wrong type");
+                }
                 _phone = value;
                 OnPropertyChanged();
             }
@@ -85,6 +132,10 @@ namespace WPFEcommerceApp
             get=> _address;
             set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("*Can not empty");
+                }
                 _address = value;
                 OnPropertyChanged();
             }
@@ -97,9 +148,6 @@ namespace WPFEcommerceApp
             GenericDataRepository<Models.UserLogin> loginRepository = new GenericDataRepository<Models.UserLogin>();
             try
             {
-                
-                
-               
                 await dataRepository.Add(new Models.MUser()
                 {
                     Id = idUser,
@@ -127,7 +175,10 @@ namespace WPFEcommerceApp
         }
         public RegisterViewModel()
         {
-            Regist = new RelayCommandWithNoParameter(async () =>
+            Regist = new RelayCommand<object>((p) =>
+            {
+                return (!string.IsNullOrEmpty(Name)&& !string.IsNullOrEmpty(Email)&& !string.IsNullOrEmpty(Phone)&& !string.IsNullOrEmpty(Address)&& !string.IsNullOrEmpty(Password) && (IsMen == true || IsWomen == true) && IsCheckAgree == true);
+            },(p) =>
             {
                 Task task = Task.Run(async () => await Load());
                 while (!task.IsCompleted) ;

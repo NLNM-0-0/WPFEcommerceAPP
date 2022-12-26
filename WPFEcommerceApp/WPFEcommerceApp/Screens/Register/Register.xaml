@@ -7,10 +7,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             d:DesignHeight="900" d:DesignWidth="780"
-             Height="500">
-    <ScrollViewer>
-        
+             d:DesignHeight="900" d:DesignWidth="780">
+
     <StackPanel Background="White">
         <StackPanel.Resources>
             <Style x:Key="RadioButtonGender" TargetType="{x:Type RadioButton}">
@@ -61,7 +59,7 @@
                                     <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
                                     <Setter Property="BorderBrush" Value="{StaticResource BoxLineColorBrush}"/>
                                 </Trigger>
-                                
+
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
@@ -112,39 +110,39 @@
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Email Address"
                     Width="auto"
-                    Text="{Binding Email}"
+                    Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
                     HorizontalContentAlignment="Stretch"
-                    Margin="30,20,30,0">
+                    Margin="30,20,30,5">
 
         </TextBox>
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Password"
                     Width="auto"
-                 Text="{Binding Password}"
+                    Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                     HorizontalContentAlignment="Stretch"
-                    Margin="30,20,30,0">
+                    Margin="30,20,30,5">
 
         </TextBox>
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Phone Number"
                     Width="auto"
-                 Text="{Binding Phone}"
+                    Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                     HorizontalContentAlignment="Stretch"
-                    Margin="30,20,30,0">
+                    Margin="30,20,30,5">
 
         </TextBox>
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Your name"
                     Width="auto"
-                 Text="{Binding Name}"
+                    Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
                     HorizontalContentAlignment="Stretch"
-                    Margin="30,20,30,0">
+                    Margin="30,20,30,5">
 
         </TextBox>
         <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Address"
                     Width="auto"
-                 Text="{Binding Address}"
+                    Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,10">
 
@@ -172,6 +170,7 @@
         </Grid>
         <CheckBox
             Margin="30"
+            IsChecked="{Binding IsCheckAgree}"
             Content="Agree to WANO's Privacy Policy and Terms of Use"
             FontSize="15"
             Background="{StaticResource BlackColorBrush}">
@@ -180,11 +179,9 @@
         <Button Width="auto"
                 Margin="30"
                 Content="Register"
-                Command="{Binding Regist}">
-                
-        </Button>
+                Command="{Binding Regist}"
+                CommandParameter="{Binding ElementName=ButtonClose}"/>
     </StackPanel>
-    </ScrollViewer>
 
 </UserControl>
 
