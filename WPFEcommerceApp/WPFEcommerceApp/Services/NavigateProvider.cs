@@ -89,6 +89,10 @@ namespace WPFEcommerceApp {
 
         #region Shop
         //Shop
+        static public INavigationService ShopViewScreen() {
+            return new ParamNavigationService<ShopViewViewModel>(
+                    (parameter) => new ShopViewViewModel(parameter as Models.MUser));
+        }
         static public INavigationService ShopOrderScreen() {
             return new NavigationService<ShopOrderViewModel>(
                 serviceProvider.GetRequiredService<ShopOrderViewModel>);

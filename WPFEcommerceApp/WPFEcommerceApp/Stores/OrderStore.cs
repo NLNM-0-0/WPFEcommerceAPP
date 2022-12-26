@@ -41,7 +41,10 @@ namespace WPFEcommerceApp {
         }
 		public async Task Load() {
 			MainViewModel.IsLoading = true;
-            if(user == null) return;
+            if(user == null) {
+                MainViewModel.IsLoading = false;
+                return;
+			}
 			OrderList?.Clear();
 
 			OrderList = new ObservableCollection<Order>();

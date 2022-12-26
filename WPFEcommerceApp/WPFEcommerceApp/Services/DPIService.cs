@@ -52,6 +52,7 @@ namespace WPFEcommerceApp {
 
             #region General
             services.AddTransient<MyProfileViewModel>();
+            services.AddTransient<HomeViewModel>();
             services.AddTransient<BagViewModel>();
             services.AddTransient<FavoriteViewModel>();
             services.AddTransient<NotificationViewModel>();
@@ -63,7 +64,7 @@ namespace WPFEcommerceApp {
             //It need to be CreateHomeNavService
             //But I set initial screen is checkout here
             //just for example
-            services.AddSingleton<INavigationService>(s => NavigateProvider.SuccessScreen());
+            services.AddSingleton<INavigationService>(s => NavigateProvider.HomeScreen());
 
             services.AddSingleton<MainViewModel>();
 

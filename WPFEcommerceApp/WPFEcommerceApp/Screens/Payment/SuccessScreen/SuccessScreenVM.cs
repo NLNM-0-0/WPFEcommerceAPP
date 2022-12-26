@@ -9,8 +9,7 @@ namespace WPFEcommerceApp {
     public class SuccessScreenVM : BaseViewModel {
         public ICommand OnBackHome { get; set; }
         public SuccessScreenVM() {
-            //need to be home screen here
-            OnBackHome = new NavigateCommand(NavigateProvider.CheckoutScreen());
+            OnBackHome = new NavigateCommand(NavigateProvider.HomeScreen());
         }
     }
 }
