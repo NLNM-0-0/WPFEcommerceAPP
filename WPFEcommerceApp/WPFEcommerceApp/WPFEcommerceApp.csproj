@@ -80,6 +80,8 @@
     </ApplicationDefinition>
     <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
+    <Compile Include="Screens\Home\BrandCheckViewModel.cs" />
+    <Compile Include="Screens\Home\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Command\NavigateCommand.cs" />
     <Compile Include="Models\Advertisement.cs">
       <DependentUpon>Model.tt</DependentUpon>
