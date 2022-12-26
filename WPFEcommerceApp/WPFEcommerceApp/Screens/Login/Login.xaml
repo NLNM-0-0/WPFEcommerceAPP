@@ -95,11 +95,13 @@
                 <TextBox
                     Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="User"
+                    Text="{Binding Username}"
                     Width="auto"
                     HorizontalContentAlignment="Stretch"
                     Margin="30"
                     materialDesign:HintAssist.HelperText="" />
                 <PasswordBox
+                 materialDesign:PasswordBoxAssist.Password="{Binding Password}"
                  Style="{StaticResource PasswordOutlinedReveal}"            
                     materialDesign:HintAssist.Hint="Password"
                     materialDesign:TextFieldAssist.HasClearButton="True"
@@ -121,10 +123,12 @@
                 />
                     <Button
                     Grid.Column="1"
-                    Margin="0 0 0 0"
+                    Margin="0 3 0 0"
                     Style="{StaticResource TransparentButton}"
                     Content="Forgot Password"
                     Width="140"
+                    HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Right"
                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" 
                     materialDesign:RippleAssist.Feedback ="Transparent"
                     Template="{StaticResource TextBlockButton}"
@@ -169,11 +173,13 @@
                     HorizontalAlignment="Stretch"
                     Width="auto"
                     Margin="30 0"
-                    Content="Login"/>
+                    Content="Login"
+                    Command="{Binding isLogin}"/>
                 <Button
                     Margin="0 10 0 0"
                     Style="{StaticResource TransparentButton}"
                     Content="Don't have account, sign up"
+                    Foreground="{StaticResource ErrorColorBrush}"
                     Width="140"
                     Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" 
                     materialDesign:RippleAssist.Feedback ="Transparent"

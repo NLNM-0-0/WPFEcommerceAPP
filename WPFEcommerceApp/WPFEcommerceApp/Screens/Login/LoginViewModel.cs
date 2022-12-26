@@ -14,7 +14,6 @@ namespace WPFEcommerceApp
     internal class LoginViewModel:BaseViewModel
     {
         public GenericDataRepository<Models.UserLogin> UserRepository { get; set; }
-        private AccountStore _accountStore;
 
         private ObservableCollection<Models.UserLogin> accounts;
         public ObservableCollection<Models.UserLogin> Accounts
@@ -38,23 +37,27 @@ namespace WPFEcommerceApp
         {
             get => password; set { password = value; OnPropertyChanged(); }
         }
-
-        public LoginViewModel(AccountStore accountStore)
+        public LoginViewModel()
         {
             UserRepository = new GenericDataRepository<Models.UserLogin>();
             
-            _accountStore = accountStore;
             //_accountStore.CurrentAccount = ;
-            isLogin = new RelayCommand<object>((p) => { return true; },(p)=>{
+            isLogin = new RelayCommandWithNoParameter(() => {
                 Login();
             });
         }
         private async Task Login()
         {
-            var acc = new ObservableCollection<Models.UserLogin>(await UserRepository.GetListAsync(x => x.Username == username && x.Password == password)).Count;
-            if(acc > 0)
+            Models.UserLogin acc = await UserRepository.GetSingleAsync(x => (x.Username == username && x.Password == password),
+                                                                       x => x.MUser);
+            if(acc != null )
             {
+                AccountStore.instance.CurrentAccount = acc.MUser;
                 MessageBox.Show("Login successfully");
+            }
+            else
+            {
+                MessageBox.Show("Error");
             }
 
         }

@@ -22,6 +22,12 @@ namespace WPFEcommerceApp
         public Login()
         {
             InitializeComponent();
+            this.DataContext = new LoginViewModel();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
