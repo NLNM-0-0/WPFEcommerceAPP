@@ -49,17 +49,17 @@ namespace WPFEcommerceApp
             set => SetValue(ShopNameProperty, value);
         }
         public static readonly DependencyProperty UnitPriceProperty = DependencyProperty.Register(
-           "UnitPrice", typeof(int), typeof(BagBlockUC), new FrameworkPropertyMetadata(default(int)));
-        public int UnitPrice
+           "UnitPrice", typeof(long), typeof(BagBlockUC), new FrameworkPropertyMetadata(default(long)));
+        public long UnitPrice
         {
-            get => (int)GetValue(UnitPriceProperty);
+            get => (long)GetValue(UnitPriceProperty);
             set => SetValue(UnitPriceProperty, value);
         }
         public static readonly DependencyProperty AmountProperty = DependencyProperty.Register(
-           "Amount", typeof(int), typeof(BagBlockUC), new FrameworkPropertyMetadata(default(int)));
-        public int Amount
+           "Amount", typeof(long), typeof(BagBlockUC), new FrameworkPropertyMetadata(default(long)));
+        public long Amount
         {
-            get => (int)GetValue(AmountProperty);
+            get => (long)GetValue(AmountProperty);
             set => SetValue(AmountProperty, value);
         }
         public static readonly DependencyProperty PriceProperty = DependencyProperty.Register(

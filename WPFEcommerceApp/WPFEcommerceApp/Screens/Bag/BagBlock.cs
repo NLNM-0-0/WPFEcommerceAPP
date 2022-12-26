@@ -21,8 +21,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ImageSource productImage;
-        public ImageSource ProductImage
+        private string productImage;
+        public string ProductImage
         {
             get => productImage;
             set
@@ -49,8 +49,8 @@ namespace WPFEcommerceApp
             }
         }
 
-        private int unitPrice;
-        public int UnitPrice
+        private long unitPrice;
+        public long UnitPrice
         {
             get => unitPrice;
             set
@@ -58,8 +58,8 @@ namespace WPFEcommerceApp
                 unitPrice = value;
             }
         }
-        private int amount;
-        public int Amount
+        private long amount;
+        public long Amount
         {
             get => amount;
             set
@@ -67,13 +67,22 @@ namespace WPFEcommerceApp
                 amount = value;
             }
         }
-        private int price;
-        public int Price
+        private long price;
+        public long Price
         {
             get => price;
             set
             {
                 price = value;
+            }
+        }
+        private string iD;
+        public string ID
+        {
+            get => iD;
+            set
+            {
+                iD = value;
             }
         }
     }
