@@ -16,9 +16,5 @@ namespace WPFEcommerceApp
             InitializeComponent();
             this.DataContext = new ShopStatisticsViewModel();
         }
-
-        
-
-        
     }
 }

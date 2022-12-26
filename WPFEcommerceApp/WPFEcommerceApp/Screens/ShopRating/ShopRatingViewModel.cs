@@ -137,9 +137,10 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ShopRatingViewModel(AccountStore accountStore)
+        public ShopRatingViewModel()
         {
-            _accountStore = accountStore;
+            //VHCMT: Don't need to pass Account Store
+            _accountStore = AccountStore.instance;
             Load();
             Task t = Task.Run(async () =>
             {
