@@ -30,12 +30,12 @@ namespace WPFEcommerceApp
         public NotificationViewModel()
         {
             NoteRepo = new GenericDataRepository<Models.Notification>();
-            Load();
+            Task task = Task.Run(async () => await Load());
         }
-        private async void Load()
+        private async Task Load()
         {
 
-            var noteList =new ObservableCollection<Models.Notification>( await NoteRepo.GetListAsync(item => item.IdReceiver == ID,
+            var noteList =new ObservableCollection<Models.Notification>( await NoteRepo.GetListAsync(item => item.IdReceiver == AccountStore.instance.CurrentAccount.Id,
                                                         item=>item.MUser
                                                         ));
 
