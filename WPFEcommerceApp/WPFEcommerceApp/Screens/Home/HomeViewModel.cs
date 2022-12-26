@@ -326,6 +326,7 @@ namespace WPFEcommerceApp
         }
         public bool[] CheckSize = { false, false, false, false, false, false };
 
+        public ICommand OnProductChoice { get; set; }
         public HomeViewModel()
         {
             ProductViewModels = new ObservableCollection<ProductBlockViewModel>();
@@ -336,6 +337,10 @@ namespace WPFEcommerceApp
             SearchCommand = new RelayCommandWithNoParameter(async()=>
             {
                 await Search();
+            });
+
+            OnProductChoice = new RelayCommand<object>(p => true, p => {
+                NavigateProvider.ProductDetailScreen().Navigate(p);
             });
         }
         private async void SearchRadioButton()

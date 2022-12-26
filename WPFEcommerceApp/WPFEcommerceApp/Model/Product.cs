@@ -28,6 +28,19 @@ namespace WPFEcommerceApp {
             Discount=discount;
         }
 
+        public Product(Models.Product p, string size, int amount) {
+            if(p.ImageProducts.Count > 0)
+                ProductImage = p.ImageProducts.First().Source;
+            Name=p.Name;
+            Size=size;
+            Color = p.Color;
+            Description=p.Description;
+            p.Price=(long)p.Price;
+            Amount=amount;
+            Subtotal = Price*amount;
+            ID=p.Id;
+            Discount=p.Sale;
+        }
         public string ProductImage { get; set; }
         public string Name { get; set; }
         public string Size { get; set; }

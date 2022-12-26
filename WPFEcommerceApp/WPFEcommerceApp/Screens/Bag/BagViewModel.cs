@@ -63,10 +63,8 @@ namespace WPFEcommerceApp
             }
         }
         
-        private readonly AccountStore _accountStore;
-        public BagViewModel(AccountStore accountStore)
+        public BagViewModel()
         {
-            accountStore = _accountStore;
             CartRepo = new GenericDataRepository<Models.Cart>();
             Bags = new ObservableCollection<BagBlock>();
             Task task = Task.Run(async () => await Load());

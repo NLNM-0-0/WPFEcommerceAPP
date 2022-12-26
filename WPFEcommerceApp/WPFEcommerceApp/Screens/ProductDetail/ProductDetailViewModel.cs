@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,13 +13,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
     class ProductDetailViewModel : BaseViewModel
     {
         public GenericDataRepository<Models.Cart> CartRepo { get; set; }
-        public GenericDataRepository<Models.Product> FavouriteRepo { get; set; }
+        private readonly GenericDataRepository<Models.Product> productRepo = new GenericDataRepository<Models.Product>();
+        private readonly GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
         public ICommand NextImageCommand { get; set; }
         public ICommand PreviousImageCommand { get; set; }
 
@@ -220,20 +223,51 @@ namespace WPFEcommerceApp
                 }
                 SelectedImageIndex = ((selectedImageIndex - 1) % ImageProducts.Count);
             });
-            FavouriteCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            FavouriteCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
-                MessageBox.Show("Dang them vao trang Yeu thich cua ban");
+                var t = await FavouriteApi.Add(AccountStore.instance.CurrentAccount.Id, (p as Models.Product).Id);
+
+                var dl = new ConfirmDialog() {
+                    Header = t ? "Success" : "Oops",
+                    Content = "This product has been added to your Favourite. \nCheck it out.",
+                    CM = new RelayCommand<object>(pr => true, pr => {
+                        NavigateProvider.FavouriteScreen().Navigate();
+                    }),
+                    Param = ""
+                };
+                await DialogHost.Show(dl, "Main");
             });
-            BuyNowCommand = new RelayCommand<object>((p) => { return (IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize); }, (p) =>
+
+            BuyNowCommand = new RelayCommand<object>((p) => { return (IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize); }, async (p) =>
             {
-                
-                MessageBox.Show("Dang chuyen den trang mua hang");
+                var raw = p as Models.Product;
+                var raw2 = await productRepo.GetSingleAsync(d => d.Id == raw.Id, d => d.ImageProducts);
+
+                Product prd = new Product(raw2, Size, 1);
+                List<Product> list = new List<Product>();
+                list.Add(prd);
+
+                var id = await GenerateID.Gen(typeof(MOrder));
+                var repo = new GenericDataRepository<MUser>();
+                var shop = await repo.GetSingleAsync(d => d.Id == raw.IdShop);
+
+                Order o = new Order(id, AccountStore.instance.CurrentAccount.Id, raw.IdShop, "Processing", 20000, list, DateTime.Now, shop.Name, shop.SourceImageAva);
+
+                NavigateProvider.CheckoutScreen().Navigate(o);
             });
-            AddToBagCommand = new RelayCommand<object>((p) => { return (IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize); }, (p) =>
+
+            AddToBagCommand = new RelayCommand<object>((p) => { return (IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize); }, async (p) =>
             {
-                Task task = Task.Run(async () => await LoadAddToBag());
-                while (!task.IsCompleted) ;
-                MessageBox.Show("Da them vao gio hang cua ban");
+                await LoadAddToBag();
+                var dl = new ConfirmDialog() {
+                    Header = "Success",
+                    Content = "This product has been added to your Bag. \nCheck it out.",
+                    CM = new RelayCommand<object>(pr => true, pr => {
+                        NavigateProvider.BagScreen().Navigate();
+                    }),
+                    Param = ""
+                };
+                await DialogHost.Show(dl, "Main");
             });
         }
         private async Task LoadAddToBag()

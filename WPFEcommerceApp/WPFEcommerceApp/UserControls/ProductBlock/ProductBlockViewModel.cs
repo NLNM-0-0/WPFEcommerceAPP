@@ -169,7 +169,7 @@ namespace WPFEcommerceApp
             });
             OpenPageCommand = new RelayCommand<bool>((p) => { return !p; }, (p) =>
             {
-                MessageBox.Show("Navigate to page product");
+                NavigateProvider.ProductDetailScreen().Navigate(SelectedProduct);
             });
         }
     }

@@ -30,6 +30,10 @@ namespace WPFEcommerceApp {
             return new NavigationService<NotificationViewModel>(
                 serviceProvider.GetRequiredService<NotificationViewModel>);
         }
+        static public INavigationService ProductDetailScreen() {
+            return new ParamNavigationService<ProductDetailViewModel>(
+                (p) => new ProductDetailViewModel(p as Models.Product));
+        }
         #endregion
 
         #region Checkout and Payment

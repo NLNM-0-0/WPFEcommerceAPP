@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:it="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
@@ -162,25 +163,37 @@
             <Button Content="Add to bag"
                     Width="auto"
                     Command="{Binding AddToBagCommand}"
-                    CommandParameter="{Binding AddToBagCommand}"
+                    CommandParameter="{Binding SelectedProduct}"
                     Margin="50,50,50,0">
-
+                <it:Interaction.Triggers>
+                    <it:EventTrigger EventName="Click">
+                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </it:EventTrigger>
+                </it:Interaction.Triggers>
             </Button>
             <Button
                 Style="{StaticResource WhiteButton}"
                 Content="Favourite"
                 Command="{Binding FavouriteCommand}"
-                CommandParameter="{Binding FavouriteCommand}"
+                CommandParameter="{Binding SelectedProduct}"
                 Width="auto"
                 Margin="50,20,50,0">
-
+                <it:Interaction.Triggers>
+                    <it:EventTrigger EventName="Click">
+                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </it:EventTrigger>
+                </it:Interaction.Triggers>
             </Button>
             <Button Content="Buy now"
                     Width="auto"
                     Command="{Binding BuyNowCommand}"
-                    CommandParameter="{Binding BuyNowCommand}"
+                    CommandParameter="{Binding SelectedProduct}"
                     Margin="50,50,50,0">
-
+                <it:Interaction.Triggers>
+                    <it:EventTrigger EventName="Click">
+                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </it:EventTrigger>
+                </it:Interaction.Triggers>
             </Button>
 
         </StackPanel>

@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Api\FavouriteApi.cs" />
     <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
     <Compile Include="Screens\Home\BrandCheckViewModel.cs" />
@@ -394,10 +395,10 @@
       <DependentUpon>OrderScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Order\OrderScreenVM.cs" />
-    <Compile Include="Screens\Order\ProductDetails\OrderDetails.xaml.cs">
+    <Compile Include="Screens\Order\OrderDetails\OrderDetails.xaml.cs">
       <DependentUpon>OrderDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Order\ProductDetails\OrderDetailsVM.cs" />
+    <Compile Include="Screens\Order\OrderDetails\OrderDetailsVM.cs" />
     <Compile Include="Screens\Payment\Checkout\CheckoutScreen.xaml.cs">
       <DependentUpon>CheckoutScreen.xaml</DependentUpon>
     </Compile>
@@ -669,7 +670,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screens\Order\ProductDetails\OrderDetails.xaml">
+    <Page Include="Screens\Order\OrderDetails\OrderDetails.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
