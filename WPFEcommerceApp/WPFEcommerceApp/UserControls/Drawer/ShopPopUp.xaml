@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d"
-             Height="150" 
+             Height="188" 
              Width="150"
              x:Name="shoppop"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
@@ -85,6 +85,14 @@
                 <TextBlock VerticalAlignment="Center"  
                                HorizontalAlignment="Center"
                                Text="Rating"/>
+            </RadioButton>
+            <RadioButton Command="{Binding OnChecked}"
+                         CommandParameter="5"
+                         GroupName="ShopPopup"
+                         IsChecked="{Binding SelectedIndex[3]}">
+                <TextBlock VerticalAlignment="Center"  
+                               HorizontalAlignment="Center"
+                               Text="Statistic"/>
             </RadioButton>
         </StackPanel>
     </Grid>

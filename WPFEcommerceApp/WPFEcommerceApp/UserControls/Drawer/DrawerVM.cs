@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -34,6 +35,7 @@ namespace WPFEcommerceApp {
                 OnPropertyChanged();
             }
         }
+        private int prevSelected { get; set; } = 0;
 
         private bool canReload;
 
@@ -67,8 +69,21 @@ namespace WPFEcommerceApp {
                 if(DialogHost.IsDialogOpen("Main"))
                     DialogHost.Close("Main");
                 if(CurrentUser == null || CurrentUser.Role != "Admin") {
-                    ShopPopUpDataContext = new ShopPopUpVM(this);
 
+                    if(CurrentUser != null)
+                        ShopPopUpDataContext = new ShopPopUpVM(this);
+                    else {
+                        if(SelectedIndex != 0 && SelectedIndex != 5 && SelectedIndex != -1 && SelectedIndex != 6) {
+                            var dialog = new ConfirmDialog() {
+                                Header = "Oops!",
+                                Content = "You need to login to do this!",
+                                //CM: handle loggin here
+                                //Param = ""
+                            };
+                            DialogHost.Show(dialog, "Main", ClosingEventHandler);
+                            return;
+                        }
+                    }
                     if(SelectedIndex == 0) {
                         NavigateProvider.HomeScreen().Navigate();
                     }
@@ -82,7 +97,7 @@ namespace WPFEcommerceApp {
                         NavigateProvider.FavouriteScreen().Navigate();
                     }
                     else if(SelectedIndex == 4) {
-                        //Unknown
+                        NavigateProvider.ShopViewScreen().Navigate(CurrentUser);
                     }
                     else if(SelectedIndex == 5) {
                         NavigateProvider.ProfileScreen().Navigate();
@@ -90,6 +105,7 @@ namespace WPFEcommerceApp {
                     else {
                         //Unknown
                     }
+                    prevSelected = SelectedIndex;
                 }
                 else {
                     if(SelectedIndex == 0) {
@@ -116,6 +132,7 @@ namespace WPFEcommerceApp {
             //Shop popup Handle
             var timer = new DispatcherTimer();
             OnShopMouseOver = new RelayCommand<object>(p => {
+                if(CurrentUser == null) return false;
                 var values = (object[])p;
                 if((values[0] as ButtonItem).Text == "Shop") return true;
                 return false;
@@ -147,11 +164,17 @@ namespace WPFEcommerceApp {
         private void OnAccountChange() {
             OnPropertyChanged(nameof(CurrentUser));
             OnPropertyChanged(nameof(ButtonItems));
+            SelectedIndex = prevSelected = 0;
         }
         public override void Dispose() {
             _accountStore.AccountChanged -= OnAccountChange;
             base.Dispose();
         }
+
+        private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs) {
+            SelectedIndex = prevSelected;
+        }
+
 
         private ObservableCollection<ButtonItem> AdminButtonCreate() {
             return new ObservableCollection<ButtonItem> {

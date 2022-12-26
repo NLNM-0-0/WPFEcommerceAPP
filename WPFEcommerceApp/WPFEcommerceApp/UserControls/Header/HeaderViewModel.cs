@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using DataAccessLayer;
 using LiveCharts;
+using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
@@ -164,7 +165,19 @@ namespace WPFEcommerceApp
 
         public void SignInOut()
         {
-
+            if(AccountStore.instance.CurrentAccount != null) {
+                var dialog = new ConfirmDialog() {
+                    Param = "",
+                    CM = new RelayCommand<object>(p => true, p => {
+                        //need to be HomeScreen here
+                        NavigateProvider.HomeScreen().Navigate();
+                        AccountStore.instance.CurrentAccount = null;
+                    })
+                };
+                DialogHost.Show(dialog, "App");
+                return;
+            }
+            //Sign In handle here
         }
 
         public void ToHome()

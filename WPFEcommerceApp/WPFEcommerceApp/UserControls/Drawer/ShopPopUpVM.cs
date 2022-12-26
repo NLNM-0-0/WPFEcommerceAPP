@@ -29,14 +29,14 @@ namespace WPFEcommerceApp {
 
             isFirstTime = drawerVM.SelectedIndex == 4;
 
-            SelectedIndex = new ObservableCollection<bool>() { false, false, false };
+            SelectedIndex = new ObservableCollection<bool>() { false, false, false, false };
 
             OnChecked = new RelayCommand<object>(p => true, p => {
                 drawerVM.CanReload = false;
                 drawerVM.SelectedIndex = 4;
                 var temp = p as string;
                 if(temp == "1") {
-                    //Unknown
+                    NavigateProvider.ShopViewScreen().Navigate(AccountStore.instance.CurrentAccount);
                 }
                 else if(temp == "2") {
                     NavigateProvider.ShopOrderScreen().Navigate();
@@ -46,9 +46,13 @@ namespace WPFEcommerceApp {
                     NavigateProvider.ShopProductScreen().Navigate();
                     tempFunc(SelectedIndex, 1, ref isFirstTime);
                 }
-                else {
+                else if(temp == "4") {
                     NavigateProvider.ShopRatingScreen().Navigate();
                     tempFunc(SelectedIndex, 2, ref isFirstTime);
+                }
+                else {
+                    NavigateProvider.ShopStatisticScreen().Navigate();
+                    tempFunc(SelectedIndex, 3, ref isFirstTime);
                 }
             });
 
