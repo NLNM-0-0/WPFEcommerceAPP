@@ -1,10 +1,12 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -15,9 +17,15 @@ namespace WPFEcommerceApp
 {
     class ProductDetailViewModel : BaseViewModel
     {
+        public GenericDataRepository<Models.Cart> CartRepo { get; set; }
+        public GenericDataRepository<Models.Product> FavouriteRepo { get; set; }
         public ICommand NextImageCommand { get; set; }
         public ICommand PreviousImageCommand { get; set; }
 
+        public ICommand FavouriteCommand { get; set; }
+        public ICommand AddToBagCommand { get; set; }
+
+        public ICommand BuyNowCommand { get; set; }
         private Models.Product selectedProduct;
         public Models.Product SelectedProduct
         {
@@ -35,6 +43,42 @@ namespace WPFEcommerceApp
             set
             {
                 selectedImageIndex = value;
+                OnPropertyChanged();
+            }
+        }
+        private string size;
+        public string Size
+        {
+            get
+            {
+                if(isHadOneSize == true)
+                {
+                    return "OneSize";
+                }
+                else if (isHadSizeS == true)
+                {
+                    return "S";
+                }
+                else if (isHadSizeM == true)
+                {
+                    return "M";
+                }
+                else if (isHadSizeL == true)
+                {
+                    return "L";
+                }
+                else if (isHadSizeXL == true)
+                {
+                    return "XL";
+                }
+                else 
+                {
+                    return "XXL";
+                }
+            }
+            set
+            {
+                size = value;
                 OnPropertyChanged();
             }
         }
@@ -148,7 +192,6 @@ namespace WPFEcommerceApp
         }
         public ProductDetailViewModel(Models.Product product)
         {
-
             SelectedProduct = product;
             ImageProducts = new ObservableCollection<string>();
             foreach (Models.ImageProduct imageProduct in product.ImageProducts)
@@ -177,6 +220,35 @@ namespace WPFEcommerceApp
                 }
                 SelectedImageIndex = ((selectedImageIndex - 1) % ImageProducts.Count);
             });
+            FavouriteCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            {
+                MessageBox.Show("Dang them vao trang Yeu thich cua ban");
+            });
+            BuyNowCommand = new RelayCommand<object>((p) => { return (IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize); }, (p) =>
+            {
+                
+                MessageBox.Show("Dang chuyen den trang mua hang");
+            });
+            AddToBagCommand = new RelayCommand<object>((p) => { return (IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize); }, (p) =>
+            {
+                Task task = Task.Run(async () => await LoadAddToBag());
+                while (!task.IsCompleted) ;
+                MessageBox.Show("Da them vao gio hang cua ban");
+            });
         }
+        private async Task LoadAddToBag()
+        {
+            GenericDataRepository<Models.Cart> dataRepository = new GenericDataRepository<Models.Cart>();
+            await dataRepository.Add(new Models.Cart
+            {
+                IdProduct = SelectedProduct.Id,
+                IdUser = AccountStore.instance.CurrentAccount.Id,
+                Amount = 1,
+                Size = Size
+            });
+        }
+
+       
+
     }
 }
