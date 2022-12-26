@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class OrderDetailsVM :BaseViewModel {
-		public Order OrderDetail { get; set; }
+		private readonly GenericDataRepository<Models.Product> productRepo = new GenericDataRepository<Models.Product>();
+        private readonly GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
+
+        public Order OrderDetail { get; set; }
         public int Status =>
             OrderDetail == null 
 			? 0 
@@ -89,8 +94,9 @@ namespace WPFEcommerceApp {
 							? 3 : 2;
 				NavigateProvider.OrderParamScreen().Navigate(param);
 			});
-			OnViewProduct = new RelayCommand<object>(p => true, p => {
-				MessageBox.Show($"Navigate to {(p as Product).ID}");
+			OnViewProduct = new RelayCommand<object>(p => true, async p => {
+				var t = await productRepo.GetSingleAsync(d => d.Id == (p as Product).ID);
+				NavigateProvider.ProductDetailScreen().Navigate(t);
             });
 			OnReviewProduct = new RelayCommand<object>(p => true, async p => {
                 var t = p as Order;
@@ -104,8 +110,9 @@ namespace WPFEcommerceApp {
                 await DialogHost.Show(view, "Main");
             });
 
-			OnVisitShop = new RelayCommand<object>(p => true, p => {
-				MessageBox.Show($"Navigate to Shop {OrderDetail.IDShop}");
+			OnVisitShop = new RelayCommand<object>(p => true, async p => {
+				var u = await userRepo.GetSingleAsync(d => d.Id == OrderDetail.IDShop);
+				NavigateProvider.ShopViewScreen().Navigate(u);
 			});
         }
 
