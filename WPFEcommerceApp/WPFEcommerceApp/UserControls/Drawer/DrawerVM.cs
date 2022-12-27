@@ -73,12 +73,16 @@ namespace WPFEcommerceApp {
                     if(CurrentUser != null)
                         ShopPopUpDataContext = new ShopPopUpVM(this);
                     else {
-                        if(SelectedIndex != 0 && SelectedIndex != 5 && SelectedIndex != -1 && SelectedIndex != 6) {
+                        if(SelectedIndex != 0 && SelectedIndex != -1 && SelectedIndex != 6) {
                             var dialog = new ConfirmDialog() {
                                 Header = "Oops!",
                                 Content = "You need to login to do this!",
-                                //CM: handle loggin here
-                                //Param = ""
+                                CM = new RelayCommand<object>(pr => true, pr => {
+                                    (pr as Window).Hide();
+                                    Login login = new Login(pr);
+                                    login.Show();
+                                }),
+                                Param = WindowControlBarVM.getWindow(p as FrameworkElement)
                             };
                             DialogHost.Show(dialog, "Main", ClosingEventHandler);
                             return;
@@ -132,7 +136,7 @@ namespace WPFEcommerceApp {
             //Shop popup Handle
             var timer = new DispatcherTimer();
             OnShopMouseOver = new RelayCommand<object>(p => {
-                if(CurrentUser == null) return false;
+                if(CurrentUser == null || CurrentUser.StatusShop == "NotExist") return false;
                 var values = (object[])p;
                 if((values[0] as ButtonItem).Text == "Shop") return true;
                 return false;

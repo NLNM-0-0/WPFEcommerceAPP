@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -82,7 +83,7 @@ namespace WPFEcommerceApp
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearchText);
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
             SearchCommand = new RelayCommandWithNoParameter(Search);
-            SignInOutCommand = new RelayCommandWithNoParameter(SignInOut);
+            SignInOutCommand = new RelayCommand<object>(p => true, SignInOut);
             HomeCommand = new RelayCommandWithNoParameter(ToHome);
 
             Task.Run(async()=>await Load());
@@ -163,7 +164,7 @@ namespace WPFEcommerceApp
                 ItemsSource = new ObservableCollection<SearchItemViewModel>(AllItems.Where(item => (item.Name.ToLower()).Contains(SearchText.ToLower())));
         }
 
-        public void SignInOut()
+        public void SignInOut(object o)
         {
             if(AccountStore.instance.CurrentAccount != null) {
                 var dialog = new ConfirmDialog() {
@@ -177,6 +178,9 @@ namespace WPFEcommerceApp
                 DialogHost.Show(dialog, "App");
                 return;
             }
+            (o as Window).Hide();
+            Login login = new Login(o);
+            login.Show();
             //Sign In handle here
         }
 

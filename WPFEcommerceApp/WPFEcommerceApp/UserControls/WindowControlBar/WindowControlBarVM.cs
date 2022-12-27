@@ -30,7 +30,7 @@ namespace WPFEcommerceApp {
             });
         }
         public void DragWindow(object sender, MouseEventArgs e) {
-            var tmp = getParent(sender as Grid);
+            var tmp = getWindow(sender as FrameworkElement);
             Window w = tmp as Window;
             if(e.LeftButton == MouseButtonState.Pressed) {
                 Point p = e.GetPosition(sender as IInputElement);
@@ -47,7 +47,7 @@ namespace WPFEcommerceApp {
                 w.DragMove();
             }
         }
-        FrameworkElement getParent(Grid p) {
+        public static FrameworkElement getWindow(FrameworkElement p) {
             FrameworkElement parent = p;
             while(parent.Parent != null) {
                 parent = parent.Parent as FrameworkElement;
