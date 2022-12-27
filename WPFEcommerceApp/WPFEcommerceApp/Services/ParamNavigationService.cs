@@ -20,6 +20,15 @@ namespace WPFEcommerceApp {
         }
         public void Navigate(object parameter) {
             _navigationStore.CurrentViewModel = _createViewModel(parameter);
+            _navigationStore.stackScreen.Add(new Tuple<INavigationService, object>(this, parameter));
+            if(_navigationStore.stackScreen.Count == 6) {
+                _navigationStore.stackScreen.RemoveAt(0);
+            }
+        }
+
+        public Type GetViewModel() {
+            Type viewModelType = typeof(TViewModel);
+            return viewModelType;
         }
     }
 }

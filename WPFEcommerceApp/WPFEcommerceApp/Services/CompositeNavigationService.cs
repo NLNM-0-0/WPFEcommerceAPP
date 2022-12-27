@@ -20,5 +20,8 @@ namespace WPFEcommerceApp {
         public void Navigate(object o) {
             throw new NotImplementedException();
         }
+        public Type GetViewModel() {
+            return null;
+        }
     }
 }

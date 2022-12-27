@@ -53,6 +53,7 @@ namespace WPFEcommerceApp {
             #region General
             services.AddTransient<MyProfileViewModel>();
             services.AddTransient<HomeViewModel>();
+            services.AddTransient<MyHomeViewModel>();
             services.AddTransient<BagViewModel>();
             services.AddTransient<FavoriteViewModel>();
             services.AddTransient<NotificationViewModel>();

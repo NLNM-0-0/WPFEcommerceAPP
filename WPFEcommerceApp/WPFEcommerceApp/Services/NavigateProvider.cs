@@ -9,6 +9,19 @@ namespace WPFEcommerceApp {
     public class NavigateProvider {
         public static IServiceProvider serviceProvider;
 
+        public static bool Back() {
+            var nav = NavigationStore.instance.stackScreen;
+            if(nav.Count < 2) {
+                return false;
+            }
+            nav.RemoveAt(nav.Count - 1);
+            var t = nav[nav.Count - 1];
+            if(t.Item2 == null) t.Item1.Navigate();
+            else t.Item1.Navigate(t.Item2);
+            nav.RemoveAt(nav.Count - 1);
+            return true;
+        }
+
         #region General
         static public INavigationService ProfileScreen() {
             return new NavigationService<MyProfileViewModel>(
@@ -23,8 +36,8 @@ namespace WPFEcommerceApp {
                 serviceProvider.GetRequiredService<FavoriteViewModel>);
         }
         static public INavigationService HomeScreen() {
-            return new NavigationService<HomeViewModel>(
-                serviceProvider.GetRequiredService<HomeViewModel>);
+            return new NavigationService<MyHomeViewModel>(
+                serviceProvider.GetRequiredService<MyHomeViewModel>);
         }
         static public INavigationService NotificationScreen() {
             return new NavigationService<NotificationViewModel>(
