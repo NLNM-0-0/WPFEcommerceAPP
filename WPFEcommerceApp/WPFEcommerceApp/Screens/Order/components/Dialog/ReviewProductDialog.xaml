@@ -168,7 +168,11 @@
                       ItemTemplate="{StaticResource ReviewProductCard}"/>
 
             <Button x:Name="lel" Content="OK" HorizontalAlignment="Right" Command="{Binding OnOK}" CommandParameter="">
-
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
         </StackPanel>
     </Border>

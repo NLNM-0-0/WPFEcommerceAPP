@@ -15,7 +15,7 @@
                FontSize="{StaticResource FontSizeHeadline}" HorizontalAlignment="Center" VerticalAlignment="Top"
                Margin="0 39 0 34"
                />
-            <Image Source="..\..\..\Assests\Images\SuccessBag.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <Image Source="..\..\..\Assets\Images\SuccessBag.png" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Width="460"
                    Height="420"/>
             <TextBlock Margin="0, 50,0,30"

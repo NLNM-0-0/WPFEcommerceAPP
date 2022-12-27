@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,29 +38,39 @@ namespace WPFEcommerceApp
         {
             get => password; set { password = value; OnPropertyChanged(); }
         }
-        public LoginViewModel()
+        public LoginViewModel(object o)
         {
             UserRepository = new GenericDataRepository<Models.UserLogin>();
             
             //_accountStore.CurrentAccount = ;
-            isLogin = new RelayCommandWithNoParameter(() => {
-                Login();
+            isLogin = new RelayCommand<object>(p => true, async p => {
+                if(await Login()) {
+                    (p as Window).Hide();
+                    (o as Window).Show();
+                    (p as Window).Close();
+                }
             });
         }
-        private async Task Login()
+        private async Task<bool> Login()
         {
-            Models.UserLogin acc = await UserRepository.GetSingleAsync(x => (x.Username == username && x.Password == password),
-                                                                       x => x.MUser);
-            if(acc != null )
+            Models.UserLogin acc = await UserRepository.GetSingleAsync(
+                x => (x.Username == username 
+                && x.Password == password),
+                x => x.MUser);
+            if(acc != null && acc.MUser.StatusUser != "Banned")
             {
                 AccountStore.instance.CurrentAccount = acc.MUser;
-                MessageBox.Show("Login successfully");
-            }
-            else
-            {
-                MessageBox.Show("Error");
+                return true;
             }
 
+            var dl = new ConfirmDialog() {
+                Header = "Oops",
+                Content = acc.MUser.StatusUser != "Banned" 
+                ? "Email or password is wrong. Try again!"
+                : "Your account has been banned!",
+            };
+            await DialogHost.Show(dl, "Login");
+            return false;
         }
     }
 }

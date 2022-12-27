@@ -19,10 +19,10 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class Login : Window
     {
-        public Login()
+        public Login(object o)
         {
             InitializeComponent();
-            this.DataContext = new LoginViewModel();
+            this.DataContext = new LoginViewModel(o);
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:WPFEcommerceApp"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Login" Height="900" Width="1440">
     <materialDesign:DialogHost
-        CloseOnClickAway="True">
+        CloseOnClickAway="True"
+        Identifier="Login">
         <Grid>
             <Grid.Resources>
                 <ControlTemplate x:Key="TextBlockButton" TargetType="{x:Type Button}">
@@ -174,7 +176,8 @@
                     Width="auto"
                     Margin="30 0"
                     Content="Login"
-                    Command="{Binding isLogin}"/>
+                    Command="{Binding isLogin}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
                 <Button
                     Margin="0 10 0 0"
                     Style="{StaticResource TransparentButton}"

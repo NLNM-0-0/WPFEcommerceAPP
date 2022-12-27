@@ -16,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataAccessLayer;
+using WPFEcommerceApp.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WPFEcommerceApp {
@@ -51,11 +53,36 @@ namespace WPFEcommerceApp {
             DependencyProperty.Register("ProductList", typeof(List<ReviewProduct>), typeof(ReviewProductDialog), new PropertyMetadata(null));
 
 
+        readonly GenericDataRepository<Rating> ratingRepo = new GenericDataRepository<Rating>();
+        readonly GenericDataRepository<OrderInfo> oiRepo = new GenericDataRepository<OrderInfo>();
+        readonly GenericDataRepository<MOrder> orderRepo = new GenericDataRepository<MOrder>();
 
         public ReviewProductDialog() {
             InitializeComponent();
-            OnOK = new RelayCommand<object>(p => true, p => {
-                MessageBox.Show("Create Rating in DB");
+
+            OnOK = new RelayCommand<object>(p => true, async p => {
+                List<ReviewProduct> t = new List<ReviewProduct>(ProductList);
+                for(int i = 0; i < ProductList.Count; i++) {
+
+                    var tmp = new Rating();
+                    string id = await GenerateID.Gen(typeof(Rating));
+                    tmp.Id = id;
+                    tmp.DateRating = DateTime.Now;
+                    tmp.Rating1 = ProductList[i].rating;
+                    await ratingRepo.Add(tmp);
+
+
+                    var oi = await oiRepo.GetSingleAsync(d => {
+                        return d.IdOrder == t[i].IdOrder &&
+                        d.IdProduct == t[i].product.ID;
+                    });
+
+                    oi.IdRating = id;
+                    await oiRepo.Update(oi);
+                }
+                var od = await orderRepo.GetSingleAsync(d => d.Id == t[0].IdOrder);
+                od.Status = "Completed";
+                await orderRepo.Update(od);
             });
             DataContext = this;
         }
