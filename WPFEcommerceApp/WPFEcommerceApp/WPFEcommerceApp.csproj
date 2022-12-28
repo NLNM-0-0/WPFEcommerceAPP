@@ -133,9 +133,9 @@
     <Compile Include="Models\UserLogin.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Product.cs" />
-    <Compile Include="Model\Order.cs" />
-    <Compile Include="Model\Status.cs" />
+    <Compile Include="DTO\Product.cs" />
+    <Compile Include="DTO\Order.cs" />
+    <Compile Include="DTO\Status.cs" />
     <Compile Include="Screens\AdminBrand\AdminBrandManager.xaml.cs">
       <DependentUpon>AdminBrandManager.xaml</DependentUpon>
     </Compile>
@@ -456,7 +456,7 @@
     </Compile>
     <Compile Include="Components\UserControls\Header\SearchItemViewModel.cs" />
     <Compile Include="MainItem.cs" />
-    <Compile Include="Model\Shop.cs" />
+    <Compile Include="DTO\Shop.cs" />
     <Compile Include="Screens\ShopOrder\ShopOrder.xaml.cs">
       <DependentUpon>ShopOrder.xaml</DependentUpon>
     </Compile>
@@ -1075,7 +1075,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\SQL.sql" />
+    <Content Include="DTO\SQL.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

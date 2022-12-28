@@ -134,6 +134,7 @@ namespace WPFEcommerceApp {
 				temp.Status = "Processing";
 				await OrderStore.instance.Add(temp);
 				NavigateProvider.SuccessScreen().Navigate();
+				NavigationStore.instance.clearHistory();
                 MainViewModel.IsLoading = false;
 
             });
