@@ -20,7 +20,6 @@ namespace WPFEcommerceApp {
     public partial class SplashScreen : Window {
         public SplashScreen() {
             InitializeComponent();
-            DataContext = new SplashScreenVM();
         }
     }
 }

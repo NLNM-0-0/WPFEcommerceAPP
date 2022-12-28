@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using LiveCharts.Helpers;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -182,7 +183,11 @@ namespace WPFEcommerceApp
             {
                 Task task = Task.Run(async () => await Load());
                 while (!task.IsCompleted) ;
-                MessageBox.Show("Register successfully");
+                var dl = new ConfirmDialog() {
+                    Header = "Success",
+                    Content = "Back to Login"
+                };
+                DialogHost.Show(dl, "Login");
             });
         }
     }

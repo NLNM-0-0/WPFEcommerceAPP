@@ -9,6 +9,7 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1340"
+             x:Name="orderScreen"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -30,7 +31,8 @@
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="{StaticResource BlackColorBrush}"/>
                 <Setter Property="Margin" Value="0"/>
-                <Setter Property="MinWidth" Value="272"/>
+                <!--<Setter Property="MinWidth" Value="272"/>-->
+                <Setter Property="Width" Value="{c:Binding ElementName=orderScreen, Path=ActualWidth/4-50}"/>
                 <Setter Property="MinHeight" Value="60"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -188,7 +190,9 @@
                 <TabItem Style="{StaticResource CustomTabItem}" 
                     Header="Processing">
                     
-                    <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
+                    <Grid Height="{c:Binding 
+                        ElementName=TabControlContainer, 
+                        Path=ActualHeight-70}">
 
                         <TextBlock Text="No orders in Processing"
                                        HorizontalAlignment="Center"
@@ -196,6 +200,7 @@
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
                         <ListView Width="{c:Binding ElementName=TabControlContainer, Path=Width}"
+                                  Height="{c:Binding ElementName=TabControlContainer, Path=Height-60}"
                                   x:Name="ProcessingList"
                                   BorderThickness="0" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}"

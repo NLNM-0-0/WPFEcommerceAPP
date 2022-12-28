@@ -15,6 +15,8 @@ namespace WPFEcommerceApp
     internal class BagViewModel : BaseViewModel
     {
         public GenericDataRepository<Models.Cart> CartRepo;
+        private readonly GenericDataRepository<Models.Product> productRepo;
+
         public ICommand CheckAllProductCommand { get; set; }
         public ICommand DelCommand { get; set; }
 
@@ -131,7 +133,7 @@ namespace WPFEcommerceApp
                 return false;
             }, (p) =>
             {
-                MessageBox.Show("Dang chuyen sang trang mua hang");
+                MessageBox.Show("nav to checkout");
             });
         }
         private async Task RemoveBag(string idProduct)

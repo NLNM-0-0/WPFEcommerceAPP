@@ -95,7 +95,7 @@ namespace WPFEcommerceApp {
 				NavigateProvider.OrderParamScreen().Navigate(param);
 			});
 			OnViewProduct = new RelayCommand<object>(p => true, async p => {
-				var t = await productRepo.GetSingleAsync(d => d.Id == (p as Product).ID);
+				var t = await productRepo.GetSingleAsync(d => d.Id == (p as Product).ID, d => d.Category, d => d.ImageProducts, d => d.Brand);
 				NavigateProvider.ProductDetailScreen().Navigate(t);
             });
 			OnReviewProduct = new RelayCommand<object>(p => true, async p => {

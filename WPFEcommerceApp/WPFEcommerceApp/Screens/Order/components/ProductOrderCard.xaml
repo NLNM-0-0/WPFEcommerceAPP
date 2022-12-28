@@ -16,7 +16,7 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Background="Transparent"  x:Name="ImageContainer" MinHeight="107">
+            <Grid Background="Transparent"  x:Name="ImageContainer" MaxHeight="107">
                 <Image Source="{Binding ProductImage}" Width="{Binding Height, ElementName=ImageContainer}" 
                        Height="{Binding Height, ElementName=ImageContainer}" HorizontalAlignment="Center"/>
             </Grid>

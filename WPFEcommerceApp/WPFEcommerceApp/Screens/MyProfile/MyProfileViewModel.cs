@@ -174,7 +174,7 @@ namespace WPFEcommerceApp
             SourceImageAva = link;
             SourceImageAvaTemp = link;
             EditUser.SourceImageAva = link;
-
+            var nav = NavigationStore.instance.stackScreen;
             AccountStore.instance.CurrentAccount.SourceImageAva = link;
             await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
             DialogHost.CloseDialogCommand.Execute(null, null);

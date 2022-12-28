@@ -321,7 +321,11 @@
                     <Grid>
                         <Label Content="Product ordered" FontSize="{StaticResource FontSizeHeadline2}"
                                VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <Button Style="{StaticResource Pressable}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Style="{StaticResource Pressable}" 
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Center"
+                                Command="{Binding OnEditOrder}"
+                                CommandParameter="">
                             <Label Content="edit" FontSize="{StaticResource FontSizeText}"/>
                         </Button>
                     </Grid>

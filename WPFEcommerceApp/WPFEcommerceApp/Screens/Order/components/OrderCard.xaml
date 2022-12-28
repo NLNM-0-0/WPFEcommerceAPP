@@ -42,7 +42,7 @@
         <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=ActualWidth}">
             <!--Header-->
             <Border Padding="15, 0">
-                <Grid Margin="0, 20">
+                <Grid Margin="0, 13">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -50,26 +50,28 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <Grid Background="Pink"
-                              Width="{c:Binding ElementName=OrderIDText, Path=Height+40}"
-                              Height="{c:Binding ElementName=OrderIDText, Path=Height+40}">
+                              Width="35"
+                              Height="35">
                             <Image Source="{Binding ShopImage}"
-                                   Width="{c:Binding ElementName=OrderIDText, Path=Height+40}"
-                                   Height="{c:Binding ElementName=OrderIDText, Path=Height+40}"
+                                   Stretch="Fill"
                                    HorizontalAlignment="Center"/>
                         </Grid>
                         <TextBlock Text="{Binding ShopName}"
+                                   VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSizeHeadline3}"
                                    Margin="20 0 40 0"/>
                     </StackPanel>
                     
                     <TextBlock Text="{c:Binding \'ID: \' + ID}" 
                                Grid.Column="1"
-                                   x:Name="OrderIDText"
+                                x:Name="OrderIDText"
                                    HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSizeHeadline3}"/>
                     
                     <TextBlock x:Name="statusString" Text="{Binding Status}"
                                Grid.Column="2"
+                               VerticalAlignment="Center"
                                HorizontalAlignment="Right"
                                FontSize="{StaticResource FontSizeHeadline3}"
                                Foreground="{StaticResource SuccessColorBrush}">

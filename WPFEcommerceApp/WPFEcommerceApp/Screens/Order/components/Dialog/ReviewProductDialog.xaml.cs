@@ -63,14 +63,12 @@ namespace WPFEcommerceApp {
             OnOK = new RelayCommand<object>(p => true, async p => {
                 List<ReviewProduct> t = new List<ReviewProduct>(ProductList);
                 for(int i = 0; i < ProductList.Count; i++) {
-
                     var tmp = new Rating();
                     string id = await GenerateID.Gen(typeof(Rating));
                     tmp.Id = id;
                     tmp.DateRating = DateTime.Now;
                     tmp.Rating1 = ProductList[i].rating;
                     await ratingRepo.Add(tmp);
-
 
                     var oi = await oiRepo.GetSingleAsync(d => {
                         return d.IdOrder == t[i].IdOrder &&
@@ -80,9 +78,9 @@ namespace WPFEcommerceApp {
                     oi.IdRating = id;
                     await oiRepo.Update(oi);
                 }
-                var od = await orderRepo.GetSingleAsync(d => d.Id == t[0].IdOrder);
+                var od = OrderStore.instance.GetOrder(t[0].IdOrder);
                 od.Status = "Completed";
-                await orderRepo.Update(od);
+                await OrderStore.instance.Update(od);
             });
             DataContext = this;
         }

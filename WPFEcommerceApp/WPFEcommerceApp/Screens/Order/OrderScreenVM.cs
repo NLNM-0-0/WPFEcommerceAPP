@@ -13,6 +13,7 @@ using MaterialDesignThemes.Wpf;
 namespace WPFEcommerceApp {
     public class OrderScreenVM : BaseViewModel {
         private readonly OrderStore _orderStore;
+        private bool isBusy { get; set; } = false;
 
         private ObservableCollection<Order> OrderList => _orderStore.OrderList;
 
@@ -62,31 +63,33 @@ namespace WPFEcommerceApp {
 
             _orderStore = OrderStore.instance;
             _orderStore.OrderListChanged += onOrderListChange;
-            ProcessingList = new ObservableCollection<Order>();
-            DeliveringList = new ObservableCollection<Order>();
-            DeliveredList = new ObservableCollection<Order>();
-            CancelledList = new ObservableCollection<Order>();
+            Task.Run(async () => await _orderStore.Load());
+            if(!isBusy) {
+                ProcessingList = new ObservableCollection<Order>();
+                DeliveringList = new ObservableCollection<Order>();
+                DeliveredList = new ObservableCollection<Order>();
+                CancelledList = new ObservableCollection<Order>();
 
-            if(OrderList != null)
-                for(int i = 0; i < OrderList.Count; i++) {
-                    string stt = OrderList[i].Status;
-                    if(stt == "Processing") {
-                        ProcessingList.Add(OrderList[i]);
+                if(OrderList != null && OrderList.Count > 0)
+                    for(int i = 0; i < OrderList.Count; i++) {
+                        string stt = OrderList[i].Status;
+                        if(stt == "Processing") {
+                            ProcessingList.Add(OrderList[i]);
+                        }
+                        else if(stt == "Delivering") {
+                            DeliveringList.Add(OrderList[i]);
+                        }
+                        else if(stt == "Delivered" || stt == "Completed") {
+                            DeliveredList.Add(OrderList[i]);
+                        }
+                        else if(stt == "Cancelled") {
+                            CancelledList.Add(OrderList[i]);
+                        }
                     }
-                    else if(stt == "Delivering") {
-                        DeliveringList.Add(OrderList[i]);
-                    }
-                    else if(stt == "Delivered" || stt == "Completed") {
-                        DeliveredList.Add(OrderList[i]);
-                    }
-                    else if(stt == "Cancelled") {
-                        CancelledList.Add(OrderList[i]);
-                    }
-                }
-
+            }
             ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
                 MainViewModel.IsLoading = true;
-                
+
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
 
@@ -106,9 +109,9 @@ namespace WPFEcommerceApp {
             OnDetailView = new RelayCommand<object>((p) => true, (p) => {
                 NavigateProvider.OrderDetailScreen().Navigate(p);
             });
-            
+
             ICommand ReOrderCM = new ReOrderCM();
-            OnReorder = new RelayCommand<object>(p => true,async p => {
+            OnReorder = new RelayCommand<object>(p => true, async p => {
                 var view = new ConfirmDialog() {
                     CM = ReOrderCM,
                     Param = p
@@ -120,7 +123,7 @@ namespace WPFEcommerceApp {
                 var t = p as Order;
                 List<ReviewProduct> products = new List<ReviewProduct>();
                 for(int i = 0; i < t.ProductList.Count; i++) {
-                        products.Add(new ReviewProduct(t.ProductList[i], t.ID));
+                    products.Add(new ReviewProduct(t.ProductList[i], t.ID));
                 }
                 var view = new ReviewProductDialog() {
                     ProductList = products,
@@ -131,11 +134,14 @@ namespace WPFEcommerceApp {
         }
 
         private void onOrderListChange() {
+            //Need to set isBusy here because it will be conflict with constructor if
+            //Load() task and this function is running parallel
             MainViewModel.IsLoading = true;
-            ProcessingList.Clear();
-            DeliveringList.Clear();
-            DeliveredList.Clear();
-            CancelledList.Clear();
+            isBusy = true;
+            ProcessingList = new ObservableCollection<Order>();
+            DeliveringList = new ObservableCollection<Order>();
+            DeliveredList = new ObservableCollection<Order>();
+            CancelledList = new ObservableCollection<Order>();
             if(OrderList != null)
                 for(int i = 0; i < OrderList.Count; i++) {
                     string stt = OrderList[i].Status;
@@ -152,6 +158,7 @@ namespace WPFEcommerceApp {
                         CancelledList.Add(OrderList[i]);
                     }
                 }
+            isBusy = false;
             MainViewModel.IsLoading = false;
         }
 
@@ -164,7 +171,7 @@ namespace WPFEcommerceApp {
     public class ReviewProduct {
         public string IdOrder { get; set; }
         public Product product { get; set; }
-        public int rating {get; set;}
+        public int rating { get; set; }
         public ReviewProduct(Product product, string IdOrder, int rating = 5) {
             this.IdOrder = IdOrder;
             this.product = product;

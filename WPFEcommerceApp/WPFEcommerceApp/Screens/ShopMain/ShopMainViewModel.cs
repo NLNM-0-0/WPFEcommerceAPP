@@ -212,7 +212,7 @@ namespace WPFEcommerceApp
 
         public ShopMainViewModel(Models.MUser user)
         {
-            if (AccountStore.instance.CurrentAccount.Id == user.Id)
+            if (AccountStore.instance.CurrentAccount?.Id == user.Id)
             {
                 Shop = AccountStore.instance.CurrentAccount;
                 AccountStore.instance.AccountChanged += _accountStore_AccountChanged;
