@@ -22,7 +22,7 @@ namespace WPFEcommerceApp
         public ICommand ClosePopupCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand SignInOutCommand { get; set; }
-        public ICommand HomeCommand { get; set; }
+        public ICommand OnBack { get; set; }
         #endregion
 
         #region Properties
@@ -84,7 +84,9 @@ namespace WPFEcommerceApp
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
             SearchCommand = new RelayCommandWithNoParameter(Search);
             SignInOutCommand = new RelayCommand<object>(p => true, SignInOut);
-            HomeCommand = new RelayCommandWithNoParameter(ToHome);
+            OnBack = new RelayCommand<object>(p => NavigationStore.instance.stackScreen.Count > 1, p => {
+                NavigateProvider.Back();
+            });
 
             Task.Run(async()=>await Load());
 
@@ -105,7 +107,7 @@ namespace WPFEcommerceApp
             var products = new ObservableCollection<Models.Product>(
                 await productRepo.GetListAsync(prd => prd.Status == Status.NotBanned.ToString(), prd => prd.ImageProducts));
 
-                var userSearchItems = new ObservableCollection<SearchItemViewModel>(
+            var userSearchItems = new ObservableCollection<SearchItemViewModel>(
                 users.Select(user => new SearchItemViewModel
                 {
                     Name = user.Name,
@@ -115,7 +117,7 @@ namespace WPFEcommerceApp
                 }));
 
             
-                var productsSearchItems = new ObservableCollection<SearchItemViewModel>(
+            var productsSearchItems = new ObservableCollection<SearchItemViewModel>(
                 products.Select(prd => new SearchItemViewModel
                 {
 
@@ -125,11 +127,11 @@ namespace WPFEcommerceApp
                     Model = prd
                 }));
 
-                AllItems = userSearchItems;
-                foreach (var product in productsSearchItems)
-                    AllItems.Add(product);
+            AllItems = userSearchItems;
+            foreach (var product in productsSearchItems)
+                AllItems.Add(product);
             
-                ItemsSource=AllItems;
+            ItemsSource=AllItems;
 
         }
 
@@ -184,10 +186,6 @@ namespace WPFEcommerceApp
             //Sign In handle here
         }
 
-        public void ToHome()
-        {
-
-        }
         #endregion
 
         public override void Dispose()

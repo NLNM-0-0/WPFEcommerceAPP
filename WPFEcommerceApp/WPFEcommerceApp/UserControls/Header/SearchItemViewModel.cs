@@ -4,8 +4,10 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
@@ -33,9 +35,15 @@ namespace WPFEcommerceApp
             MouseDownCommand = new RelayCommandWithNoParameter(ToProduct);
         }
 
-        public void ToProduct()
-        {
-
+        private void ToProduct() {
+            if(IsProduct) {
+                NavigateProvider.ProductDetailScreen().Navigate(Model);
+            }
+            else {
+                if((Model as MUser).StatusShop == "NotBanned")
+                    NavigateProvider.ShopViewScreen().Navigate(Model);
+                else MessageBox.Show("lel");
+            }
         }
     }
 }

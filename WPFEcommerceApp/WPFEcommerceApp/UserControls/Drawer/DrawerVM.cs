@@ -17,7 +17,12 @@ using WPFEcommerceApp.Models;
 namespace WPFEcommerceApp {
     public class DrawerVM : BaseViewModel {
         private readonly AccountStore _accountStore;
+        private readonly NavigationStore _navigationStore;
+
+
+        bool Off { get; set; } = false;
         public MUser CurrentUser => _accountStore?.CurrentAccount;
+
 
         public ObservableCollection<ButtonItem> ButtonItems =>
             CurrentUser == null
@@ -31,8 +36,10 @@ namespace WPFEcommerceApp {
         public int SelectedIndex {
             get { return selectedIndex; }
             set {
-                selectedIndex = value;
-                OnPropertyChanged();
+                if(selectedIndex != value) {
+                    selectedIndex = value;
+                    OnPropertyChanged();
+                }
             }
         }
         private int prevSelected { get; set; } = 0;
@@ -55,6 +62,9 @@ namespace WPFEcommerceApp {
             _accountStore = AccountStore.instance;
             _accountStore.AccountChanged += OnAccountChange;
 
+            _navigationStore = NavigationStore.instance;
+            _navigationStore.CurrentVMChanged += OnScreenChange;
+
             CanReload = true;
             ShopPopUpDataContext = new ShopPopUpVM(this);
 
@@ -65,7 +75,8 @@ namespace WPFEcommerceApp {
                     return true;
                 }
                 return false;
-            }, (p) => {
+            }, 
+            (p) => {
                 if(DialogHost.IsDialogOpen("Main"))
                     DialogHost.Close("Main");
                 if(CurrentUser == null || CurrentUser.Role != "Admin") {
@@ -89,22 +100,22 @@ namespace WPFEcommerceApp {
                         }
                     }
                     if(SelectedIndex == 0) {
-                        NavigateProvider.HomeScreen().Navigate();
+                        ChangeIndex(NavigateProvider.HomeScreen());
                     }
                     else if(SelectedIndex == 1) {
-                        NavigateProvider.BagScreen().Navigate();
+                        ChangeIndex(NavigateProvider.BagScreen());
                     }
                     else if(SelectedIndex == 2) {
-                        NavigateProvider.OrderScreen().Navigate();
+                        ChangeIndex(NavigateProvider.OrderScreen());
                     }
                     else if(SelectedIndex == 3) {
-                        NavigateProvider.FavouriteScreen().Navigate();
+                        ChangeIndex(NavigateProvider.FavouriteScreen());
                     }
                     else if(SelectedIndex == 4) {
-                        NavigateProvider.ShopViewScreen().Navigate(CurrentUser);
+                        ChangeIndex(NavigateProvider.ShopViewScreen(), CurrentUser);
                     }
                     else if(SelectedIndex == 5) {
-                        NavigateProvider.ProfileScreen().Navigate();
+                        ChangeIndex(NavigateProvider.ProfileScreen());
                     }
                     else {
                         //Unknown
@@ -113,22 +124,25 @@ namespace WPFEcommerceApp {
                 }
                 else {
                     if(SelectedIndex == 0) {
-                        NavigateProvider.AdminUserScreen().Navigate();
+                        ChangeIndex(NavigateProvider.AdminUserScreen());
                     }
                     else if(SelectedIndex == 1) {
-                        NavigateProvider.ShopInformationScreen().Navigate();
+                        ChangeIndex(NavigateProvider.ShopInformationScreen());
                     }
                     else if(SelectedIndex == 2) {
-                        NavigateProvider.AdminProductScreen().Navigate();
+                        ChangeIndex(NavigateProvider.AdminProductScreen());
+                    }
+                    else if(SelectedIndex == 3) {
+                        ChangeIndex(NavigateProvider.AdminAdsScreen());
                     }
                     else if(SelectedIndex == 4) {
-                        NavigateProvider.AdminCategoryScreen().Navigate();
+                        ChangeIndex(NavigateProvider.AdminCategoryScreen());
                     }
                     else if(SelectedIndex==5) {
-                        NavigateProvider.AdminBrandScreen().Navigate();
+                        ChangeIndex(NavigateProvider.AdminBrandScreen());
                     }
                     else {
-                        NavigateProvider.ProfileScreen().Navigate();
+                        ChangeIndex(NavigateProvider.ProfileScreen());
                     }
                 }
             });
@@ -149,6 +163,7 @@ namespace WPFEcommerceApp {
                 };
                 timer.Start();
             });
+
             OnShopMouseLeave = new RelayCommand<object>(p => {
                 var values = (object[])p;
                 if((values[0] as ButtonItem).Text == "Shop") return true;
@@ -165,6 +180,58 @@ namespace WPFEcommerceApp {
             });
         }
 
+        private void OnScreenChange() {
+            Type type = NavigationStore.instance.CurrentViewModel.GetType();
+            switch(type.Name) {
+                case "AdminUserManagerViewModel":
+                    SelectedIndex = 0;
+                    break;
+                case "ShopInformationPageViewModel":
+                    SelectedIndex = 1;
+                    break;
+                case "AdminProductManagerViewModel":
+                    SelectedIndex = 2;
+                    break;
+                case "AdsManagerViewModel":
+                    SelectedIndex = 3;
+                    break;
+                case "AdminCategoryViewModel":
+                    SelectedIndex = 4;
+                    break;
+                case "AdminBrandViewModel":
+                    SelectedIndex = 5;
+                    break;
+                case "MyProfileViewModel":
+                    if(CurrentUser.Role == "Admin")
+                        SelectedIndex= 6;
+                    else SelectedIndex = 5;
+                    break;
+                case "MyHomeViewModel":
+                    SelectedIndex = 0;
+                    break;
+                case "BagViewModel":
+                    SelectedIndex = 1;
+                    break;
+                case "OrderScreenVM":
+                    SelectedIndex = 2;
+                    break;
+                case "FavoriteViewModel":
+                    SelectedIndex = 3;
+                    break;
+                case "ShopViewViewModel":
+                    if(CurrentUser != null)
+                        SelectedIndex = 4;
+                    break;
+            }
+        }
+
+        void ChangeIndex(INavigationService nav, object o = null) {
+            if(nav.GetViewModel() != NavigationStore.instance.CurrentViewModel.GetType())
+                if(o != null)
+                    nav.Navigate(o);
+                else nav.Navigate();
+        }
+
         private void OnAccountChange() {
             OnPropertyChanged(nameof(CurrentUser));
             OnPropertyChanged(nameof(ButtonItems));
@@ -178,7 +245,6 @@ namespace WPFEcommerceApp {
         private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs) {
             SelectedIndex = prevSelected;
         }
-
 
         private ObservableCollection<ButtonItem> AdminButtonCreate() {
             return new ObservableCollection<ButtonItem> {

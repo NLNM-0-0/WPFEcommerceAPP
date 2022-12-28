@@ -27,7 +27,8 @@
 
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseDown">
-                <i:InvokeCommandAction Command="{Binding MouseDownCommand}"/>
+                <i:InvokeCommandAction Command="{Binding MouseDownCommand}"
+                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:HeaderViewModel, Mode=FindAncestor}}"/>
             </i:EventTrigger>
         </i:Interaction.Triggers>
         

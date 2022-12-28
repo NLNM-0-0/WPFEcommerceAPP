@@ -18,11 +18,23 @@
         <DockPanel 
                    x:Name="container">
 
-            <!-- The WANO icon -->
-            <Button Style="{StaticResource TransparentButton}"
-                    Height="50" Content="WANO"
-                    DockPanel.Dock="Left" Margin="40 0"
-                    Command="{Binding HomeCommand}"/>
+            <!-- The Back button -->
+            <Button Style="{StaticResource TransparentButton}" 
+                        HorizontalAlignment="Left" 
+                        Height="50" Width="150" Command="{Binding OnBack}"
+                        CommandParameter="">
+                <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
+                    <fa:FontAwesome Icon="AngleLeft" FontSize="{StaticResource FontSizeHeadline2}" Foreground="{StaticResource BlackColorBrush}"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Regular"/>
+                    <TextBlock Text="BACK"
+                                VerticalAlignment="Center"
+                                Margin="20, 0"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                Foreground="{StaticResource BlackColorBrush}"
+                                FontWeight="Regular"/>
+                </StackPanel>
+            </Button>
 
             <!-- Cart and heart icon -->
 

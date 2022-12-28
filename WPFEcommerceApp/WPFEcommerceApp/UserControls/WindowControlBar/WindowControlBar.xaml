@@ -62,6 +62,13 @@
             </Grid.ColumnDefinitions>
             <!--Drag Area-->
             <Grid x:Name="TitleBarContainer" Background="Transparent">
+                <Button Style="{StaticResource TransparentButton}"
+                    Height="auto" Content="WANO"
+                    Margin="15 0"
+                    FontSize="{StaticResource FontSizeDescription}"
+                        FontWeight="Regular"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"/>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseMove">
                         <i:CallMethodAction
