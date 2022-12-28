@@ -20,6 +20,15 @@ namespace WPFEcommerceApp {
             }
         }
 
+        public bool clearHistory() {
+            try {
+                stackScreen?.Clear();
+            }
+            catch {
+                return false;
+            }
+            return true;
+        }
         private void OnCurrentVMChange() {
             CurrentVMChanged?.Invoke();
         }
