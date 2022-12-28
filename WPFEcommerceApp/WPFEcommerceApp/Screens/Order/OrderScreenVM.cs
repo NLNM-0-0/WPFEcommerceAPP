@@ -13,7 +13,6 @@ using MaterialDesignThemes.Wpf;
 namespace WPFEcommerceApp {
     public class OrderScreenVM : BaseViewModel {
         private readonly OrderStore _orderStore;
-        private bool isBusy { get; set; } = false;
 
         private ObservableCollection<Order> OrderList => _orderStore.OrderList;
 
@@ -64,29 +63,7 @@ namespace WPFEcommerceApp {
             _orderStore = OrderStore.instance;
             _orderStore.OrderListChanged += onOrderListChange;
             Task.Run(async () => await _orderStore.Load());
-            if(!isBusy) {
-                ProcessingList = new ObservableCollection<Order>();
-                DeliveringList = new ObservableCollection<Order>();
-                DeliveredList = new ObservableCollection<Order>();
-                CancelledList = new ObservableCollection<Order>();
 
-                if(OrderList != null && OrderList.Count > 0)
-                    for(int i = 0; i < OrderList.Count; i++) {
-                        string stt = OrderList[i].Status;
-                        if(stt == "Processing") {
-                            ProcessingList.Add(OrderList[i]);
-                        }
-                        else if(stt == "Delivering") {
-                            DeliveringList.Add(OrderList[i]);
-                        }
-                        else if(stt == "Delivered" || stt == "Completed") {
-                            DeliveredList.Add(OrderList[i]);
-                        }
-                        else if(stt == "Cancelled") {
-                            CancelledList.Add(OrderList[i]);
-                        }
-                    }
-            }
             ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
                 MainViewModel.IsLoading = true;
 
@@ -134,10 +111,7 @@ namespace WPFEcommerceApp {
         }
 
         private void onOrderListChange() {
-            //Need to set isBusy here because it will be conflict with constructor if
-            //Load() task and this function is running parallel
             MainViewModel.IsLoading = true;
-            isBusy = true;
             ProcessingList = new ObservableCollection<Order>();
             DeliveringList = new ObservableCollection<Order>();
             DeliveredList = new ObservableCollection<Order>();
@@ -158,7 +132,6 @@ namespace WPFEcommerceApp {
                         CancelledList.Add(OrderList[i]);
                     }
                 }
-            isBusy = false;
             MainViewModel.IsLoading = false;
         }
 
