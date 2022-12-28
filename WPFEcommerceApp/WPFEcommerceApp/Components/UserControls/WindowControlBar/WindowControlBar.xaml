@@ -62,7 +62,7 @@
             </Grid.ColumnDefinitions>
             <!--Drag Area-->
             <Grid x:Name="TitleBarContainer" Background="Transparent">
-                <Button Style="{StaticResource TransparentButton}"
+                <Label
                     Height="auto" Content="WANO"
                     Margin="15 0"
                     FontSize="{StaticResource FontSizeDescription}"

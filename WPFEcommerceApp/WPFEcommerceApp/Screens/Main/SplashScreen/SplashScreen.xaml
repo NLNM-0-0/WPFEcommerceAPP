@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPFEcommerceApp"
         mc:Ignorable="d"
         Title="WANO" 
-        Icon="..\..\Assets\Icon\Home.png"
+        Icon="..\..\..\Assets\Icon\Home.png"
         Height="766" Width="1200"
         d:Background="White"
         WindowStyle="None"
