@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace WPFEcommerceApp {
     public class NavigateProvider {
         public static IServiceProvider serviceProvider;
-
         public static bool Back() {
             var nav = NavigationStore.instance.stackScreen;
             if(nav.Count < 2) {
@@ -42,6 +41,11 @@ namespace WPFEcommerceApp {
         static public INavigationService NotificationScreen() {
             return new NavigationService<NotificationViewModel>(
                 serviceProvider.GetRequiredService<NotificationViewModel>);
+        }
+
+        static public INavigationService FilterScreen() {
+            return new NavigationService<FilterViewModel>(
+                serviceProvider.GetRequiredService<FilterViewModel>);
         }
         static public INavigationService ProductDetailScreen() {
             return new ParamNavigationService<ProductDetailViewModel>(

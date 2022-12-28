@@ -62,9 +62,7 @@ namespace WPFEcommerceApp {
 
 
             //Setup MainWindow
-            //It need to be CreateHomeNavService
-            //But I set initial screen is checkout here
-            //just for example
+            #region MainWindow Setup
             services.AddSingleton<INavigationService>(s => NavigateProvider.HomeScreen());
 
             services.AddSingleton<MainViewModel>();
@@ -77,6 +75,7 @@ namespace WPFEcommerceApp {
 
             NavigateProvider.serviceProvider = serviceProvider;
             App.serviceProvider = serviceProvider;
+            #endregion
         }
     }
 }
