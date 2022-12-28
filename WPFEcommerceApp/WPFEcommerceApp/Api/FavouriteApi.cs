@@ -23,5 +23,21 @@ namespace WPFEcommerceApp {
             });
             return res;
         }
+
+        public static async Task<bool> Delete(string user, string product) {
+            bool res = true;
+            await Task.Run(() => {
+                using(var context = new EcommerceAppEntities()) {
+                    var sql = $"delete from dbo.FavouriteProduct where IdUser = '{user}' and IdProduct = '{product}'";
+                    try {
+                        context.Database.ExecuteSqlCommand(sql);
+                    }
+                    catch {
+                        res = false;
+                    }
+                }
+            });
+            return res;
+        }
     }
 }

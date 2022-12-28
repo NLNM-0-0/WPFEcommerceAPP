@@ -990,15 +990,15 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Resource Include="Assests\Fonts\HelveticaNeue.otf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueBold.ttf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueBoldItalic.ttf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueItalic.otf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueLight.ttf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueLightItalic.otf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueMedium.otf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueUltraLight.ttf" />
-    <Resource Include="Assests\Fonts\HelveticaNeueUltraLightItalic.otf" />
+    <Resource Include="Assets\Fonts\HelveticaNeue.otf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueBold.ttf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueBoldItalic.ttf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueItalic.otf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueLight.ttf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueLightItalic.otf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueMedium.otf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueUltraLight.ttf" />
+    <Resource Include="Assets\Fonts\HelveticaNeueUltraLightItalic.otf" />
     <None Include="FodyWeavers.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1018,7 +1018,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assests\Images\SuccessBag.png" />
+    <Resource Include="Assets\Images\SuccessBag.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
@@ -1065,7 +1065,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assests\Sounds\LoadingSound.mp3" />
+    <Resource Include="Assets\Sounds\LoadingSound.mp3" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model.Context1.cs</LastGenOutput>

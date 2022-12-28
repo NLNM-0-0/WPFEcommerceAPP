@@ -10,6 +10,7 @@ namespace WPFEcommerceApp {
         public event Action CurrentVMChanged;
 
         public BaseViewModel currentViewModel;
+        public List<Tuple<INavigationService, object>> stackScreen = new List<Tuple<INavigationService, object>>();
         public BaseViewModel CurrentViewModel {
             get => currentViewModel;
             set {

@@ -41,13 +41,12 @@ namespace WPFEcommerceApp {
         }
 		public async Task Load() {
 			MainViewModel.IsLoading = true;
+            OrderList?.Clear();
+            OrderList = new ObservableCollection<Order>();
             if(user == null) {
                 MainViewModel.IsLoading = false;
                 return;
 			}
-			OrderList?.Clear();
-
-			OrderList = new ObservableCollection<Order>();
 
 			var userTemp = await userRepo.GetSingleAsync(d => d.Id == user.Id, d => d.MOrders);
 			List<MOrder> mOrders = userTemp.MOrders.ToList();
@@ -169,11 +168,23 @@ namespace WPFEcommerceApp {
             for(int i = 0; i < OrderList.Count; i++) {
 				if(OrderList[i].ID == p.ID) OrderList[i] = p;
 			}
-            MOrder temp = GenerateOrder(p);
+            var temp = await orderRepo.GetSingleAsync(d => d.Id == p.ID);
+            temp.IdCustomer = p.IDCustomer;
+            temp.IdShop = p.IDShop;
+            temp.ShipTotal = (int)p.ShipTotal;
+            temp.DateBegin = p.DateBegin;
+            temp.DateEnd = p.DateEnd;
+            temp.OrderTotal = (int)p.OrderTotal;
+            temp.Status = p.Status;
             await orderRepo.Update(temp);
-
-			await genOrderInfor(p, "Update");
+            OrderListChanged?.Invoke();
             MainViewModel.IsLoading = false;
         }
+		public Order GetOrder(string id) {
+			foreach(Order p in OrderList) {
+				if(p.ID == id) return p;
+			}
+			return null;
+		}
     }
 }

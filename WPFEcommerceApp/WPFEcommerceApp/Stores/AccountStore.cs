@@ -13,30 +13,30 @@ namespace WPFEcommerceApp {
         public event Action AccountChanged;
 
         private MUser currentAccount;
-
+        private bool notInvoke { get; set; } = false;
         public MUser CurrentAccount {
             get { return currentAccount; }
             set {
                 currentAccount = value;
-                OnCurrentAccountChange();
+                if(!notInvoke)
+                    OnCurrentAccountChange();
             }
         }
 
         private GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
 
         public async Task Update(MUser user) {
+            notInvoke = true;
             CurrentAccount = user;
             await userRepo.Update(CurrentAccount);
-        }
-        public async Task Add(MUser user) {
-            throw new NotImplementedException();
-
-        }
-        public async Task Remove(MUser user) {
-            throw new NotImplementedException();
+            notInvoke = false;
         }
         private void OnCurrentAccountChange() {
             AccountChanged?.Invoke();
+            var nav = NavigationStore.instance.stackScreen;
+            var temp = nav[nav.Count - 1];
+            nav.Clear();
+            nav.Add(temp);
         }
     }
 }
