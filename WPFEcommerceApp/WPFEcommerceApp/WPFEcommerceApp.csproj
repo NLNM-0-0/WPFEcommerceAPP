@@ -81,9 +81,8 @@
     <Compile Include="Api\FavouriteApi.cs" />
     <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
-    <Compile Include="Screens\Home\BrandCheckViewModel.cs" />
-    <Compile Include="Screens\Home\CategoryCheckBoxViewModel.cs" />
-    <Compile Include="Command\NavigateCommand.cs" />
+    <Compile Include="Screens\Filter\BrandCheckViewModel.cs" />
+    <Compile Include="Screens\Filter\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Models\Advertisement.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -179,10 +178,10 @@
     <Compile Include="Screens\ForgotPassword\ForgotPassword.xaml.cs">
       <DependentUpon>ForgotPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Home\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
+    <Compile Include="Screens\Filter\Filter.xaml.cs">
+      <DependentUpon>Filter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screens\Home\HomeViewModel.cs" />
+    <Compile Include="Screens\Filter\FilterViewModel.cs" />
     <Compile Include="Screens\Login\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -254,118 +253,118 @@
     </Compile>
     <Compile Include="Services\DPIService.cs" />
     <Compile Include="Services\NavigateProvider.cs" />
-    <Compile Include="UserControls\BrandRequest\BrandRequestItem.xaml.cs">
+    <Compile Include="Components\UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BrandRequest\BrandRequestItemViewModel.cs" />
-    <Compile Include="UserControls\BrandRequest\BrandRequestList.xaml.cs">
+    <Compile Include="Components\UserControls\BrandRequest\BrandRequestItemViewModel.cs" />
+    <Compile Include="Components\UserControls\BrandRequest\BrandRequestList.xaml.cs">
       <DependentUpon>BrandRequestList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BrandRequest\BrandRequestListViewModel.cs" />
-    <Compile Include="UserControls\CategoryRequest\CategoryRequestItem.xaml.cs">
+    <Compile Include="Components\UserControls\BrandRequest\BrandRequestListViewModel.cs" />
+    <Compile Include="Components\UserControls\CategoryRequest\CategoryRequestItem.xaml.cs">
       <DependentUpon>CategoryRequestItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CategoryRequest\CategoryRequestItemViewModel.cs" />
-    <Compile Include="UserControls\CategoryRequest\CategoryRequestList.xaml.cs">
+    <Compile Include="Components\UserControls\CategoryRequest\CategoryRequestItemViewModel.cs" />
+    <Compile Include="Components\UserControls\CategoryRequest\CategoryRequestList.xaml.cs">
       <DependentUpon>CategoryRequestList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CategoryRequest\CategoryRequestListViewModel.cs" />
+    <Compile Include="Components\UserControls\CategoryRequest\CategoryRequestListViewModel.cs" />
     <Compile Include="Screens\Order\components\Dialog\ReviewProductDialog.xaml.cs">
       <DependentUpon>ReviewProductDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\AddAdsDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AddAdsDialog.xaml.cs">
       <DependentUpon>AddAdsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
       <DependentUpon>AddBrandDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\AddProductDialog\AddProductDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\AddProductDialog\SizeBlock.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AddProductDialog\AddProductDialogViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\AddProductDialog\SizeBlock.xaml.cs">
       <DependentUpon>SizeBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\AdminAddBrandDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AdminAddBrandDialog.xaml.cs">
       <DependentUpon>AdminAddBrandDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AdminAddCategoryDialog.xaml.cs">
       <DependentUpon>AdminAddCategoryDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\AdminAddUserDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AdminAddUserDialog.xaml.cs">
       <DependentUpon>AdminAddUserDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml.cs">
       <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ConfirmDialogCustom.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialogViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\ConfirmDialogCustom.xaml.cs">
       <DependentUpon>ConfirmDialogCustom.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ConfirmDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\NotificationDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\NotificationDialog.xaml.cs">
       <DependentUpon>NotificationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscape.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscape.xaml.cs">
       <DependentUpon>ProductInfoLanscape.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscapeViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBanned.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscapeViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBanned.xaml.cs">
       <DependentUpon>ProductInfoPortraitBanned.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBannedViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortrait.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBannedViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortrait.xaml.cs">
       <DependentUpon>ProductInfoPortrait.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortraitViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProfileShopAvaDialog\ProfileShopAvaDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortraitViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\ProfileShopAvaDialog\ProfileShopAvaDialog.xaml.cs">
       <DependentUpon>ProfileShopAvaDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ProfileShopAvaDialog\ProfileShopAvaDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProfileShopBackgroundDialog\ProfileShopBackgroundDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ProfileShopAvaDialog\ProfileShopAvaDialogViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\ProfileShopBackgroundDialog\ProfileShopBackgroundDialog.xaml.cs">
       <DependentUpon>ProfileShopBackgroundDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ProfileShopBackgroundDialog\ProfileShopBackgroundDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ProfileShopDialog\ProfileShopDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ProfileShopBackgroundDialog\ProfileShopBackgroundDialogViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\ProfileShopDialog\ProfileShopDialog.xaml.cs">
       <DependentUpon>ProfileShopDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\ProfileShopDialog\ProfileShopDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\RegisterShopDialog\RegisterShopDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\ProfileShopDialog\ProfileShopDialogViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\RegisterShopDialog\RegisterShopDialog.xaml.cs">
       <DependentUpon>RegisterShopDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\RegisterShopDialog\RegisterShopDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\ShopRequestInformationDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\RegisterShopDialog\RegisterShopDialogViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\ShopRequestInformationDialog.xaml.cs">
       <DependentUpon>ShopRequestInformationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Drawer\ShopPopUp.xaml.cs">
+    <Compile Include="Components\UserControls\Drawer\ShopPopUp.xaml.cs">
       <DependentUpon>ShopPopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Drawer\ShopPopUpVM.cs" />
-    <Compile Include="UserControls\Loading\LoadingScreen.xaml.cs">
+    <Compile Include="Components\UserControls\Drawer\ShopPopUpVM.cs" />
+    <Compile Include="Components\UserControls\Loading\LoadingScreen.xaml.cs">
       <DependentUpon>LoadingScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ProductBlock\ImageProduct.cs" />
-    <Compile Include="UserControls\ProductBlock\ProductBlock.xaml.cs">
+    <Compile Include="Components\UserControls\ProductBlock\ImageProduct.cs" />
+    <Compile Include="Components\UserControls\ProductBlock\ProductBlock.xaml.cs">
       <DependentUpon>ProductBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\RatingBar\RatingBar.xaml.cs">
+    <Compile Include="Components\UserControls\RatingBar\RatingBar.xaml.cs">
       <DependentUpon>RatingBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ShopRequest\ShopRequestItem.xaml.cs">
+    <Compile Include="Components\UserControls\ShopRequest\ShopRequestItem.xaml.cs">
       <DependentUpon>ShopRequestItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ShopRequest\ShopRequestItemViewModel.cs" />
-    <Compile Include="UserControls\ShopRequest\ShopRequestList.xaml.cs">
+    <Compile Include="Components\UserControls\ShopRequest\ShopRequestItemViewModel.cs" />
+    <Compile Include="Components\UserControls\ShopRequest\ShopRequestList.xaml.cs">
       <DependentUpon>ShopRequestList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ShopRequest\ShopRequestListViewModel.cs" />
-    <Compile Include="UserControls\UserIconControl\UserIconControl.xaml.cs">
+    <Compile Include="Components\UserControls\ShopRequest\ShopRequestListViewModel.cs" />
+    <Compile Include="Components\UserControls\UserIconControl\UserIconControl.xaml.cs">
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Converters\BooleanToGenderConverter.cs" />
-    <Compile Include="UserControls\WindowControlBar\WindowControlBar.xaml.cs">
+    <Compile Include="Components\UserControls\WindowControlBar\WindowControlBar.xaml.cs">
       <DependentUpon>WindowControlBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\WindowControlBar\WindowControlBarVM.cs" />
+    <Compile Include="Components\UserControls\WindowControlBar\WindowControlBarVM.cs" />
     <Compile Include="Utils\Converters\FalsesToTrueConverter.cs" />
     <Compile Include="Utils\Converters\MultiValueConverter.cs" />
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
@@ -429,33 +428,33 @@
     <Compile Include="Stores\AccountStore.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Stores\OrderStore.cs" />
-    <Compile Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialogViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\AddCategoryDialog\AddCategoryDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AddBrandDialog\AddBrandDialogViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\AddCategoryDialog\AddCategoryDialog.xaml.cs">
       <DependentUpon>AddCategoryDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Dialogs\AddCategoryDialog\AddCategoryViewModel.cs" />
-    <Compile Include="UserControls\Dialogs\AddProductDialog\AddProductDialog.xaml.cs">
+    <Compile Include="Components\UserControls\Dialogs\AddCategoryDialog\AddCategoryViewModel.cs" />
+    <Compile Include="Components\UserControls\Dialogs\AddProductDialog\AddProductDialog.xaml.cs">
       <DependentUpon>AddProductDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Drawer\Drawer.xaml.cs">
+    <Compile Include="Components\UserControls\Drawer\Drawer.xaml.cs">
       <DependentUpon>Drawer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Drawer\DrawerVM.cs" />
-    <Compile Include="UserControls\Header\Header.xaml.cs">
+    <Compile Include="Components\UserControls\Drawer\DrawerVM.cs" />
+    <Compile Include="Components\UserControls\Header\Header.xaml.cs">
       <DependentUpon>Header.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Header\HeaderViewModel.cs" />
-    <Compile Include="UserControls\Header\SearchBar\DropDownSearchBar.xaml.cs">
+    <Compile Include="Components\UserControls\Header\HeaderViewModel.cs" />
+    <Compile Include="Components\UserControls\Header\SearchBar\DropDownSearchBar.xaml.cs">
       <DependentUpon>DropDownSearchBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Header\SearchBar\KeyboardFocus.cs" />
-    <Compile Include="UserControls\Header\SearchBar\SearchBar.xaml.cs">
+    <Compile Include="Components\UserControls\Header\SearchBar\KeyboardFocus.cs" />
+    <Compile Include="Components\UserControls\Header\SearchBar\SearchBar.xaml.cs">
       <DependentUpon>SearchBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Header\SearchItem.xaml.cs">
+    <Compile Include="Components\UserControls\Header\SearchItem.xaml.cs">
       <DependentUpon>SearchItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Header\SearchItemViewModel.cs" />
+    <Compile Include="Components\UserControls\Header\SearchItemViewModel.cs" />
     <Compile Include="MainItem.cs" />
     <Compile Include="Model\Shop.cs" />
     <Compile Include="Screens\ShopOrder\ShopOrder.xaml.cs">
@@ -469,7 +468,7 @@
       <DependentUpon>ShopRating.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\ShopProduct\ShopProductViewModel.cs" />
-    <Compile Include="UserControls\ProductBlock\ProductBlockViewModel.cs" />
+    <Compile Include="Components\UserControls\ProductBlock\ProductBlockViewModel.cs" />
     <Compile Include="Utils\BaseViewModel.cs" />
     <Compile Include="Utils\CommandBase.cs" />
     <Compile Include="Utils\CreateViewModel.cs" />
@@ -619,7 +618,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screens\Home\Home.xaml">
+    <Page Include="Screens\Filter\Filter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -770,123 +769,123 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\BrandRequest\BrandRequestItem.xaml">
+    <Page Include="Components\UserControls\BrandRequest\BrandRequestItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\BrandRequest\BrandRequestList.xaml">
+    <Page Include="Components\UserControls\BrandRequest\BrandRequestList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\CategoryRequest\CategoryRequestItem.xaml">
+    <Page Include="Components\UserControls\CategoryRequest\CategoryRequestItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\CategoryRequest\CategoryRequestList.xaml">
+    <Page Include="Components\UserControls\CategoryRequest\CategoryRequestList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AddAdsDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\AddAdsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AddCategoryDialog\AddCategoryDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\AddCategoryDialog\AddCategoryDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AddProductDialog\AddProductDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\AddProductDialog\AddProductDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AddProductDialog\SizeBlock.xaml">
+    <Page Include="Components\UserControls\Dialogs\AddProductDialog\SizeBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AdminAddBrandDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\AdminAddBrandDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AdminAddCategoryDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\AdminAddCategoryDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\AdminAddUserDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\AdminAddUserDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ConfirmDialogCustom.xaml">
+    <Page Include="Components\UserControls\Dialogs\ConfirmDialogCustom.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ConfirmDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\ConfirmDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\NotificationDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\NotificationDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscape.xaml">
+    <Page Include="Components\UserControls\Dialogs\ProductInfoLanscape\ProductInfoLanscape.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBanned.xaml">
+    <Page Include="Components\UserControls\Dialogs\ProductInfoPortraitBanned\ProductInfoPortraitBanned.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortrait.xaml">
+    <Page Include="Components\UserControls\Dialogs\ProductInfoPortrait\ProductInfoPortrait.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ProfileShopAvaDialog\ProfileShopAvaDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\ProfileShopAvaDialog\ProfileShopAvaDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ProfileShopBackgroundDialog\ProfileShopBackgroundDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\ProfileShopBackgroundDialog\ProfileShopBackgroundDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ProfileShopDialog\ProfileShopDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\ProfileShopDialog\ProfileShopDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\RegisterShopDialog\RegisterShopDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\RegisterShopDialog\RegisterShopDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Dialogs\ShopRequestInformationDialog.xaml">
+    <Page Include="Components\UserControls\Dialogs\ShopRequestInformationDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Drawer\Drawer.xaml">
+    <Page Include="Components\UserControls\Drawer\Drawer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Drawer\ShopPopUp.xaml">
+    <Page Include="Components\UserControls\Drawer\ShopPopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Header\Header.xaml">
+    <Page Include="Components\UserControls\Header\Header.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Header\SearchBar\DropDownSearchBar.xaml">
+    <Page Include="Components\UserControls\Header\SearchBar\DropDownSearchBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Header\SearchBar\SearchBar.xaml">
+    <Page Include="Components\UserControls\Header\SearchBar\SearchBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Header\SearchItem.xaml">
+    <Page Include="Components\UserControls\Header\SearchItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -942,31 +941,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Loading\LoadingScreen.xaml">
+    <Page Include="Components\UserControls\Loading\LoadingScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ProductBlock\ProductBlock.xaml">
+    <Page Include="Components\UserControls\ProductBlock\ProductBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\RatingBar\RatingBar.xaml">
+    <Page Include="Components\UserControls\RatingBar\RatingBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ShopRequest\ShopRequestItem.xaml">
+    <Page Include="Components\UserControls\ShopRequest\ShopRequestItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\ShopRequest\ShopRequestList.xaml">
+    <Page Include="Components\UserControls\ShopRequest\ShopRequestList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\UserIconControl\UserIconControl.xaml">
+    <Page Include="Components\UserControls\UserIconControl\UserIconControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\WindowControlBar\WindowControlBar.xaml">
+    <Page Include="Components\UserControls\WindowControlBar\WindowControlBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1066,6 +1065,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Sounds\LoadingSound.mp3" />
+    <Resource Include="Assets\Icon\home.ico" />
+    <Resource Include="Assets\Icon\Home.png" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model.Context1.cs</LastGenOutput>

@@ -23,7 +23,7 @@
                 Your order will be delivered soon <LineBreak/>
                 Thank you for choosing our app!
             </TextBlock>
-            <Button Content="Back to Shopping" Width="250" Height="66" Command="{Binding OnBackHome}"/>
+            <Button Content="Back to Shopping" Width="250" Height="66" Command="{Binding OnBackHome}" CommandParameter=""/>
         </StackPanel>
     </Grid>
 </UserControl>

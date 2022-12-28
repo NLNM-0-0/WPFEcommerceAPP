@@ -9,7 +9,9 @@ namespace WPFEcommerceApp {
     public class SuccessScreenVM : BaseViewModel {
         public ICommand OnBackHome { get; set; }
         public SuccessScreenVM() {
-            OnBackHome = new NavigateCommand(NavigateProvider.HomeScreen());
+            OnBackHome = new RelayCommand<object>(p => true, p => {
+                NavigateProvider.HomeScreen().Navigate();
+            });
         }
     }
 }

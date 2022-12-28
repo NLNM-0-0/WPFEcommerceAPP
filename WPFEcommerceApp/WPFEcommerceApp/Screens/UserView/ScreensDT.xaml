@@ -12,11 +12,8 @@
     <DataTemplate DataType="{x:Type local:FavoriteViewModel}">
         <local:Favorite/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type local:HomeViewModel}">
-        <local:Home/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type local:LoginViewModel}">
-        <local:Login/>
+    <DataTemplate DataType="{x:Type local:FilterViewModel}">
+        <local:Filter/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type local:NotificationViewModel}">
         <local:Notification/>

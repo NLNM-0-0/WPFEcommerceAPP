@@ -15,7 +15,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace WPFEcommerceApp
 {
-    internal class HomeViewModel:BaseViewModel
+    internal class FilterViewModel:BaseViewModel
     {
            
         public GenericDataRepository<Models.Product> ProductRepository { get; set; }
@@ -327,7 +327,7 @@ namespace WPFEcommerceApp
         public bool[] CheckSize = { false, false, false, false, false, false };
 
         public ICommand OnProductChoice { get; set; }
-        public HomeViewModel()
+        public FilterViewModel()
         {
             ProductViewModels = new ObservableCollection<ProductBlockViewModel>();
             ProductRepository = new GenericDataRepository<Models.Product>();

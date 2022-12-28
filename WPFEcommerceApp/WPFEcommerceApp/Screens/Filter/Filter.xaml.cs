@@ -21,13 +21,13 @@ namespace WPFEcommerceApp
     /// <summary>
     /// Interaction logic for Home.xaml
     /// </summary>
-    public partial class Home : UserControl
+    public partial class Filter : UserControl
     {
         public GenericDataRepository<Models.Category> CateRepo;
-        public Home()
+        public Filter()
         {
             InitializeComponent();
-            this.DataContext = new HomeViewModel();
+            this.DataContext = new FilterViewModel();
             /*List<string> listCategory = new List<string>();
             List<string> listBrand = new List<string>();
             listCategory.Add("Clothes");

@@ -137,10 +137,10 @@ namespace WPFEcommerceApp {
                 MainViewModel.IsLoading = false;
 
             });
-			TestFeature = new RelayCommand<object>(p => true, async (p) => {
-				//var t = await FireStorageAPI.PushFromFile("H:\\Dev\\Projects\\WPFEcommerceAPP\\WPFEcommerceApp\\WPFEcommerceApp\\Assests\\Images\\2.jpg", "Product", "queo", "https://firebasestorage.googleapis.com/v0/b/wano-wpf.appspot.com/o/Product%2Fqueo_0?alt=media&token=af50f7f3-4cdd-46b5-b2ea-ecf02f2375e8");
-				//var t2 = await FireStorageAPI.PushFromFile($"{t.Item2}", "Product", "queo");
-			});
+			//TestFeature = new RelayCommand<object>(p => true, async (p) => {
+			//	//var t = await FireStorageAPI.PushFromFile("H:\\Dev\\Projects\\WPFEcommerceAPP\\WPFEcommerceApp\\WPFEcommerceApp\\Assests\\Images\\2.jpg", "Product", "queo", "https://firebasestorage.googleapis.com/v0/b/wano-wpf.appspot.com/o/Product%2Fqueo_0?alt=media&token=af50f7f3-4cdd-46b5-b2ea-ecf02f2375e8");
+			//	//var t2 = await FireStorageAPI.PushFromFile($"{t.Item2}", "Product", "queo");
+			//});
 
 			OnEditOrder = new RelayCommand<object>(p => true, p => {
 				NavigateProvider.BagScreen().Navigate();

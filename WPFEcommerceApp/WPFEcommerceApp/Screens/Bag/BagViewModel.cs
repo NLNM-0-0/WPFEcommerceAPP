@@ -15,7 +15,6 @@ namespace WPFEcommerceApp
     internal class BagViewModel : BaseViewModel
     {
         public GenericDataRepository<Models.Cart> CartRepo;
-        private readonly GenericDataRepository<Models.Product> productRepo;
 
         public ICommand CheckAllProductCommand { get; set; }
         public ICommand DelCommand { get; set; }
