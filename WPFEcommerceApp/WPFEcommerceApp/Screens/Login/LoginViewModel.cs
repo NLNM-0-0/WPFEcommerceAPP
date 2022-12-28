@@ -65,7 +65,7 @@ namespace WPFEcommerceApp
 
             var dl = new ConfirmDialog() {
                 Header = "Oops",
-                Content = acc.MUser.StatusUser != "Banned" 
+                Content = acc?.MUser.StatusUser != "Banned" 
                 ? "Email or password is wrong. Try again!"
                 : "Your account has been banned!",
             };

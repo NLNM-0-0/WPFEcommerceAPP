@@ -185,9 +185,13 @@ namespace WPFEcommerceApp
                 while (!task.IsCompleted) ;
                 var dl = new ConfirmDialog() {
                     Header = "Success",
-                    Content = "Back to Login"
+                    Content = "Back to Login",
+                    CM = new RelayCommand<object>(pr => true, pr => {
+                        DialogHost.Close("Login");
+                    }),
+                    Param = ""
                 };
-                DialogHost.Show(dl, "Login");
+                DialogHost.Show(dl, "Regist");
             });
         }
     }
