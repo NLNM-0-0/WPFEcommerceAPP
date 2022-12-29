@@ -35,6 +35,7 @@ namespace WPFEcommerceApp {
         private readonly NavigationStore _navigationStore;
         
         public DrawerVM DrawerVM { get; }
+        public bool IsConnected => Internet.IsConnected;
         public BaseViewModel CurrentViewModel => _navigationStore?.CurrentViewModel;
 
         public MainViewModel(
@@ -45,6 +46,10 @@ namespace WPFEcommerceApp {
             _navigationStore = NavigationStore.instance;
 
             _navigationStore.CurrentVMChanged += OnCurrentVMChanged;
+
+            Internet.instance.NetworkChanged += (sender, obj) => {
+                OnPropertyChanged(nameof(IsConnected));
+            };
         }
         private void OnCurrentVMChanged() {
             OnPropertyChanged(nameof(CurrentViewModel));

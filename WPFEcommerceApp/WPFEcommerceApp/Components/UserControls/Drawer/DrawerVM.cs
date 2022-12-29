@@ -19,10 +19,7 @@ namespace WPFEcommerceApp {
         private readonly AccountStore _accountStore;
         private readonly NavigationStore _navigationStore;
 
-
-        bool Off { get; set; } = false;
         public MUser CurrentUser => _accountStore?.CurrentAccount;
-
 
         public ObservableCollection<ButtonItem> ButtonItems =>
             CurrentUser == null
@@ -31,8 +28,8 @@ namespace WPFEcommerceApp {
             ? NormalButtonCreate()
             : AdminButtonCreate();
 
+        #region Props
         private int selectedIndex = 0;
-
         public int SelectedIndex {
             get { return selectedIndex; }
             set {
@@ -45,17 +42,18 @@ namespace WPFEcommerceApp {
         private int prevSelected { get; set; } = 0;
 
         private bool canReload;
-
         public bool CanReload {
             get { return canReload; }
             set { canReload = value; OnPropertyChanged(); }
         }
+        #endregion
 
-
+        #region Command
         public ICommand OnChangeScreen { get; set; }
         public ICommand OnShopMouseOver { get; set; }
         public ICommand OnShopMouseLeave { get; set; }
         public ShopPopUpVM ShopPopUpDataContext { get; set; }
+        #endregion
 
         public DrawerVM() {
 
@@ -67,6 +65,8 @@ namespace WPFEcommerceApp {
 
             CanReload = true;
             ShopPopUpDataContext = new ShopPopUpVM(this);
+
+            #region Command define
 
             OnChangeScreen = new RelayCommand<object>((p) => {
                 if(CanReload) return true;
@@ -84,7 +84,7 @@ namespace WPFEcommerceApp {
                     if(CurrentUser != null)
                         ShopPopUpDataContext = new ShopPopUpVM(this);
                     else {
-                        if(SelectedIndex != 0 && SelectedIndex != -1 && SelectedIndex != 6) {
+                        if(SelectedIndex != 0 && SelectedIndex != -1 && SelectedIndex != 6 && Internet.IsConnected) {
                             var dialog = new ConfirmDialog() {
                                 Header = "Oops!",
                                 Content = "You need to login to do this!",
@@ -150,7 +150,7 @@ namespace WPFEcommerceApp {
             //Shop popup Handle
             var timer = new DispatcherTimer();
             OnShopMouseOver = new RelayCommand<object>(p => {
-                if(CurrentUser == null || CurrentUser.StatusShop == "NotExist") return false;
+                if(CurrentUser == null || CurrentUser.StatusShop == "NotExist" || !Internet.IsConnected) return false;
                 var values = (object[])p;
                 if((values[0] as ButtonItem).Text == "Shop") return true;
                 return false;
@@ -178,8 +178,10 @@ namespace WPFEcommerceApp {
                 };
                 timer.Start();
             });
+            #endregion
         }
 
+        #region Outside change handle
         private void OnScreenChange() {
             Type type = NavigationStore.instance.CurrentViewModel.GetType();
             switch(type.Name) {
@@ -224,8 +226,13 @@ namespace WPFEcommerceApp {
                     break;
             }
         }
+        #endregion
 
         void ChangeIndex(INavigationService nav, object o = null) {
+            if(!Internet.IsConnected) {
+                NavigationStore.instance.stackScreen.Add(new Tuple<INavigationService, object>(nav, o));
+                return;
+            }
             if(nav.GetViewModel() != NavigationStore.instance.CurrentViewModel.GetType()) {
                 if(o != null)
                     nav.Navigate(o);
