@@ -10,6 +10,7 @@ namespace WPFEcommerceApp {
         public event Action CurrentVMChanged;
 
         public BaseViewModel currentViewModel;
+        public List<Tuple<INavigationService, object>> stackScreen = new List<Tuple<INavigationService, object>>();
         public BaseViewModel CurrentViewModel {
             get => currentViewModel;
             set {
@@ -19,6 +20,15 @@ namespace WPFEcommerceApp {
             }
         }
 
+        public bool clearHistory() {
+            try {
+                stackScreen?.Clear();
+            }
+            catch {
+                return false;
+            }
+            return true;
+        }
         private void OnCurrentVMChange() {
             CurrentVMChanged?.Invoke();
         }

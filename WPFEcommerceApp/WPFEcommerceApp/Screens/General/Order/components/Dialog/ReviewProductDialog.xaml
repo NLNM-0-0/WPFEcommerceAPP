@@ -1,0 +1,179 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ReviewProductDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:media ="clr-namespace:System.Windows.Media;assembly=PresentationCore"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
+             x:Name="myDialog"
+             Width="590"
+             Height="auto"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ReviewProductCard" DataType="{x:Type local:ReviewProduct}">
+            <StackPanel Margin="0 15"
+                        Width="480"
+                        HorizontalAlignment="Center">
+                <!--Product-->
+
+                <Grid>
+                    <Border BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="0 0.5"
+                        x:Name="prdBorder" Width="395" HorizontalAlignment="Right"/>
+                    <DockPanel Panel.ZIndex="1">
+                        <Grid x:Name="imgContainer" Background="Pink"
+                              Width="70" Height="70">
+                            <Image Source="{Binding product.ProductImage}" 
+                                       Width="{Binding ElementName=imgContainer, Path=Width}"
+                                       Height="{Binding ElementName=imgContainer, Path=Width}">
+                            </Image>
+                        </Grid>
+                        <StackPanel Margin="15 10 0 0">
+                                <TextBlock Text="{Binding product.Name}" FontSize="{StaticResource FontSizeText}"
+                                       TextWrapping="Wrap"/>
+                                <TextBlock Text="{c:Binding \'Color: \' + product.Color}" 
+                                       FontSize="{StaticResource FontSizeDescription}"
+                                       Margin="0 5 0 0"
+                                       Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            </StackPanel>
+                    </DockPanel>
+                </Grid>
+                <!--Rate-->
+                <local:RatingBar 
+                    Value="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext.rating, Mode=TwoWay}"             
+                    Margin="0 10 0 5">
+                    <local:RatingBar.LayoutTransform>
+                        <ScaleTransform ScaleX="1.3" ScaleY="1.3"/>
+                    </local:RatingBar.LayoutTransform>
+                </local:RatingBar>
+                <!--Comment-->
+                <Label Content="Comment" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 0, 0, 10" Visibility="Collapsed"/>
+                <TextBox Visibility="Collapsed"
+                    x:Name="commentBox"
+                    Style="{StaticResource TextBoxHintWrapText}"
+                         Height="129"
+                         Width="auto"
+                         materialDesign:HintAssist.IsFloating="False"
+                         materialDesign:HintAssist.Hint="Write your review"
+                         TextWrapping="Wrap"
+                         Text="{Binding Address}"/>
+            </StackPanel>
+        </DataTemplate>
+        <Style x:Key="ListItemContainer" TargetType="ListViewItem">
+            <Setter Property="Margin" Value="0, 5, 0, 5"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Bd" BorderBrush="{StaticResource BlurColorBrush}" BorderThickness="0.6" 
+                                CornerRadius="10" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true" Margin="0 0 0 10">
+                            <ContentPresenter HorizontalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="auto" Height="auto">
+        <StackPanel>
+            <Grid>
+                <Label Content="Review" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
+                <Button HorizontalAlignment="Right"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        x:Name="ButtonClose"
+                        Height="30"
+                        Width="30"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
+
+                    <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Opacity="1"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+                </Button>
+            </Grid>
+
+            <StackPanel Margin="0, 30, 0, 30" Visibility="Collapsed">
+                <!--Product-->
+                <Border BorderBrush="{StaticResource BlackColorBrush}"
+                        BorderThickness="0.5"
+                        CornerRadius="10">
+                    <Grid>
+                        <Grid.OpacityMask>
+                            <VisualBrush Visual="{Binding ElementName=prdBorder}"/>
+                        </Grid.OpacityMask>
+                        <Border BorderBrush="{StaticResource BlackColorBrush}"
+                        BorderThickness="0.5"
+                        CornerRadius="10" x:Name="prdBorder"/>
+                        <DockPanel>
+                            <Grid MaxWidth="70" x:Name="imgContainer">
+                                <Image Source="..\..\..\..\Assests\Images\2.jpg" 
+                                   Width="{Binding ElementName=imgContainer, Path=Width}"
+                                   Height="{Binding ElementName=imgContainer, Path=Width}"/>
+                            </Grid>
+                            <StackPanel Margin="15 10 0 0">
+                                <TextBlock Text="Name of prod" FontSize="{StaticResource FontSizeText}"
+                                       TextWrapping="Wrap"/>
+                                <TextBlock Text="{c:Binding \'Color: \'}" 
+                                       FontSize="{StaticResource FontSizeDescription}"
+                                       Margin="0 5 0 0"
+                                       Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Grid>
+                </Border>
+                <!--Rate-->
+                <local:RatingBar Value="{Binding ElementName=myDialog, Path=DataContext.Value, Mode=TwoWay}"
+                                 Margin="0 10 0 5">
+                    <local:RatingBar.LayoutTransform>
+                        <ScaleTransform ScaleX="1.3" ScaleY="1.3"/>
+                    </local:RatingBar.LayoutTransform>
+                </local:RatingBar>
+                <!--Comment-->
+                <Label Content="Comment" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 0, 0, 10"/>
+                <TextBox
+                    x:Name="commentBox"
+                    Style="{StaticResource TextBoxHintWrapText}"
+                         Height="129"
+                         Width="auto"
+                         materialDesign:HintAssist.IsFloating="False"
+                         materialDesign:HintAssist.Hint="Write your review"
+                         TextWrapping="Wrap"
+                         Text="{Binding Address}"/>
+            </StackPanel>
+
+            <ListView ItemsSource="{Binding ProductList}"
+                      Margin="0 10 0 15"
+                      MaxHeight="380"
+                      BorderThickness="0"
+                      ItemContainerStyle="{StaticResource ListItemContainer}"
+                      ScrollViewer.CanContentScroll="False"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ItemTemplate="{StaticResource ReviewProductCard}"/>
+
+            <Button x:Name="lel" Content="OK" HorizontalAlignment="Right" Command="{Binding OnOK}" CommandParameter="">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </StackPanel>
+    </Border>
+</UserControl>

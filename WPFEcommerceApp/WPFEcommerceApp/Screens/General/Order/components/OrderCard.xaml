@@ -1,0 +1,146 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+                    xmlns:fa= "http://schemas.fontawesome.io/icons/"
+                    xmlns:vm="clr-namespace:WPFEcommerceApp"
+                    xmlns:it="http://schemas.microsoft.com/xaml/behaviors"
+                    x:Class="WPFEcommerceApp.OrderCard"
+                    xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Constants/Colors.xaml" />
+        <ResourceDictionary Source="/Constants/Fonts.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <Style x:Key="ListItemContainer" TargetType="ListViewItem">
+        <Setter Property="Margin" Value="0, 5, 0, 5"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Padding" Value="4,1"/>
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="Bd" BorderBrush="{StaticResource BlurColorBrush}" BorderThickness="0.6" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true" Margin="0 20 0 0"
+                            Width="{c:Binding RelativeSource={RelativeSource AncestorType=TabControl, Mode=FindAncestor},Path=ActualWidth-30}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <DataTemplate x:Key="OrderCard" DataType="{x:Type vm:Order}">
+        <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=ActualWidth}">
+            <!--Header-->
+            <Border Padding="15, 0">
+                <Grid Margin="0, 13">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Grid Background="Pink"
+                              Width="35"
+                              Height="35">
+                            <Image Source="{Binding ShopImage}"
+                                   Stretch="Fill"
+                                   HorizontalAlignment="Center"/>
+                        </Grid>
+                        <TextBlock Text="{Binding ShopName}"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSizeHeadline3}"
+                                   Margin="20 0 40 0"/>
+                    </StackPanel>
+                    
+                    <TextBlock Text="{c:Binding \'ID: \' + ID}" 
+                               Grid.Column="1"
+                                x:Name="OrderIDText"
+                                   HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                    
+                    <TextBlock x:Name="statusString" Text="{Binding Status}"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               FontSize="{StaticResource FontSizeHeadline3}"
+                               Foreground="{StaticResource SuccessColorBrush}">
+                        <it:Interaction.Triggers>
+                            <it:DataTrigger Binding="{Binding Status}" Value="Cancelled">
+                                <it:ChangePropertyAction PropertyName="Foreground" TargetName="statusString" Value="{StaticResource ErrorColorBrush}"/>
+                            </it:DataTrigger>
+                        </it:Interaction.Triggers>
+                    </TextBlock>
+                </Grid>
+            </Border>
+
+            <!--Product-->
+            <StackPanel>
+                <vm:ProductOrderCard DataContext="{Binding ProductList[0]}"/>
+                <vm:ProductOrderCard x:Name="product2" DataContext="{Binding ProductList[1]}"/>
+                <it:Interaction.Triggers>
+                    <it:DataTrigger Binding="{Binding ProductList.Count}" Value="1">
+                        <it:ChangePropertyAction PropertyName="Visibility" TargetName="product2" Value="Collapsed"/>
+                        <it:ChangePropertyAction PropertyName="DataContext" TargetName="product2" Value=""/>
+                    </it:DataTrigger>
+                </it:Interaction.Triggers>
+            </StackPanel>
+            <!--Footer-->
+
+            <Grid Margin="0 0 0 10">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Re-Order" FontWeight="Light"
+                            x:Name="Button1"
+                            Style="{StaticResource WhiteButton}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnReorder}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}">
+                    </Button>
+                    <Button Content="Detail" FontWeight="Medium"
+                            Margin="12, 0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnDetailView}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}">
+                    </Button>
+                    <Button Content="Review" FontWeight="Medium"
+                            x:Name="ReviewButton"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnReviewProduct}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem, Mode=FindAncestor}, Path=DataContext}"
+                            Visibility="Collapsed">
+                    </Button>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center"
+                                                HorizontalAlignment="Right">
+                    <TextBlock Text="Order Total: "
+                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                    <TextBlock Text="{Binding OrderTotal}"
+                                                   
+                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Status}" Value="Processing">
+                <Setter TargetName="Button1" Property="Content" Value="Cancel"/>
+                <Setter TargetName="Button1" Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=vm:OrderScreen, Mode=FindAncestor}, Path=DataContext.OnCancel}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="Delivered">
+                <Setter TargetName="ReviewButton" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+</ResourceDictionary>

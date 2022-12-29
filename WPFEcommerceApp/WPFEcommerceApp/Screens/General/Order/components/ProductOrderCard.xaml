@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ProductOrderCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="1111">
+    <StackPanel Background="White">
+        <Separator BorderThickness="0 0 0 0.5" BorderBrush="{StaticResource NotAvailableColorBrush}" VerticalAlignment="Top" Margin="0, 0,0,20"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Background="Transparent"  x:Name="ImageContainer" MaxHeight="107">
+                <Image Source="{Binding ProductImage}" Width="{Binding Height, ElementName=ImageContainer}" 
+                       Height="{Binding Height, ElementName=ImageContainer}" HorizontalAlignment="Center"/>
+            </Grid>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Name}" FontSize="13" TextWrapping="Wrap" Margin="5 0 0 0"/>
+                <StackPanel Orientation="Horizontal" Margin="5, 9, 0, 0">
+                    <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                    <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
+                    <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Column="2" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
+                <TextBlock Text="x" FontSize="13"/>
+                <TextBlock Text="{Binding Amount}" FontSize="13"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
+                <TextBlock Text="Subtotal:" FontSize="13"/>
+                <TextBlock Text="{Binding Subtotal}" FontSize="13"/>
+            </StackPanel>
+        </Grid>
+        <Separator BorderThickness="0 0.5 0 0" 
+                   BorderBrush="{StaticResource NotAvailableColorBrush}" 
+                   VerticalAlignment="Bottom" Margin="0 20 0 15"/>
+    </StackPanel>
+</UserControl>

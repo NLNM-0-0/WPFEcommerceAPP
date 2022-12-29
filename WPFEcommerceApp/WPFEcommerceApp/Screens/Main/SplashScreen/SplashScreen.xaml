@@ -1,0 +1,51 @@
+﻿<Window x:Class="WPFEcommerceApp.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFEcommerceApp"
+        mc:Ignorable="d"
+        Title="WANO" 
+        Icon="..\..\..\Assets\Icon\Home.png"
+        Height="766" Width="1200"
+        d:Background="White"
+        WindowStyle="None"
+        x:Name="Splash"
+        WindowStartupLocation="CenterScreen" 
+        FontFamily="Helvetica Neue">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      CornerRadius="13"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:MultiValueConverter x:Key="MultiValueConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel>
+        <TextBlock Text="W A N O" 
+                   FontSize="100" 
+                   HorizontalAlignment="Center" 
+                   Margin="0 169 0 0" 
+                   FontStretch="ExtraCondensed" 
+                   FontWeight="SemiBold">
+            <TextBlock.Effect>
+                <DropShadowEffect  BlurRadius="50"
+                                    ShadowDepth="0.1"
+                                    Direction="69"
+                                    Color="LightGray"/>
+            </TextBlock.Effect>
+        </TextBlock>
+        <Grid >
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             Foreground="{DynamicResource BlackColorBrush}"
+                             IsIndeterminate="true"
+                             Value="0"
+                         Margin="0 100 0 0">
+                <ProgressBar.LayoutTransform>
+                    <ScaleTransform ScaleX="3.3" ScaleY="3.3"/>
+                </ProgressBar.LayoutTransform>
+            </ProgressBar>
+        </Grid>
+    </StackPanel>
+</Window>

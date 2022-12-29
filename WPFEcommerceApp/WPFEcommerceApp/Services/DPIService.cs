@@ -29,13 +29,15 @@ namespace WPFEcommerceApp {
             //Normal
             #region Checkout and Order
             //Normal - Checkout and Order
-            services.AddTransient<CheckoutScreenVM>();
             services.AddTransient<OrderScreenVM>();
             services.AddTransient<SuccessScreenVM>();
             #endregion
 
             #region Shop
             services.AddTransient<ShopRatingViewModel>();
+            services.AddTransient<ShopProductViewModel>();
+            services.AddTransient<ShopOrderViewModel>();
+            services.AddTransient<ShopStatisticsViewModel>();
             #endregion
 
             //Admin
@@ -45,18 +47,23 @@ namespace WPFEcommerceApp {
             services.AddTransient<AdminBrandViewModel>();
             services.AddTransient<AdminProductManagerViewModel>();
             services.AddTransient<AdminUserManagerViewModel>();
+            services.AddTransient<AdsManagerViewModel>();
             #endregion
 
             #region General
             services.AddTransient<MyProfileViewModel>();
+            services.AddTransient<FilterViewModel>();
+            services.AddTransient<MyHomeViewModel>();
+            services.AddTransient<BagViewModel>();
+            services.AddTransient<FavoriteViewModel>();
+            services.AddTransient<NotificationViewModel>();
+
             #endregion
 
 
             //Setup MainWindow
-            //It need to be CreateHomeNavService
-            //But I set initial screen is checkout here
-            //just for example
-            services.AddSingleton<INavigationService>(s => NavigateProvider.CheckoutScreen());
+            #region MainWindow Setup
+            services.AddSingleton<INavigationService>(s => NavigateProvider.HomeScreen());
 
             services.AddSingleton<MainViewModel>();
 
@@ -68,6 +75,7 @@ namespace WPFEcommerceApp {
 
             NavigateProvider.serviceProvider = serviceProvider;
             App.serviceProvider = serviceProvider;
+            #endregion
         }
     }
 }
