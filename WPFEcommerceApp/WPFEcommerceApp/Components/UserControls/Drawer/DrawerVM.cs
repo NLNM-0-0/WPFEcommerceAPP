@@ -226,10 +226,11 @@ namespace WPFEcommerceApp {
         }
 
         void ChangeIndex(INavigationService nav, object o = null) {
-            if(nav.GetViewModel() != NavigationStore.instance.CurrentViewModel.GetType())
+            if(nav.GetViewModel() != NavigationStore.instance.CurrentViewModel.GetType()) {
                 if(o != null)
                     nav.Navigate(o);
                 else nav.Navigate();
+            }
         }
 
         private void OnAccountChange() {

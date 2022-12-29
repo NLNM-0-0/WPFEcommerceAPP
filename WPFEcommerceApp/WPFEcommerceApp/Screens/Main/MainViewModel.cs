@@ -35,13 +35,13 @@ namespace WPFEcommerceApp {
         private readonly NavigationStore _navigationStore;
         
         public DrawerVM DrawerVM { get; }
-        public BaseViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
+        public BaseViewModel CurrentViewModel => _navigationStore?.CurrentViewModel;
 
         public MainViewModel(
             DrawerVM drawerVM) {
             DrawerVM = drawerVM;
             IsLoading = false;
-
+            
             _navigationStore = NavigationStore.instance;
 
             _navigationStore.CurrentVMChanged += OnCurrentVMChanged;
@@ -66,7 +66,5 @@ namespace WPFEcommerceApp {
             };
             DialogHost.Show(view, "App");
         }
-
-
     }
 }
