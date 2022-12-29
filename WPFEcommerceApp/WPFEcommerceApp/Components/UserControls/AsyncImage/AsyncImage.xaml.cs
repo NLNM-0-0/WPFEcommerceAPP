@@ -27,7 +27,7 @@ namespace WPFEcommerceApp {
 
         // Using a DependencyProperty as the backing store for Stretch.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StretchProperty =
-            DependencyProperty.Register("Stretch", typeof(string), typeof(AsyncImage), new PropertyMetadata("Fill"));
+            DependencyProperty.Register("Stretch", typeof(string), typeof(AsyncImage), new PropertyMetadata(""));
 
 
         public string Source {

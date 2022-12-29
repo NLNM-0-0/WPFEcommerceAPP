@@ -28,10 +28,10 @@
                     <DockPanel Panel.ZIndex="1">
                         <Grid x:Name="imgContainer" Background="Pink"
                               Width="70" Height="70">
-                            <Image Source="{Binding product.ProductImage}" 
+                            <local:AsyncImage Source="{Binding product.ProductImage}" 
                                        Width="{Binding ElementName=imgContainer, Path=Width}"
                                        Height="{Binding ElementName=imgContainer, Path=Width}">
-                            </Image>
+                            </local:AsyncImage>
                         </Grid>
                         <StackPanel Margin="15 10 0 0">
                                 <TextBlock Text="{Binding product.Name}" FontSize="{StaticResource FontSizeText}"
