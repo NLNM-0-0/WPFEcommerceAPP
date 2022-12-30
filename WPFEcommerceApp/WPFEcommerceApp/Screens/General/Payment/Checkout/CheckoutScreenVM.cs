@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -11,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
 
@@ -139,8 +142,24 @@ namespace WPFEcommerceApp {
 
             });
 			//TestFeature = new RelayCommand<object>(p => true, async (p) => {
-			//	//var t = await FireStorageAPI.PushFromFile("H:\\Dev\\Projects\\WPFEcommerceAPP\\WPFEcommerceApp\\WPFEcommerceApp\\Assests\\Images\\2.jpg", "Product", "queo", "https://firebasestorage.googleapis.com/v0/b/wano-wpf.appspot.com/o/Product%2Fqueo_0?alt=media&token=af50f7f3-4cdd-46b5-b2ea-ecf02f2375e8");
-			//	//var t2 = await FireStorageAPI.PushFromFile($"{t.Item2}", "Product", "queo");
+			//	FileStream stream = new FileStream("H:\\Dev\\Projects\\WPFEcommerceAPP\\WPFEcommerceApp\\WPFEcommerceApp\\Assets\\Images\\SuccessBag.png", FileMode.Open, FileAccess.Read);
+			//	System.Drawing.Image t = System.Drawing.Image.FromStream(stream);
+
+			//	Bitmap img = (Bitmap)t;
+   //             BitmapImage bmImg = new BitmapImage();
+
+   //             using(MemoryStream memStream2 = new MemoryStream()) {
+   //                 img.Save(memStream2, System.Drawing.Imaging.ImageFormat.Png);
+   //                 memStream2.Position = 0;
+
+   //                 bmImg.BeginInit();
+   //                 bmImg.CacheOption = BitmapCacheOption.OnLoad;
+   //                 bmImg.UriSource = null;
+   //                 bmImg.StreamSource = memStream2;
+   //                 bmImg.EndInit();
+   //             }
+			//	BitmapSource bm = bmImg;
+			//	await FireStorageAPI.PushFromImage(bm, "Test", "TestImg");
 			//});
 
 			OnEditOrder = new RelayCommand<object>(p => true, p => {
