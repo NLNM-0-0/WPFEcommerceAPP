@@ -92,6 +92,7 @@ namespace WPFEcommerceApp {
 
 			for(int i = 0; i < mOrders.Count; i++) { 
 				var order = await orderRepo.GetSingleAsync(d => d.Id == mOrders[i].Id, d => d.MUser1);
+				var t = order.ShippingSpeedMethod;
 				Order ordertemp = new Order(
 						order.Id,
 						order.IdCustomer,
@@ -101,7 +102,8 @@ namespace WPFEcommerceApp {
 						listOrderProduct[i],
 						(DateTime)order.DateBegin,
 						order.MUser1.Name,
-						order.MUser1.SourceImageAva
+						order.MUser1.SourceImageAva,
+						order.ShippingSpeedMethod
 					) {
 				};
 				OrderList.Add(ordertemp);
@@ -120,6 +122,7 @@ namespace WPFEcommerceApp {
             temp.DateEnd = p.DateEnd;
             temp.OrderTotal = (int)p.OrderTotal;
             temp.Status = p.Status;
+			temp.ShippingSpeedMethod = p.ShippingSpeedMethod;
 			return temp;
         }
 
@@ -176,6 +179,7 @@ namespace WPFEcommerceApp {
             temp.DateEnd = p.DateEnd;
             temp.OrderTotal = (int)p.OrderTotal;
             temp.Status = p.Status;
+			temp.ShippingSpeedMethod = p.ShippingSpeedMethod;
             await orderRepo.Update(temp);
             OrderListChanged?.Invoke();
             MainViewModel.IsLoading = false;

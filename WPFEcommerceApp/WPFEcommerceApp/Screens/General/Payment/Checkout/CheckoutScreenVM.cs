@@ -127,7 +127,13 @@ namespace WPFEcommerceApp {
 				else { StateArea[0] = true; StateArea[1] = false; PaymentState = false; }
 			});
 
-            PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=>PaymentAlertDialog(order));
+            PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=> {
+                if((bool)p == true) {
+                    order.ShippingSpeedMethod = 0;
+                }
+                else order.ShippingSpeedMethod = 1;
+                PaymentAlertDialog(order);
+			});
 			OnEditInfor = new RelayCommand<object>((p) => true, (p) => EditInforDialog(p));
 			OnSuccessPayment = new RelayCommand<object>((p) => true, async (p) => {
                 //Do something with store here
