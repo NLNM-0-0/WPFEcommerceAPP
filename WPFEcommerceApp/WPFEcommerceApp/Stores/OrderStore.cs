@@ -39,7 +39,9 @@ namespace WPFEcommerceApp {
 			Task.Run(async () => await Load());
             OrderListChanged?.Invoke();
         }
-		public async Task Load() {
+
+        #region Load
+        public async Task Load() {
 			MainViewModel.IsLoading = true;
             OrderList?.Clear();
             OrderList = new ObservableCollection<Order>();
@@ -111,7 +113,9 @@ namespace WPFEcommerceApp {
             OrderListChanged?.Invoke();
             MainViewModel.IsLoading = false;
         }
+        #endregion
 
+        #region Generator
         MOrder GenerateOrder(Order p) {
             MOrder temp = new MOrder();
             temp.Id = p.ID;
@@ -147,6 +151,9 @@ namespace WPFEcommerceApp {
             }
             OrderListChanged?.Invoke();
         }
+        #endregion
+
+        #region Api
         public async Task Add(Order p) {
             MainViewModel.IsLoading = true;
             p.ID = await GenerateID.Gen(typeof(MOrder));
@@ -190,5 +197,6 @@ namespace WPFEcommerceApp {
 			}
 			return null;
 		}
+        #endregion
     }
 }

@@ -11,6 +11,7 @@ namespace WPFEcommerceApp {
     public class AccountStore {
         public static AccountStore instance;
         public event Action AccountChanged;
+        public event Action AccountUpdated;
 
         private MUser currentAccount;
         private bool notInvoke { get; set; } = false;
@@ -30,6 +31,7 @@ namespace WPFEcommerceApp {
             CurrentAccount = user;
             await userRepo.Update(CurrentAccount);
             notInvoke = false;
+            AccountUpdated?.Invoke();
         }
         private void OnCurrentAccountChange() {
             AccountChanged?.Invoke();
