@@ -18,8 +18,8 @@ namespace WPFEcommerceApp {
 
 		public event Action OrderListChanged;
 
-		private ObservableCollection<Order> orderList;
-		public ObservableCollection<Order> OrderList {
+		private List<Order> orderList;
+		public List<Order> OrderList {
 			get { return orderList; }
 			set { 
 				orderList = value;
@@ -42,9 +42,8 @@ namespace WPFEcommerceApp {
 
         #region Load
         public async Task Load() {
-			MainViewModel.IsLoading = true;
             OrderList?.Clear();
-            OrderList = new ObservableCollection<Order>();
+            OrderList = new List<Order>();
             if(user == null) {
                 MainViewModel.IsLoading = false;
                 return;
@@ -111,7 +110,6 @@ namespace WPFEcommerceApp {
 				OrderList.Add(ordertemp);
 			}
             OrderListChanged?.Invoke();
-            MainViewModel.IsLoading = false;
         }
         #endregion
 

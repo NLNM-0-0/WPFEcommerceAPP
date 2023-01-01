@@ -14,7 +14,7 @@ namespace WPFEcommerceApp {
     public class OrderScreenVM : BaseViewModel {
         private readonly OrderStore _orderStore;
 
-        private ObservableCollection<Order> OrderList => _orderStore.OrderList;
+        private List<Order> OrderList => _orderStore.OrderList;
 
 
         private ObservableCollection<Order> processingList;
@@ -56,21 +56,19 @@ namespace WPFEcommerceApp {
         public ICommand OnReviewProduct { get; set; }
 
         public OrderScreenVM(int currentPage = 0) {
-            MainViewModel.IsLoading = true;
-
             CurrentPage = currentPage;
 
             _orderStore = OrderStore.instance;
             _orderStore.OrderListChanged += onOrderListChange;
-            Task.Run(async () => await _orderStore.Load());
+            Task.Run(async () => {
+                MainViewModel.IsLoading = true;
+                await _orderStore.Load();
+                MainViewModel.IsLoading = false;
+            });
 
             ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
-                MainViewModel.IsLoading = true;
-
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
-
-                MainViewModel.IsLoading = false;
             });
 
             OnCancel = new RelayCommand<object>(p => true, async p => {
@@ -107,16 +105,14 @@ namespace WPFEcommerceApp {
                 };
                 await DialogHost.Show(view, "Main");
             });
-            MainViewModel.IsLoading = false;
         }
 
         private void onOrderListChange() {
-            MainViewModel.IsLoading = true;
             ProcessingList = new ObservableCollection<Order>();
             DeliveringList = new ObservableCollection<Order>();
             DeliveredList = new ObservableCollection<Order>();
             CancelledList = new ObservableCollection<Order>();
-            if(OrderList != null)
+            if(OrderList != null) { 
                 for(int i = 0; i < OrderList.Count; i++) {
                     string stt = OrderList[i].Status;
                     if(stt == "Processing") {
@@ -132,7 +128,7 @@ namespace WPFEcommerceApp {
                         CancelledList.Add(OrderList[i]);
                     }
                 }
-            MainViewModel.IsLoading = false;
+            }
         }
 
         public override void Dispose() {
