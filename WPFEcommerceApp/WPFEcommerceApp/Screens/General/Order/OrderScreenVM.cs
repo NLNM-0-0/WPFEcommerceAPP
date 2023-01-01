@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,28 +19,28 @@ namespace WPFEcommerceApp {
         private List<Order> OrderList => _orderStore.OrderList;
 
 
-        private ObservableCollection<Order> processingList;
+        private List<Order> processingList;
 
-        public ObservableCollection<Order> ProcessingList {
+        public List<Order> ProcessingList {
             get { return processingList; }
             set { processingList = value; OnPropertyChanged(); }
         }
 
-        private ObservableCollection<Order> deliveringList;
+        private List<Order> deliveringList;
 
-        public ObservableCollection<Order> DeliveringList {
+        public List<Order> DeliveringList {
             get { return deliveringList; }
             set { deliveringList = value; OnPropertyChanged(); }
         }
-        private ObservableCollection<Order> deliveredList;
+        private List<Order> deliveredList;
 
-        public ObservableCollection<Order> DeliveredList {
+        public List<Order> DeliveredList {
             get { return deliveredList; }
             set { deliveredList = value; OnPropertyChanged(); }
         }
-        private ObservableCollection<Order> cancelList;
+        private List<Order> cancelList;
 
-        public ObservableCollection<Order> CancelledList {
+        public List<Order> CancelledList {
             get { return cancelList; }
             set { cancelList = value; OnPropertyChanged(); }
         }
@@ -107,28 +109,44 @@ namespace WPFEcommerceApp {
             });
         }
 
+
+        //Fix: ObservableCollection:
+        //Can't change the Observable in another thread
+        //Can fix this by use Dispatcher to Invoke an Action to Current Synchronization Context
+        //But it will be dumb if Collection has too many items to add
+        //So the Invoke need to be outside the loop
+        //The alternative way to do this is reset the list after change and call OnpropertyChanged
+        //But I don't know if it legal to call OnPropertyChanged in another thread
+        //So I put this this into a Dispatcher.
         private void onOrderListChange() {
-            ProcessingList = new ObservableCollection<Order>();
-            DeliveringList = new ObservableCollection<Order>();
-            DeliveredList = new ObservableCollection<Order>();
-            CancelledList = new ObservableCollection<Order>();
+            var processing = new List<Order>();
+            var delivering = new List<Order>();
+            var delivered = new List<Order>();
+            var cancelled = new List<Order>();
+
             if(OrderList != null) { 
                 for(int i = 0; i < OrderList.Count; i++) {
                     string stt = OrderList[i].Status;
                     if(stt == "Processing") {
-                        ProcessingList.Add(OrderList[i]);
+                        processing.Add(OrderList[i]);
                     }
                     else if(stt == "Delivering") {
-                        DeliveringList.Add(OrderList[i]);
+                        delivering.Add(OrderList[i]);
                     }
                     else if(stt == "Delivered" || stt == "Completed") {
-                        DeliveredList.Add(OrderList[i]);
+                        delivered.Add(OrderList[i]);
                     }
                     else if(stt == "Cancelled") {
-                        CancelledList.Add(OrderList[i]);
+                        cancelled.Add(OrderList[i]);
                     }
                 }
             }
+            App.Current.Dispatcher.Invoke((Action)(() => {
+                ProcessingList = new List<Order>(processing);
+                DeliveringList = new List<Order>(delivering);
+                DeliveredList = new List<Order>(delivered);
+                CancelledList = new List<Order>(cancelled);
+            }));
         }
 
         public override void Dispose() {
@@ -139,12 +157,12 @@ namespace WPFEcommerceApp {
 
     public class ReviewProduct {
         public string IdOrder { get; set; }
-        public Product product { get; set; }
-        public int rating { get; set; }
+        public Product Product { get; set; }
+        public int Rating { get; set; }
         public ReviewProduct(Product product, string IdOrder, int rating = 5) {
             this.IdOrder = IdOrder;
-            this.product = product;
-            this.rating = rating;
+            this.Product = product;
+            this.Rating = rating;
         }
     }
 }
