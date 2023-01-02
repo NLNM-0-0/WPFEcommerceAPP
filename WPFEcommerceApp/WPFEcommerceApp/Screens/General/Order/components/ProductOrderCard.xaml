@@ -18,7 +18,7 @@
 
             <Grid Background="Transparent"  x:Name="ImageContainer" MaxHeight="107">
                 <local:AsyncImage Source="{Binding ProductImage}" Width="{Binding Height, ElementName=ImageContainer}" 
-                       Height="{Binding Height, ElementName=ImageContainer}" Stretch="" HorizontalAlignment="Center"/>
+                       Height="{Binding Height, ElementName=ImageContainer}" Stretch="Uniform" HorizontalAlignment="Center"/>
             </Grid>
 
             <StackPanel Grid.Column="1" VerticalAlignment="Center">
