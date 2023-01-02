@@ -20,14 +20,14 @@ namespace WPFEcommerceApp {
     public partial class AsyncImage : UserControl {
 
 
-        public string Stretch {
-            get { return (string)GetValue(StretchProperty); }
+        public Stretch Stretch {
+            get { return (Stretch)GetValue(StretchProperty); }
             set { SetValue(StretchProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Stretch.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StretchProperty =
-            DependencyProperty.Register("Stretch", typeof(string), typeof(AsyncImage), new PropertyMetadata(""));
+            DependencyProperty.Register("Stretch", typeof(Stretch), typeof(AsyncImage), new PropertyMetadata(Stretch.None));
 
 
         public string Source {
