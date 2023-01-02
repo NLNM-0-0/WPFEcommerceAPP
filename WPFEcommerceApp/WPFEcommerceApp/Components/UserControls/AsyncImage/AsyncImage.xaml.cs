@@ -30,14 +30,14 @@ namespace WPFEcommerceApp {
             DependencyProperty.Register("Stretch", typeof(Stretch), typeof(AsyncImage), new PropertyMetadata(Stretch.None));
 
 
-        public string Source {
-            get { return (string)GetValue(ImgSourceProperty); }
+        public ImageSource Source {
+            get { return (ImageSource)GetValue(ImgSourceProperty); }
             set { SetValue(ImgSourceProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ImgSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImgSourceProperty =
-            DependencyProperty.Register("Source", typeof(string), typeof(AsyncImage), new PropertyMetadata("..\\..\\..\\Assets\\Images\\Offline.png"));
+            DependencyProperty.Register("Source", typeof(ImageSource), typeof(AsyncImage), new PropertyMetadata(default(ImageSource)));
 
         public AsyncImage() {
             InitializeComponent();
