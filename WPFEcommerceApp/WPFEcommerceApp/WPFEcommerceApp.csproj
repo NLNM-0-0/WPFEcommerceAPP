@@ -303,9 +303,6 @@
       <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialogViewModel.cs" />
-    <Compile Include="Components\UserControls\Dialogs\ConfirmDialogCustom.xaml.cs">
-      <DependentUpon>ConfirmDialogCustom.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Components\UserControls\Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
@@ -768,10 +765,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screens\Main\DialogStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Screens\Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -837,10 +830,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Components\UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Components\UserControls\Dialogs\ConfirmDialogCustom.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
