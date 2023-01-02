@@ -141,7 +141,7 @@
             <Border Padding="5">
                 <StackPanel Orientation="Horizontal">
                     <Grid Margin="0 0 10 0">
-                        <Image Source="{Binding ProductImage}" Height="125" Width="125" 
+                        <vm:AsyncImage Source="{Binding ProductImage}" Height="125" Width="125" 
                                HorizontalAlignment="Center"/>
                     </Grid>
                     <Grid Width="{Binding ElementName=Container, Path=ActualWidth}">
@@ -224,7 +224,7 @@
             , Path=ActualWidth-20}">
             <Expander.Header>
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="{Binding ShopImage}"/>
+                    <vm:AsyncImage Source="{Binding ShopImage}"/>
                     <Label Content="{Binding ShopName}" 
                        FontSize="{StaticResource FontSizeHeadline3}"
                        HorizontalAlignment="Left"

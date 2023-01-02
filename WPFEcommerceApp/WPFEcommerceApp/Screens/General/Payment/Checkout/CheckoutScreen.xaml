@@ -16,32 +16,6 @@
                 <ResourceDictionary Source="..\components\HiddenTab\Expander.xaml"/>
                 <ResourceDictionary Source="..\components\ProductCard\BProductCard.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <!--Pressable-->
-            <Style x:Key="Pressable" TargetType="Button">
-                <Style.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="Foreground" Value="#508BE3"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Cursor" Value="Hand"/>
-                                <Setter Property="Foreground" Value="#83b4fc"/>
-                                <Setter Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect BlurRadius="18" ShadowDepth="0.5" Opacity="0.7" Color="White"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Style.Resources>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <ContentPresenter/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
             <Style x:Key="ShippingButton" TargetType="RadioButton">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -200,7 +174,8 @@
                                     <!--Shipping speed-->
                                     <Label Content="Select your shipping speed" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 16, 0, 0"/>
                                     <Grid Margin="0, 16, 0, 16" x:Name="shipSpeedContainer">
-                                        <RadioButton GroupName="Shipping" 
+                                        <RadioButton GroupName="Shipping"
+                                                     x:Name="FreeShip"
                                                      Width="{c:Binding ElementName=shipSpeedContainer, Path=ActualWidth/2-50}"
                                                      Style="{StaticResource ShippingButton}"                
                                                      HorizontalAlignment="Left" 
@@ -301,7 +276,7 @@
                                             FontWeight="Light" 
                                             HorizontalAlignment="Right" 
                                             Command="{Binding PaymentAlertDialogCM}"
-                                            CommandParameter="{Binding ElementName=PlaceOrder}"/>
+                                            CommandParameter="{Binding ElementName=FreeShip, Path=IsChecked}"/>
                                 </StackPanel>
                             </Expander>
                         </ListBox>

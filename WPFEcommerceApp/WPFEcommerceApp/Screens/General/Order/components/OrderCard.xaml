@@ -52,7 +52,7 @@
                         <Grid Background="Pink"
                               Width="35"
                               Height="35">
-                            <Image Source="{Binding ShopImage}"
+                            <vm:AsyncImage Source="{Binding ShopImage}"
                                    Stretch="Fill"
                                    HorizontalAlignment="Center"/>
                         </Grid>

@@ -18,6 +18,12 @@ namespace WPFEcommerceApp {
         public void Navigate() { 
             throw new NotImplementedException();
         }
+        public void NoBackNavigate() {
+            throw new NotImplementedException();
+        }
+        public void NoBackNavigate(object o) {
+            _navigationStore.CurrentViewModel = _createViewModel(o);
+        }
         public void Navigate(object parameter) {
             _navigationStore.CurrentViewModel = _createViewModel(parameter);
             _navigationStore.stackScreen.Add(new Tuple<INavigationService, object>(this, parameter));

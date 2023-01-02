@@ -41,8 +41,6 @@ namespace WPFEcommerceApp {
             set { onOK = value; OnPropertyChanged(); }
         }
 
-
-
         public List<ReviewProduct> ProductList {
             get { return (List<ReviewProduct>)GetValue(ProductListProperty); }
             set { SetValue(ProductListProperty, value); }
@@ -55,7 +53,6 @@ namespace WPFEcommerceApp {
 
         readonly GenericDataRepository<Rating> ratingRepo = new GenericDataRepository<Rating>();
         readonly GenericDataRepository<OrderInfo> oiRepo = new GenericDataRepository<OrderInfo>();
-        readonly GenericDataRepository<MOrder> orderRepo = new GenericDataRepository<MOrder>();
 
         public ReviewProductDialog() {
             InitializeComponent();
@@ -67,12 +64,12 @@ namespace WPFEcommerceApp {
                     string id = await GenerateID.Gen(typeof(Rating));
                     tmp.Id = id;
                     tmp.DateRating = DateTime.Now;
-                    tmp.Rating1 = ProductList[i].rating;
+                    tmp.Rating1 = ProductList[i].Rating;
                     await ratingRepo.Add(tmp);
 
                     var oi = await oiRepo.GetSingleAsync(d => {
                         return d.IdOrder == t[i].IdOrder &&
-                        d.IdProduct == t[i].product.ID;
+                        d.IdProduct == t[i].Product.ID;
                     });
 
                     oi.IdRating = id;
@@ -82,7 +79,6 @@ namespace WPFEcommerceApp {
                 od.Status = "Completed";
                 await OrderStore.instance.Update(od);
             });
-            DataContext = this;
         }
 
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };

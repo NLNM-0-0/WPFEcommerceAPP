@@ -8,6 +8,9 @@ namespace WPFEcommerceApp {
     public interface INavigationService {
         void Navigate();
         void Navigate(object o);
+        void NoBackNavigate();
+        void NoBackNavigate(object o);
+
         Type GetViewModel();
     }
 }

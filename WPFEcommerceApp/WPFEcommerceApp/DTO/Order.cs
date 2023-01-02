@@ -20,7 +20,8 @@ namespace WPFEcommerceApp {
             List<Product> productList,
             DateTime dateBegin,
             string shopName,
-            string shopImage) {
+            string shopImage,
+            Nullable<int> shippingSpeedMethod = null) {
 
             ID=iD;
             IDCustomer=iDCustomer;
@@ -31,6 +32,7 @@ namespace WPFEcommerceApp {
             DateBegin=dateBegin;
             ShopName=shopName;
             ShopImage=shopImage;
+            ShippingSpeedMethod=shippingSpeedMethod;
 
             SubTotal=0;
             Discount=0;
@@ -42,7 +44,6 @@ namespace WPFEcommerceApp {
             }
 
             OrderTotal = SubTotal + ShipTotal - Discount;
-            
         }
 
         public Order(Order o) {
@@ -59,6 +60,7 @@ namespace WPFEcommerceApp {
             SubTotal = o.SubTotal;
             Discount = o.Discount;
             OrderTotal = o.OrderTotal;
+            ShippingSpeedMethod = o.ShippingSpeedMethod;
         }
 
         public string ID { get; set; }
@@ -74,6 +76,7 @@ namespace WPFEcommerceApp {
         public double SubTotal { get; set; }
         public double Discount { get; set; }
         public double OrderTotal { get; set; }
+        public Nullable<int> ShippingSpeedMethod { get; set; }
 
         private string GetDebuggerDisplay() {
             return ToString();

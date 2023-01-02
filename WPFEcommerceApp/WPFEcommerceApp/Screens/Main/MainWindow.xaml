@@ -26,17 +26,14 @@
     </Window.InputBindings>
     <Window.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="DialogStyle.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <local:MultiValueConverter x:Key="MultiValueConverter"/>
+            <local:Internet x:Key="MyInternet"/>
         </ResourceDictionary>
     </Window.Resources>
     <materialDesign:DialogHost
         DialogTheme="Inherit"
         CloseOnClickAway="True"
-        Identifier="App"
-        Style="{StaticResource CustomStyleDialog}">
+        Identifier="App">
         <Grid>
             <Grid>
                 <!--Drawer-->
@@ -75,7 +72,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <local:Header/>
+                                <local:Header IsEnabled="{Binding ElementName=MainWD, Path=DataContext.IsConnected}"/>
 
                                 <ContentControl
                                 Grid.Row="1"

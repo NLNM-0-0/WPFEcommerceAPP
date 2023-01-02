@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Firebase.Storage;
 
 namespace WPFEcommerceApp {
@@ -46,6 +49,27 @@ namespace WPFEcommerceApp {
             return new Tuple<bool, string>(true, res);
         }
 
+        public static async Task<string> PushFromImage(
+            BitmapSource bm, 
+            string Root,
+            string Name,
+            string OldPath = null,
+            params string[] child) {
+
+            FileStream stream = new FileStream("TempImage.png", FileMode.Create);
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bm));
+            encoder.Save(stream);
+            stream.Close();
+
+            if(OldPath != null && OldPath.Length > 0) {
+                await Delete(OldPath);
+            }
+
+            var res = await Push("TempImage.png", Root, Name, child);
+            File.Delete("TempImage.png");
+            return res;
+        }
         public static async Task<bool> Delete(string Path) {
             var delContent = "N/A";
             try {
