@@ -1,7 +1,10 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -89,7 +92,39 @@ namespace WPFEcommerceApp
             set
             {
                 isShop = value;
+                OnPropertyChanged();
             }
+        }
+        private bool? isFavorite;
+        public bool? IsFavorite
+        {
+            get => isFavorite;
+            set
+            {
+                isFavorite = value;
+            }
+        }
+        private bool? isFavoriteFirst;
+        public bool? IsFavoriteFirst
+        {
+            get => isFavoriteFirst;
+            set
+            {
+                isFavoriteFirst = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool HeartVisibility
+        {
+            get
+            {
+                if(AccountStore.instance.CurrentAccount== null) 
+                {
+                    return false;
+                }
+                return true;
+            }
+           
         }
         #endregion
 
@@ -97,6 +132,24 @@ namespace WPFEcommerceApp
         public ProductBlockViewModel(Models.Product product)
         {
             SelectedProduct = product;
+            FavoriteStore.instance.FavoriteListChanged += Instance_FavoriteListChanged;
+
+            if (AccountStore.instance.CurrentAccount == null)
+            {
+                IsFavorite = null;
+            }
+            else
+            {
+                if (FavoriteStore.instance.FavoriteProductList.Any(p => p.Id == SelectedProduct.Id))
+                {
+                    IsFavorite = true;
+                }
+                else
+                {
+                    IsFavorite = false;
+                }
+            }
+            IsFavoriteFirst = IsFavorite;
             IsShop = false;
             foreach (Models.ImageProduct image in SelectedProduct.ImageProducts)
             {
@@ -118,7 +171,6 @@ namespace WPFEcommerceApp
                     MiniImagesProduct.Add(Images[i]);
                 }
             }
-
             NumberProductRemainder = "+ " + (Images.Count - MiniImagesProduct.Count).ToString();
             #endregion
 
@@ -167,10 +219,43 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = false;
                 await DialogHost.Show(productDetail, "App");
             });
-            OpenPageCommand = new RelayCommand<bool>((p) => { return !p; }, (p) =>
+            OpenPageCommand = new RelayCommandWithNoParameter(() =>
             {
                 NavigateProvider.ProductDetailScreen().Navigate(SelectedProduct);
             });
+        }
+
+        private void Instance_FavoriteListChanged()
+        {
+            OnPropertyChanged(nameof(HeartVisibility));
+            if (AccountStore.instance.CurrentAccount == null)
+            {
+                IsFavorite = null;
+            }
+            else
+            {
+                if (FavoriteStore.instance.FavoriteProductList.Any(p => p.Id == SelectedProduct.Id))
+                {
+                    IsFavorite = true;
+                }
+                else
+                {
+                    IsFavorite = false;
+                }
+            }
+            IsFavoriteFirst = IsFavorite;
+        }
+
+        public async Task UpdateFavoriteProduct()
+        {
+            if(IsFavorite != null && IsFavorite == true)
+            {
+                await FavoriteStore.instance.Add(SelectedProduct);
+            }    
+            else if (IsFavorite != null && IsFavorite == false)
+            {
+                await FavoriteStore.instance.Delete(SelectedProduct);
+            }    
         }
     }
 }
