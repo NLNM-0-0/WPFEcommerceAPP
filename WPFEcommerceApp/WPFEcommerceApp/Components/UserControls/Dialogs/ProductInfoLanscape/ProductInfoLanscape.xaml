@@ -183,11 +183,12 @@
                                                     Margin="0 0 10 0"
                                                     Height="70"
                                                     MaxWidth="70">
-                                                    <Image
+                                                    <local:AsyncImage 
                                                         Source="{Binding}"
                                                         Height="70"
-                                                        Width="70">
-                                                    </Image>
+                                                        Width="70"
+                                                        Stretch="Fill">
+                                                    </local:AsyncImage>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -406,7 +407,7 @@
                             </StackPanel>
                             <TextBlock
                                 Margin="0 10 0 0"
-                                Text="*If you can't find the category, press button add new and we will update"
+                                Text="*If you can't find the brand, press button add new and we will update"
                                 FontFamily="{StaticResource Medium}"
                                 Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
                         </StackPanel>

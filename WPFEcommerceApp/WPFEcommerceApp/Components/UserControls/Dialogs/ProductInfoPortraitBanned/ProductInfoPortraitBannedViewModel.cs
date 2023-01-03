@@ -33,24 +33,34 @@ namespace WPFEcommerceApp
         }
         public ProductInfoPortraitBannedViewModel(Models.Product product)
         {
-            SelectedProduct = product;
+            Task.Run(() => { }).ContinueWith(second =>
+            {
+                SelectedProduct = product;
 
-            OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
-            {
-                MainViewModel.IsLoading = true;
-                ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
-                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(SelectedProduct) { IsBanned = true };
-                MainViewModel.IsLoading = false;
-                await DialogHost.Show(productInfoLandscape, "Main");
-            });
-            ContactUsCommand = new RelayCommandWithNoParameter(async () =>
-            {
-                MainViewModel.IsLoading = true;
-                NotificationDialog notificationDialog = new NotificationDialog();
-                notificationDialog.Header = "Contact Info";
-                notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
-                MainViewModel.IsLoading = false;
-                await DialogHost.Show(notificationDialog, "Main");
+                OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
+                {
+                    IsLoadingCheck.IsLoading = 3;
+                    ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
+                    productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(SelectedProduct) { IsBanned = true };
+                    IsLoadingCheck.IsLoading--;
+                    await DialogHost.Show(productInfoLandscape, "Main");
+                });
+                ContactUsCommand = new RelayCommandWithNoParameter(async () =>
+                {
+                    MainViewModel.IsLoading = true;
+                    NotificationDialog notificationDialog = new NotificationDialog();
+                    notificationDialog.Header = "Contact Info";
+                    notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(notificationDialog, "Main");
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
             });
         }
     }
