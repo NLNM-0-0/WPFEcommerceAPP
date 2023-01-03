@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WPFEcommerceApp
 {
     internal class ShopViewViewModel:BaseViewModel
-    {
+    { 
         private MainItem selectedItem;
         public MainItem SelectedItem 
         {
@@ -20,18 +22,42 @@ namespace WPFEcommerceApp
         }
         public ShopViewViewModel(Models.MUser user)
         {
-            if (user.StatusShop == "Banned")
+            Task.Run(() =>
             {
-                SelectedItem = new MainItem("UnShopMainBanned", typeof(UnShopMain), new BannedShopViewModel());
-            }
-            else if (user.StatusShop == "NotExist" && AccountStore.instance.CurrentAccount.Id == user.Id)
-            {
-                SelectedItem = new MainItem("UnShopMainNotRegister", typeof(UnShopMain), new NotRegisterShopViewModel());
-            }
-            else if (user.StatusShop == "NotBanned")
-            {
-                SelectedItem = new MainItem("ShopMain", typeof(ShopMain), new ShopMainViewModel(user));
-            }
+                if (user.StatusShop == "Banned")
+                {
+                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        IsLoadingCheck.IsLoading = 2;
+                    }));
+                    SelectedItem = new MainItem("UnShopMainBanned", typeof(UnShopMain), new BannedShopViewModel());
+                }
+                else if (user.StatusShop == "NotExist" && AccountStore.instance.CurrentAccount.Id == user.Id)
+                {
+                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        IsLoadingCheck.IsLoading = 3;
+                    }));
+                    SelectedItem = new MainItem("UnShopMainNotRegister", typeof(UnShopMain), new NotRegisterShopViewModel());
+                }
+                else if (user.StatusShop == "NotBanned")
+                {
+                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        IsLoadingCheck.IsLoading = 3;
+                    }));
+                    ShopMainViewModel shopMainViewModel = new ShopMainViewModel(user);
+                    SelectedItem = new MainItem("ShopMain", typeof(ShopMain), shopMainViewModel);
+                }
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock(IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            });
+            
         }
     }
 }
