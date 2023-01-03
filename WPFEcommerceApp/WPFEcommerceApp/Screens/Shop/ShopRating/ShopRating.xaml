@@ -280,6 +280,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -310,10 +311,6 @@
                         Grid.Row="0" 
                         Margin="0 0 0 30">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
@@ -331,33 +328,18 @@
                             Grid.Column="2"
                             materialDesign:HintAssist.Hint="UserName"
                             Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DatePicker
-                            x:Name="datePickerStart"
-                            Height="55"
-                            Width="auto"
-                            Style="{StaticResource OurDatePicker}"
-                            materialDesign:HintAssist.Hint="From"
-                            Grid.Column="4"
-                            SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDateEnd="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DatePicker
-                            Height="55"
-                            Width="auto"
-                            Style="{StaticResource OurDatePicker}"
-                            materialDesign:HintAssist.Hint="To"
-                            Grid.Column="6"
-                            SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDateStart="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                     <Grid 
                         Grid.Column="0"
                         Grid.Row="1">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="45"/>
-                            <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <ComboBox
                             ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
@@ -381,66 +363,23 @@
                                 <Binding Path="SelectedBrand" UpdateSourceTrigger="PropertyChanged"/>
                             </ComboBox.SelectedItem>
                         </ComboBox>
-                        <Grid 
-                            Grid.Column="4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <RadioButton 
-                                Content="All" 
-                                Grid.Column="0"
-                                Style="{StaticResource RadioButtonFill}"
-                                IsChecked="{Binding RatingStarStyles[0]}"
-                                materialDesign:ButtonAssist.CornerRadius="5 0 0 5"
-                                Command="{Binding ChangeRatingStarStyleCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-                            <RadioButton 
-                                Style="{StaticResource RadioButtonFill}"
-                                Content="5 Star" 
-                                Grid.Column="1"
-                                IsChecked="{Binding RatingStarStyles[1]}"
-                                Command="{Binding ChangeRatingStarStyleCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            </RadioButton>
-                            <RadioButton 
-                                Style="{StaticResource RadioButtonFill}"
-                                Content="4 Star" 
-                                Grid.Column="2"
-                                IsChecked="{Binding RatingStarStyles[2]}"
-                                Command="{Binding ChangeRatingStarStyleCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            </RadioButton>
-                            <RadioButton 
-                                Style="{StaticResource RadioButtonFill}"
-                                Content="3 Star" 
-                                Grid.Column="3"
-                                IsChecked="{Binding RatingStarStyles[3]}"
-                                Command="{Binding ChangeRatingStarStyleCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            </RadioButton>
-                            <RadioButton 
-                                Style="{StaticResource RadioButtonFill}"
-                                Content="2 Star" 
-                                Grid.Column="4"
-                                IsChecked="{Binding RatingStarStyles[4]}"
-                                Command="{Binding ChangeRatingStarStyleCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            </RadioButton>
-                            <RadioButton 
-                                Style="{StaticResource RadioButtonFill}"
-                                Content="1 Star" 
-                                Grid.Column="5"
-                                IsChecked="{Binding RatingStarStyles[5]}"
-                                materialDesign:ButtonAssist.CornerRadius="0 5 5 0"
-                                Command="{Binding ChangeRatingStarStyleCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
-                            </RadioButton>
-                        </Grid>
+                        <DatePicker
+                            x:Name="datePickerStart"
+                            Height="55"
+                            Width="auto"
+                            Style="{StaticResource OurDatePicker}"
+                            materialDesign:HintAssist.Hint="From"
+                            Grid.Column="4"
+                            SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDateEnd="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DatePicker
+                            Height="55"
+                            Width="auto"
+                            Style="{StaticResource OurDatePicker}"
+                            materialDesign:HintAssist.Hint="To"
+                            Grid.Column="6"
+                            SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDateStart="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                     <Grid 
                         Grid.Column="1"
@@ -462,8 +401,58 @@
                 </Grid>
             </Grid>
         </Border>
-        <ScrollViewer
+        <Border
+            Margin="0 0 0 20"
+            Padding="50 0"
             Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton 
+                    Content="All" 
+                    Grid.Column="0"
+                    Style="{StaticResource RadioTabButton}"
+                    IsChecked="{Binding StatusSearchAll}"/>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="5 Star" 
+                    Grid.Column="1"
+                    IsChecked="{Binding StatusSearch5Star}">
+                </RadioButton>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="4 Star" 
+                    Grid.Column="2"
+                    IsChecked="{Binding StatusSearch4Star}">
+                </RadioButton>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="3 Star" 
+                    Grid.Column="3"
+                    IsChecked="{Binding StatusSearch3Star}">
+                </RadioButton>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="2 Star"
+                    Grid.Column="4"
+                    IsChecked="{Binding StatusSearch2Star}">
+                </RadioButton>
+                <RadioButton 
+                    Style="{StaticResource RadioTabButton}"
+                    Content="1 Star" 
+                    Grid.Column="5"
+                    IsChecked="{Binding StatusSearch1Star}">
+                </RadioButton>
+            </Grid>
+        </Border>
+        <ScrollViewer
+            Grid.Row="3">
             <Grid 
                 Background="Transparent"
                 Margin="50 0"
@@ -490,7 +479,7 @@
             </Grid>
         </ScrollViewer>
         <Grid
-            Grid.Row="3"
+            Grid.Row="4"
             Height="20"/>
     </Grid>
     <UserControl.InputBindings>
