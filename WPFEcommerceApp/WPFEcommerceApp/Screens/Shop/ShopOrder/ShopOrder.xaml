@@ -125,10 +125,10 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <RadioButton 
-                    Style="{StaticResource RadioTabButton}"
-                    Content="All" 
-                    Grid.Column="0"
-                    IsChecked="{Binding StatusSearchAll}"/>
+                        Style="{StaticResource RadioTabButton}"
+                        Content="All" 
+                        Grid.Column="0"
+                        IsChecked="{Binding StatusSearchAll}"/>
                     <RadioButton 
                     Style="{StaticResource RadioTabButton}"
                     Grid.Column="1"
