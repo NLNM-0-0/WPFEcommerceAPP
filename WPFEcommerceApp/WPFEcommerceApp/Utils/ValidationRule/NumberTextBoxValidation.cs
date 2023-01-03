@@ -11,6 +11,15 @@ namespace WPFEcommerceApp
 {
     public class NumberTextBoxValidation : ValidationRule
     {
+        private bool isNotCheckFirstTime = true;
+        public bool IsNotCheckFirstTime
+        {
+            get => isNotCheckFirstTime;
+            set
+            {
+                isNotCheckFirstTime = value;
+            }
+        }
         public enum NumberType
         {
             IntergerType,
@@ -65,59 +74,67 @@ namespace WPFEcommerceApp
         }
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            Regex regex = new Regex("[^0-9.-]+");
-            if (string.IsNullOrEmpty((value ?? "").ToString()))
+            if (IsNotCheckFirstTime)
             {
-                if (!IsCanEmpty)
+                Regex regex = new Regex("[^0-9.-]+");
+                if (string.IsNullOrEmpty((value ?? "").ToString()))
                 {
-                    return new ValidationResult(false, ErrorNumerMessage);
+                    if (!IsCanEmpty)
+                    {
+                        return new ValidationResult(false, ErrorNumerMessage);
+                    }
+                    else
+                    {
+                        return ValidationResult.ValidResult;
+                    }
                 }
                 else
                 {
-                    return ValidationResult.ValidResult;
+                    if (IsCanEmpty)
+                    {
+                        if ((value ?? "").ToString() == "")
+                        {
+                            return ValidationResult.ValidResult;
+                        }
+                    }
+                    string resultString = (value ?? "").ToString();
+                    double resultNumber;
+                    if (double.TryParse(resultString, out resultNumber))
+                    {
+                        if (type == NumberType.IntergerType)
+                        {
+                            if (Min == double.MinValue)
+                            {
+                                min = int.MinValue;
+                            }
+                            if (Max == double.MaxValue)
+                            {
+                                max = int.MaxValue;
+                            }
+                            if (Min < int.MinValue || Max > int.MaxValue)
+                            {
+                                min = int.MinValue;
+                                max = int.MaxValue;
+                                return new ValidationResult(false, ErrorMinMaxMessage);
+                            }
+                        }
+                        if (resultNumber >= Min && resultNumber <= Max)
+                        {
+                            return ValidationResult.ValidResult;
+                        }
+                        else
+                        {
+                            return new ValidationResult(false, ErrorMinMaxMessage);
+                        }
+
+                    }
+                    return new ValidationResult(false, ErrorNumerMessage);
                 }
             }
             else
             {
-                if (IsCanEmpty)
-                {
-                    if ((value ?? "").ToString() == "")
-                    {
-                        return ValidationResult.ValidResult;
-                    }
-                }
-                string resultString = (value ?? "").ToString();
-                double resultNumber;
-                if (double.TryParse(resultString, out resultNumber))
-                {
-                    if (type == NumberType.IntergerType)
-                    {
-                        if (Min == double.MinValue)
-                        {
-                            min = int.MinValue;
-                        }
-                        if (Max == double.MaxValue)
-                        {
-                            max = int.MaxValue;
-                        }
-                        if (Min < int.MinValue || Max > int.MaxValue)
-                        {
-                            min = int.MinValue;
-                            max = int.MaxValue;
-                            return new ValidationResult(false, ErrorMinMaxMessage);
-                        }
-                    }
-                    if (resultNumber >= Min && resultNumber <= Max)
-                    {
-                        return ValidationResult.ValidResult;
-                    }
-                    else
-                    {
-                        return new ValidationResult(false, ErrorMinMaxMessage);
-                    }
-
-                }
-                return new ValidationResult(false, ErrorNumerMessage);
+                IsNotCheckFirstTime = true;
+                return ValidationResult.ValidResult;
             }
         }
     }
