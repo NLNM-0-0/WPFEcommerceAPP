@@ -59,21 +59,24 @@
                     Text="{Binding SelectedImageSource}"
                     IsReadOnly="True"
                     materialDesign:TextFieldAssist.HasTrailingIcon="True"
-                    materialDesign:TextFieldAssist.TrailingIcon="Folder"
+                    materialDesign:TextFieldAssist.TrailingIcon="PlusBold"
                     materialDesign:TextFieldAssist.TrailingIconSize="30">
                 </TextBox>
                 <Button
+                    VerticalAlignment="Center"
                     Style="{StaticResource TransparentButton}"
-                    Command="{Binding AddImageCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Padding="0"
                     Canvas.Left="455"
                     Canvas.Top="12"
-                    Width="40"
-                    Padding="0"
-                    Visibility="{i:Binding IsCanAddImage, UpdateSourceTrigger=PropertyChanged}">
+                    Command="{Binding AddImageCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
                     <fa:ImageAwesome
-                            Width="30"
-                            Icon="Folder"/>
+                        Icon="Plus"
+                        Margin="5">
+                    </fa:ImageAwesome>
                 </Button>
             </Canvas>
         </Grid>
@@ -94,37 +97,38 @@
             <Grid>
                 <DockPanel 
                     Height="300">
-                <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <ItemsControl ItemsSource="{Binding ImageProducts, UpdateSourceTrigger=PropertyChanged}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button
-                                    Style="{StaticResource ButtonRectangle}"
+                    <ScrollViewer VerticalScrollBarVisibility="Visible">
+                        <ItemsControl 
+                        ItemsSource="{Binding ImageProducts, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
                                     Background="{StaticResource BoxShadowColorBrush}"
                                     Height="70"
                                     Width="70"
                                     Margin="0 0 0 10"
                                     IsHitTestVisible="True">
-                                    <Button.Content>
-                                        <Image
-                                            x:Name="ImageProduct"
-                                            Source="{Binding}"
-                                            Stretch="Fill"/>
-                                    </Button.Content>
-                                    <behavior:Interaction.Triggers>
-                                        <behavior:EventTrigger EventName="MouseMove">
-                                            <behavior:InvokeCommandAction
-                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                                            AncestorType={x:Type UserControl}}, 
-                                                            Path=DataContext.ChangeSelectedImageCommand}" 
-                                                CommandParameter="{Binding ElementName=ImageProduct}"/>
-                                        </behavior:EventTrigger>
-                                    </behavior:Interaction.Triggers>
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                                        <Image>
+                                            <Image.Source>
+                                                <BitmapImage 
+                                                    x:Name="ImageProduct"
+                                                    UriSource="{Binding}" />
+                                            </Image.Source>
+                                        </Image>
+                                        <behavior:Interaction.Triggers>
+                                            <behavior:EventTrigger EventName="MouseMove">
+                                                <behavior:InvokeCommandAction
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, 
+                                            Path=DataContext.ChangeSelectedImageCommand}" 
+                                            CommandParameter="{Binding ElementName=ImageProduct}"/>
+                                            </behavior:EventTrigger>
+                                        </behavior:Interaction.Triggers>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </DockPanel>
             </Grid>
             <Grid
@@ -133,10 +137,8 @@
                 Height="300"
                 Margin="0 0 30 0"
                 Background="{StaticResource BoxShadowColorBrush}">
-                <local:AsyncImage 
-                    x:Name="ImageMainProduct"
-                    Source="{Binding SelectedImageSource, UpdateSourceTrigger=PropertyChanged}"
-                    Stretch="Fill"/>
+                <Image x:Name="ImageMainProduct"
+                    Source="{Binding SelectedImageSource, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Button
