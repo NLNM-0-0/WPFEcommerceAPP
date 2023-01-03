@@ -12,21 +12,21 @@ namespace WPFEcommerceApp
 {
     public class ProductBlockByCategoryViewModel : BaseViewModel
     {
+        public ICommand ChangeToFilterCommand { get; set; }
         public double MaxHeightListProducts
         {
             get
             {
-                if(IsFull)
+                if (IsFull)
                 {
                     return double.PositiveInfinity;
-                }    
+                }
                 else
                 {
                     return 1100;
-                }    
+                }
             }
         }
-        public ICommand ChangeToFilterCommand { get; set; }
         private string header;
         public string Header
         {

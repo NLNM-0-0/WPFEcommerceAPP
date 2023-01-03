@@ -3,6 +3,8 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -11,9 +13,11 @@ using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
@@ -35,24 +39,40 @@ namespace WPFEcommerceApp
                 OnPropertyChanged(nameof(shop));
             }
         }
-        private string sourceImageAva;
-        public string SourceImageAva
+        private CroppedBitmap imageAva;
+        public CroppedBitmap ImageAva
         {
-            get => sourceImageAva;
+            get => imageAva;
             set
             {
-                sourceImageAva = value;
+                imageAva = value;
+                OnPropertyChanged(nameof(SourceImageAva));
                 OnPropertyChanged();
             }
         }
-        private string sourceImageBackground;
-        public string SourceImageBackground
+        public ImageSource SourceImageAva
         {
-            get => sourceImageBackground;
+            get
+            {
+                return (ImageSource)ImageAva;
+            }
+        }
+        private CroppedBitmap imageBackground;
+        public CroppedBitmap ImageBackground
+        {
+            get => imageBackground;
             set
             {
-                sourceImageBackground = value;
+                imageBackground = value;
+                OnPropertyChanged(nameof(imageBackground));
                 OnPropertyChanged();
+            }
+        }
+        public ImageSource SourceImageBackground
+        {
+            get
+            {
+                return (ImageSource)ImageBackground;
             }
         }
         private bool isEditing = false;
@@ -67,29 +87,31 @@ namespace WPFEcommerceApp
         }
         public ProfileShopDialogViewModel()
         {
-            Task task = Task.Run(async () => await LoadTempData());
-            while (!task.IsCompleted) ;
+            Task.Run(async () =>
+            {
+                await LoadTempData();
+            }).Wait();
             if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageAva))
             {
-                SourceImageAva = Properties.Resources.DefaultShopAvaImage;
+                ImageAva = new CroppedBitmap(new BitmapImage(new Uri(Properties.Resources.DefaultShopAvaImage)), new Int32Rect(0, 0, 0, 0));
             }
             else
             {
-                SourceImageAva = Shop.SourceImageAva;
+                ImageAva = new CroppedBitmap(new BitmapImage(new Uri(shop.SourceImageAva)), new Int32Rect(0, 0, 0, 0));
             }
             if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageBackground))
             {
-                SourceImageBackground = Properties.Resources.DefaultShopBackgroundImage;
+                ImageBackground = new CroppedBitmap(new BitmapImage(new Uri(Properties.Resources.DefaultShopBackgroundImage)), new Int32Rect(0, 0, 0, 0));
             }
             else
             {
-                SourceImageBackground = Shop.SourceImageBackground;
+                ImageBackground = new CroppedBitmap(new BitmapImage(new Uri(Shop.SourceImageBackground)), new Int32Rect(0, 0, 0, 0));
             }
             OpenProfileShopBackgroundDialog = new RelayCommandWithNoParameter(async () =>
             {
                 MainViewModel.IsLoading = true;
                 ProfileShopBackgroundDialog profileShopBackgroundDialog = new ProfileShopBackgroundDialog();
-                profileShopBackgroundDialog.DataContext = new ProfileShopBackgroundDialogViewModel(Shop);
+                profileShopBackgroundDialog.DataContext = new ProfileShopBackgroundDialogViewModel(ImageBackground);
                 MainViewModel.IsLoading = false;
                 await DialogHost.Show(profileShopBackgroundDialog, "SecondDialog", null, null, LoadBackground);
             });
@@ -97,26 +119,17 @@ namespace WPFEcommerceApp
             {
                 MainViewModel.IsLoading = true;
                 ProfileShopAvaDialog profileShopAvaDialog = new ProfileShopAvaDialog();
-                profileShopAvaDialog.DataContext = new ProfileShopAvaDialogViewModel(Shop);
+                profileShopAvaDialog.DataContext = new ProfileShopAvaDialogViewModel(ImageAva);
                 MainViewModel.IsLoading = false;
                 await DialogHost.Show(profileShopAvaDialog, "SecondDialog", null, null, LoadAva);
             });
-            SaveProfileShopCommand = new RelayCommandWithNoParameter(async () => 
+            SaveProfileShopCommand = new RelayCommandWithNoParameter(async () =>
             {
+                var closeDialog = DialogHost.CloseDialogCommand;
+                closeDialog.Execute(null, null);
                 MainViewModel.IsLoading = true;
                 IsEditing = false;
-                Tuple<bool, string> link = await FireStorageAPI.PushFromFile(SourceImageBackground, "User", $"Background_{Shop.Id}");
-                if(link.Item1)
-                {
-                    Shop.SourceImageBackground = link.Item2;
-                }    
-
-
-                link = await FireStorageAPI.PushFromFile(SourceImageAva, "User", $"Ava_{Shop.Id}");
-                if(link.Item1)
-                {
-                    Shop.SourceImageAva = link.Item2;
-                }    
+                await SaveImage();
                 await AccountStore.instance.Update(Shop);
                 await LoadTempData();
                 MainViewModel.IsLoading = false;
@@ -125,9 +138,9 @@ namespace WPFEcommerceApp
             {
                 IsEditing = true;
             });
-            ChangeEditStatusCommand = new RelayCommand<bool?>((p) => p!=null, async (p)=>
+            ChangeEditStatusCommand = new RelayCommand<bool?>((p) => p != null, async (p) =>
             {
-                if(IsEditing && (p??false))
+                if (IsEditing && (p ?? false))
                 {
                     MainViewModel.IsLoading = true;
                     IsEditing = false;
@@ -135,43 +148,58 @@ namespace WPFEcommerceApp
                     await LoadTempData();
                     MainViewModel.IsLoading = false;
                 }
-                else if(!isEditing)
+                else if (!isEditing)
                 {
                     IsEditing = true;
-                }    
+                }
             });
         }
         private void LoadBackground(object sender, DialogClosedEventArgs eventArgs)
         {
             OnPropertyChanged(nameof(Shop));
-            if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageBackground))
+            if (eventArgs.Parameter != null && eventArgs.GetType() == typeof(CroppedBitmap))
             {
-                SourceImageBackground = Properties.Resources.DefaultShopBackgroundImage;
+                ImageBackground = (eventArgs.Parameter as CroppedBitmap);
             }
-            else
-            {
-                SourceImageBackground = Shop.SourceImageBackground;
-            }
-            OnPropertyChanged(nameof(SourceImageBackground));
             
         }
         private void LoadAva(object sender, DialogClosedEventArgs eventArgs)
         {
             OnPropertyChanged(nameof(Shop));
-            if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageAva))
+            if (eventArgs.Parameter != null && eventArgs.GetType() == typeof(CroppedBitmap))
             {
-                SourceImageAva = Properties.Resources.DefaultShopAvaImage;
+                ImageAva = (eventArgs.Parameter as CroppedBitmap);
             }
-            else
-            {
-                SourceImageAva = Shop.SourceImageAva;
-            }
-            OnPropertyChanged(nameof(SourceImageAva));
         }
 
         public async Task LoadTempData()
         {
             Shop = await userRepository.GetSingleAsync(u => u.Id == AccountStore.instance.CurrentAccount.Id);
+        }
+        public async Task SaveImage()
+        {
+            Models.MUser mUser = await userRepository.GetSingleAsync(p => p.Id == Shop.Id);
+            string link;
+
+            if (String.IsNullOrEmpty(mUser.SourceImageBackground) || mUser.SourceImageBackground.Contains("https://firebasestorage.googleapis.com"))
+            {
+                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}", mUser.SourceImageBackground);
+            }
+            else
+            {
+                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}");
+            }    
+            Shop.SourceImageBackground = link;
+
+            if (String.IsNullOrEmpty(mUser.SourceImageAva) || mUser.SourceImageAva.Contains("https://firebasestorage.googleapis.com"))
+            {
+                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}", mUser.SourceImageAva);
+            }
+            else
+            {
+                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}");
+            }
+            Shop.SourceImageAva = link;
         }
     }
 }
