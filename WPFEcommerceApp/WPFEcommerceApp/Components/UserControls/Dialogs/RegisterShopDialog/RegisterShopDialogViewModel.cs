@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace WPFEcommerceApp
 {
-    public class RegisterShopDialogViewModel: BaseViewModel
+    public class RegisterShopDialogViewModel : BaseViewModel
     {
         public GenericDataRepository<Models.ShopRequest> shopRequestRepository = new GenericDataRepository<Models.ShopRequest>();
         public ICommand RegisterCommand { get; set; }
@@ -24,21 +24,20 @@ namespace WPFEcommerceApp
         }
         public RegisterShopDialogViewModel()
         {
-            RegisterCommand = new RelayCommand<bool>((p)=>!p, async (p) =>
+            RegisterCommand = new RelayCommand<object>((p) =>
             {
-                MainViewModel.IsLoading = true;
-                await RegisterShop();
+                return !String.IsNullOrEmpty(Description);
+            }, async (p) =>
+            {
                 DialogHost.CloseDialogCommand.Execute(true, null);
+                MainViewModel.IsLoading = true;
+                Models.ShopRequest shopRequest = new Models.ShopRequest();
+                shopRequest.Id = await GenerateID.Gen(typeof(Models.ShopRequest));
+                shopRequest.IdUser = AccountStore.instance.CurrentAccount.Id;
+                shopRequest.Description = Description;
+                await shopRequestRepository.Add(shopRequest);
                 MainViewModel.IsLoading = false;
             });
-        }
-        private async Task RegisterShop()
-        {
-            Models.ShopRequest shopRequest = new Models.ShopRequest();
-            shopRequest.Id = await GenerateID.Gen(typeof(Models.ShopRequest));
-            shopRequest.IdUser = AccountStore.instance.CurrentAccount.Id;
-            shopRequest.Description = Description;
-            await shopRequestRepository.Add(shopRequest);
         }
     }
 }

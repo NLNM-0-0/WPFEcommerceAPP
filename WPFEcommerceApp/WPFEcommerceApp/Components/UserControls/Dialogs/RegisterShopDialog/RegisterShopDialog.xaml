@@ -67,7 +67,8 @@
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NotEmptyValidationRule
-                                        ValidatesOnTargetUpdated="True"/>
+                                        ValidatesOnTargetUpdated="True"
+                                        IsNotCheckFirstTime="False"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -80,7 +81,7 @@
                         Width="170"
                         Content="Register"
                         Command="{Binding RegisterCommand}"
-                        CommandParameter="{Binding ElementName=descriptionTextBox, Path=(Validation.HasError)}">
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
                                 <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
@@ -94,6 +95,6 @@
     <UserControl.InputBindings>
         <KeyBinding Key="Enter"
                     Command="{Binding RegisterCommand}"
-                    CommandParameter="{Binding ElementName=descriptionTextBox, Path=(Validation.HasError)}"/>
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
     </UserControl.InputBindings>
 </UserControl>

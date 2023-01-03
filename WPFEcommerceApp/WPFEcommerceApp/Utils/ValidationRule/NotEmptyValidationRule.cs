@@ -5,6 +5,15 @@ namespace WPFEcommerceApp
 {
     public class NotEmptyValidationRule : ValidationRule
     {
+        private bool isNotCheckFirstTime = true;
+        public bool IsNotCheckFirstTime
+        {
+            get => isNotCheckFirstTime;
+            set
+            {
+                isNotCheckFirstTime = value;
+            }
+        }
         private string errorMessage = "Field is required.";
         public string ErrorMessage
         {
@@ -16,9 +25,17 @@ namespace WPFEcommerceApp
         }
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            return string.IsNullOrWhiteSpace((value ?? "").ToString())
-                ? new ValidationResult(false, ErrorMessage)
-                : ValidationResult.ValidResult;
+            if (IsNotCheckFirstTime)
+            {
+                return string.IsNullOrWhiteSpace((value ?? "").ToString())
+                    ? new ValidationResult(false, ErrorMessage)
+                    : ValidationResult.ValidResult;
+            }
+            else
+            {
+                IsNotCheckFirstTime = true;
+                return ValidationResult.ValidResult;
+            }
         }
     }
 }

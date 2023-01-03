@@ -71,6 +71,7 @@
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NotEmptyValidationRule
+                                            IsNotCheckFirstTime="False"
                                             ValidatesOnTargetUpdated="True"/>
                                     </Binding.ValidationRules>
                                 </Binding>
@@ -87,7 +88,8 @@
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
-                                            ValidatesOnTargetUpdated="True"/>
+                                            ValidatesOnTargetUpdated="True"
+                                            IsNotCheckFirstTime="False"/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -138,7 +140,7 @@
                                 <StackPanel
                                 Orientation="Horizontal">
                                     <ItemsControl ItemsSource="{Binding ImageProducts, UpdateSourceTrigger=PropertyChanged}"
-                                                  x:Name="imagesPanel">
+                                                    x:Name="imagesPanel">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel
@@ -173,34 +175,34 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid
-                                    Grid.Row="0">
+                                Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <Grid
-                                        Height="{Binding ElementName=freeSizeCheckBox, Path=Height}">
+                                    Height="{Binding ElementName=freeSizeCheckBox, Path=Height}">
                                     <TextBlock
-                                            Text="Size"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            Grid.Column="0"
-                                            FontSize="{StaticResource FontSizeHeadline3}"
-                                            FontFamily="{StaticResource Bold}"/>
+                                        Text="Size"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Grid.Column="0"
+                                        FontSize="{StaticResource FontSizeHeadline3}"
+                                        FontFamily="{StaticResource Bold}"/>
                                 </Grid>
 
                                 <CheckBox
-                                        x:Name="freeSizeCheckBox"
-                                        Grid.Column="1"
-                                        Margin="10 0 0 0"
-                                        Style="{StaticResource MaterialDesignLightCheckBox}"
-                                        IsChecked="{Binding IsHadOneSize, UpdateSourceTrigger=PropertyChanged}"
-                                        Content="Free Size"
-                                        FontFamily="{StaticResource Medium}"
-                                        FontSize="{StaticResource FontSizeText}"
-                                        Background="{StaticResource BlackColorBrush}"
-                                        Command="{Binding CheckOneSizeCommand}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                                    x:Name="freeSizeCheckBox"
+                                    Grid.Column="1"
+                                    Margin="10 0 0 0"
+                                    Style="{StaticResource MaterialDesignLightCheckBox}"
+                                    IsChecked="{Binding IsHadOneSize, UpdateSourceTrigger=PropertyChanged}"
+                                    Content="Free Size"
+                                    FontFamily="{StaticResource Medium}"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    Background="{StaticResource BlackColorBrush}"
+                                    Command="{Binding CheckOneSizeCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
                             </Grid>
                             <Grid
                                 x:Name="selectSizeGrid"
@@ -290,15 +292,14 @@
                                 Margin="0 0 30 0">
                             <DockPanel>
                                 <ComboBox
-                                        x:Name="categoryComboBox"
-                                        materialDesign:HintAssist.Hint="Category"
-                                        Width="455"
-                                        Margin="0 0 10 0"
-                                        VerticalAlignment="Center"
-                                        ItemsSource="{Binding Categories,UpdateSourceTrigger=PropertyChanged}"
-                                        DisplayMemberPath="Name"
-                                        Text="{Binding SelectedCategory.Name}"
-                                        IsSynchronizedWithCurrentItem="True">
+                                    x:Name="categoryComboBox"
+                                    materialDesign:HintAssist.Hint="Category"
+                                    Width="455"
+                                    Margin="0 0 10 0"
+                                    VerticalAlignment="Center"
+                                    ItemsSource="{Binding Categories,UpdateSourceTrigger=PropertyChanged}"
+                                    DisplayMemberPath="Name"
+                                    Text="{Binding SelectedCategory.Name}">
                                     <ComboBox.SelectedItem>
                                         <Binding
                                                 Path="SelectedCategory"
@@ -340,28 +341,28 @@
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
-                                            ValidatesOnTargetUpdated="True"/>
+                                            ValidatesOnTargetUpdated="True"
+                                            IsNotCheckFirstTime="False"/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
                     </DockPanel>
                     <DockPanel
-                    Margin="0 30 0 0">
+                        Margin="0 30 0 0">
                         <StackPanel 
                             Width="500"
                             Margin="0 0 30 0">
                             <DockPanel>
                                 <ComboBox
-                                        x:Name="brandComboBox"
-                                        materialDesign:HintAssist.Hint="Brand"
-                                        Width="455"
-                                        Margin="0 0 10 0"
-                                        VerticalAlignment="Center"
-                                        ItemsSource="{Binding Brands,UpdateSourceTrigger=PropertyChanged}"
-                                        DisplayMemberPath="Name"
-                                        Text="{Binding SelectedBrand.Name}"
-                                        IsSynchronizedWithCurrentItem="True">
+                                    x:Name="brandComboBox"
+                                    materialDesign:HintAssist.Hint="Brand"
+                                    Width="455"
+                                    Margin="0 0 10 0"
+                                    VerticalAlignment="Center"
+                                    ItemsSource="{Binding Brands,UpdateSourceTrigger=PropertyChanged}"
+                                    DisplayMemberPath="Name"
+                                    Text="{Binding SelectedBrand.Name}">
                                     <ComboBox.SelectedItem>
                                         <Binding
                                                 Path="SelectedBrand"
@@ -386,7 +387,7 @@
                             </DockPanel>
                             <TextBlock
                                 Margin="0 10 0 0"
-                                Text="*If you can't find the category, press button add new and we will update"
+                                Text="*If you can't find the brand, press button add new and we will update"
                                 FontFamily="{StaticResource Medium}"
                                 Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
                         </StackPanel>
@@ -406,7 +407,8 @@
                                             Type="DoubleType"
                                             Min="0"
                                             Max="100"
-                                            ValidatesOnTargetUpdated="True"/>
+                                            ValidatesOnTargetUpdated="True"
+                                            IsNotCheckFirstTime="False"/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -424,7 +426,8 @@
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NotEmptyValidationRule
-                                        ValidatesOnTargetUpdated="True"/>
+                                        ValidatesOnTargetUpdated="True"
+                                        IsNotCheckFirstTime="False"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -442,7 +445,8 @@
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NotEmptyValidationRule
-                                        ValidatesOnTargetUpdated="True"/>
+                                        ValidatesOnTargetUpdated="True"
+                                        IsNotCheckFirstTime="False"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
