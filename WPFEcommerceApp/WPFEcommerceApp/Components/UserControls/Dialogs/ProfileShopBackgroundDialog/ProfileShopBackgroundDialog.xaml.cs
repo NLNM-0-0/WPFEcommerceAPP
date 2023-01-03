@@ -24,5 +24,59 @@ namespace WPFEcommerceApp
         {
             InitializeComponent();
         }
+        private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (DataContext != null)
+            {
+                double ratio = (double)e.NewValue / (double)e.OldValue;
+                if ((double)e.OldValue == 0)
+                {
+                    ratio = 1;
+                }
+                (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage *= ratio;
+                (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage *= ratio;
+                if (Canvas.GetLeft(content) * ratio - 250 * (ratio - 1) > 0)
+                {
+                    Canvas.SetLeft(content, 0);
+                }
+                else
+                {
+                    if (Canvas.GetLeft(content) * ratio - 250 * (ratio - 1) < 500 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage)
+                    {
+                        Canvas.SetLeft(content, 500 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(content, Canvas.GetLeft(content) * ratio - 250 * (ratio - 1));
+                    }
+                }
+                if (Canvas.GetTop(content) * ratio - 200 * (ratio - 1) > 0)
+                {
+                    Canvas.SetTop(content, 0);
+                }
+                else
+                {
+                    if (Canvas.GetTop(content) * ratio - 200 * (ratio - 1) < 400 - (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage)
+                    {
+                        Canvas.SetTop(content, 400 - (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage);
+                    }
+                    else
+                    {
+                        Canvas.SetTop(content, Canvas.GetTop(content) * ratio - 200 * (ratio - 1));
+                    }
+                }
+            }
+        }
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                slider.Value -= 10;
+            }
+            else if (e.Delta > 0)
+            {
+                slider.Value += 10;
+            }
+        }
     }
 }
