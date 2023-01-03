@@ -13,5 +13,6 @@
         <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+        <Setter Property="Cursor" Value="Hand"/>
     </Style>
 </ResourceDictionary>
