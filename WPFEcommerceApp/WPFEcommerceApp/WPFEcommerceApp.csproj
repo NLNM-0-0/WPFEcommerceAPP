@@ -85,6 +85,23 @@
     <Compile Include="Components\UserControls\AsyncImage\AsyncImage.xaml.cs">
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\UserControls\DropImage\MoveThumb.cs" />
+    <Compile Include="Utils\IsLoadingCheck.cs" />
+    <Compile Include="Models\Model.Context1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -365,6 +382,7 @@
     <Compile Include="Components\UserControls\UserIconControl\UserIconControl.xaml.cs">
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Stores\FavoriteStore.cs" />
     <Compile Include="Utils\Converters\BooleanToGenderConverter.cs" />
     <Compile Include="Components\UserControls\WindowControlBar\WindowControlBar.xaml.cs">
       <DependentUpon>WindowControlBar.xaml</DependentUpon>
