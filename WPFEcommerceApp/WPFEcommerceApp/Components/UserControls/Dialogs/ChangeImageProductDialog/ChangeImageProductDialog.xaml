@@ -108,7 +108,8 @@
                                     <Button.Content>
                                         <Image
                                             x:Name="ImageProduct"
-                                            Source="{Binding}"/>
+                                            Source="{Binding}"
+                                            Stretch="Fill"/>
                                     </Button.Content>
                                     <behavior:Interaction.Triggers>
                                         <behavior:EventTrigger EventName="MouseMove">
@@ -132,8 +133,10 @@
                 Height="300"
                 Margin="0 0 30 0"
                 Background="{StaticResource BoxShadowColorBrush}">
-                <Image x:Name="ImageMainProduct"
-                    Source="{Binding SelectedImageSource, UpdateSourceTrigger=PropertyChanged}"/>
+                <local:AsyncImage 
+                    x:Name="ImageMainProduct"
+                    Source="{Binding SelectedImageSource, UpdateSourceTrigger=PropertyChanged}"
+                    Stretch="Fill"/>
             </Grid>
 
             <Button

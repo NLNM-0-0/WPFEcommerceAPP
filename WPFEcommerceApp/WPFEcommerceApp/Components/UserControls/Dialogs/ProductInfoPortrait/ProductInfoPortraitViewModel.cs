@@ -53,7 +53,7 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private string selectedImage;
+        private string selectedImage = "";
         public string SelectedImage
         {
             get
@@ -144,136 +144,184 @@ namespace WPFEcommerceApp
         }
         public ProductInfoPortraitViewModel(Models.Product product)
         {
-            SelectedProduct = product;
-            if(SelectedProduct.IsOneSize)
+            Task.Run(async () =>
             {
-                IsHadOneSize = true;
-            }    
-            else
-            {
-                IsHadOneSize = false;
-            }    
-            IsEditting = false;
-            ImageProducts = new ObservableCollection<string>();
-            SelectedImage = "";
-            Task task = Task.Run(async () => { await LoadBrands(); await LoadCategories(); });
-            if (SelectedProduct.ImageProducts.Count != 0)
-            {
-                ImageProducts.Clear();
-                foreach(var item in SelectedProduct.ImageProducts)
+                await LoadBrands();
+                await LoadCategories();
+                App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    ImageProducts.Add(item.Source);
-                }    
-            }
-            if (ImageProducts.Count == 0)
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }).ContinueWith((seccond) =>
             {
-                SelectedImage = Properties.Resources.DefaultProductImage;
+                SelectedProduct = product;
+                if (SelectedProduct.IsOneSize)
+                {
+                    IsHadOneSize = true;
+                }
+                else
+                {
+                    IsHadOneSize = false;
+                }
+                IsEditting = false;
+                ImageProducts = new ObservableCollection<string>();
+                SelectedImage = "";
+                if (SelectedProduct.ImageProducts.Count != 0)
+                {
+                    ImageProducts.Clear();
+                    foreach (var item in SelectedProduct.ImageProducts)
+                    {
+                        ImageProducts.Add(item.Source);
+                    }
+                }
+                if (ImageProducts.Count == 0)
+                {
+                    SelectedImage = Properties.Resources.DefaultProductImage;
+                }
+                else
+                {
+                    SelectedImage = ImageProducts.First();
+                }
+                SaveProductInfoCommand = new RelayCommand<Models.Product>((p) => { return p != null; }, async (p) =>
+                {
+                    MainViewModel.IsLoading = true;
+                    Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
+                    SelectedProduct.Name = productTemp.Name;
+                    SelectedProduct.Price = productTemp.Price;
+                    SelectedProduct.ImageProducts.Clear();
+                    foreach (string imageProductSource in ImageProducts)
+                    {
+                        Tuple<bool, string> link;
+                        link = await FireStorageAPI.PushFromFile(imageProductSource, "Product", $"{SelectedProduct.Id}");
+                        Models.ImageProduct imageProduct;
+                        if (link.Item1)
+                        {
+                            imageProduct = new Models.ImageProduct() { Source = link.Item2, IdProduct = SelectedProduct.Id };
+                        }
+                        else
+                        {
+                            imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
+                        }
+                        SelectedProduct.ImageProducts.Add(imageProduct);
+                    }
+                    SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
+                    SelectedProduct.IsHadSizeM = productTemp.IsHadSizeM;
+                    SelectedProduct.IsHadSizeL = productTemp.IsHadSizeL;
+                    SelectedProduct.IsHadSizeXL = productTemp.IsHadSizeXL;
+                    SelectedProduct.IsHadSizeXXL = productTemp.IsHadSizeXXL;
+                    SelectedProduct.Category = productTemp.Category;
+                    SelectedProduct.IdCategory = productTemp.IdCategory;
+                    selectedProduct.Brand = productTemp.Brand;
+                    SelectedProduct.IdBrand = productTemp.IdBrand;
+                    selectedProduct.InStock = productTemp.InStock;
+                    selectedProduct.Sold = productTemp.Sold;
+                    SelectedProduct.Sale = productTemp.Sale;
+                    SelectedProduct.Description = productTemp.Description;
+                    SelectedProduct.Color = productTemp.Color;
+                    IsEditting = false;
+                    product = SelectedProduct;
+                    await UpdateImageProduct();
+                    await UpdateProduct();
+                    product = SelectedProduct;
+                    OnSelectedProductChange();
+
+                    MainViewModel.IsLoading = false;
+                });
+
+                EditProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+                {
+                    IsEditting = true;
+                });
+
+                ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+                {
+                    AsyncImage image = p as AsyncImage;
+                    if (image == null || image.Source == null)
+                    {
+                        return;
+                    }
+                    SelectedImage = image.Source.ToString();
+                });
+
+                OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
+                {
+                    MainViewModel.IsLoading = true;
+                    ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
+                    changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(changeImageProductDialog, "Main", closeChangeImageDialog);
+                });
+
+                OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
+                {
+                    MainViewModel.IsLoading = true;
+                    ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
+                    ProductInfoLandscapeViewModel productInfoLandscapeViewModel = new ProductInfoLandscapeViewModel(SelectedProduct);
+                    productInfoLandscapeViewModel.ProductImageChanged += ProductInfoLandscapeViewModel_ProductImageChanged;
+                    productInfoLandscape.DataContext = productInfoLandscapeViewModel;
+                    await DialogHost.Show(productInfoLandscape, "Main");
+                });
+                CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+                {
+                    Grid grid = p as Grid;
+                    foreach (var item in grid.Children)
+                    {
+                        if (item.GetType() == typeof(ToggleButton))
+                        {
+                            ToggleButton button = (ToggleButton)item;
+                            button.IsChecked = !IsHadOneSize;
+                        }
+                    }
+                });
+                ChangeStatusCommand = new RelayCommand<object>((p) => p != null, (p) =>
+                {
+                    System.Windows.Controls.Button button = p as System.Windows.Controls.Button;
+                    if (IsEditting && button.IsEnabled)
+                    {
+                        button.Command.Execute(button.CommandParameter);
+                        IsEditting = !IsEditting;
+                    }
+                    else if (!IsEditting)
+                    {
+                        IsEditting = !IsEditting;
+                    }
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            });
+        }
+
+        private void ProductInfoLandscapeViewModel_ProductImageChanged()
+        {
+            ImageProducts.Clear();
+            foreach (var item in SelectedProduct.ImageProducts)
+            {
+                ImageProducts.Add(item.Source);
             }
-            else
+            if (ImageProducts.Count > 0 && SelectedImage == Properties.Resources.DefaultProductImage)
             {
                 SelectedImage = ImageProducts.First();
             }
-            SaveProductInfoCommand = new RelayCommand<Models.Product>((p) => { return p != null; }, async (p) =>
+            else if (SelectedImage != Properties.Resources.DefaultProductImage && !ImageProducts.Contains(SelectedImage))
             {
-                MainViewModel.IsLoading = true;
-                Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
-                SelectedProduct.Name = productTemp.Name;
-                SelectedProduct.Price = productTemp.Price;
-                SelectedProduct.ImageProducts.Clear();
-                foreach (string imageProductSource in ImageProducts)
+                if (ImageProducts.Count == 0)
                 {
-                    Tuple<bool, string> link;
-                    link = await FireStorageAPI.PushFromFile(imageProductSource, "Product", $"{SelectedProduct.Id}");
-                    Models.ImageProduct imageProduct;
-                    if (link.Item1)
-                    {
-                        imageProduct = new Models.ImageProduct() { Source = link.Item2, IdProduct = SelectedProduct.Id };
-                    }
-                    else
-                    {
-                        imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
-                    }
-                    SelectedProduct.ImageProducts.Add(imageProduct);
+                    SelectedImage = Properties.Resources.DefaultProductImage;
                 }
-                SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
-                SelectedProduct.IsHadSizeM = productTemp.IsHadSizeM;
-                SelectedProduct.IsHadSizeL = productTemp.IsHadSizeL;
-                SelectedProduct.IsHadSizeXL = productTemp.IsHadSizeXL;
-                SelectedProduct.IsHadSizeXXL = productTemp.IsHadSizeXXL;
-                SelectedProduct.Category = productTemp.Category;
-                SelectedProduct.IdCategory = productTemp.IdCategory;
-                selectedProduct.Brand = productTemp.Brand;
-                SelectedProduct.IdBrand = productTemp.IdBrand;
-                selectedProduct.InStock = productTemp.InStock;
-                selectedProduct.Sold = productTemp.Sold;
-                SelectedProduct.Sale = productTemp.Sale;
-                SelectedProduct.Description = productTemp.Description;
-                SelectedProduct.Color = productTemp.Color;
-                IsEditting = false;
-                product = SelectedProduct;
-                await UpdateImageProduct(); 
-                await UpdateProduct();
-                product = SelectedProduct;
-                MainViewModel.IsLoading = false;
-            });
-
-            EditProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                IsEditting = true;
-            });
-
-            ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                Image image = p as Image;
-                if(image.Source == null)
+                else
                 {
-                    return;
-                }    
-                SelectedImage = image.Source.ToString();
-            });
-
-            OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
-            {
-                MainViewModel.IsLoading = true;
-                ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
-                changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
-                MainViewModel.IsLoading = false;
-                await DialogHost.Show(changeImageProductDialog, "Main", closeChangeImageDialog);
-            });
-
-            OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
-            {
-                MainViewModel.IsLoading = true;
-                ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
-                productInfoLandscape.DataContext = new ProductInfoLandscapeViewModel(SelectedProduct);
-                MainViewModel.IsLoading = false;
-                await DialogHost.Show(productInfoLandscape, "Main", closeProductInfoLandscape);
-            });
-            CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                Grid grid = p as Grid;
-                foreach (var item in grid.Children)
-                {
-                    if (item.GetType() == typeof(ToggleButton))
-                    {
-                        ToggleButton button = (ToggleButton)item;
-                        button.IsChecked = !IsHadOneSize;
-                    }
+                    SelectedImage = ImageProducts.First();
                 }
-            });
-            ChangeStatusCommand = new RelayCommand<object>((p) => p!=null, (p) =>
-            {
-                System.Windows.Controls.Button button = p as System.Windows.Controls.Button;
-                if(IsEditting && button.IsEnabled)
-                {
-                    button.Command.Execute(button.CommandParameter);
-                    IsEditting = !IsEditting;
-                }    
-                else if(!IsEditting)
-                {
-                    IsEditting = !IsEditting;
-                }    
-            });
+            }
+            OnSelectedProductChange();
         }
 
         private void closeChangeImageDialog(object sender, DialogClosingEventArgs eventArgs)
@@ -293,31 +341,6 @@ namespace WPFEcommerceApp
                     SelectedImage = ImageProducts.First();
                 }
             }
-        }
-
-        private void closeProductInfoLandscape(object sender, DialogClosingEventArgs eventArgs)
-        {
-            ImageProducts.Clear();
-            foreach(var item in SelectedProduct.ImageProducts)
-            {
-                ImageProducts.Add(item.Source);
-            }    
-            if (ImageProducts.Count > 0 && SelectedImage == Properties.Resources.DefaultProductImage)
-            {
-                SelectedImage = ImageProducts.First();
-            }
-            else if (SelectedImage != Properties.Resources.DefaultProductImage && !ImageProducts.Contains(SelectedImage))
-            {
-                if (ImageProducts.Count == 0)
-                {
-                    SelectedImage = Properties.Resources.DefaultProductImage;
-                }
-                else
-                {
-                    SelectedImage = ImageProducts.First();
-                }
-            }
-            OnSelectedProductChange();
         }
         private async Task LoadBrands()
         {
@@ -364,6 +387,10 @@ namespace WPFEcommerceApp
             {
                 foreach (var imageproduct in imageproducts)
                 {
+                    if (imageproduct.Source.Contains("https://firebasestorage.googleapis.com"))
+                    {
+                        await FireStorageAPI.Delete(imageproduct.Source);
+                    }
                     await repository.Remove(imageproduct);
                 }
             }

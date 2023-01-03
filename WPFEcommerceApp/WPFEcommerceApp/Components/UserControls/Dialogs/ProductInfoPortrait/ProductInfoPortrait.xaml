@@ -127,18 +127,16 @@
                         Margin="0 0 8 0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button
-                                    Style="{StaticResource ButtonRectangle}"
+                                <Grid
                                     Background="{StaticResource BoxShadowColorBrush}"
                                     Width="40"
                                     Height="40"
                                     Margin="0 0 0 10"
                                     IsHitTestVisible="True">
-                                    <Button.Content>
-                                        <Image
-                                            x:Name="ImageProduct"
-                                            Source="{Binding}"/>
-                                    </Button.Content>
+                                    <local:AsyncImage 
+                                        x:Name="ImageProduct"
+                                        Source="{Binding}"
+                                        Stretch="Fill"/>
                                     <behavior:Interaction.Triggers>
                                         <behavior:EventTrigger EventName="MouseMove">
                                             <behavior:InvokeCommandAction
@@ -148,7 +146,7 @@
                                                 CommandParameter="{Binding ElementName=ImageProduct}"/>
                                         </behavior:EventTrigger>
                                     </behavior:Interaction.Triggers>
-                                </Button>
+                                </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -160,8 +158,10 @@
                 Height="250"
                 Margin="0 0 30 0"
                 Background="{StaticResource BoxShadowColorBrush}">
-                <Image x:Name="ImageMainProduct"
-                    Source="{Binding SelectedImage, UpdateSourceTrigger=PropertyChanged}"/>
+                <local:AsyncImage 
+                    x:Name="ImageMainProduct"
+                    Source="{Binding SelectedImage, UpdateSourceTrigger=PropertyChanged}"
+                    Stretch="Fill"/>
             </Grid>
 
             <Grid
