@@ -24,6 +24,7 @@ namespace WPFEcommerceApp
         public ShopOrderBlock()
         {
             InitializeComponent();
+            IsLoadingCheck.IsLoading--;
         }
     }
 }
