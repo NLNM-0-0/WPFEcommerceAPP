@@ -29,7 +29,7 @@ namespace WPFEcommerceApp {
             DataContext = this;
             mediaPlayer.Volume = 50;
             PlayAudio = new RelayCommand<object>(p => true, p => {
-                mediaPlayer.Open(new Uri("..\\..\\Assests\\Sounds\\LoadingSound.mp3", uriKind: UriKind.RelativeOrAbsolute));
+                mediaPlayer.Open(new Uri("..\\..\\..\\Assets\\Sounds\\LoadingSound.mp3", uriKind: UriKind.RelativeOrAbsolute));
                 mediaPlayer.Play();
             });
 
