@@ -264,7 +264,7 @@
                         HorizontalAlignment="Left"
                         FontSize="{StaticResource FontSizeText}"
                         Padding="20 0"
-                        Command="{Binding CancelledOrderBlockCommand}"
+                        Command="{Binding CancelledOrderBlockCommand, UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{c:Binding IsCanCancel}"
                         Margin="0 0 30 0"
                         CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}"/>
@@ -275,7 +275,7 @@
                         HorizontalAlignment="Left"
                         FontSize="{StaticResource FontSizeText}"
                         Padding="20 0"
-                        Command="{Binding ShopOrderBlockCommand}"
+                        Command="{Binding ShopOrderBlockCommand,UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{c:Binding IsCanCommandExcute}"
                         CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}"/>
                     <StackPanel

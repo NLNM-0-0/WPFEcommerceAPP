@@ -8,137 +8,178 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <materialDesign:DialogHost>
-        <StackPanel
-            Margin="30"
-            Width="600">
-            <Grid
-                Margin="0 0 0 30">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                        Grid.ColumnSpan="2"
-                        Text="Change avatar"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        FontFamily="{StaticResource Regular}"
-                        FontSize="{StaticResource FontSizeHeadline}"/>
-                <Button
-                        x:Name="ButtonClose"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                        Grid.Column="1"
-                        Margin="0 0 10 0"
-                        Padding="0"
-                        Height="30"
-                        Width="30"
-                        Background="Transparent"
-                        BorderBrush="{StaticResource NotAvailableColorBrush}"
-                        BorderThickness="3">
-
-                    <fa:ImageAwesome
-                            x:Name="IconButtonClose"
-                            Icon="Close"
-                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
-                            Width="10"
-                            Height="10"/>
-                </Button>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <Canvas
-                    x:Name="CanvasFrame"
-                    Height="{Binding ElementName=TextBoxSource, Path=ActualHeight}"
-                    Grid.Column="0">
-                    <TextBox
-                        x:Name="TextBoxSource"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        Width="{Binding ElementName=CanvasFrame, Path=ActualWidth}"
-                        VerticalAlignment="Top"
-                        materialDesign:HintAssist.Hint="Source"
-                        Text="{Binding SourceImageAva}"
-                        IsReadOnly="True"
-                        materialDesign:TextFieldAssist.HasTrailingIcon="True"
-                        materialDesign:TextFieldAssist.TrailingIcon="Folder"
-                        materialDesign:TextFieldAssist.TrailingIconSize="30">
-                    </TextBox>
-                    <Button
-                        Style="{StaticResource TransparentButton}"
-                        Command="{Binding ChangeAvaShopCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                        Canvas.Left="375"
-                        Canvas.Top="12"
-                        Width="40"
-                        Padding="0">
-                        <fa:ImageAwesome
-                            Width="30"
-                            Icon="Folder"/>
-                    </Button>
-                </Canvas>
-
-                <Button
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    DockPanel.Dock="Right"
-                    Margin="30 0 0 0"
-                    Command="{Binding ChangeToDefaultAvaShopCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                    Width="150"
-                    Content="Use default"/>
-            </Grid>
-            <Grid
-                Margin="0 30 0 0"
-                Width="400"
-                Height="400">
-                <Border
-                    Background="{StaticResource WhiteColorBrush}">
-                    <Image
-                        Stretch="Fill"
-                        Width="400"
-                        Height="400"
-                        Source="{Binding SourceImageAva}"/>
-                </Border>
-                <Border
-                    Width="400"
-                    Height="400"
-                    Background="{StaticResource BoxShadowColorBrush}"
-                    Opacity="0.7">
-                    <Border
-                        ClipToBounds="True"
-                        Width="400"
-                        Height="400"
-                        CornerRadius="200"
-                        Background="{StaticResource WhiteColorBrush}">
-                        <Image
-                            Stretch="Fill"
-                            Height="400"
-                            Width="400"
-                            Source="{Binding SourceImageAva}">
-                            <Image.Clip>
-                                <EllipseGeometry
-                                    Center="200 200"
-                                    RadiusX="200"
-                                    RadiusY="200"/>
-                            </Image.Clip>
-                        </Image>
-                    </Border>
-
-                </Border>
-            </Grid>
-
+    <UserControl.Resources>
+        <ControlTemplate 
+            x:Key="MoveThumbTemplate"  
+            TargetType="{x:Type local:MoveThumb}">
+            <Rectangle Fill="Transparent"/>
+        </ControlTemplate>
+        <Style x:Key="CropImageTemplate" TargetType="ContentControl">
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="MinWidth" Value="50"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                            <local:AsyncImage 
+                                Source="{TemplateBinding ContentControl.Content}"
+                                Margin="{TemplateBinding Padding}"
+                                Stretch="UniformToFill"/>
+                            <local:MoveThumb 
+                                Cursor="SizeAll" 
+                                Template="{StaticResource MoveThumbTemplate}"
+                                HeightCanvas="400"
+                                WidthCanvas="500"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel
+        Margin="30"
+        Width="600">
+        <Grid
+            Margin="0 0 0 30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.ColumnSpan="2"
+                Text="Change avatar"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                FontFamily="{StaticResource Regular}"
+                FontSize="{StaticResource FontSizeHeadline}"/>
             <Button
-                Command="{Binding SaveAvaShopCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"
+                x:Name="ButtonClose"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Grid.Column="1"
+                Margin="0 0 10 0"
+                Padding="0"
+                Height="30"
+                Width="30"
+                Background="Transparent"
+                BorderBrush="{StaticResource NotAvailableColorBrush}"
+                BorderThickness="3">
+                <fa:ImageAwesome
+                    x:Name="IconButtonClose"
+                    Icon="Close"
+                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                    Width="10"
+                    Height="10"/>
+            </Button>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Canvas
+                x:Name="CanvasFrame"
+                Height="{Binding ElementName=TextBoxSource, Path=ActualHeight}"
+                Grid.Column="0">
+                <TextBox
+                    x:Name="TextBoxSource"
+                    Style="{StaticResource TextBoxHintBlackBorder}"
+                    Width="{Binding ElementName=CanvasFrame, Path=ActualWidth}"
+                    VerticalAlignment="Top"
+                    materialDesign:HintAssist.Hint="Source"
+                    Text="{Binding SourceImageAva}"
+                    IsReadOnly="True"
+                    materialDesign:TextFieldAssist.HasTrailingIcon="True"
+                    materialDesign:TextFieldAssist.TrailingIcon="Folder"
+                    materialDesign:TextFieldAssist.TrailingIconSize="30">
+                </TextBox>
+                <Button
+                    Style="{StaticResource TransparentButton}"
+                    Command="{Binding ChangeAvaShopCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    Canvas.Left="375"
+                    Canvas.Top="12"
+                    Width="40"
+                    Padding="0">
+                    <fa:ImageAwesome
+                        Width="30"
+                        Icon="Folder"/>
+                </Button>
+            </Canvas>
+            <Button
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                Margin="30 0 0 0"
+                Command="{Binding ChangeToDefaultAvaShopCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                 Width="150"
-                Margin="0 30 0 0"
-                HorizontalAlignment="Right"
-                Content="Save"/>
-        </StackPanel>
-    </materialDesign:DialogHost>
+                Content="Use default"/>
+        </Grid>
+        <ScrollViewer
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Hidden"
+            CanContentScroll="False"
+            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+            <Grid
+                Height="400"
+                Width="500"
+                Background="{StaticResource BoxShadowColorBrush}"
+                Margin="0 30 0 0">
+                <Canvas 
+                    ClipToBounds="True"
+                    SnapsToDevicePixels="True">
+                    <ContentControl
+                        x:Name="content"
+                        Canvas.Left="{Binding CanvasLeft, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Canvas.Top="{Binding CanvasTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Style="{StaticResource CropImageTemplate}"
+                        Width="{Binding WidthImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Height="{Binding HeightImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Content="{Binding ImageAva, UpdateSourceTrigger=PropertyChanged}">
+                    </ContentControl>
+                </Canvas>
+                <Path 
+                    Stroke="{StaticResource BlackColorBrush}" 
+                    StrokeThickness="3"
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top"
+                    Fill="{StaticResource BoxShadowColorBrush}"
+                    Opacity="0.5"
+                    IsHitTestVisible="False">
+                    <Path.Data>
+                        <CombinedGeometry GeometryCombineMode="Exclude">
+                            <CombinedGeometry.Geometry1>
+                                <RectangleGeometry Rect="0 0 500 400" />
+                            </CombinedGeometry.Geometry1>
+                            <CombinedGeometry.Geometry2>
+                                <EllipseGeometry RadiusX="175" RadiusY="175" Center="250 200"/>
+                            </CombinedGeometry.Geometry2>
+                        </CombinedGeometry>
+                    </Path.Data>
+                </Path>
+            </Grid>
+        </ScrollViewer>
+        <Slider
+            Margin="0 30 0 0"
+            Minimum="100"
+            Maximum="500"
+            Style="{StaticResource MaterialDesignDiscreteSlider}"
+            ToolTip="MaterialDesignDiscreteSlider"
+            Value="100"
+            Width="500"
+            Foreground="Black"
+            x:Name="slider"
+            ValueChanged="slider_ValueChanged"/>
+        <Button
+            Command="{Binding SaveAvaShopCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"
+            Width="150"
+            Margin="0 30 0 0"
+            HorizontalAlignment="Right"
+            Content="Save"/>
+    </StackPanel>
     <UserControl.InputBindings>
         <KeyBinding Key="Enter"
                     Command="{Binding SaveAvaShopCommand}"

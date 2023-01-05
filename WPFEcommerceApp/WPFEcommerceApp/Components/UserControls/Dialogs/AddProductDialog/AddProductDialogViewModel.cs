@@ -18,6 +18,11 @@ namespace WPFEcommerceApp
 {
     internal class AddProductDialogViewModel : BaseViewModel
     {
+        public event Action ClosedDialog;
+        private void OnClosedDialog()
+        {
+            ClosedDialog?.Invoke();
+        }
         private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
         private GenericDataRepository<Models.Category> categoryRepository = new GenericDataRepository<Models.Category>();
         private GenericDataRepository<Models.Brand> brandRepository = new GenericDataRepository<Models.Brand>();
@@ -299,13 +304,13 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = false;
                 await DialogHost.Show(addBrandDialog, "SecondDialog");
             });
-            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) => 
-            { 
-                MainViewModel.IsLoading = true; 
-                AddBrandDialog addBrandDialog = new AddBrandDialog(); 
-                addBrandDialog.DataContext = new AddBrandDialogViewModel(); 
-                MainViewModel.IsLoading = false; 
-                await DialogHost.Show(addBrandDialog, "SecondDialog"); 
+            OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
+            {
+                MainViewModel.IsLoading = true;
+                AddBrandDialog addBrandDialog = new AddBrandDialog();
+                addBrandDialog.DataContext = new AddBrandDialogViewModel();
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(addBrandDialog, "SecondDialog");
             });
             OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
@@ -315,8 +320,21 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = false;
                 await DialogHost.Show(addCategoryDialog, "SecondDialog");
             });
-            RequestProductCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
+            RequestProductCommand = new RelayCommand<object>((p) =>
             {
+                return !String.IsNullOrEmpty(ProductName) &&
+                        SelectedCategory != null &&
+                        SelectedBrand != null &&
+                        !String.IsNullOrEmpty(Price) &&
+                        !String.IsNullOrEmpty(Sale) &&
+                        !String.IsNullOrEmpty(InStock) &&
+                        !String.IsNullOrEmpty(Color) &&
+                        !String.IsNullOrEmpty(Description) &&
+                        (IsHadOneSize || IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL);
+            }, async (p) =>
+            {
+                var closeDialog = DialogHost.CloseDialogCommand;
+                closeDialog.Execute(null, null);
                 MainViewModel.IsLoading = true;
                 string id = await GenerateID.Gen(typeof(Product));
                 await productRepository.Add(new Models.Product()
@@ -343,12 +361,11 @@ namespace WPFEcommerceApp
                 });
                 foreach (string source in ImageProducts)
                 {
-                    
+
                     await imageProductRepository.Add(new Models.ImageProduct() { IdProduct = id, Source = source });
                 }
                 MainViewModel.IsLoading = false;
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(null, null);
+                OnClosedDialog();
             });
             CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -363,7 +380,7 @@ namespace WPFEcommerceApp
                 System.Windows.Controls.Button button = p as System.Windows.Controls.Button;
                 if (button.IsEnabled)
                 {
-                    button.Command.Execute(null);
+                    button.Command.Execute(button);
                 }
             });
         }

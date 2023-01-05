@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -26,19 +27,77 @@ namespace WPFEcommerceApp
             set
             {
                 sourceImageBackground = value;
+                ImageBackground = new CroppedBitmap(new BitmapImage(new Uri(SourceImageBackground)), new Int32Rect(0, 0, 0, 0));
                 OnPropertyChanged();
             }
         }
-        public ProfileShopBackgroundDialogViewModel(Models.MUser shop)
+        private CroppedBitmap imageBackground;
+        public CroppedBitmap ImageBackground
         {
-            if(shop == null || String.IsNullOrEmpty(shop.SourceImageBackground)) 
+            get => imageBackground;
+            set
             {
-                SourceImageBackground = Properties.Resources.DefaultShopBackgroundImage;
+                imageBackground = value;
+                if (imageBackground.Height >= imageBackground.Width)
+                {
+                    WidthImage = 500;
+                    HeightImage = imageBackground.Height * 500 / imageBackground.Width;
+                    CanvasLeft = 0;
+                    CanvasTop = - (HeightImage - 400) / 2;
+                }
+                else
+                {
+                    HeightImage = 400;
+                    WidthImage = imageBackground.Width * 400 / imageBackground.Height;
+                    CanvasLeft = -(WidthImage - 500) / 2;
+                    CanvasTop = 0;
+                }
+                OnPropertyChanged();
             }
-            else
+        }
+        private double heightImage;
+        public double HeightImage
+        {
+            get => heightImage;
+            set
             {
-                SourceImageBackground = shop.SourceImageBackground;
-            }    
+                heightImage = value;
+                OnPropertyChanged();
+            }
+        }
+        private double widthImage;
+        public double WidthImage
+        {
+            get => widthImage;
+            set
+            {
+                widthImage = value;
+                OnPropertyChanged();
+            }
+        }
+        private double canvasLeft;
+        public double CanvasLeft
+        {
+            get => canvasLeft;
+            set
+            {
+                canvasLeft = value;
+                OnPropertyChanged();
+            }
+        }
+        private double canvasTop;
+        public double CanvasTop
+        {
+            get => canvasTop;
+            set
+            {
+                canvasTop = value;
+                OnPropertyChanged();
+            }
+        }
+        public ProfileShopBackgroundDialogViewModel(CroppedBitmap croppedBitmap)
+        {
+            ImageBackground = croppedBitmap;
             ChangeBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 OpenFileDialog op = new OpenFileDialog();
@@ -55,8 +114,18 @@ namespace WPFEcommerceApp
             });
             SaveBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                shop.SourceImageBackground = SourceImageBackground;
-                DialogHost.CloseDialogCommand.Execute(null, null);
+                double ratio = ImageBackground.PixelHeight / HeightImage;
+
+                CroppedBitmap temp = new CroppedBitmap(ImageBackground, new System.Windows.Int32Rect(
+                    (int)Math.Round((Math.Abs(CanvasLeft) + 75) * ratio),
+                    (int)Math.Round((Math.Abs(canvasTop) + 25) * ratio),
+                    (int)Math.Round(350 * ratio),
+                    (int)Math.Round(350 * ratio)));
+
+                ImageBackground = temp;
+                croppedBitmap = temp;
+
+                DialogHost.CloseDialogCommand.Execute(temp, null);
             });
         }
     }

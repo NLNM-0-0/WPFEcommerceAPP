@@ -11,7 +11,9 @@
              x:Name="profileShopDialog">
     <materialDesign:DialogHost
         DialogTheme="Inherit"
-        Identifier="SecondDialog">
+        Identifier="SecondDialog"
+        CloseOnClickAway="True"
+        CloseOnClickAwayParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
         <Grid
             Width="800"
             Height="400">
@@ -41,21 +43,26 @@
                     <Border.OpacityMask>
                         <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
                     </Border.OpacityMask>
-                    <ScrollViewer
-                        HorizontalScrollBarVisibility="Hidden"
-                        VerticalScrollBarVisibility="Hidden"
-                        CanContentScroll="False">
-                        <Image
-                        Stretch="Fill"
-                        Height="350"
-                        Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        ScrollViewer.CanContentScroll="True">
-                            <Image.OpacityMask>
-                                <VisualBrush Visual="{Binding ElementName=MainBorder}"
+                    <Grid>
+                        <ScrollViewer
+                            HorizontalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Hidden"
+                            CanContentScroll="False">
+                            <local:AsyncImage 
+                                Stretch="UniformToFill"
+                                Height="350"
+                                Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
+                                ScrollViewer.CanContentScroll="True">
+                                <local:AsyncImage.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=MainBorder}"
                                          RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </Image.OpacityMask>
-                        </Image>
-                    </ScrollViewer>
+                                </local:AsyncImage.OpacityMask>
+                            </local:AsyncImage>
+                        </ScrollViewer>
+                        <Border
+                            Background="{StaticResource BlackColorBrush}"
+                            Opacity="0.5"/>
+                    </Grid>
                 </Border>
                 <Grid
                     Margin="0 30 0 10">
@@ -101,35 +108,36 @@
                         CornerRadius="50"
                         Width="100"
                         Height="100">
-                        <Image
+                        <local:AsyncImage 
                             Height="98"
                             Width="98"
-                            Stretch="Fill"
-                            Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                            <Image.Clip>
+                            Stretch="UniformToFill"
+                            Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
+                            <local:AsyncImage.Clip>
                                 <EllipseGeometry
                                     Center="49 49"
                                     RadiusX="49"
                                     RadiusY="49"/>
-                            </Image.Clip>
-                        </Image>
+                            </local:AsyncImage.Clip>
+                        </local:AsyncImage>
                     </Border>
-                    <Border
+                    <Grid
                         Grid.Row="2"
-                        Padding="5 0"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0 15">
                         <TextBlock
-                            DockPanel.Dock="Top"
-                            Margin="0 15"
+                            x:Name="nameTextBlock"
                             MaxWidth="180"
                             Text="{Binding ElementName=nameTextBox, Path=Text}"
                             FontFamily="{StaticResource Bold}"
                             FontSize="{StaticResource FontSizeHeadline2}"
                             HorizontalAlignment="Center"
                             TextWrapping="Wrap"
-                            TextTrimming="WordEllipsis"/>
-                    </Border>
-                    
+                            TextTrimming="WordEllipsis"
+                            Foreground="{StaticResource WhiteColorBrush}"/>
+                    </Grid>
+
                     <Button
                         Grid.Row="3"
                         VerticalAlignment="Bottom"

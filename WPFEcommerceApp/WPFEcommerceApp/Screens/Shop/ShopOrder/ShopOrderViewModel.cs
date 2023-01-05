@@ -71,6 +71,7 @@ namespace WPFEcommerceApp
             set
             {
                 searchedShopOrderBlockModels = value;
+                IsLoadingCheck.IsLoading += searchedShopOrderBlockModels.Count();
                 OnPropertyChanged();
             }
         }
@@ -141,11 +142,44 @@ namespace WPFEcommerceApp
             set
             {
                 statusSearchAll = value;
-                if(value)
-                {
-                    SearchByStatus(AllShopOrderBlockModels);
-                }    
                 OnPropertyChanged();
+                if (value)
+                {
+                    Task.Run(() => 
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            SearchByStatus(AllShopOrderBlockModels);
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            SearchByStatus(AllShopOrderBlockModels);
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
+                }    
             }
         }
         private bool statusSearchProcessing;
@@ -155,11 +189,44 @@ namespace WPFEcommerceApp
             set
             {
                 statusSearchProcessing = value;
+                OnPropertyChanged();
                 if (value)
                 {
-                    SearchByStatus(ProcessingShopOrderBlockModels);
+                    Task.Run(()=>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            SearchByStatus(ProcessingShopOrderBlockModels);
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            SearchByStatus(ProcessingShopOrderBlockModels);
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
                 }
-                OnPropertyChanged();
             }
         }
         private bool statusSearchDelivering;
@@ -169,11 +236,44 @@ namespace WPFEcommerceApp
             set
             {
                 statusSearchDelivering = value;
+                OnPropertyChanged();
                 if (value)
                 {
-                    SearchByStatus(DeliveringShopOrderBlockModels);
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            SearchByStatus(DeliveringShopOrderBlockModels);
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            SearchByStatus(DeliveringShopOrderBlockModels);
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
                 }
-                OnPropertyChanged();
             }
         }
         private bool statusSearchDelivered;
@@ -183,11 +283,44 @@ namespace WPFEcommerceApp
             set
             {
                 statusSearchDelivered = value;
+                OnPropertyChanged();
                 if (value)
                 {
-                    SearchByStatus(DeliveredShopOrderBlockModels);
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            SearchByStatus(DeliveredShopOrderBlockModels);
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            SearchByStatus(DeliveredShopOrderBlockModels);
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
                 }
-                OnPropertyChanged();
             }
         }
         private bool statusSearchCompleted;
@@ -197,11 +330,44 @@ namespace WPFEcommerceApp
             set
             {
                 statusSearchCompleted = value;
+                OnPropertyChanged();
                 if (value)
                 {
-                    SearchByStatus(CompletedShopOrderBlockModels);
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            SearchByStatus(CompletedShopOrderBlockModels);
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            SearchByStatus(CompletedShopOrderBlockModels);
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
                 }
-                OnPropertyChanged();
             }
         }
         private bool statusSearchCancelled;
@@ -211,60 +377,79 @@ namespace WPFEcommerceApp
             set
             {
                 statusSearchCancelled = value;
+                OnPropertyChanged();
                 if (value)
                 {
-                    SearchByStatus(CancelledShopOrderBlockModels);
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            SearchByStatus(CancelledShopOrderBlockModels);
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            SearchByStatus(CancelledShopOrderBlockModels);
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }    
+                        
+                    });
                 }
-                OnPropertyChanged();
             }
         }
         public ShopOrderViewModel()
         {
-            ChooseShippingMethodCommand = new RelayCommand<object>((p) => p != null, async (p) =>
+            IsLoadingCheck.IsLoading = 2;
+            ProcessingShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
+            DeliveringShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
+            DeliveredShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
+            CompletedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
+            CancelledShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
+            Task.Run(async() =>
             {
-                MainViewModel.IsLoading = true;
-                ChooseShippingMethodDialog dialog = new ChooseShippingMethodDialog();
-                dialog.DataContext = new ChooseShippingMethodDialogViewModel(p as ShopOrderBlockViewModel);
-                MainViewModel.IsLoading = false;
-                await DialogHost.Show(dialog, "SecondDialog", null, null, ClosedChooseShippingDialog);
-            });
-            ChangeToDeliveredCommand = new RelayCommand<object>((p) => p != null, async (p) =>
-            {
-                MainViewModel.IsLoading = true;
-                ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
-                await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Delivered");
-                DeliveringShopOrderBlockModels.Remove(shopOrderBlockViewModel);
-                shopOrderBlockViewModel.NextStatusContent = "Completed";
-                shopOrderBlockViewModel.Order.Status = "Delivered";
-                shopOrderBlockViewModel.Order.DateEnd= DateTime.Now;
-                shopOrderBlockViewModel.ShopOrderBlockCommand = ChangeToCompletedCommand;
-                DeliveredShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);
-                await AddNotification
-                (
-                    $"The order {shopOrderBlockViewModel.Order.Id} is delivered. Please check and notify us if something is wrong.",
-                    AccountStore.instance.CurrentAccount.Id,
-                    shopOrderBlockViewModel.Customer.Id
-                );
-                LoadAllShopOrderBlockViewModel();
-                Search();
-                OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
-                MainViewModel.IsLoading = false;
-            });
-            ChangeToCompletedCommand = new RelayCommand<object>((p) => p != null, async (p) =>
-            {
-                try
+                ChooseShippingMethodCommand = new RelayCommand<object>((p) => p != null, async (p) =>
+                {
+                    MainViewModel.IsLoading = true;
+                    ChooseShippingMethodDialog dialog = new ChooseShippingMethodDialog();
+                    dialog.DataContext = new ChooseShippingMethodDialogViewModel(p as ShopOrderBlockViewModel);
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(dialog, "Main", null, null, ClosedChooseShippingDialog);
+                });
+                ChangeToDeliveredCommand = new RelayCommand<object>((p) => p != null, async (p) =>
                 {
                     MainViewModel.IsLoading = true;
                     ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
-                    await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Completed");
-                    DeliveredShopOrderBlockModels.Remove(shopOrderBlockViewModel); 
-                    shopOrderBlockViewModel.Order.Status = "Completed";
-                    shopOrderBlockViewModel.NextStatusContent = "";
-                    shopOrderBlockViewModel.ShopOrderBlockCommand = null;
-                    CompletedShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);
+                    await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Delivered");
+                    DeliveringShopOrderBlockModels.Remove(shopOrderBlockViewModel);
+                    shopOrderBlockViewModel.NextStatusContent = "Completed";
+                    shopOrderBlockViewModel.Order.Status = "Delivered";
+                    shopOrderBlockViewModel.Order.DateEnd = DateTime.Now;
+                    shopOrderBlockViewModel.ShopOrderBlockCommand = ChangeToCompletedCommand;
+                    DeliveredShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);
                     await AddNotification
                     (
-                        $"The order {shopOrderBlockViewModel.Order.Id} is completed. Thanks for your rating.",
+                        $"The order {shopOrderBlockViewModel.Order.Id} is delivered. Please check and notify us if something is wrong.",
                         AccountStore.instance.CurrentAccount.Id,
                         shopOrderBlockViewModel.Customer.Id
                     );
@@ -272,80 +457,105 @@ namespace WPFEcommerceApp
                     Search();
                     OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
                     MainViewModel.IsLoading = false;
-                }
-                catch
+                });
+                ChangeToCompletedCommand = new RelayCommand<object>((p) => p != null, async (p) =>
+                {
+                    try
+                    {
+                        MainViewModel.IsLoading = true;
+                        ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
+                        await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Completed");
+                        DeliveredShopOrderBlockModels.Remove(shopOrderBlockViewModel);
+                        shopOrderBlockViewModel.Order.Status = "Completed";
+                        shopOrderBlockViewModel.NextStatusContent = "";
+                        shopOrderBlockViewModel.ShopOrderBlockCommand = null;
+                        CompletedShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);
+                        await AddNotification
+                        (
+                            $"The order {shopOrderBlockViewModel.Order.Id} is completed. Thanks for your rating.",
+                            AccountStore.instance.CurrentAccount.Id,
+                            shopOrderBlockViewModel.Customer.Id
+                        );
+                        LoadAllShopOrderBlockViewModel();
+                        Search();
+                        OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
+                        MainViewModel.IsLoading = false;
+                    }
+                    catch
+                    {
+                        MainViewModel.IsLoading = true;
+                        NotificationDialog notificationDialog = new NotificationDialog();
+                        notificationDialog.Header = "Error";
+                        notificationDialog.ContentDialog = "The status of order is changed before. Please reload this page!";
+                        MainViewModel.IsLoading = false;
+                        await DialogHost.Show(notificationDialog, "Main");
+                    }
+
+                });
+                ChangeToCancelledCommand = new RelayCommand<object>((p) => p != null, async (p) =>
                 {
                     MainViewModel.IsLoading = true;
-                    NotificationDialog notificationDialog = new NotificationDialog();
-                    notificationDialog.Header = "Error";
-                    notificationDialog.ContentDialog = "The status of order is changed before. Please reload this page!";
+                    ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
+                    await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Cancelled");
+                    ProcessingShopOrderBlockModels.Remove(shopOrderBlockViewModel);
+                    shopOrderBlockViewModel.Order.Status = "Cancelled";
+                    shopOrderBlockViewModel.NextStatusContent = "";
+                    shopOrderBlockViewModel.ShopOrderBlockCommand = null;
+                    CancelledShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);
+                    await AddNotification
+                    (
+                        $"The order {shopOrderBlockViewModel.Order.Id} is cancelled by shop.",
+                        AccountStore.instance.CurrentAccount.Id,
+                        shopOrderBlockViewModel.Customer.Id
+                    );
+                    LoadAllShopOrderBlockViewModel();
+                    Search();
+                    OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
                     MainViewModel.IsLoading = false;
-                    await DialogHost.Show(notificationDialog, "Main");
-                }
-               
-            });
-            ChangeToCancelledCommand = new RelayCommand<object>((p) => p != null, async (p) =>
-            {
-                MainViewModel.IsLoading = true;
-                ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
-                await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Cancelled");
-                ProcessingShopOrderBlockModels.Remove(shopOrderBlockViewModel);
-                shopOrderBlockViewModel.Order.Status = "Cancelled";
-                shopOrderBlockViewModel.NextStatusContent = "";
-                shopOrderBlockViewModel.ShopOrderBlockCommand = null;
-                CancelledShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);
-                await AddNotification
-                (
-                    $"The order {shopOrderBlockViewModel.Order.Id} is cancelled by shop.",
-                    AccountStore.instance.CurrentAccount.Id,
-                    shopOrderBlockViewModel.Customer.Id
-                );
-                LoadAllShopOrderBlockViewModel();
-                Search();
-                OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
-                MainViewModel.IsLoading = false;
-            });
-            SearchCommand = new RelayCommandWithNoParameter(() =>
-            {
-                if(DateFrom != null && DateTo != null && DateFrom > DateTo)
+                });
+                SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    NotificationDialog notification = new NotificationDialog();
-                    notification.Header = "Error";
-                    notification.ContentDialog = "Date to is bigger than date from";
-                    DialogHost.Show(notification, "Main");
-                    return;
-                }    
-                MainViewModel.IsLoading = true;
-                Search();
-                MainViewModel.IsLoading = false;
-            });
-            ResetCommand = new RelayCommandWithNoParameter(() =>
-            {
-                DateFrom = null;
-                DateTo = null;
-                SearchByValue = "";
-                SearchBy = "Id";
-            });
-            ProcessingShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
-            DeliveringShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
-            DeliveredShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
-            CompletedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
-            CancelledShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>();
-            Task t = Task.Run(async () =>
-            {
+                    if (DateFrom != null && DateTo != null && DateFrom > DateTo)
+                    {
+                        NotificationDialog notification = new NotificationDialog();
+                        notification.Header = "Error";
+                        notification.ContentDialog = "Date to is bigger than date from";
+                        DialogHost.Show(notification, "Main");
+                        return;
+                    }
+
+                    MainViewModel.IsLoading = true;
+                    Search();
+                    MainViewModel.IsLoading = false;
+                });
+                ResetCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    DateFrom = null;
+                    DateTo = null;
+                    SearchByValue = "";
+                    SearchBy = "Id";
+                });
                 await LoadDataProcessingIntoCollection();
                 await LoadDataDeliveringIntoCollection();
                 await LoadDataDeliveredIntoCollection();
                 await LoadDataCompletedIntoCollection();
                 await LoadDataCancelledIntoCollection();
+                LoadAllShopOrderBlockViewModel();
+                if (string.IsNullOrEmpty(SearchBy))
+                {
+                    SearchBy = "Id";
+                }
+                StatusSearchAll = true;
+                while (IsLoadingCheck.IsLoading >= 2) ;
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    SearchedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>(SearchedShopOrderBlockModels);
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
             });
-            while (!t.IsCompleted) { }
-            LoadAllShopOrderBlockViewModel();
-            if(string.IsNullOrEmpty(SearchBy))
-            {
-                SearchBy = "Id";                
-            }    
-            StatusSearchAll = true;
         }
 
         private async void ClosedChooseShippingDialog(object sender, DialogClosedEventArgs eventArgs)

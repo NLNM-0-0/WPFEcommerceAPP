@@ -25,17 +25,5 @@ namespace WPFEcommerceApp
         {
             InitializeComponent();
         }
-
-        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            PresentationSource source = PresentationSource.FromVisual(Application.Current.MainWindow);
-            double scaleX = 1, scaleY = 1;
-            if (source != null)
-            {
-                scaleX = source.CompositionTarget.TransformToDevice.M11;
-                scaleY = source.CompositionTarget.TransformToDevice.M22;
-            }
-            this.Measure(new Size(this.ActualWidth * scaleX, this.ActualHeight * scaleY));
-        }
     }
 }

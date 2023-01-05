@@ -85,6 +85,8 @@
     <Compile Include="Components\UserControls\AsyncImage\AsyncImage.xaml.cs">
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\UserControls\DropImage\MoveThumb.cs" />
+    <Compile Include="Utils\IsLoadingCheck.cs" />
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -365,6 +367,7 @@
     <Compile Include="Components\UserControls\UserIconControl\UserIconControl.xaml.cs">
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Stores\FavoriteStore.cs" />
     <Compile Include="Utils\Converters\BooleanToGenderConverter.cs" />
     <Compile Include="Components\UserControls\WindowControlBar\WindowControlBar.xaml.cs">
       <DependentUpon>WindowControlBar.xaml</DependentUpon>
@@ -1011,7 +1014,6 @@
     </None>
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
@@ -1076,14 +1078,6 @@
     <Resource Include="Assets\Icon\Home.png" />
     <Resource Include="Assets\Images\Offline.png" />
     <Resource Include="Assets\Images\NoImage.jpg" />
-    <Content Include="Models\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context1.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.cs</LastGenOutput>
-    </Content>
     <Content Include="DTO\SQL.sql" />
   </ItemGroup>
   <ItemGroup>

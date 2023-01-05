@@ -104,13 +104,13 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Image
+                        <local:AsyncImage
                             Height="65"
                             Width="65"
                             Stretch="UniformToFill"
                             Margin="0 0 10 0"
                             Source="{Binding Path=ProductImage, ElementName=shopRatingBlock, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True,Mode=TwoWay}">
-                        </Image>
+                        </local:AsyncImage>
                         <StackPanel
                             Grid.Column="1">
                             <TextBlock Text="{Binding ElementName=shopRatingBlock, Path=Product.Name}" 

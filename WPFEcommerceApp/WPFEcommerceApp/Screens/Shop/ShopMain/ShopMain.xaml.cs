@@ -3,6 +3,11 @@ using System.Windows.Controls;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using System.Linq;
+using System.Windows.Threading;
+using System;
+using System.Windows;
+using WPFEcommerceApp.UserControls.Dialogs.AddProductDialog;
+using System.Runtime.CompilerServices;
 
 namespace WPFEcommerceApp
 {
@@ -16,12 +21,44 @@ namespace WPFEcommerceApp
             InitializeComponent();
         }
 
-        private void scroll_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        private void ProductBlockByCategory_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var scv = sender as ScrollViewer;
-            if (scv == null) return;
-            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            if (this.DataContext != null)
+            {
+                if(this.DataContext.GetType() != typeof(ShopMainViewModel) || (this.DataContext as ShopMainViewModel).LoadedCommand == null)
+                {
+                    return;
+                }
+                (this.DataContext as ShopMainViewModel).LoadedCommand.Execute(new Tuple<double, double, double>(newProductBlock.ActualHeight, bestSellerProductBlock.ActualHeight, favoriteProductBlock.ActualHeight));
+            }
+        }
+
+        private void Scroll_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta);
             e.Handled = true;
+        }
+
+        private void scroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (- e.VerticalChange > 0)
+            {
+                if (scroll.VerticalOffset < 190)
+                {
+                     Canvas.SetTop(categoryGrid, 190 - scroll.VerticalOffset);
+                }
+            }
+            else
+            {
+                if (Canvas.GetTop(categoryGrid) - e.VerticalChange >= 0)
+                {
+                    Canvas.SetTop(categoryGrid, Canvas.GetTop(categoryGrid) - e.VerticalChange);
+                }
+                else
+                {
+                    Canvas.SetTop(categoryGrid, 0);
+                }
+            }
         }
     }
 }

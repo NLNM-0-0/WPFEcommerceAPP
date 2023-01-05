@@ -18,7 +18,6 @@ namespace WPFEcommerceApp
 {
     public class ShopRatingViewModel : BaseViewModel
     {
-        private readonly AccountStore _accountStore;
         private GenericDataRepository<Models.MOrder> orderReposition = new GenericDataRepository<Models.MOrder>();
         private GenericDataRepository<Models.OrderInfo> orderInfoReposition = new GenericDataRepository<Models.OrderInfo>();
         private GenericDataRepository<Models.Brand> brandReposition = new GenericDataRepository<Models.Brand>();
@@ -107,23 +106,361 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<Boolean> ratingStarStyles;
-        public ObservableCollection<Boolean> RatingStarStyles
+        private bool statusSearchAll;
+        public bool StatusSearchAll
         {
-            get { return ratingStarStyles; }
+            get => statusSearchAll;
             set
             {
-                ratingStarStyles = value;
+                statusSearchAll = value;
+                OnPropertyChanged();
+                if (value)
+                {
+                    ShopRatingBlockModelFilter = ShopRatingBlockModelsAll;
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            Search();
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            Search();
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
+                }
+            }
+        }
+        private bool statusSearch5Star;
+        public bool StatusSearch5Star
+        {
+            get => statusSearch5Star;
+            set
+            {
+                statusSearch5Star = value;
+                OnPropertyChanged();
+                if (value)
+                {
+                    ShopRatingBlockModelFilter = ShopRatingBlockModels5Star;
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            Search();
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            Search();
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
+                }
+            }
+        }
+        private bool statusSearch4Star;
+        public bool StatusSearch4Star
+        {
+            get => statusSearch4Star;
+            set
+            {
+                statusSearch4Star = value;
+                OnPropertyChanged();
+                if (value)
+                {
+                    ShopRatingBlockModelFilter = ShopRatingBlockModels4Star;
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            Search();
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            Search();
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
+                }
+            }
+        }
+        private bool statusSearch3Star;
+        public bool StatusSearch3Star
+        {
+            get => statusSearch3Star;
+            set
+            {
+                statusSearch3Star = value;
+                OnPropertyChanged();
+                if (value)
+                {
+                    ShopRatingBlockModelFilter = ShopRatingBlockModels3Star;
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            Search();
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            Search();
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
+                }
+            }
+        }
+        private bool statusSearch2Star;
+        public bool StatusSearch2Star
+        {
+            get => statusSearch2Star;
+            set
+            {
+                statusSearch2Star = value;
+                OnPropertyChanged();
+                if (value)
+                {
+                    ShopRatingBlockModelFilter = ShopRatingBlockModels2Star;
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            Search();
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            Search();
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
+                }
+            }
+        }
+        private bool statusSearch1Star;
+        public bool StatusSearch1Star
+        {
+            get => statusSearch1Star;
+            set
+            {
+                statusSearch1Star = value;
+                OnPropertyChanged();
+                if (value)
+                {
+                    ShopRatingBlockModelFilter = ShopRatingBlockModels1Star;
+                    Task.Run(() =>
+                    {
+                        if (MainViewModel.IsLoading)
+                        {
+                            Search();
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading++;
+                                }
+                            }));
+
+                            Search();
+
+                            App.Current.Dispatcher.Invoke((Action)(() =>
+                            {
+                                lock (IsLoadingCheck.IsLoading as object)
+                                {
+                                    IsLoadingCheck.IsLoading--;
+                                }
+                            }));
+                        }
+                    });
+                }
+            }
+        }
+        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModelFilter;
+        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModelFilter
+        {
+            get { return shopRatingBlockModelFilter; }
+            set
+            {
+                shopRatingBlockModelFilter = value;
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModels;
-        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModels
+        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModelAll;
+        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModelsAll
         {
-            get { return shopRatingBlockModels; }
+            get { return shopRatingBlockModelAll; }
             set
             {
-                shopRatingBlockModels = value;
+                shopRatingBlockModelAll = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModels5Star;
+        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModels5Star
+        {
+            get { return shopRatingBlockModels5Star; }
+            set
+            {
+                shopRatingBlockModels5Star = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModels4Star;
+        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModels4Star
+        {
+            get { return shopRatingBlockModels4Star; }
+            set
+            {
+                shopRatingBlockModels4Star = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModels3Star;
+        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModels3Star
+        {
+            get { return shopRatingBlockModels3Star; }
+            set
+            {
+                shopRatingBlockModels3Star = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModels2Star;
+        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModels2Star
+        {
+            get { return shopRatingBlockModels2Star; }
+            set
+            {
+                shopRatingBlockModels2Star = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<ShopRatingBlockModel> shopRatingBlockModels1Star;
+        public ObservableCollection<ShopRatingBlockModel> ShopRatingBlockModels1Star
+        {
+            get { return shopRatingBlockModels1Star; }
+            set
+            {
+                shopRatingBlockModels1Star = value;
                 OnPropertyChanged();
             }
         }
@@ -134,87 +471,72 @@ namespace WPFEcommerceApp
             set
             {
                 displayShopRatingBlockModels = value;
+                IsLoadingCheck.IsLoading += displayShopRatingBlockModels.Count();
                 OnPropertyChanged();
             }
         }
         public ShopRatingViewModel()
         {
-            //VHCMT: Don't need to pass Account Store
-            _accountStore = AccountStore.instance;
-            Load();
-            Task t = Task.Run(async () =>
+            IsLoadingCheck.IsLoading = 2;
+            ShopRatingBlockModelFilter = new ObservableCollection<ShopRatingBlockModel>();
+            Task.Run(async () =>
             {
+                Load();
                 await LoadListData();
                 await LoadBrand();
                 await LoadCategory();
-            });
-            while(!t.IsCompleted);
-            DisplayShopRatingBlockModels = ShopRatingBlockModels;
-            ChangeRatingStarStyleCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }).ContinueWith((first) =>
             {
-                string style = (p as RadioButton).Content.ToString();
-                int index = 0;
-                if (style == "All")
+                SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    index = 0;
-                }
-                else if (style == "5 Star")
+                    if (DateFrom != null && DateTo != null && DateFrom > DateTo)
+                    {
+                        NotificationDialog notification = new NotificationDialog();
+                        notification.Header = "Error";
+                        notification.ContentDialog = "Date to is bigger than date from";
+                        DialogHost.Show(notification, "Main");
+                        return;
+                    }
+                    MainViewModel.IsLoading = true;
+                    Search();
+                    MainViewModel.IsLoading = false;
+                });
+                ResetCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
                 {
-                    index = 1;
-                }
-                else if (style == "4 Star")
+                    MainViewModel.IsLoading = true;
+                    ProductName = "";
+                    UserName = "";
+                    DateFrom = null;
+                    DateTo = null;
+                    SelectedCategory = null;
+                    SelectedBrand = null;
+                    StatusSearchAll = true;
+                    StatusSearch5Star = false;
+                    StatusSearch4Star = false;
+                    StatusSearch3Star = false;
+                    StatusSearch2Star = false;
+                    StatusSearch1Star = false;
+                    MainViewModel.IsLoading = false;
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    index = 2;
-                }
-                else if (style == "3 Star")
-                {
-                    index = 3;
-                }
-                else if (style == "2 Star")
-                {
-                    index = 4;
-                }
-                else
-                {
-                    index = 5;
-                }
-                for (int i = 0; i < RatingStarStyles.Count; i++)
-                {
-                    RatingStarStyles[i] = false;
-                }
-                RatingStarStyles[index] = true;
+                    DisplayShopRatingBlockModels = ShopRatingBlockModelsAll;
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
             });
-            SearchCommand = new RelayCommandWithNoParameter(() =>
-            {
-                if (DateFrom != null && DateTo != null && DateFrom > DateTo)
-                {
-                    NotificationDialog notification = new NotificationDialog();
-                    notification.Header = "Error";
-                    notification.ContentDialog = "Date to is bigger than date from";
-                    DialogHost.Show(notification, "Main");
-                    return;
-                }
-                MainViewModel.IsLoading = true;
-                Search();
-                MainViewModel.IsLoading = false;
-            });
-            ResetCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                MainViewModel.IsLoading = true;
-                ProductName = "";
-                UserName = "";
-                DateFrom = null;
-                DateTo = null;
-                SelectedCategory = null;
-                SelectedBrand = null;
-                for (int i = 0; i < RatingStarStyles.Count; i++)
-                {
-                    RatingStarStyles[i] = false;
-                }
-                RatingStarStyles[0] = true;
-                Search();
-                MainViewModel.IsLoading = false;
-            });
+        }
+        public void ChangeStatus()
+        {
         }
         public void Search()
         {
@@ -223,40 +545,29 @@ namespace WPFEcommerceApp
                 MessageBox.Show("Date Wrong");
                 return;
             }
-            int ratingPoint = 6;
-            for (int i = 0; i < RatingStarStyles.Count; i++)
-            {
-                if (RatingStarStyles[i])
-                {
-                    ratingPoint = 6 - i;
-                }
-            }
-            DisplayShopRatingBlockModels = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModels.Where(x => x.OrderInfo.Product.Name.Contains(ProductName ?? "") &&
+            DisplayShopRatingBlockModels = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelFilter.Where(x => x.OrderInfo.Product.Name.Contains(ProductName ?? "") &&
                                                                                                                  x.Customer.Name.Contains(UserName ?? "") &&
                                                                                                                 ((SelectedCategory == null) ? true : (x.OrderInfo.Product.IdCategory == SelectedCategory.Id)) &&
                                                                                                                 ((SelectedBrand == null) ? true : (x.OrderInfo.Product.IdBrand == SelectedBrand.Id)) &&
                                                                                                                 ((DateFrom == null) ? true : (x.OrderInfo.Rating.DateRating >= DateFrom)) &&
-                                                                                                                ((DateTo == null) ? true : (x.OrderInfo.Rating.DateRating <= DateTo)) &&
-                                                                                                                (ratingPoint == 6 ? true : (x.OrderInfo.Rating.Rating1 == ratingPoint))).ToList());
+                                                                                                                ((DateTo == null) ? true : (x.OrderInfo.Rating.DateRating <= DateTo))));
         }
         public void Load()
         {
-            ShopRatingBlockModels = new ObservableCollection<ShopRatingBlockModel>();
-            RatingStarStyles = new ObservableCollection<Boolean>();
+            ShopRatingBlockModelsAll = new ObservableCollection<ShopRatingBlockModel>();
             DateFrom = null;
             DateTo = null;
-            RatingStarStyles.Add(true);
-            RatingStarStyles.Add(false);
-            RatingStarStyles.Add(false);
-            RatingStarStyles.Add(false);
-            RatingStarStyles.Add(false);
-            RatingStarStyles.Add(false);
+            statusSearchAll = true;
+            statusSearch5Star = false;
+            statusSearch4Star = false;
+            statusSearch3Star = false;
+            statusSearch2Star = false;
+            statusSearch1Star = false;
         }
         public async Task LoadListData()
         {
-            ObservableCollection<Models.MOrder> orders = new ObservableCollection<Models.MOrder>(await orderReposition.GetListAsync(r => (r != null && r.IdShop == _accountStore.CurrentAccount.Id && r.Status == "Completed"),
-                                                                                                                                    r => r.MUser));
-            orders = new ObservableCollection<Models.MOrder>(orders.OrderByDescending(p => p.DateBegin));
+            ObservableCollection<Models.MOrder> orders = new ObservableCollection<Models.MOrder>((await orderReposition.GetListAsync(r => (r != null && r.IdShop == AccountStore.instance.CurrentAccount.Id && r.Status == "Completed"),
+                                                                                                                                    r => r.MUser)));
             foreach (Models.MOrder order in orders)
             {
                 ObservableCollection<Models.OrderInfo> orderInfos = new ObservableCollection<OrderInfo>(await orderInfoReposition.GetListAsync(oi => (oi.IdOrder == order.Id && oi.IdRating != null),
@@ -271,9 +582,15 @@ namespace WPFEcommerceApp
                         OrderInfo = orderInfos[i],
                         ImageProduct = orderInfos[i].ImageProduct
                     };
-                    ShopRatingBlockModels.Add(shopRatingBlockModel);
+                    ShopRatingBlockModelsAll.Add(shopRatingBlockModel);
                 }
             }
+            ShopRatingBlockModelsAll = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelsAll.OrderByDescending(r => r.OrderInfo.Rating.DateRating));
+            ShopRatingBlockModels5Star = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelsAll.Where(r => r.OrderInfo.Rating.Rating1 == 5));
+            ShopRatingBlockModels4Star = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelsAll.Where(r => r.OrderInfo.Rating.Rating1 == 4));
+            ShopRatingBlockModels3Star = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelsAll.Where(r => r.OrderInfo.Rating.Rating1 == 3));
+            ShopRatingBlockModels2Star = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelsAll.Where(r => r.OrderInfo.Rating.Rating1 == 2));
+            ShopRatingBlockModels1Star = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelsAll.Where(r => r.OrderInfo.Rating.Rating1 == 1));
         }
         public async Task LoadBrand()
         {

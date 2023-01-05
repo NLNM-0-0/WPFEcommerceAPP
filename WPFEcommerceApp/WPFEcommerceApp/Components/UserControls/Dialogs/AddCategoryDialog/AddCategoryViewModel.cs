@@ -13,7 +13,7 @@ namespace WPFEcommerceApp
 {
     public class AddCategoryDialogViewModel : BaseViewModel
     {
-        private GenericDataRepository<Models.CategoryRequest> categoryRequestReposition =new GenericDataRepository<Models.CategoryRequest>();
+        private GenericDataRepository<Models.CategoryRequest> categoryRequestReposition = new GenericDataRepository<Models.CategoryRequest>();
         private string categoryName = "";
         public string CategoryName
         {
@@ -39,22 +39,29 @@ namespace WPFEcommerceApp
         public ICommand KeyDownEnterCommand { get; set; }
         public AddCategoryDialogViewModel()
         {
-            RequestCategoryCommand = new RelayCommandWithNoParameter(async ()=>
+            RequestCategoryCommand = new RelayCommand<object>((p) =>
             {
+                return !String.IsNullOrEmpty(CategoryName) && !String.IsNullOrEmpty(Reason);
+            }, (async (p) =>
+            {
+                var closeDialog = DialogHost.CloseDialogCommand;
+                closeDialog.Execute(null, null);
+                MainViewModel.IsLoading = true;
                 await AddCategoryRequest();
                 NotificationDialog notification = new NotificationDialog()
                 {
                     Header = "Notification",
                     ContentDialog = stringCloseDialog
                 };
+                MainViewModel.IsLoading = false;
                 await DialogHost.Show(notification, "Notification");
-            });
+            }));
             KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
                 System.Windows.Controls.Button button = p as System.Windows.Controls.Button;
                 if (button.IsEnabled)
                 {
-                    button.Command.Execute(null);
+                    button.Command.Execute(button);
                 }
             });
         }
@@ -68,7 +75,7 @@ namespace WPFEcommerceApp
                     IdShop = AccountStore.instance.CurrentAccount.Id,
                     Name = CategoryName,
                     Reason = this.Reason
-                }) ;
+                });
                 stringCloseDialog = "Update sucessfully. Please wait for us to apply.";
             }
             catch

@@ -110,7 +110,7 @@ namespace WPFEcommerceApp
             }
         }
         private ObservableCollection<Models.Product> bestSelledProducts;
-        public ObservableCollection<Models.Product> BestSelledProducts
+        public ObservableCollection<Models.Product> BestSellerProducts
         {
             get => bestSelledProducts;
             set
@@ -139,13 +139,13 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ProductBlockByCategoryViewModel bestSelledProductBlock;
-        public ProductBlockByCategoryViewModel BestSelledProductBlock
+        private ProductBlockByCategoryViewModel bestSellerProductBlock;
+        public ProductBlockByCategoryViewModel BestSellerProductBlock
         {
-            get => bestSelledProductBlock;
+            get => bestSellerProductBlock;
             set
             {
-                bestSelledProductBlock = value;
+                bestSellerProductBlock = value;
                 OnPropertyChanged();
             }
         }
@@ -212,101 +212,116 @@ namespace WPFEcommerceApp
 
         public ShopMainViewModel(Models.MUser user)
         {
-            if (AccountStore.instance.CurrentAccount?.Id == user.Id)
+            Task.Run(async () =>
             {
-                Shop = AccountStore.instance.CurrentAccount;
-                AccountStore.instance.AccountChanged += _accountStore_AccountChanged;
-                IsShop = true;
-            }
-            else
-            {
-                Shop = user;
-                IsShop = false;
-            }
-            
-            Task task = Task.Run(async () => await LoadAllProduct());
-            while(!task.IsCompleted) { }
-            
-            AllProductBlock = new ProductBlockByCategoryViewModel("All", AllProducts, AllProducts.Count == 0, true, IsShop);
-            NewProductBlock = new ProductBlockByCategoryViewModel("New Products", NewProducts, NewProducts.Count == 0, false, IsShop);
-            BestSelledProductBlock = new ProductBlockByCategoryViewModel("Best Seller Products", BestSelledProducts, BestSelledProducts.Count == 0, false, IsShop);
-            FavoriteProductBlock = new ProductBlockByCategoryViewModel("Favorite Products", FavoriteProducts, FavoriteProducts.Count == 0, true, IsShop);
-            OpenEditProfileCommand = new RelayCommandWithNoParameter(async () =>
-            {
-                MainViewModel.IsLoading = true;
-                ProfileShopDialog profileShopDialog = new ProfileShopDialog();
-                profileShopDialog.DataContext = new ProfileShopDialogViewModel();
-                MainViewModel.IsLoading = false;
-                await DialogHost.Show(profileShopDialog, "Main");
-            });
-            LoadedCommand = new RelayCommand<Tuple<double, double, double>>((p) => { return p != null; }, p =>
-            {
-                Tuple<double, double, double> tuple = p as Tuple<double, double, double>;
-                heightNewProducts = (double)tuple.Item1;
-                heightBestSellerProducts = (double)tuple.Item2;
-                heightFavoriteProducts = (double)tuple.Item3;
-                IsNewProductsCheck = true;
-            });
-            ScrollChangedCommand = new RelayCommand<object>((p) => { return p != null; }, p =>
-            {
-                ScrollViewer scrollViewer = p as ScrollViewer;
-                double offset = (double)scrollViewer.VerticalOffset;
-                if (offset < heightNewProducts)
+                if (AccountStore.instance.CurrentAccount?.Id == user.Id)
                 {
-                    IsNewProductsCheck = true;
-                    if (NewProductBlock.FullProducts.Count == 0)
-                    {
-                        IsNewProductsCheck = false;
-                    }
-                }
-                else if (offset < heightNewProducts + heightBestSellerProducts)
-                {
-                    IsBestSellerProductsCheck = true;
-                    if (BestSelledProductBlock.FullProducts.Count == 0)
-                    {
-                        IsBestSellerProductsCheck = false;
-                    }
-                }
-                else if (offset < heightNewProducts + heightBestSellerProducts + heightFavoriteProducts)
-                {
-                    IsFavoriteProductsCheck = true;
-                    if (FavoriteProductBlock.FullProducts.Count == 0)
-                    {
-                        IsFavoriteProductsCheck = false;
-                    }
+                    Shop = AccountStore.instance.CurrentAccount;
+                    AccountStore.instance.AccountUpdated += _accountStore_AccountUpdated;
+                    IsShop = true;
                 }
                 else
                 {
-                    IsAllProductsCheck = true;
-                    if (AllProductBlock.FullProducts.Count == 0)
-                    {
-                        IsAllProductsCheck = false;
-                    }
+                    Shop = user;
+                    IsShop = false;
                 }
-            });
-            MoveToNewProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
+                await LoadAllProduct();
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }).ContinueWith((first) =>
             {
-                ScrollViewer scrollViewer = p as ScrollViewer;
-                scrollViewer.ScrollToTop();
-            });
-            MoveToBestSellerProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
-            {
-                ScrollViewer scrollViewer = p as ScrollViewer;
-                scrollViewer.ScrollToVerticalOffset(heightNewProducts);
-            });
-            MoveToFavoriteProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
-            {
-                ScrollViewer scrollViewer = p as ScrollViewer;
-                scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts);
-            });
-            MoveToAllProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
-            {
-                ScrollViewer scrollViewer = p as ScrollViewer;
-                scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightFavoriteProducts);
+                OpenEditProfileCommand = new RelayCommandWithNoParameter(async () =>
+                {
+                    MainViewModel.IsLoading = true;
+                    ProfileShopDialog profileShopDialog = new ProfileShopDialog();
+                    profileShopDialog.DataContext = new ProfileShopDialogViewModel();
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(profileShopDialog, "Main");
+                });
+                LoadedCommand = new RelayCommand<Tuple<double, double, double>>((p) => { return p != null; }, p =>
+                {
+                    Tuple<double, double, double> tuple = p as Tuple<double, double, double>;
+                    heightNewProducts = (double)tuple.Item1;
+                    heightBestSellerProducts = (double)tuple.Item2;
+                    heightFavoriteProducts = (double)tuple.Item3;
+                    IsNewProductsCheck = true;
+                });
+                ScrollChangedCommand = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    double offset = (double)scrollViewer.VerticalOffset;
+                    if (offset < heightNewProducts + 190)
+                    {
+                        IsNewProductsCheck = true;
+                        if (NewProductBlock == null || NewProductBlock.FullProducts.Count == 0)
+                        {
+                            IsNewProductsCheck = false;
+                        }
+                    }
+                    else if (offset < heightNewProducts + heightBestSellerProducts + 190)
+                    {
+                        IsBestSellerProductsCheck = true;
+                        if (BestSellerProductBlock == null || BestSellerProductBlock.FullProducts.Count == 0)
+                        {
+                            IsBestSellerProductsCheck = false;
+                        }
+                    }
+                    else if (offset < heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 190)
+                    {
+                        IsFavoriteProductsCheck = true;
+                        if (FavoriteProductBlock == null || FavoriteProductBlock.FullProducts.Count == 0)
+                        {
+                            IsFavoriteProductsCheck = false;
+                        }
+                    }
+                    else
+                    {
+                        IsAllProductsCheck = true;
+                        if (AllProductBlock == null || AllProductBlock.FullProducts.Count == 0)
+                        {
+                            IsAllProductsCheck = false;
+                        }
+                    }
+                });
+                MoveToNewProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToVerticalOffset(190);
+                });
+                MoveToBestSellerProducts = new RelayCommand<object>((p) => { return true; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + 190 );
+                });
+                MoveToFavoriteProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + 190);
+                });
+                MoveToAllProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 190);
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    AllProductBlock = new ProductBlockByCategoryViewModel("All", AllProducts, AllProducts.Count == 0, true, IsShop);
+                    NewProductBlock = new ProductBlockByCategoryViewModel("New Products", NewProducts, NewProducts.Count == 0, false, IsShop);
+                    BestSellerProductBlock = new ProductBlockByCategoryViewModel("Best Seller Products", BestSellerProducts, BestSellerProducts.Count == 0, false, IsShop);
+                    FavoriteProductBlock = new ProductBlockByCategoryViewModel("Favorite Products", FavoriteProducts, FavoriteProducts.Count == 0, true, IsShop);
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
             });
         }
-
-        private void _accountStore_AccountChanged()
+        private void _accountStore_AccountUpdated()
         {
             Shop = AccountStore.instance.CurrentAccount;
             OnPropertyChanged(nameof(Shop));
@@ -338,9 +353,9 @@ namespace WPFEcommerceApp
                 }
             }
             AverageRating = sumRating * 1.0 / number;
-            FavoriteProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.MUsers.Count != 0).ToList().OrderByDescending(p => p.MUsers.Count));
-            BestSelledProducts = new ObservableCollection<Models.Product>(AllProducts.OrderByDescending(p => p.OrderInfoes.Count));
-            NewProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => (DateTime.Now - p.DateOfSale) <= new TimeSpan(7, 0, 0, 0)).ToList().OrderByDescending(p => p.DateOfSale));
+            FavoriteProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.MUsers.Count != 0).ToList().OrderByDescending(p => p.MUsers.Count).Take(9));
+            BestSellerProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.OrderInfoes.Count > 0).OrderByDescending(p => p.OrderInfoes.Count).Take(9));
+            NewProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => (DateTime.Now - p.DateOfSale) <= new TimeSpan(7, 0, 0, 0)).ToList().OrderByDescending(p => p.DateOfSale).Take(9));
         }
     }
 }
