@@ -10,8 +10,8 @@ namespace WPFEcommerceApp
 {
     public class FavoriteStore
     {
-        public static FavoriteStore instance = new FavoriteStore();
-
+        public static FavoriteStore instance;
+        private readonly AccountStore accountStore;
         public event Action FavoriteListChanged;
 
         private List<Models.Product> favoriteProductList = new List<Models.Product>();
@@ -25,13 +25,10 @@ namespace WPFEcommerceApp
         }
         public FavoriteStore()
         {
-            AccountStore.instance.AccountChanged += OnAccountChange;
+            accountStore = AccountStore.instance;
+            accountStore.AccountChanged += OnAccountChange;
             Load();
         }
-
-        private readonly GenericDataRepository<MOrder> orderRepo = new GenericDataRepository<MOrder>();
-        private readonly GenericDataRepository<OrderInfo> orderInfoRepo = new GenericDataRepository<OrderInfo>();
-        private readonly GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
 
         private void OnAccountChange()
         {

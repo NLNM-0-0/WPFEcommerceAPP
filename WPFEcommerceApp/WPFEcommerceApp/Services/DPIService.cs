@@ -19,6 +19,7 @@ namespace WPFEcommerceApp {
             AccountStore.instance = new AccountStore();
             OrderStore.instance = new OrderStore();
             NavigationStore.instance = new NavigationStore();
+            FavoriteStore.instance = new FavoriteStore();
 
             services.AddTransient<DrawerVM>();
             #endregion
