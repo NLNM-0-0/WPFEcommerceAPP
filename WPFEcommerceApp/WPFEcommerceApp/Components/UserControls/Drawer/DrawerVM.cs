@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.DependencyInjection;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
@@ -90,7 +91,7 @@ namespace WPFEcommerceApp {
                                 Content = "You need to login to do this!",
                                 CM = new RelayCommand<object>(pr => true, pr => {
                                     (pr as Window).Hide();
-                                    Login login = new Login(pr);
+                                    Login login = App.serviceProvider.GetRequiredService<Login>();
                                     login.Show();
                                 }),
                                 Param = WindowControlBarVM.getWindow(p as FrameworkElement)
