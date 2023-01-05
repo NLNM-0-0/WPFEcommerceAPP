@@ -12,23 +12,33 @@ namespace WPFEcommerceApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Rating
+    public partial class Promo
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Rating()
+        public Promo()
         {
-            this.OrderInfoes = new HashSet<OrderInfo>();
-            this.RatingInfoes = new HashSet<RatingInfo>();
+            this.PromoRequests = new HashSet<PromoRequest>();
+            this.Products = new HashSet<Product>();
         }
     
         public string Id { get; set; }
-        public Nullable<System.DateTime> DateRating { get; set; }
-        public Nullable<int> Rating1 { get; set; }
-        public string Comment { get; set; }
+        public string IdShop { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Nullable<System.DateTime> DateBegin { get; set; }
+        public Nullable<System.DateTime> DateEnd { get; set; }
+        public Nullable<int> Amount { get; set; }
+        public Nullable<double> MaxSale { get; set; }
+        public Nullable<double> MinCost { get; set; }
+        public Nullable<int> CustomerType { get; set; }
+        public Nullable<double> Sale { get; set; }
+        public Nullable<int> Status { get; set; }
     
+        public virtual MUser MUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
+        public virtual ICollection<PromoRequest> PromoRequests { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

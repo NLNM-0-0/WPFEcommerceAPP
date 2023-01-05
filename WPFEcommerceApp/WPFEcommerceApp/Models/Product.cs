@@ -21,6 +21,7 @@ namespace WPFEcommerceApp.Models
             this.ImageProducts = new HashSet<ImageProduct>();
             this.OrderInfoes = new HashSet<OrderInfo>();
             this.MUsers = new HashSet<MUser>();
+            this.Promoes = new HashSet<Promo>();
         }
     
         public string Id { get; set; }
@@ -54,5 +55,7 @@ namespace WPFEcommerceApp.Models
         public virtual ICollection<OrderInfo> OrderInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MUser> MUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Promo> Promoes { get; set; }
     }
 }
