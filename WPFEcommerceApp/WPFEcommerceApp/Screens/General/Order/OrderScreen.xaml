@@ -177,6 +177,38 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style TargetType="{x:Type ScrollViewer}">
+                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                    <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Rectangle x:Name="Corner" Grid.Column="1" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Grid.Row="1"/>
+                                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+                                        <ScrollBar x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Grid.Row="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" Margin="10,20,10,20"/>
+                                        <ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="{x:Type ListView}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListView}">
+                            <ItemsPresenter/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
 
     </UserControl.Resources>
@@ -184,12 +216,12 @@
           Width="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=Width}"
           wpf:ScrollBarAssist.ButtonsVisibility="Collapsed" 
           x:Name="container">
-        <Border Padding="70, 40, 70, 40">
+        <Border Padding="0 40">
             <TabControl x:Name="TabControlContainer" SelectedIndex="{Binding CurrentPage}">
                 <!--Processing-->
                 <TabItem Style="{StaticResource CustomTabItem}" 
                     Header="Processing">
-                    
+
                     <Grid Height="{c:Binding 
                         ElementName=TabControlContainer, 
                         Path=ActualHeight-70}">
@@ -199,26 +231,26 @@
                                        x:Name="EmptyMessage"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
-                        <ListView Width="{c:Binding ElementName=TabControlContainer, Path=Width}"
-                                  Height="{c:Binding ElementName=TabControlContainer, Path=Height-60}"
-                                  x:Name="ProcessingList"
-                                  BorderThickness="0" 
-                                  ItemContainerStyle="{StaticResource ListItemContainer}"
-                                  ItemTemplate="{StaticResource OrderCard}"
-                                  ItemsSource="{Binding ProcessingList}"
-                                  ScrollViewer.CanContentScroll="False"
-                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+                        <ScrollViewer>
+                            <ListView x:Name="ProcessingList"
+                                      BorderThickness="0" 
+                                      ItemContainerStyle="{StaticResource ListItemContainer}"
+                                      ItemTemplate="{StaticResource OrderCard}"
+                                      ItemsSource="{Binding ProcessingList}"
+                                      ScrollViewer.CanContentScroll="False"
+                                      ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
 
-                        <i:Interaction.Triggers>
-                            <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="0">
-                                <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Visible"/>
-                                <i:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetName="ProcessingList"/>
-                            </i:DataTrigger>
-                            <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="1">
-                                <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Collapsed"/>
-                                <i:ChangePropertyAction PropertyName="Visibility" Value="Visible" TargetName="ProcessingList"/>
-                            </i:DataTrigger>
-                        </i:Interaction.Triggers>
+                            <i:Interaction.Triggers>
+                                <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="0">
+                                    <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Visible"/>
+                                    <i:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" TargetName="ProcessingList"/>
+                                </i:DataTrigger>
+                                <i:DataTrigger Binding="{Binding ProcessingList.Count}" Value="1">
+                                    <i:ChangePropertyAction TargetName="EmptyMessage" PropertyName="Visibility" Value="Collapsed"/>
+                                    <i:ChangePropertyAction PropertyName="Visibility" Value="Visible" TargetName="ProcessingList"/>
+                                </i:DataTrigger>
+                            </i:Interaction.Triggers>
+                        </ScrollViewer>
                     </Grid>
                 </TabItem>
                 <!--Delivering-->
@@ -230,6 +262,7 @@
                                        x:Name="EmptyMessage2"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
+                        <ScrollViewer>
                         <ListView 
                                   x:Name="DeliveringList"
                                   BorderThickness="0" 
@@ -237,9 +270,10 @@
                                   ItemTemplate="{StaticResource OrderCard}"
                                   ItemsSource="{Binding DeliveringList}"
                                   ScrollViewer.CanContentScroll="False"
-                                  ScrollViewer.VerticalScrollBarVisibility="Hidden" d:ItemsSource="{d:SampleData ItemCount=5}">
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
                         </ListView>
+                        </ScrollViewer>
                         <i:Interaction.Triggers>
                             <i:DataTrigger Binding="{Binding DeliveringList.Count}" Value="0">
                                 <i:ChangePropertyAction TargetName="EmptyMessage2" PropertyName="Visibility" Value="Visible"/>
@@ -254,13 +288,16 @@
                 </TabItem>
                 <!--Deliverd-->
                 <TabItem Header="Delivered" Style="{StaticResource CustomTabItem}" >
+
                     <Grid Height="{c:Binding ElementName=TabControlContainer, Path=ActualHeight-70}">
                         <TextBlock Text="No orders in Delivered"
                                        HorizontalAlignment="Center"
                                        x:Name="EmptyMessage3"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
-                        <ListView 
+                        <ScrollViewer>
+
+                            <ListView
                                   x:Name="DeliveredList"
                                   BorderThickness="0" 
                                   ItemContainerStyle="{StaticResource ListItemContainer}"
@@ -268,8 +305,9 @@
                                   ItemsSource="{Binding DeliveredList}"
                                   ScrollViewer.CanContentScroll="False"
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                            </ListView>
+                        </ScrollViewer>
 
-                        </ListView>
                         <i:Interaction.Triggers>
                             <i:DataTrigger Binding="{Binding DeliveredList.Count}" Value="0">
                                 <i:ChangePropertyAction TargetName="EmptyMessage3" PropertyName="Visibility" Value="Visible"/>
@@ -291,6 +329,7 @@
                                        x:Name="EmptyMessage4"
                                        VerticalAlignment="Center"
                                        Visibility="Collapsed"/>
+                        <ScrollViewer>
                         <ListView 
                                   x:Name="CancelledList"
                                   BorderThickness="0" 
@@ -300,6 +339,7 @@
                                   ScrollViewer.CanContentScroll="False"
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         </ListView>
+                        </ScrollViewer>
                         <i:Interaction.Triggers>
                             <i:DataTrigger Binding="{Binding CancelledList.Count}" Value="0">
                                 <i:ChangePropertyAction TargetName="EmptyMessage4" PropertyName="Visibility" Value="Visible"/>

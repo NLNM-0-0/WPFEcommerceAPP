@@ -29,6 +29,7 @@
                         <Grid x:Name="imgContainer" Background="Pink"
                               Width="70" Height="70">
                             <local:AsyncImage Source="{Binding Product.ProductImage}" 
+                                              Stretch="Uniform"
                                        Width="{Binding ElementName=imgContainer, Path=Width}"
                                        Height="{Binding ElementName=imgContainer, Path=Width}">
                             </local:AsyncImage>

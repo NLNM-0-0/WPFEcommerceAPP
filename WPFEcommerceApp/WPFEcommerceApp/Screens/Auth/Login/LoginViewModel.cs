@@ -59,7 +59,9 @@ namespace WPFEcommerceApp
                 x => x.MUser);
             if(acc != null && acc.MUser.StatusUser != "Banned")
             {
-                AccountStore.instance.CurrentAccount = acc.MUser;
+                var userRepo = new GenericDataRepository<MUser>();
+                var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1);
+                AccountStore.instance.CurrentAccount = user;
                 return true;
             }
 

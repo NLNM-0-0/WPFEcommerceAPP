@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EcommerceAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="CreatedTime" />
+          </Key>
+          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="CreatedTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="PhoneNumer" Type="varchar" MaxLength="13" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="Advertisement">
           <Key>
             <PropertyRef Name="Id" />
@@ -155,6 +166,40 @@
           <Property Name="DateOfSale" Type="smalldatetime" />
           <Property Name="Status" Type="varchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="Promo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdShop" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="DateBegin" Type="smalldatetime" />
+          <Property Name="DateEnd" Type="smalldatetime" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="MaxSale" Type="float" />
+          <Property Name="MinCost" Type="float" />
+          <Property Name="CustomerType" Type="int" />
+          <Property Name="Sale" Type="float" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="PromoDetail">
+          <Key>
+            <PropertyRef Name="IdProduct" />
+            <PropertyRef Name="IdPromo" />
+          </Key>
+          <Property Name="IdProduct" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdPromo" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PromoRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdPromo" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
         <EntityType Name="Rating">
           <Key>
             <PropertyRef Name="Id" />
@@ -162,6 +207,18 @@
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="DateRating" Type="smalldatetime" />
           <Property Name="Rating" Type="int" />
+          <Property Name="Comment" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="RatingInfo">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="IdRating" />
+            <PropertyRef Name="DateReply" />
+          </Key>
+          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdRating" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="500" />
+          <Property Name="DateReply" Type="smalldatetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ShopRequest">
           <Key>
@@ -211,6 +268,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="ShopRequest">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Address_IdUser">
+          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="Address" Type="Self.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Address">
               <PropertyRef Name="IdUser" />
             </Dependent>
           </ReferentialConstraint>
@@ -395,6 +464,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Promo_idShop">
+          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="Promo" Type="Self.Promo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Promo">
+              <PropertyRef Name="IdShop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromoDetail_idProduct">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="PromoDetail" Type="Self.PromoDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromoDetail">
+              <PropertyRef Name="IdProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromoDetail_idPromo">
+          <End Role="Promo" Type="Self.Promo" Multiplicity="1" />
+          <End Role="PromoDetail" Type="Self.PromoDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromoDetail">
+              <PropertyRef Name="IdPromo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromoRequest_idPromo">
+          <End Role="Promo" Type="Self.Promo" Multiplicity="1" />
+          <End Role="PromoRequest" Type="Self.PromoRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromoRequest">
+              <PropertyRef Name="IdPromo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromoRequest_idUser">
+          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="PromoRequest" Type="Self.PromoRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromoRequest">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RatingInfo_IdRating">
+          <End Role="Rating" Type="Self.Rating" Multiplicity="1" />
+          <End Role="RatingInfo" Type="Self.RatingInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rating">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RatingInfo">
+              <PropertyRef Name="IdRating" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RatingInfo_IdUser">
+          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="RatingInfo" Type="Self.RatingInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RatingInfo">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Login">
           <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
           <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="0..1" />
@@ -408,6 +561,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EcommerceAppModelStoreContainer">
+          <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Advertisement" EntityType="Self.Advertisement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrandRequest" EntityType="Self.BrandRequest" Schema="dbo" store:Type="Tables" />
@@ -421,7 +575,11 @@
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderInfo" EntityType="Self.OrderInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promo" EntityType="Self.Promo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PromoDetail" EntityType="Self.PromoDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PromoRequest" EntityType="Self.PromoRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RatingInfo" EntityType="Self.RatingInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopRequest" EntityType="Self.ShopRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="Self.FK__Cart__IdProduct__46E78A0C">
@@ -435,6 +593,10 @@
           <AssociationSet Name="FK__ShopReque__IdUse__6EF57B66" Association="Self.FK__ShopReque__IdUse__6EF57B66">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="ShopRequest" EntitySet="ShopRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Address_IdUser" Association="Self.FK_Address_IdUser">
+            <End Role="MUser" EntitySet="MUser" />
+            <End Role="Address" EntitySet="Address" />
           </AssociationSet>
           <AssociationSet Name="FK_BrandRequest_Shop" Association="Self.FK_BrandRequest_Shop">
             <End Role="MUser" EntitySet="MUser" />
@@ -496,6 +658,34 @@
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
+          <AssociationSet Name="FK_Promo_idShop" Association="Self.FK_Promo_idShop">
+            <End Role="MUser" EntitySet="MUser" />
+            <End Role="Promo" EntitySet="Promo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromoDetail_idProduct" Association="Self.FK_PromoDetail_idProduct">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="PromoDetail" EntitySet="PromoDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromoDetail_idPromo" Association="Self.FK_PromoDetail_idPromo">
+            <End Role="Promo" EntitySet="Promo" />
+            <End Role="PromoDetail" EntitySet="PromoDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromoRequest_idPromo" Association="Self.FK_PromoRequest_idPromo">
+            <End Role="Promo" EntitySet="Promo" />
+            <End Role="PromoRequest" EntitySet="PromoRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromoRequest_idUser" Association="Self.FK_PromoRequest_idUser">
+            <End Role="MUser" EntitySet="MUser" />
+            <End Role="PromoRequest" EntitySet="PromoRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RatingInfo_IdRating" Association="Self.FK_RatingInfo_IdRating">
+            <End Role="Rating" EntitySet="Rating" />
+            <End Role="RatingInfo" EntitySet="RatingInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RatingInfo_IdUser" Association="Self.FK_RatingInfo_IdUser">
+            <End Role="MUser" EntitySet="MUser" />
+            <End Role="RatingInfo" EntitySet="RatingInfo" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_Login" Association="Self.FK_User_Login">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="UserLogin" EntitySet="UserLogin" />
@@ -506,10 +696,12 @@
     <edmx:ConceptualModels>
       <Schema Namespace="EcommerceAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="EcommerceAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Carts" EntityType="EcommerceAppModel.Cart" />
+          <EntitySet Name="UserLogins" EntityType="EcommerceAppModel.UserLogin" />
+          <EntitySet Name="Addresses" EntityType="EcommerceAppModel.Address" />
           <EntitySet Name="Advertisements" EntityType="EcommerceAppModel.Advertisement" />
           <EntitySet Name="Brands" EntityType="EcommerceAppModel.Brand" />
           <EntitySet Name="BrandRequests" EntityType="EcommerceAppModel.BrandRequest" />
-          <EntitySet Name="Carts" EntityType="EcommerceAppModel.Cart" />
           <EntitySet Name="Categories" EntityType="EcommerceAppModel.Category" />
           <EntitySet Name="CategoryRequests" EntityType="EcommerceAppModel.CategoryRequest" />
           <EntitySet Name="ImageProducts" EntityType="EcommerceAppModel.ImageProduct" />
@@ -518,9 +710,15 @@
           <EntitySet Name="Notifications" EntityType="EcommerceAppModel.Notification" />
           <EntitySet Name="OrderInfoes" EntityType="EcommerceAppModel.OrderInfo" />
           <EntitySet Name="Products" EntityType="EcommerceAppModel.Product" />
+          <EntitySet Name="Promoes" EntityType="EcommerceAppModel.Promo" />
+          <EntitySet Name="PromoRequests" EntityType="EcommerceAppModel.PromoRequest" />
           <EntitySet Name="Ratings" EntityType="EcommerceAppModel.Rating" />
+          <EntitySet Name="RatingInfoes" EntityType="EcommerceAppModel.RatingInfo" />
           <EntitySet Name="ShopRequests" EntityType="EcommerceAppModel.ShopRequest" />
-          <EntitySet Name="UserLogins" EntityType="EcommerceAppModel.UserLogin" />
+          <AssociationSet Name="FK_Address_IdUser" Association="EcommerceAppModel.FK_Address_IdUser">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
           <AssociationSet Name="FK_Product_Brand" Association="EcommerceAppModel.FK_Product_Brand">
             <End Role="Brand" EntitySet="Brands" />
             <End Role="Product" EntitySet="Products" />
@@ -577,6 +775,18 @@
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
+          <AssociationSet Name="FK_Promo_idShop" Association="EcommerceAppModel.FK_Promo_idShop">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="Promo" EntitySet="Promoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromoRequest_idUser" Association="EcommerceAppModel.FK_PromoRequest_idUser">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="PromoRequest" EntitySet="PromoRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RatingInfo_IdUser" Association="EcommerceAppModel.FK_RatingInfo_IdUser">
+            <End Role="MUser" EntitySet="MUsers" />
+            <End Role="RatingInfo" EntitySet="RatingInfoes" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_Login" Association="EcommerceAppModel.FK_User_Login">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="UserLogin" EntitySet="UserLogins" />
@@ -589,11 +799,57 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
           </AssociationSet>
+          <AssociationSet Name="FK_PromoRequest_idPromo" Association="EcommerceAppModel.FK_PromoRequest_idPromo">
+            <End Role="Promo" EntitySet="Promoes" />
+            <End Role="PromoRequest" EntitySet="PromoRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RatingInfo_IdRating" Association="EcommerceAppModel.FK_RatingInfo_IdRating">
+            <End Role="Rating" EntitySet="Ratings" />
+            <End Role="RatingInfo" EntitySet="RatingInfoes" />
+          </AssociationSet>
           <AssociationSet Name="FavouriteProduct" Association="EcommerceAppModel.FavouriteProduct">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="PromoDetail" Association="EcommerceAppModel.PromoDetail">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Promo" EntitySet="Promoes" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="IdProduct" />
+            <PropertyRef Name="Size" />
+          </Key>
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="Size" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" FromRole="Cart" ToRole="Product" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="Cart" ToRole="MUser" />
+          </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
+        </EntityType>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="CreatedTime" />
+          </Key>
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumer" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="Address" ToRole="MUser" />
+        </EntityType>
         <EntityType Name="Advertisement">
           <Key>
             <PropertyRef Name="Id" />
@@ -621,19 +877,6 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="BrandRequest" ToRole="MUser" />
-        </EntityType>
-        <EntityType Name="Cart">
-          <Key>
-            <PropertyRef Name="IdUser" />
-            <PropertyRef Name="IdProduct" />
-            <PropertyRef Name="Size" />
-          </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Amount" Type="Int32" />
-          <Property Name="Size" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" FromRole="Cart" ToRole="Product" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="Cart" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -698,6 +941,7 @@
           <Property Name="StatusShop" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="SourceImageAva" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SourceImageBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Addresses" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="MUser" ToRole="Address" />
           <NavigationProperty Name="BrandRequests" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="MUser" ToRole="BrandRequest" />
           <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="MUser" ToRole="Cart" />
           <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
@@ -707,6 +951,9 @@
           <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
+          <NavigationProperty Name="Promoes" Relationship="EcommerceAppModel.FK_Promo_idShop" FromRole="MUser" ToRole="Promo" />
+          <NavigationProperty Name="PromoRequests" Relationship="EcommerceAppModel.FK_PromoRequest_idUser" FromRole="MUser" ToRole="PromoRequest" />
+          <NavigationProperty Name="RatingInfoes" Relationship="EcommerceAppModel.FK_RatingInfo_IdUser" FromRole="MUser" ToRole="RatingInfo" />
           <NavigationProperty Name="UserLogin" Relationship="EcommerceAppModel.FK_User_Login" FromRole="MUser" ToRole="UserLogin" />
           <NavigationProperty Name="Products1" Relationship="EcommerceAppModel.FavouriteProduct" FromRole="MUser" ToRole="Product" />
         </EntityType>
@@ -768,6 +1015,38 @@
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="Product" ToRole="MUser" />
           <NavigationProperty Name="OrderInfoes" Relationship="EcommerceAppModel.FK_OrderInfo_Product" FromRole="Product" ToRole="OrderInfo" />
           <NavigationProperty Name="MUsers" Relationship="EcommerceAppModel.FavouriteProduct" FromRole="Product" ToRole="MUser" />
+          <NavigationProperty Name="Promoes" Relationship="EcommerceAppModel.PromoDetail" FromRole="Product" ToRole="Promo" />
+        </EntityType>
+        <EntityType Name="Promo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DateBegin" Type="DateTime" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="MaxSale" Type="Double" />
+          <Property Name="MinCost" Type="Double" />
+          <Property Name="CustomerType" Type="Int32" />
+          <Property Name="Sale" Type="Double" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Promo_idShop" FromRole="Promo" ToRole="MUser" />
+          <NavigationProperty Name="PromoRequests" Relationship="EcommerceAppModel.FK_PromoRequest_idPromo" FromRole="Promo" ToRole="PromoRequest" />
+          <NavigationProperty Name="Products" Relationship="EcommerceAppModel.PromoDetail" FromRole="Promo" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="PromoRequest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdPromo" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_PromoRequest_idUser" FromRole="PromoRequest" ToRole="MUser" />
+          <NavigationProperty Name="Promo" Relationship="EcommerceAppModel.FK_PromoRequest_idPromo" FromRole="PromoRequest" ToRole="Promo" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -776,7 +1055,22 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="DateRating" Type="DateTime" Precision="0" />
           <Property Name="Rating1" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="OrderInfoes" Relationship="EcommerceAppModel.FK_MOrder_Rating" FromRole="Rating" ToRole="OrderInfo" />
+          <NavigationProperty Name="RatingInfoes" Relationship="EcommerceAppModel.FK_RatingInfo_IdRating" FromRole="Rating" ToRole="RatingInfo" />
+        </EntityType>
+        <EntityType Name="RatingInfo">
+          <Key>
+            <PropertyRef Name="IdUser" />
+            <PropertyRef Name="IdRating" />
+            <PropertyRef Name="DateReply" />
+          </Key>
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdRating" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DateReply" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_RatingInfo_IdUser" FromRole="RatingInfo" ToRole="MUser" />
+          <NavigationProperty Name="Rating" Relationship="EcommerceAppModel.FK_RatingInfo_IdRating" FromRole="RatingInfo" ToRole="Rating" />
         </EntityType>
         <EntityType Name="ShopRequest">
           <Key>
@@ -787,15 +1081,18 @@
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
-        <EntityType Name="UserLogin">
-          <Key>
-            <PropertyRef Name="IdUser" />
-          </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
-        </EntityType>
+        <Association Name="FK_Address_IdUser">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Address" Role="Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Brand">
           <End Type="EcommerceAppModel.Brand" Role="Brand" Multiplicity="1" />
           <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
@@ -964,6 +1261,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Promo_idShop">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.Promo" Role="Promo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Promo">
+              <PropertyRef Name="IdShop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromoRequest_idUser">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.PromoRequest" Role="PromoRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromoRequest">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RatingInfo_IdUser">
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.RatingInfo" Role="RatingInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RatingInfo">
+              <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Login">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
           <End Type="EcommerceAppModel.UserLogin" Role="UserLogin" Multiplicity="0..1" />
@@ -1000,9 +1333,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PromoRequest_idPromo">
+          <End Type="EcommerceAppModel.Promo" Role="Promo" Multiplicity="1" />
+          <End Type="EcommerceAppModel.PromoRequest" Role="PromoRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromoRequest">
+              <PropertyRef Name="IdPromo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RatingInfo_IdRating">
+          <End Type="EcommerceAppModel.Rating" Role="Rating" Multiplicity="1" />
+          <End Type="EcommerceAppModel.RatingInfo" Role="RatingInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rating">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RatingInfo">
+              <PropertyRef Name="IdRating" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FavouriteProduct">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="*" />
           <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
+        </Association>
+        <Association Name="PromoDetail">
+          <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="*" />
+          <End Type="EcommerceAppModel.Promo" Role="Promo" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1010,6 +1371,36 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EcommerceAppModelStoreContainer" CdmEntityContainer="EcommerceAppEntities">
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="EcommerceAppModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="EcommerceAppModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="EcommerceAppModel.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="Address1" ColumnName="Address" />
+                <ScalarProperty Name="PhoneNumer" ColumnName="PhoneNumer" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Advertisements">
             <EntityTypeMapping TypeName="EcommerceAppModel.Advertisement">
               <MappingFragment StoreEntitySet="Advertisement">
@@ -1036,16 +1427,6 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IdShop" ColumnName="IdShop" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Carts">
-            <EntityTypeMapping TypeName="EcommerceAppModel.Cart">
-              <MappingFragment StoreEntitySet="Cart">
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="IdProduct" ColumnName="IdProduct" />
-                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1160,12 +1541,51 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Promoes">
+            <EntityTypeMapping TypeName="EcommerceAppModel.Promo">
+              <MappingFragment StoreEntitySet="Promo">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Sale" ColumnName="Sale" />
+                <ScalarProperty Name="CustomerType" ColumnName="CustomerType" />
+                <ScalarProperty Name="MinCost" ColumnName="MinCost" />
+                <ScalarProperty Name="MaxSale" ColumnName="MaxSale" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateBegin" ColumnName="DateBegin" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IdShop" ColumnName="IdShop" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PromoRequests">
+            <EntityTypeMapping TypeName="EcommerceAppModel.PromoRequest">
+              <MappingFragment StoreEntitySet="PromoRequest">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="IdPromo" ColumnName="IdPromo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Ratings">
             <EntityTypeMapping TypeName="EcommerceAppModel.Rating">
               <MappingFragment StoreEntitySet="Rating">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="Rating1" ColumnName="Rating" />
                 <ScalarProperty Name="DateRating" ColumnName="DateRating" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RatingInfoes">
+            <EntityTypeMapping TypeName="EcommerceAppModel.RatingInfo">
+              <MappingFragment StoreEntitySet="RatingInfo">
+                <ScalarProperty Name="DateReply" ColumnName="DateReply" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IdRating" ColumnName="IdRating" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1178,21 +1598,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserLogins">
-            <EntityTypeMapping TypeName="EcommerceAppModel.UserLogin">
-              <MappingFragment StoreEntitySet="UserLogin">
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="FavouriteProduct" TypeName="EcommerceAppModel.FavouriteProduct" StoreEntitySet="FavouriteProduct">
             <EndProperty Name="Product">
               <ScalarProperty Name="Id" ColumnName="IdProduct" />
             </EndProperty>
             <EndProperty Name="MUser">
               <ScalarProperty Name="Id" ColumnName="IdUser" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PromoDetail" TypeName="EcommerceAppModel.PromoDetail" StoreEntitySet="PromoDetail">
+            <EndProperty Name="Promo">
+              <ScalarProperty Name="Id" ColumnName="IdPromo" />
+            </EndProperty>
+            <EndProperty Name="Product">
+              <ScalarProperty Name="Id" ColumnName="IdProduct" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

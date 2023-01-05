@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -86,7 +86,24 @@
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\DropImage\MoveThumb.cs" />
+    <Compile Include="Models\Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
     <Compile Include="Utils\IsLoadingCheck.cs" />
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Promo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PromoRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RatingInfo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -110,7 +127,6 @@
     <Compile Include="Models\ImageProduct.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model.Context.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Model.Designer.cs">
       <DependentUpon>Model.cs</DependentUpon>
@@ -413,6 +429,7 @@
     <Compile Include="Screens\General\Payment\components\Dialogs\EditInforDialog.xaml.cs">
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ImmediateCommand.cs" />
     <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\General\Payment\components\HiddenTab\HiddenTab.xaml.cs">
       <DependentUpon>HiddenTab.xaml</DependentUpon>
@@ -1014,6 +1031,7 @@
     </None>
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
@@ -1074,6 +1092,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Models\Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
     <Resource Include="Assets\Sounds\LoadingSound.mp3" />
     <Resource Include="Assets\Icon\Home.png" />
     <Resource Include="Assets\Images\Offline.png" />

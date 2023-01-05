@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
@@ -9,13 +10,35 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Firebase.Storage;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WPFEcommerceApp {
     public class FireStorageAPI {
         readonly static string BUCKET = "wano-wpf.appspot.com";
         readonly static FirebaseStorage storage = new FirebaseStorage(BUCKET);
+        const string tempJPG = "CreateTempJpg.jpg";
+        const string tempIMG = "TempIMG.jpg";
         public static async Task<string> Push(string Path, string Root, string Name, params string[] child) {
             var stream = File.Open(Path, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+            bool CreatedFile = false;
+            System.Drawing.Image img = new Bitmap(stream);
+            if(!img.RawFormat.Equals(ImageFormat.Jpeg)) {
+                using(var bitmap = new Bitmap(img.Width, img.Height)) {
+                    bitmap.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+
+                    using(var graphic = Graphics.FromImage(bitmap)) {
+                        graphic.Clear(Color.White);
+                        graphic.DrawImageUnscaled(img, 0, 0);
+                    }
+                    bitmap.Save(tempJPG, ImageFormat.Jpeg);
+                }
+
+                stream.Close();
+                stream = File.Open(tempJPG, FileMode.Open, FileAccess.Read, FileShare.Read);
+                CreatedFile = true;
+            }
+
             var task = CreateRef(Root, Name, child);
             int clone = 0;
             string nclone = Name;
@@ -24,7 +47,10 @@ namespace WPFEcommerceApp {
                 Name = nclone + $"_{clone}";
                 task = CreateRef(Root, Name, child);
             }
+
             var downloadUrl = await task.PutAsync(stream);
+            stream.Close();
+            if(CreatedFile) File.Delete(tempJPG);
             return downloadUrl;
         }
         public static async Task<Tuple<bool, string>> PushFromFile(
@@ -56,8 +82,8 @@ namespace WPFEcommerceApp {
             string OldPath = null,
             params string[] child) {
 
-            FileStream stream = new FileStream("TempImage.png", FileMode.Create);
-            BitmapEncoder encoder = new PngBitmapEncoder();
+            FileStream stream = new FileStream(tempIMG, FileMode.Create);
+            BitmapEncoder encoder = new JpegBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bm));
             encoder.Save(stream);
             stream.Close();
@@ -66,8 +92,8 @@ namespace WPFEcommerceApp {
                 await Delete(OldPath);
             }
 
-            var res = await Push("TempImage.png", Root, Name, child);
-            File.Delete("TempImage.png");
+            var res = await Push(tempIMG, Root, Name, child);
+            File.Delete(tempIMG);
             return res;
         }
         public static async Task<bool> Delete(string Path) {
