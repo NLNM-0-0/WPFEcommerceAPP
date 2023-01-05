@@ -117,33 +117,34 @@ namespace WPFEcommerceApp {
 				false,
 			};
             //command
-            OnPayment = new RelayCommand<object>((p) => { return true; }, (p) => {
+            OnPayment = new ImmediateCommand<object>((p) => {
                 StateArea[0] = false;
                 StateArea[1] = true;
                 PaymentState = true;
             });
-			OnDeliFieldChoice = new RelayCommand<object>(p => true, p => {
+			OnDeliFieldChoice = new ImmediateCommand<object>(p => {
 				if(PaymentState == false) StateArea[0] = true;
 				else { StateArea[0] = true; StateArea[1] = false; PaymentState = false; }
 			});
 
-            PaymentAlertDialogCM = new RelayCommand<object>((p)=>true, (p)=> {
+            PaymentAlertDialogCM = new ImmediateCommand<object>((p)=> {
                 if((bool)p == true) {
                     order.ShippingSpeedMethod = 0;
                 }
                 else order.ShippingSpeedMethod = 1;
                 PaymentAlertDialog(order);
 			});
-			OnEditInfor = new RelayCommand<object>((p) => true, (p) => EditInforDialog(p));
-			OnSuccessPayment = new RelayCommand<object>((p) => true, async (p) => {
+			OnEditInfor = new ImmediateCommand<object>((p) => EditInforDialog(p));
+			OnSuccessPayment = new ImmediateCommand<object>(async (p) => {
                 //Do something with store here
                 MainViewModel.IsLoading = true;
 
                 var temp = new Order(order);
 				temp.Status = "Processing";
 				await OrderStore.instance.Add(temp);
-				NavigateProvider.SuccessScreen().Navigate();
 				NavigationStore.instance.clearHistory();
+				NavigationStore.instance.stackScreen.Add(new Tuple<INavigationService, object>(NavigateProvider.OrderScreen(), null));
+                NavigateProvider.SuccessScreen().Navigate();
                 MainViewModel.IsLoading = false;
 
             });
@@ -168,7 +169,7 @@ namespace WPFEcommerceApp {
 			//	await FireStorageAPI.PushFromImage(bm, "Test", "TestImg");
 			//});
 
-			OnEditOrder = new RelayCommand<object>(p => true, p => {
+			OnEditOrder = new ImmediateCommand<object>(p => {
 				NavigateProvider.BagScreen().Navigate();
 			});
         }

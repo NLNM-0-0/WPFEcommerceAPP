@@ -336,10 +336,9 @@
                           x:Name="ProductListContainer">
 
                     <ListView ItemsSource="{Binding ListOrder}"
-                                  Width="{c:Binding ElementName=ProductListContainer, Path=ActualWidth+10}"
-                                  ItemTemplate="{StaticResource BProductCardContent}" 
-                                  ItemContainerStyle="{StaticResource ListItemContainer}" 
-                                  BorderThickness="0"
+                              ItemTemplate="{StaticResource BProductCardContent}" 
+                              ItemContainerStyle="{StaticResource ListItemContainer}" 
+                              BorderThickness="0"
                               ScrollViewer.CanContentScroll="False"
                               ScrollViewer.VerticalScrollBarVisibility="Auto">
                     </ListView>

@@ -68,12 +68,12 @@ namespace WPFEcommerceApp {
                 MainViewModel.IsLoading = false;
             });
 
-            ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
+            ICommand CanCelCM = new ImmediateCommand<object>(async (p) => {
                 (p as Order).Status = "Cancelled";
                 await _orderStore.Update(p as Order);
             });
 
-            OnCancel = new RelayCommand<object>(p => true, async p => {
+            OnCancel = new ImmediateCommand<object>(async p => {
                 var view = new ConfirmDialog() {
                     Header = "Are you sure?",
                     Content = "You will not be able to take this action back.",
@@ -83,12 +83,12 @@ namespace WPFEcommerceApp {
                 await DialogHost.Show(view, "Main");
             });
 
-            OnDetailView = new RelayCommand<object>((p) => true, (p) => {
+            OnDetailView = new ImmediateCommand<object>(p => {
                 NavigateProvider.OrderDetailScreen().Navigate(p);
             });
 
             ICommand ReOrderCM = new ReOrderCM();
-            OnReorder = new RelayCommand<object>(p => true, async p => {
+            OnReorder = new ImmediateCommand<object>(async p => {
                 var view = new ConfirmDialog() {
                     CM = ReOrderCM,
                     Param = p
@@ -96,7 +96,7 @@ namespace WPFEcommerceApp {
                 await DialogHost.Show(view, "Main");
             });
 
-            OnReviewProduct = new RelayCommand<object>(p => true, async p => {
+            OnReviewProduct = new ImmediateCommand<object>(async p => {
                 var t = p as Order;
                 List<ReviewProduct> products = new List<ReviewProduct>();
                 for(int i = 0; i < t.ProductList.Count; i++) {
