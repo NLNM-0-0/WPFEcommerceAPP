@@ -86,14 +86,14 @@
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\DropImage\MoveThumb.cs" />
-    <Compile Include="Utils\IsLoadingCheck.cs" />
-    <Compile Include="Models\Address.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model.Context1.cs">
+    <Compile Include="Models\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\IsLoadingCheck.cs" />
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Promo.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -1031,6 +1031,7 @@
     </None>
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
@@ -1091,6 +1092,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Models\Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
     <Resource Include="Assets\Sounds\LoadingSound.mp3" />
     <Resource Include="Assets\Icon\Home.png" />
     <Resource Include="Assets\Images\Offline.png" />
