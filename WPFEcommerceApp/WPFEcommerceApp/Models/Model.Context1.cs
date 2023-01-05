@@ -18,19 +18,19 @@ namespace WPFEcommerceApp.Models
         public EcommerceAppEntities()
             : base("name=EcommerceAppEntities")
         {
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<UserLogin> UserLogins { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Advertisement> Advertisements { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<BrandRequest> BrandRequests { get; set; }
-        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryRequest> CategoryRequests { get; set; }
         public virtual DbSet<ImageProduct> ImageProducts { get; set; }
@@ -39,9 +39,10 @@ namespace WPFEcommerceApp.Models
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OrderInfo> OrderInfoes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Promo> Promoes { get; set; }
+        public virtual DbSet<PromoRequest> PromoRequests { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<RatingInfo> RatingInfoes { get; set; }
         public virtual DbSet<ShopRequest> ShopRequests { get; set; }
-        public virtual DbSet<UserLogin> UserLogins { get; set; }
-
     }
 }
