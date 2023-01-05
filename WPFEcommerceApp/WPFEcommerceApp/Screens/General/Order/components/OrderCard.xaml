@@ -6,40 +6,43 @@
                     xmlns:it="http://schemas.microsoft.com/xaml/behaviors"
                     x:Class="WPFEcommerceApp.OrderCard"
                     xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Constants/Colors.xaml" />
-        <ResourceDictionary Source="/Constants/Fonts.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-    
     <Style x:Key="ListItemContainer" TargetType="ListViewItem">
         <Setter Property="Margin" Value="0, 5, 0, 5"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <!--<Setter Property="SnapsToDevicePixels" Value="True"/>-->
         <Setter Property="Padding" Value="4,1"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Cursor" Value="Arrow"/>
+        <!--<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <Border x:Name="Bd" BorderBrush="{StaticResource BlurColorBrush}" BorderThickness="0.6" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true" Margin="0 20 0 0"
-                            Width="{c:Binding RelativeSource={RelativeSource AncestorType=TabControl, Mode=FindAncestor},Path=ActualWidth-30}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <Border x:Name="Bd" 
+                            BorderBrush="{StaticResource BlurColorBrush}" 
+                            BorderThickness="0.6" 
+                            Background="{TemplateBinding Background}" 
+                            Padding="{TemplateBinding Padding}" 
+                            Margin="0 20 0 0"
+                            Width="{c:Binding RelativeSource={RelativeSource AncestorType=TabControl, Mode=FindAncestor},Path=ActualWidth-160}">
+                        <ContentPresenter 
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
-                    <ControlTemplate.Triggers>
+                    <!--<ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Cursor" Value="Hand"/>
                         </Trigger>
-                    </ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
     
     <DataTemplate x:Key="OrderCard" DataType="{x:Type vm:Order}">
-        <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=ActualWidth}">
+        <StackPanel Width="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=ActualWidth}" Cursor="Arrow">
             <!--Header-->
             <Border Padding="15, 0">
                 <Grid Margin="0, 13">
@@ -49,8 +52,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Grid Background="Pink"
-                              Width="35"
+                        <Grid Width="35"
                               Height="35">
                             <vm:AsyncImage Source="{Binding ShopImage}"
                                    Stretch="Fill"
@@ -124,12 +126,11 @@
                     </Button>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
-                                                HorizontalAlignment="Right">
+                            HorizontalAlignment="Right">
                     <TextBlock Text="Order Total: "
-                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                               FontSize="{StaticResource FontSizeHeadline3}"/>
                     <TextBlock Text="{Binding OrderTotal}"
-                                                   
-                                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                               FontSize="{StaticResource FontSizeHeadline3}"/>
                 </StackPanel>
             </Grid>
         </StackPanel>

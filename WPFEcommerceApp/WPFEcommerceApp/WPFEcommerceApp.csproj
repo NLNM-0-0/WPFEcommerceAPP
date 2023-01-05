@@ -85,6 +85,23 @@
     <Compile Include="Components\UserControls\AsyncImage\AsyncImage.xaml.cs">
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model.Context1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Promo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PromoRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RatingInfo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -108,7 +125,6 @@
     <Compile Include="Models\ImageProduct.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model.Context.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Model.Designer.cs">
       <DependentUpon>Model.cs</DependentUpon>
@@ -410,6 +426,7 @@
     <Compile Include="Screens\General\Payment\components\Dialogs\EditInforDialog.xaml.cs">
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ImmediateCommand.cs" />
     <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\General\Payment\components\HiddenTab\HiddenTab.xaml.cs">
       <DependentUpon>HiddenTab.xaml</DependentUpon>
