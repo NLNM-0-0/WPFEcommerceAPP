@@ -4,195 +4,136 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFEcommerceApp"
+        xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Login" Height="900" Width="1440">
+        WindowStyle="None"
+        Title="Login" 
+        x:Name="LoginWindow"
+        Width="1212.63" Height="820">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      CornerRadius="10"
+                      ResizeBorderThickness="0"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <local:MultiValueConverter x:Key="MultiValueConverter"/>
+    </Window.Resources>
     <materialDesign:DialogHost
         CloseOnClickAway="True"
         Identifier="Login">
         <Grid>
-            <Grid.Resources>
-                <ControlTemplate x:Key="TextBlockButton" TargetType="{x:Type Button}">
-                    <Grid>
-                        <AdornerDecorator CacheMode="{Binding RelativeSource={RelativeSource Self}, Path=(materialDesign:ShadowAssist.CacheMode)}">
-                            <Grid>
-                                <Border Background="{TemplateBinding Background}" 
-                            CornerRadius="{Binding Path=(materialDesign:ButtonAssist.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            x:Name="border"
-                            Effect="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ElevationAssist.Elevation), Converter={x:Static materialDesign:ShadowConverter.Instance}}" />
-                                <ProgressBar x:Name="ProgressBar"
-                                Style="{DynamicResource MaterialDesignLinearProgressBar}"
-                                Minimum="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.Minimum)}"
-                                Maximum="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.Maximum)}"
-                                Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.IndicatorForeground)}"
-                                Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.IndicatorBackground)}"
-                                BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.IndicatorBackground)}"
-                                Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.Value)}"
-                                IsIndeterminate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.IsIndeterminate)}"
-                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.IsIndicatorVisible), Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Height="{TemplateBinding Height}"
-                                Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ButtonBase}}, Path=ActualWidth}"
-                                Opacity="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(materialDesign:ButtonProgressAssist.Opacity)}"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                    <ProgressBar.Clip>
-                                        <MultiBinding Converter="{StaticResource BorderClipConverter}">
-                                            <Binding ElementName="border" Path="ActualWidth" />
-                                            <Binding ElementName="border" Path="ActualHeight" />
-                                            <Binding ElementName="border" Path="CornerRadius" />
-                                            <Binding ElementName="border" Path="BorderThickness" />
-                                        </MultiBinding>
-                                    </ProgressBar.Clip>
-                                </ProgressBar>
-                            </Grid>
-                        </AdornerDecorator>
-                        <materialDesign:Ripple  
-                            Content="{TemplateBinding Content}" 
-                            ContentTemplate="{TemplateBinding ContentTemplate}" Focusable="False"
-                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Padding="{TemplateBinding Padding}"
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                            <materialDesign:Ripple.Clip>
-                                <MultiBinding Converter="{StaticResource BorderClipConverter}">
-                                    <Binding ElementName="border" Path="ActualWidth" />
-                                    <Binding ElementName="border" Path="ActualHeight" />
-                                    <Binding ElementName="border" Path="CornerRadius" />
-                                    <Binding ElementName="border" Path="BorderThickness" />
-                                </MultiBinding>
-                            </materialDesign:Ripple.Clip>
-                        </materialDesign:Ripple>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="border" Property="materialDesign:ShadowAssist.Darken" Value="True" />
-                            <Setter Property="Foreground" Value="{StaticResource NotAvailableColorBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="border" Property="materialDesign:ShadowAssist.Darken" Value="True" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Opacity" Value="0.38"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <Label Content="WELCOME!" FontSize="40" FontWeight="Bold" Margin="65,100,0,25"></Label>
-                <Image Source="C:\Users\ADMIN\Downloads\a8ff3eb86a0c49b4976246f099e2e337.jpg" Margin="30,80"></Image>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
 
-                <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="50,250,0,40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--ControlBar-->
+            <local:WindowControlBar Minimize="False" Maximize="False" 
+                                    CloseCM="{Binding ElementName=LoginWindow,Path=DataContext.CloseCM}"/>
+            <!--Content-->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2.1*"/>
+                </Grid.ColumnDefinitions>
+                <!--Left Column-->
+                <StackPanel Grid.Column="0">
+                    <Label Content="WELCOME!" 
+                           FontSize="63" 
+                           FontWeight="Bold" 
+                           Margin="65,100,0,-5"/>
+                    <Image Source="..\..\..\Assets\Images\img_Boarding.jpg" Margin="-50,50,-30,80"></Image>
+                </StackPanel>
+                <!--Right Column-->
+                <Border Padding="30 0 40 0" Grid.Column="1">
+                    <StackPanel 
+                            x:Name="RightColumnContainer">
 
-                </Label>
-                <TextBox
-                    Style="{StaticResource TextBoxHintBlackBorder}"
-                    materialDesign:HintAssist.Hint="User"
-                    Text="{Binding Username}"
-                    Width="auto"
-                    HorizontalContentAlignment="Stretch"
-                    Margin="30"
-                    materialDesign:HintAssist.HelperText="" />
-                <PasswordBox
-                 materialDesign:PasswordBoxAssist.Password="{Binding Password}"
-                 Style="{StaticResource PasswordOutlinedReveal}"            
-                    materialDesign:HintAssist.Hint="Password"
-                    materialDesign:TextFieldAssist.HasClearButton="True"
-                    Width="auto"
-                    HorizontalContentAlignment="Stretch"
-                    Margin="30 0"
-                    materialDesign:HintAssist.HelperText="">
-                </PasswordBox>
-                <Grid Margin="30,10,30,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <CheckBox
-                    Background="{StaticResource BlackColorBrush}"
-                    Content="Remember me"
-                    Foreground="{StaticResource BlackColorBrush}"
-                
-                />
-                    <Button
-                    Grid.Column="1"
-                    Margin="0 3 0 0"
-                    Style="{StaticResource TransparentButton}"
-                    Content="Forgot Password"
-                    Width="140"
-                    HorizontalAlignment="Right"
-                    HorizontalContentAlignment="Right"
-                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" 
-                    materialDesign:RippleAssist.Feedback ="Transparent"
-                    Template="{StaticResource TextBlockButton}"
-                    FontSize="10">
-                        <Button.CommandParameter>
-                            <local:ForgotPassword/>
-                        </Button.CommandParameter>
-                    </Button>
-                </Grid>
+                        <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="26,250,0,20"/>
+                        <TextBox
+                            x:Name="Email"
+                            Style="{StaticResource TextBoxHintBlackBorder}"
+                            materialDesign:HintAssist.Hint="Email"
+                            Text="{Binding Username}"
+                            Width="auto"
+                            HorizontalContentAlignment="Stretch"
+                            Margin="0 30"
+                            materialDesign:HintAssist.HelperText="">
+                        </TextBox>
+                        <PasswordBox
+                            x:Name="Password"
+                            materialDesign:PasswordBoxAssist.Password="{Binding Password}"
+                            Style="{StaticResource PasswordOutlinedReveal}"            
+                            materialDesign:HintAssist.Hint="Password"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Width="auto"
+                            HorizontalContentAlignment="Stretch"
+                            materialDesign:HintAssist.HelperText=""/>
+                        
+                        <Grid Margin="0 19" >
+                            <CheckBox
+                            HorizontalAlignment="Left"
+                            Background="{StaticResource BlackColorBrush}"
+                            Content="Remember me"
+                            Foreground="{StaticResource BlackColorBrush}"
+                            FontSize="{DynamicResource FontSizeDescription}"/>
+                            <Button
+                            Grid.Column="1"
+                            Margin="0 3 0 0"
+                            Style="{StaticResource Pressable}"
+                            HorizontalAlignment="Right"
+                            Command="{Binding OnForgotPassword}" 
+                            materialDesign:RippleAssist.Feedback ="Transparent">
+                                <Label Content="Forgot Password" Foreground="{DynamicResource BlackColorBrush}" FontSize="{DynamicResource FontSizeDescription}"/>
+                            </Button>
+                        </Grid>
 
-                <Grid Margin="0,0,0,30">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button 
-                    Height="60" 
-                    Width="60" 
-                    Grid.Column="0"
-                    Padding="0"
-                    Style="{StaticResource TransparentButton}">
-                        <materialDesign:PackIcon
-                        Kind="Facebook"
-                        Width="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=ActualWidth}"
-                        Height="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=ActualHeight}"/>
+                        <!--Black buttons-->
+                        <Grid Margin="0 10 0 0">
+                            <Grid.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonRectangle}">
+                                    <Setter Property="Width" Value="{c:Binding ElementName=RightColumnContainer, Path=ActualWidth/3}"/>
+                                    <Setter Property="Height" Value="45"/>
+                                    <Setter Property="Margin" Value="29 0"/>
+                                    <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="21"/>
+                                    <Setter Property="FontWeight" Value="Light"/>
+                                    <Setter Property="FontSize" Value="17"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Button
+                            HorizontalAlignment="Left"
+                            Content="Login"
+                            Command="{Binding OnLogin}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            <Button
+                                HorizontalAlignment="Right"
+                                Content="Sign up"
+                                Command="{Binding OnSignUp}">
+                            </Button>
+                        </Grid>
 
-                    </Button>
-                    <Button 
-                    Height="60" 
-                    Width="60" 
-                    Grid.Column="1"
-                    Padding="0"
-                    Style="{StaticResource TransparentButton}">
-                        <materialDesign:PackIcon
-                        Kind="Gmail"
-                        Width="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=ActualWidth}"
-                        Height="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=ActualHeight}"/>
-
-                    </Button>
-                </Grid>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    Width="auto"
-                    Margin="30 0"
-                    Content="Login"
-                    Command="{Binding isLogin}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-                <Button
-                    Margin="0 10 0 0"
-                    Style="{StaticResource TransparentButton}"
-                    Content="Don't have account, sign up"
-                    Foreground="{StaticResource ErrorColorBrush}"
-                    Width="140"
-                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" 
-                    materialDesign:RippleAssist.Feedback ="Transparent"
-                    Template="{StaticResource TextBlockButton}"
-                    FontSize="10">
-                    <Button.CommandParameter>
-                        <local:Register/>
-                    </Button.CommandParameter>
-                </Button>
-            </StackPanel>
+                        <!--Google Sign up-->
+                        <Button
+                        HorizontalAlignment="Center"
+                        Margin="0 22 0 0"
+                        Style="{StaticResource Pressable}"
+                        Command="" 
+                        materialDesign:RippleAssist.Feedback ="Transparent"
+                        FontSize="10">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="..\..\..\Assets\Icon\icon_google.png"
+                                   Width="36" Height="36"
+                                   VerticalAlignment="Center"/>
+                                <Label Content="Sign in with google"
+                                   FontSize="15"
+                                   VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Grid>
     </materialDesign:DialogHost>
 

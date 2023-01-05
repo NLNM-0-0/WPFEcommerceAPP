@@ -68,7 +68,7 @@ namespace WPFEcommerceApp {
         async Task load() {
             var t = new GenericDataRepository<MUser>();
             var u = await t.GetSingleAsync(d => d.Id.Equals("user01"));
-            AccountStore.instance.CurrentAccount = u;
+            AccountStore.instance.CurrentAccount = null;
         }
     }
 }

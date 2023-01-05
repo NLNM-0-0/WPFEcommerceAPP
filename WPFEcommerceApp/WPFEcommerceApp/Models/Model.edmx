@@ -8,13 +8,14 @@
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="IdUser" />
-            <PropertyRef Name="CreatedTime" />
+            <PropertyRef Name="IndexId" />
           </Key>
           <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="CreatedTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="IndexId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="PhoneNumer" Type="varchar" MaxLength="13" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="Status" Type="bit" />
         </EntityType>
         <EntityType Name="Advertisement">
           <Key>
@@ -99,6 +100,7 @@
           <Property Name="OrderTotal" Type="bigint" Nullable="false" />
           <Property Name="ShippingMethod" Type="int" />
           <Property Name="ShippingSpeedMethod" Type="int" />
+          <Property Name="AddressIndex" Type="int" />
           <Property Name="Status" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="MUser">
@@ -233,8 +235,8 @@
             <PropertyRef Name="IdUser" />
           </Key>
           <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="20" />
-          <Property Name="Username" Type="nvarchar" MaxLength="200" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+          <Property Name="Username" Type="varchar" MaxLength="100" />
         </EntityType>
         <Association Name="FK__Cart__IdProduct__46E78A0C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
@@ -260,7 +262,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__6EF57B66">
+        <Association Name="FK__ShopReque__IdUse__70DDC3D8">
           <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
           <End Role="ShopRequest" Type="Self.ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -590,7 +592,7 @@
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__6EF57B66" Association="Self.FK__ShopReque__IdUse__6EF57B66">
+          <AssociationSet Name="FK__ShopReque__IdUse__70DDC3D8" Association="Self.FK__ShopReque__IdUse__70DDC3D8">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="ShopRequest" EntitySet="ShopRequest" />
           </AssociationSet>
@@ -759,7 +761,7 @@
             <End Role="MOrder" EntitySet="MOrders" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__6EF57B66" Association="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66">
+          <AssociationSet Name="FK__ShopReque__IdUse__70DDC3D8" Association="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="ShopRequest" EntitySet="ShopRequests" />
           </AssociationSet>
@@ -834,20 +836,21 @@
             <PropertyRef Name="IdUser" />
           </Key>
           <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="IdUser" />
-            <PropertyRef Name="CreatedTime" />
+            <PropertyRef Name="IndexId" />
           </Key>
           <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IndexId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumer" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
           <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="Address" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Advertisement">
@@ -919,6 +922,7 @@
           <Property Name="OrderTotal" Type="Int64" Nullable="false" />
           <Property Name="ShippingMethod" Type="Int32" />
           <Property Name="ShippingSpeedMethod" Type="Int32" />
+          <Property Name="AddressIndex" Type="Int32" />
           <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MOrder" ToRole="MUser" />
           <NavigationProperty Name="MUser1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MOrder" ToRole="MUser" />
@@ -947,7 +951,7 @@
           <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
           <NavigationProperty Name="MOrders1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MUser" ToRole="MOrder" />
-          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66" FromRole="MUser" ToRole="ShopRequest" />
+          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" FromRole="MUser" ToRole="ShopRequest" />
           <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
@@ -1079,7 +1083,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdUser" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66" FromRole="ShopRequest" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
         <Association Name="FK_Address_IdUser">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
@@ -1213,7 +1217,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__6EF57B66">
+        <Association Name="FK__ShopReque__IdUse__70DDC3D8">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
           <End Type="EcommerceAppModel.ShopRequest" Role="ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1393,10 +1397,11 @@
           <EntitySetMapping Name="Addresses">
             <EntityTypeMapping TypeName="EcommerceAppModel.Address">
               <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Address1" ColumnName="Address" />
                 <ScalarProperty Name="PhoneNumer" ColumnName="PhoneNumer" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="IndexId" ColumnName="IndexId" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1461,6 +1466,7 @@
             <EntityTypeMapping TypeName="EcommerceAppModel.MOrder">
               <MappingFragment StoreEntitySet="MOrder">
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AddressIndex" ColumnName="AddressIndex" />
                 <ScalarProperty Name="ShippingSpeedMethod" ColumnName="ShippingSpeedMethod" />
                 <ScalarProperty Name="ShippingMethod" ColumnName="ShippingMethod" />
                 <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
@@ -1614,7 +1620,7 @@
               <ScalarProperty Name="Id" ColumnName="IdProduct" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

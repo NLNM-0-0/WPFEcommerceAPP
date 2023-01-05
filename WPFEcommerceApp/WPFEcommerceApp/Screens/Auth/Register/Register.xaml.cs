@@ -24,7 +24,6 @@ namespace WPFEcommerceApp
         public Register()
         {
             InitializeComponent();
-            this.DataContext = new RegisterViewModel();
         }
     }
 }
