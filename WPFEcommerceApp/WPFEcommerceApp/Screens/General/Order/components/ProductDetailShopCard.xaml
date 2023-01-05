@@ -59,7 +59,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Grid x:Name="ImageContainer" MinHeight="107">
-                        <Image Source="{Binding ProductImage}" Width="{Binding Height, ElementName=ImageContainer}" 
+                        <vm:AsyncImage Source="{Binding ProductImage}" Width="{Binding Height, ElementName=ImageContainer}" 
                        Height="{Binding Height, ElementName=ImageContainer}" HorizontalAlignment="Center"/>
                     </Grid>
 
@@ -133,7 +133,7 @@
             <Border Padding="29, 0">
                 <Grid Margin="0, 5">
                     <StackPanel Orientation="Horizontal" MinHeight="50">
-                        <Image Source="{Binding ShopImage}" MinWidth="40" MinHeight="40"/>
+                        <vm:AsyncImage Source="{Binding ShopImage}" MinWidth="40" MinHeight="40"/>
                         <TextBlock Text="{Binding ShopName}" 
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"

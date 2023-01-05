@@ -23,6 +23,8 @@ namespace WPFEcommerceApp
         public AddProductDialog()
         {
             InitializeComponent();
+            brandComboBox.SelectedItem = null; 
+            categoryComboBox.SelectedItem = null;
         }
     }
 }

@@ -2,6 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFEcommerceApp">
     
+    <DataTemplate DataType="{x:Type local:OfflineScreenVM}">
+        <local:OfflineScreen/>
+    </DataTemplate>
     <!--#region General-->
     <DataTemplate DataType="{x:Type local:MyProfileViewModel}">
         <local:MyProfile/>

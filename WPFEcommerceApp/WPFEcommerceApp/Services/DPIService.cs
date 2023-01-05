@@ -57,6 +57,7 @@ namespace WPFEcommerceApp {
             services.AddTransient<BagViewModel>();
             services.AddTransient<FavoriteViewModel>();
             services.AddTransient<NotificationViewModel>();
+            services.AddSingleton<OfflineScreenVM>();
 
             #endregion
 

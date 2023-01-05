@@ -143,6 +143,9 @@
 
         </Style>
     </UserControl.Resources>
+    <materialDesign:DialogHost
+            CloseOnClickAway="True"
+            Identifier="Notification">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -523,6 +526,7 @@
             </Grid>
         </Grid>
     </Grid>
+    </materialDesign:DialogHost>
     <UserControl.InputBindings>
         <KeyBinding
             Key="Enter"

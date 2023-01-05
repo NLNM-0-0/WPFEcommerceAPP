@@ -36,27 +36,35 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private string stringCloseDialog ="";
+        private string stringCloseDialog = "";
         public ICommand RequestBrandCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
         public AddBrandDialogViewModel()
         {
-            RequestBrandCommand = new RelayCommandWithNoParameter(async ()=>
-            { 
+            RequestBrandCommand = new RelayCommand<object>((p) =>
+            {
+                return !String.IsNullOrEmpty(Reason) &&
+                        !String.IsNullOrEmpty(BrandName);
+            }, (async (p) =>
+            {
+                var closeDialog = DialogHost.CloseDialogCommand;
+                closeDialog.Execute(null, null);
+                MainViewModel.IsLoading = true;
                 await AddBrandRequest();
                 NotificationDialog notification = new NotificationDialog()
                 {
                     Header = "Notification",
                     ContentDialog = stringCloseDialog
                 };
+                MainViewModel.IsLoading = false;
                 await DialogHost.Show(notification, "Notification");
-            });
+            }));
             KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
                 System.Windows.Controls.Button button = p as System.Windows.Controls.Button;
-                if(button.IsEnabled)
+                if (button.IsEnabled)
                 {
-                    button.Command.Execute(null);    
+                    button.Command.Execute(button);
                 }
             });
         }
@@ -66,7 +74,7 @@ namespace WPFEcommerceApp
             {
                 await brandRequestReposition.Add(new BrandRequest()
                 {
-                    Id =  await GenerateID.Gen(typeof(Brand)),
+                    Id = await GenerateID.Gen(typeof(Brand)),
                     IdShop = AccountStore.instance.CurrentAccount.Id,
                     Name = BrandName,
                     Reason = this.Reason

@@ -9,7 +9,6 @@
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              x:Name="productBlockByCategory">
     <Grid
-        SizeChanged="Grid_SizeChanged"
         Visibility="{c:Binding '!IsHidden'}">
         <Grid.RowDefinitions>
             <RowDefinition Height="5"/>
@@ -74,7 +73,9 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <local:ProductBlock
-                            DataContext="{Binding}"/>
+                            DataContext="{Binding}"
+                            Height="500"
+                            Width="350"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

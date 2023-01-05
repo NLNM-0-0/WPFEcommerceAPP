@@ -28,19 +28,6 @@ namespace WPFEcommerceApp
         public ShopProduct()
         {
             InitializeComponent();
-            //Task task = Task.Run(async () => await Load());
-            //while (!task.IsCompleted) { }
-            this.DataContext = new ShopProductViewModel();
         }
-        //public async Task Load()
-        //{
-        //    var repo = new GenericDataRepository<MUser>();
-        //    var t = await repo.GetSingleAsync(x => x.Id == "user02",
-        //                                x => x.Products,
-        //                                x => x.Products.Select(p => p.ImageProducts),
-        //                                x => x.Products.Select(p => p.Brand),
-        //                                x => x.Products.Select(p => p.Category));
-        //    AccountStore.instance.CurrentAccount = t;
-        //}
     }
 }

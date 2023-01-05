@@ -9,73 +9,198 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:materialDesign ="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="350"
+             d:Height="500" d:Width="350"
              MaxHeight="500" MaxWidth="350"
-             MinHeight="500" MinWidth="350"
+             MinHeight="400" MinWidth="280"
              Cursor="Hand"
              x:Name="productBlock">
-    <Grid Background="{StaticResource WhiteColorBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid>
+    <UserControl.Resources>
+        <Storyboard x:Key="ClickUnFavouriteProduct">
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.0"
+                Duration="0:0:0.01"
+                From="0"
+                To="0"/>
+            <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleX"
+                BeginTime="0:0:0"
+                From="1"
+                To="1.5"
+                Duration="0:0:0.4">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleY"
+                From="1"
+                To="1.5"
+                BeginTime="0:0:0"
+                Duration="0:0:0.4">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.4"
+                Duration="0:0:0.01"
+                From="1"
+                To="0"
+                FillBehavior="HoldEnd">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.4"
+                Duration="0:0:0.01"
+                From="0"
+                To="1"
+                FillBehavior="HoldEnd">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleX"
+                BeginTime="0:0:0.4"
+                From="1.5"
+                To="1"
+                Duration="0:0:0.1">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleY"
+                From="1.5"
+                To="1"
+                BeginTime="0:0:0.4"
+                Duration="0:0:0.1">
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="ClickFavouriteProduct">
+            <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.0"
+                Duration="0:0:0.01"
+                From="0"
+                To="0"/>
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleX"
+                BeginTime="0:0:0"
+                From="1"
+                To="1.5"
+                Duration="0:0:0.4">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleY"
+                From="1"
+                To="1.5"
+                BeginTime="0:0:0"
+                Duration="0:0:0.4">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.4"
+                Duration="0:0:0.01"
+                From="1"
+                To="0"
+                FillBehavior="HoldEnd">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.4"
+                Duration="0:0:0.01"
+                From="0"
+                To="1"
+                FillBehavior="HoldEnd">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleX"
+                BeginTime="0:0:0.4"
+                From="1.5"
+                To="1"
+                Duration="0:0:0.1">
+            </DoubleAnimation>
+            <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeartScale"
+                Storyboard.TargetProperty="ScaleY"
+                From="1.5"
+                To="1"
+                BeginTime="0:0:0.4"
+                Duration="0:0:0.1">
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid
+        Margin="5 5 5 0">
+        <Grid Background="{StaticResource WhiteColorBrush}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="350"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border
-                MaxWidth="350"
-                MaxHeight="350"
-                Grid.Row="0"
-                Background="{StaticResource BackgroundColorBrush}">
-                <Image x:Name="ImageMainProduct"
-                       MaxWidth="350"
-                       Stretch="Fill"
-                    Source="{Binding MainImage, UpdateSourceTrigger=PropertyChanged}"/>
-            </Border>
-            <Button
-                Width="auto"
-                BorderBrush="Transparent"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Command="{Binding OpenDialogCommand}"
-                Style="{StaticResource WhiteButton}"
-                Height="auto"
-                materialDesign:ButtonAssist.CornerRadius="0"
-                Visibility="{c:Binding 'IsMouseOver and !DataContext.IsShop',ElementName=productBlock}"
-                Margin="5">
-                <Button.Content>
-                    <StackPanel
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{c:Binding (ActualWidth - 10 less 0)?0:(ActualWidth - 10), ElementName=productBlock}"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border
+                    MaxWidth="{c:Binding (ActualWidth - 10 less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
+                    MaxHeight="{c:Binding (ActualWidth - 10 less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
+                    Grid.Row="0"
+                    Background="{StaticResource BackgroundColorBrush}">
+                    <local:AsyncImage 
+                        x:Name="ImageMainProduct"
+                        MaxWidth="{c:Binding ((ActualWidth - 10) less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
+                        MaxHeight="{c:Binding ((ActualWidth - 10) less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
+                        Stretch="Fill"
+                        Source="{Binding MainImage, UpdateSourceTrigger=PropertyChanged}"/>
+
+                </Border>
+                <Button
+                    Width="auto"
+                    BorderBrush="Transparent"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Command="{Binding OpenDialogCommand}"
+                    Style="{StaticResource WhiteButton}"
+                    Height="auto"
+                    materialDesign:ButtonAssist.CornerRadius="0"
+                    Visibility="{c:Binding 'IsMouseOver and !DataContext.IsShop',ElementName=productBlock}"
+                    Margin="5">
+                    <Button.Content>
+                        <StackPanel
                         Orientation="Horizontal">
-                        <materialDesign:PackIcon 
+                            <materialDesign:PackIcon 
                             VerticalAlignment="Center"
                             Kind="SubdirectoryArrowRight" />
-                        <fa:FontAwesome
+                            <fa:FontAwesome
                             VerticalAlignment="Center"
                             Icon="ShoppingCart"
                             FontSize="20"/>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Grid Grid.Row="1" x:Name="MiniImages" Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel 
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Grid Grid.Row="1" x:Name="MiniImages" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel 
                         Style="{DynamicResource StackPanelStyle}"
                         Orientation="Horizontal"
                         IsHitTestVisible="True">
-                    <ItemsControl ItemsSource="{Binding MiniImagesProduct, UpdateSourceTrigger=PropertyChanged}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button
+                        <ItemsControl ItemsSource="{Binding MiniImagesProduct, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button
                                     HorizontalAlignment="Center"
                                     Background="{StaticResource BackgroundColorBrush}"
                                     MaxHeight="40"
@@ -87,108 +212,156 @@
                                     Margin="5 5 5 0"
                                     Padding="0"
                                     BorderBrush="Transparent">
-                                    <Button.Content>
-                                        <Image
+                                        <Button.Content>
+                                            <local:AsyncImage
                                             HorizontalAlignment="Center"
                                             MaxHeight="40"
                                             MaxWidth="40"
                                             Stretch="Fill"
                                             x:Name="MiniImageProductButton"
                                             Source="{Binding}"/>
-                                    </Button.Content>
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseMove">
-                                            <i:InvokeCommandAction
+                                        </Button.Content>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseMove">
+                                                <i:InvokeCommandAction
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                             AncestorType={x:Type UserControl}}, 
                                                             Path=DataContext.ChangeMainPictuceCommand}" 
                                                 CommandParameter="{Binding ElementName=MiniImageProductButton, Path=Source}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </Button>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-                <TextBlock
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    <TextBlock
                     Grid.Column="1"
                     Text="{Binding NumberProductRemainder}"
                     Foreground="{StaticResource NotAvailableColorBrush}"
                     FontSize="20"
                     VerticalAlignment="Center"
                     Visibility="{c:Binding 'MiniImagesProduct.Count > 4'}"/>
+                </Grid>
             </Grid>
-        </Grid>
-        <Grid Margin="10" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*" MaxHeight="20"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0" x:Name="ProductMainInfo">
+            <Grid Margin="10" Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*" MaxHeight="20"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock 
+
+                <Grid Grid.Row="0" x:Name="ProductMainInfo">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock 
                     Grid.Row="0"
                     Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="18"
                     FontWeight="DemiBold"/>
-                <TextBlock
+                    <TextBlock
                     Grid.Row="1"
                     Text="{Binding SelectedProduct.Category.Name, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="16"
                     Foreground="{StaticResource NotAvailableColorBrush}"/>
-                <TextBlock
+                    <TextBlock
                     Grid.Row="2"
                     Text="{Binding SelectedProduct.Brand.Name, UpdateSourceTrigger=PropertyChanged}"
                     FontSize="16"
                     Foreground="{StaticResource NotAvailableColorBrush}"/>
-            </Grid>
-            <StackPanel Grid.Row="3" Orientation="Horizontal">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Margin" Value="0 0 10 0"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock 
+                </Grid>
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Margin" Value="0 0 10 0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock 
                     Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
                     TextDecorations="Strikethrough"
                     FontSize="16"
                     FontWeight="DemiBold"
-                    Foreground="{StaticResource NotAvailableColorBrush}"/>
-                <TextBlock 
+                    Foreground="{StaticResource NotAvailableColorBrush}"
+                    Visibility="{c:Binding 'SelectedProduct.Sale != 100'}"/>
+                    <TextBlock 
                     Text="{c:Binding '(100 - SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
                     FontSize="18"
                     FontWeight="DemiBold"/>
-            </StackPanel>
-        </Grid>
-    </Grid>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseEnter">
-            <i:InvokeCommandAction 
+                </StackPanel>
+            </Grid>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseEnter">
+                    <i:InvokeCommandAction 
             Command="{Binding ShowMiniPictureCommand}" 
             CommandParameter="{Binding ElementName=MiniImages}"/>
-            <i:InvokeCommandAction
+                    <i:InvokeCommandAction
              Command="{Binding HideProductMainInfoCommand}"
               CommandParameter="{Binding ElementName=ProductMainInfo}"/>
-        </i:EventTrigger>
-        <i:EventTrigger EventName="MouseLeave">
-            <i:InvokeCommandAction 
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseLeave">
+                    <i:InvokeCommandAction 
                 Command="{Binding HideMiniPictureCommand}" 
                 CommandParameter="{Binding ElementName=MiniImages}"/>
-            <i:InvokeCommandAction
+                    <i:InvokeCommandAction
                 Command="{Binding ShowProductMainInfoCommand}"
                 CommandParameter="{Binding ElementName=ProductMainInfo}"/>
-        </i:EventTrigger>
-        <i:EventTrigger EventName="MouseDown">
-            <i:InvokeCommandAction 
-                Command="{Binding OpenPageCommand}"
-                CommandParameter="{Binding IsShop}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseDown">
+                    <i:InvokeCommandAction 
+                Command="{Binding OpenPageCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Grid>
+        <Grid
+            x:Name="HeartGrid"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Right"
+            Margin="5"
+            Height="60"
+            Width="60"
+            Background="Transparent"
+            IsHitTestVisible="True"
+            PreviewMouseDown="HeartGrid_PreviewMouseDown"
+            Visibility="{c:Binding HeartVisibility, UpdateSourceTrigger=PropertyChanged}">
+            <Grid>
+                <materialDesign:PackIcon 
+                    x:Name="FavoriteHeart"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="Heart"
+                    Height="40"
+                    Width="40"
+                    RenderTransformOrigin="0.5 0.5" 
+                    Opacity="{c:Binding IsFavoriteFirst?1:0, UpdateSourceTrigger=PropertyChanged}"
+                    Foreground="{StaticResource ErrorColorBrush}">
+                    <materialDesign:PackIcon.RenderTransform>
+                        <ScaleTransform
+                            x:Name="FavoriteHeartScale"
+                            ScaleX="{c:Binding IsFavoriteFirst?1:1.5, UpdateSourceTrigger=PropertyChanged}"
+                            ScaleY="{c:Binding IsFavoriteFirst?1:1.5, UpdateSourceTrigger=PropertyChanged}"/>
+                    </materialDesign:PackIcon.RenderTransform>
+                </materialDesign:PackIcon>
+                <materialDesign:PackIcon 
+                    x:Name="UnFavoriteHeart"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="HeartOutline"
+                    Height="40"
+                    Width="40"
+                    RenderTransformOrigin="0.5 0.5" 
+                    Foreground="{StaticResource BlackColorBrush}"
+                    Opacity="{c:Binding IsFavoriteFirst?0:1, UpdateSourceTrigger=PropertyChanged}">
+                    <materialDesign:PackIcon.RenderTransform>
+                        <ScaleTransform
+                            x:Name="UnFavoriteHeartScale"
+                            ScaleX="{c:Binding IsFavoriteFirst?1.5:1, UpdateSourceTrigger=PropertyChanged}"
+                            ScaleY="{c:Binding IsFavoriteFirst?1.5:1, UpdateSourceTrigger=PropertyChanged}"/>
+                    </materialDesign:PackIcon.RenderTransform>
+                </materialDesign:PackIcon>
+            </Grid>
+        </Grid>
+    </Grid>
 </UserControl>

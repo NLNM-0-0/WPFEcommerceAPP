@@ -81,19 +81,12 @@
     <Compile Include="Api\FavouriteApi.cs" />
     <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
-    <Compile Include="Models\AdInUse.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+    <Compile Include="Api\Internet.cs" />
+    <Compile Include="Components\UserControls\AsyncImage\AsyncImage.xaml.cs">
+      <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Components\UserControls\DropImage\MoveThumb.cs" />
+    <Compile Include="Utils\IsLoadingCheck.cs" />
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -226,6 +219,10 @@
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Auth\Register\RegisterViewModel.cs" />
+    <Compile Include="Screens\Main\NoInternetScreen\OfflineScreen.xaml.cs">
+      <DependentUpon>OfflineScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Main\NoInternetScreen\OfflineScreenVM.cs" />
     <Compile Include="Screens\Shop\ShopMain\ProductBlockByCategory\ProductBlockByCategory.xaml.cs">
       <DependentUpon>ProductBlockByCategory.xaml</DependentUpon>
     </Compile>
@@ -308,9 +305,6 @@
       <DependentUpon>ChangeImageProductDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialogViewModel.cs" />
-    <Compile Include="Components\UserControls\Dialogs\ConfirmDialogCustom.xaml.cs">
-      <DependentUpon>ConfirmDialogCustom.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Components\UserControls\Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
@@ -373,6 +367,7 @@
     <Compile Include="Components\UserControls\UserIconControl\UserIconControl.xaml.cs">
       <DependentUpon>UserIconControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Stores\FavoriteStore.cs" />
     <Compile Include="Utils\Converters\BooleanToGenderConverter.cs" />
     <Compile Include="Components\UserControls\WindowControlBar\WindowControlBar.xaml.cs">
       <DependentUpon>WindowControlBar.xaml</DependentUpon>
@@ -436,7 +431,6 @@
       <DependentUpon>ShopProduct.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Main\MainViewModel.cs" />
-    <Compile Include="Services\CompositeNavigationService.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\NavigateService.cs" />
     <Compile Include="Services\ParamNavigationService.cs" />
@@ -506,6 +500,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Buttons\OutLineBlackButtonRectangle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Buttons\Pressable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -586,6 +584,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\ToggleButtons\ToggleButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\UserControls\AsyncImage\AsyncImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -724,6 +726,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Screens\Main\NoInternetScreen\OfflineScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screens\Shop\ShopMain\ProductBlockByCategory\ProductBlockByCategory.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -761,10 +767,6 @@
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Screens\Shop\UnShopMain\UnShopMain.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Screens\Main\DialogStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -833,10 +835,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Components\UserControls\Dialogs\ChangeImageProductDialog\ChangeImageProductDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Components\UserControls\Dialogs\ConfirmDialogCustom.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1018,7 +1016,6 @@
     </None>
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
@@ -1081,14 +1078,8 @@
   <ItemGroup>
     <Resource Include="Assets\Sounds\LoadingSound.mp3" />
     <Resource Include="Assets\Icon\Home.png" />
-    <Content Include="Models\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context1.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.cs</LastGenOutput>
-    </Content>
+    <Resource Include="Assets\Images\Offline.png" />
+    <Resource Include="Assets\Images\NoImage.jpg" />
     <Content Include="DTO\SQL.sql" />
   </ItemGroup>
   <ItemGroup>

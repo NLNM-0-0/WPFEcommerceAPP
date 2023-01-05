@@ -28,40 +28,45 @@
                     <DockPanel Panel.ZIndex="1">
                         <Grid x:Name="imgContainer" Background="Pink"
                               Width="70" Height="70">
-                            <Image Source="{Binding product.ProductImage}" 
+                            <local:AsyncImage Source="{Binding Product.ProductImage}" 
                                        Width="{Binding ElementName=imgContainer, Path=Width}"
                                        Height="{Binding ElementName=imgContainer, Path=Width}">
-                            </Image>
+                            </local:AsyncImage>
                         </Grid>
                         <StackPanel Margin="15 10 0 0">
-                                <TextBlock Text="{Binding product.Name}" FontSize="{StaticResource FontSizeText}"
+                            <TextBlock Text="{Binding Product.Name}" FontSize="{StaticResource FontSizeText}"
                                        TextWrapping="Wrap"/>
-                                <TextBlock Text="{c:Binding \'Color: \' + product.Color}" 
+                            <!--Error because of c:Binding-->
+                            <StackPanel Orientation="Horizontal" 
+                                        Margin="0 5 0 0">
+                                <TextBlock Text="Color: " 
                                        FontSize="{StaticResource FontSizeDescription}"
-                                       Margin="0 5 0 0"
+                                       Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                <TextBlock Text="{Binding Product.Color}" 
+                                       FontSize="{StaticResource FontSizeDescription}"
                                        Foreground="{StaticResource NotAvailableColorBrush}"/>
                             </StackPanel>
+                        </StackPanel>
                     </DockPanel>
                 </Grid>
                 <!--Rate-->
                 <local:RatingBar 
-                    Value="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext.rating, Mode=TwoWay}"             
+                    Value="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext.Rating, Mode=TwoWay}"             
                     Margin="0 10 0 5">
                     <local:RatingBar.LayoutTransform>
                         <ScaleTransform ScaleX="1.3" ScaleY="1.3"/>
                     </local:RatingBar.LayoutTransform>
                 </local:RatingBar>
                 <!--Comment-->
-                <Label Content="Comment" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 0, 0, 10" Visibility="Collapsed"/>
-                <TextBox Visibility="Collapsed"
+                <Label Content="Comment" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 0, 0, 10" Visibility="Visible"/>
+                <TextBox Visibility="Visible"
                     x:Name="commentBox"
                     Style="{StaticResource TextBoxHintWrapText}"
                          Height="129"
                          Width="auto"
                          materialDesign:HintAssist.IsFloating="False"
                          materialDesign:HintAssist.Hint="Write your review"
-                         TextWrapping="Wrap"
-                         Text="{Binding Address}"/>
+                         TextWrapping="Wrap"/>
             </StackPanel>
         </DataTemplate>
         <Style x:Key="ListItemContainer" TargetType="ListViewItem">
@@ -88,6 +93,7 @@
     </UserControl.Resources>
     <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="auto" Height="auto">
         <StackPanel>
+            <!--#region  Header-->
             <Grid>
                 <Label Content="Review" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
                 <Button HorizontalAlignment="Right"
@@ -108,7 +114,9 @@
                             Height="10"/>
                 </Button>
             </Grid>
+            <!--#endregion-->
 
+            <!--#region ItemTemplate UI-->
             <StackPanel Margin="0, 30, 0, 30" Visibility="Collapsed">
                 <!--Product-->
                 <Border BorderBrush="{StaticResource BlackColorBrush}"
@@ -123,7 +131,7 @@
                         CornerRadius="10" x:Name="prdBorder"/>
                         <DockPanel>
                             <Grid MaxWidth="70" x:Name="imgContainer">
-                                <Image Source="..\..\..\..\Assests\Images\2.jpg" 
+                                <Image Source="..\..\..\..\..\Assets\Images\NoImage.jpg" 
                                    Width="{Binding ElementName=imgContainer, Path=Width}"
                                    Height="{Binding ElementName=imgContainer, Path=Width}"/>
                             </Grid>
@@ -157,8 +165,9 @@
                          TextWrapping="Wrap"
                          Text="{Binding Address}"/>
             </StackPanel>
+            <!--#endregion-->
 
-            <ListView ItemsSource="{Binding ProductList}"
+            <ListView ItemsSource="{Binding ElementName=myDialog,Path=ProductList}"
                       Margin="0 10 0 15"
                       MaxHeight="380"
                       BorderThickness="0"
@@ -167,7 +176,7 @@
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ItemTemplate="{StaticResource ReviewProductCard}"/>
 
-            <Button x:Name="lel" Content="OK" HorizontalAlignment="Right" Command="{Binding OnOK}" CommandParameter="">
+            <Button x:Name="lel" Content="OK" HorizontalAlignment="Right" Command="{Binding ElementName=myDialog, Path=OnOK}" CommandParameter="">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>

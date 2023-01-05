@@ -11,272 +11,254 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              d:DesignHeight="800" d:DesignWidth="1380"
              x:Name="shopMain">
+    <UserControl.Resources>
+        <local:ScrollViewerShopMainConverter x:Key="ScrollViewerShopMainConverter"/>
+    </UserControl.Resources>
     <Grid>
-        <Grid.Resources>
-            <local:ScrollViewerShopMainConverter x:Key="ScrollViewerShopMainConverter"/>
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid
+        <ScrollViewer
+            x:Name="scroll"
+            PreviewMouseWheel="Scroll_PreviewMouseWheel"
+            ScrollChanged="scroll_ScrollChanged">
+            <Grid
+                x:Name="contentGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid
             Grid.Row="0"
             Margin="0 0 0 30"
             Height="160">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Border
-                x:Name="MainBorder"
-                CornerRadius="0 0 50 0"
-                Background="{StaticResource BoxShadowColorBrush}"
-                BorderBrush="{StaticResource BoxLineColorBrush}"
-                BorderThickness="0 0 1 1"/>
-            <Border
-                Margin="0 0 1 1">
-                <Border.OpacityMask>
-                    <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
-                </Border.OpacityMask>
-                <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="False">
-                    <Image
-                        Stretch="Fill"
-                        Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
-                        Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
-                        ScrollViewer.CanContentScroll="True">
-                        <Image.OpacityMask>
-                            <VisualBrush Visual="{Binding ElementName=MainBorder}" 
-                                     RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Image.OpacityMask>
-                    </Image>
-                </ScrollViewer>
-            </Border>
-            <Grid Margin="50 20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <Border
-                    Grid.Column="0"
-                    BorderBrush="{StaticResource BoxLineColorBrush}"
-                    BorderThickness="1"
-                    Background="{StaticResource WhiteColorBrush}"
-                    CornerRadius="50"
-                    Width="100"
-                    Height="100">
-                    <Image
-                            Height="98"
-                            Width="98"
-                            Stretch="Fill"
-                            Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
-                        <Image.Clip>
-                            <EllipseGeometry
-                                    Center="49 49"
-                                    RadiusX="49"
-                                    RadiusY="49"/>
-                        </Image.Clip>
-                    </Image>
-                </Border>
-                <Grid 
-                    x:Name="panelGrid"
-                    Margin="30 0 0 0" 
-                    Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock
-                        Grid.Row="0"
-                        x:Name="nameTextBox"
-                        Text="{Binding Shop.Name,UpdateSourceTrigger=PropertyChanged}"
-                        Margin="0 0 0 20"
-                        TextTrimming="WordEllipsis"
-                        FontFamily="{StaticResource Bold}"
-                        FontSize="{StaticResource FontSizeHeadline}"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
                     <Border
-                        Grid.Row="1">
-                        <TextBlock
-                            MaxWidth="{Binding ElementName=panelGrid, Path=ActualWidth}"
-                            Text="{Binding Shop.Description,UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap"
-                            TextTrimming="WordEllipsis"
-                            FontSize="{StaticResource FontSizeText}"/>
+                    x:Name="MainBorder"
+                    CornerRadius="0 0 50 0"
+                    Background="{StaticResource BoxShadowColorBrush}"
+                    BorderBrush="{StaticResource BoxLineColorBrush}"
+                    BorderThickness="0 0 1 1"/>
+                    <Border
+                        Margin="0 0 1 1">
+                        <Border.OpacityMask>
+                            <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
+                        </Border.OpacityMask>
+                        <Grid>
+                            <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="False">
+                                <local:AsyncImage
+                                    Stretch="Fill"
+                                    Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
+                                    Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
+                                    ScrollViewer.CanContentScroll="True">
+                                    <local:AsyncImage.OpacityMask>
+                                        <VisualBrush 
+                                            Visual="{Binding ElementName=MainBorder}" 
+                                            RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </local:AsyncImage.OpacityMask>
+                                </local:AsyncImage>
+                            </ScrollViewer>
+                            <Border
+                                Background="{StaticResource BlackColorBrush}"
+                                Opacity="0.5"/>
+                        </Grid>
+                        
                     </Border>
+                    <Grid Margin="50 20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Grid.Column="0"
+                            BorderBrush="{StaticResource BoxLineColorBrush}"
+                            BorderThickness="1"
+                            Background="{StaticResource WhiteColorBrush}"
+                            CornerRadius="50"
+                            Width="100"
+                            Height="100">
+                            <local:AsyncImage
+                                Height="98"
+                                Width="98"
+                                Stretch="Fill"
+                                Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
+                                <local:AsyncImage.Clip>
+                                    <EllipseGeometry
+                                        Center="49 49"
+                                        RadiusX="49"
+                                        RadiusY="49"/>
+                                </local:AsyncImage.Clip>
+                            </local:AsyncImage>
+                        </Border>
+                        <Grid 
+                            x:Name="panelGrid"
+                            Margin="30 0 0 0" 
+                            Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid
+                                Grid.Row="0">
+                                <TextBlock
+                                    x:Name="nameTextBox"
+                                    Text="{Binding Shop.Name,UpdateSourceTrigger=PropertyChanged}"
+                                    Margin="0 0 0 20"
+                                    TextTrimming="WordEllipsis"
+                                    FontFamily="{StaticResource Bold}"
+                                    FontSize="{StaticResource FontSizeHeadline}"
+                                    HorizontalAlignment="Left"
+                                    Foreground="{StaticResource WhiteColorBrush}">
+                                </TextBlock>
+                            </Grid>
+                            <Grid
+                                Grid.Row="1">
+                                <TextBlock
+                                    x:Name="descriptionTextBox"
+                                    MaxWidth="{Binding ElementName=panelGrid, Path=ActualWidth}"
+                                    Text="{Binding Shop.Description,UpdateSourceTrigger=PropertyChanged}"
+                                    TextWrapping="Wrap"
+                                    TextTrimming="WordEllipsis"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Foreground="{StaticResource WhiteColorBrush}"/>
+                            </Grid>
+                        </Grid>
+                        <Button 
+                            Grid.Column="2"
+                            Style="{StaticResource WhiteButton}"
+                            Visibility="{c:Binding IsShop}"
+                            Command="{Binding OpenEditProfileCommand}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Foreground="#1290FF"
+                            FontSize="{StaticResource FontSizeHeadline3}">
+                            <StackPanel 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                                <fa:FontAwesome 
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Icon="Edit"
+                                    Margin="5 0"/>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Text="Edit"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
 
-                </Grid>
-                <Button 
-                    Grid.Column="2"
-                    Style="{StaticResource WhiteButton}"
-                    Visibility="{c:Binding IsShop}"
-                    Command="{Binding OpenEditProfileCommand}"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Foreground="#1290FF"
-                    FontSize="{StaticResource FontSizeHeadline3}">
+
                     <StackPanel 
+                        Grid.Column="1"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-                        <fa:FontAwesome 
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Icon="Edit"
-                            Margin="5 0"/>
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Text="Edit"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
-
-
-            <StackPanel 
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Margin="30 0">
-                <StackPanel
-                    Margin="0 0 0 30"
-                    VerticalAlignment="Stretch"
-                    Orientation="Horizontal">
-                    <fa:FontAwesome Icon="ShoppingCart"
+                        Margin="30 0">
+                        <StackPanel
+                            Margin="0 0 0 30"
+                            VerticalAlignment="Stretch"
+                            Orientation="Horizontal">
+                            <fa:FontAwesome Icon="ShoppingCart"
                                 Margin="0 0 10 0"
                                 FontSize="{StaticResource FontSizeHeadline2}"
                                 VerticalAlignment="Center"/>
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="{StaticResource FontSizeHeadline3}"
-                        Text="Product:"/>
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="{StaticResource FontSizeHeadline3}"
-                        FontWeight="Bold"
-                        Margin="20 0 0 0"
-                        Text="{c:Binding AllProducts.Count}"/>
-                </StackPanel>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                Text="Product:"/>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontWeight="Bold"
+                                Margin="20 0 0 0"
+                                Text="{c:Binding AllProducts.Count}"/>
+                        </StackPanel>
+                        <StackPanel
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Left"
+                            Orientation="Horizontal">
+                            <fa:FontAwesome
+                                Icon="Star"
+                                Margin="0 0 10 0"
+                                FontSize="{StaticResource FontSizeHeadline2}"
+                                VerticalAlignment="Center"/>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                Text="Rating:"/>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontWeight="Bold"
+                                Margin="20 0 0 0"
+                                Text="{Binding AverageRating}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
                 <StackPanel
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Left"
-                    Orientation="Horizontal">
-                    <fa:FontAwesome
-                        Icon="Star"
-                        Margin="0 0 10 0"
-                        FontSize="{StaticResource FontSizeHeadline2}"
-                        VerticalAlignment="Center"/>
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="{StaticResource FontSizeHeadline3}"
-                        Text="Rating:"/>
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="{StaticResource FontSizeHeadline3}"
-                        FontWeight="Bold"
-                        Margin="20 0 0 0"
-                        Text="{Binding AverageRating}"/>
-                </StackPanel>
-            </StackPanel>
-        </Grid>
-        <Grid
-            Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <RadioButton
-                Grid.Column="0"
-                Style="{StaticResource RadioTabButton}"
-                Content="New Products"
-                IsEnabled="{c:Binding 'NewProductBlock.FullProducts.Count != 0'}"
-                IsChecked="{Binding IsNewProductsCheck, UpdateSourceTrigger=PropertyChanged}"
-                Command="{Binding MoveToNewProducts}"
-                CommandParameter="{Binding ElementName=scroll}"/>
-            <RadioButton
-                Grid.Column="1"
-                Style="{StaticResource RadioTabButton}"
-                Content="Best Seller Products"
-                IsEnabled="{c:Binding 'BestSelledProductBlock.FullProducts.Count != 0'}"
-                IsChecked="{Binding IsBestSellerProductsCheck, UpdateSourceTrigger=PropertyChanged}"
-                Command="{Binding MoveToBestSellerProducts}"
-                CommandParameter="{Binding ElementName=scroll}"/>
-            <RadioButton
-                Grid.Column="2"
-                Style="{StaticResource RadioTabButton}"
-                Content="Favorite Products"
-                IsEnabled="{c:Binding 'FavoriteProductBlock.FullProducts.Count != 0'}"
-                IsChecked="{Binding IsFavoriteProductsCheck, UpdateSourceTrigger=PropertyChanged}"
-                Command="{Binding MoveToFavoriteProducts}"
-                CommandParameter="{Binding ElementName=scroll}"/>
-            <RadioButton
-                Grid.Column="3"
-                Style="{StaticResource RadioTabButton}"
-                Content="All Products"
-                IsEnabled="{c:Binding 'AllProductBlock.FullProducts.Count != 0'}"
-                IsChecked="{Binding IsAllProductsCheck, UpdateSourceTrigger=PropertyChanged}"
-                Command="{Binding MoveToAllProducts}"
-                CommandParameter="{Binding ElementName=scroll}"/>
-        </Grid>
-        <ScrollViewer
-            Grid.Row="2"
-            VerticalAlignment="Top"
-            Margin="0 30 0 0"
-            x:Name="scroll"
-            PreviewMouseWheel="scroll_PreviewMouseWheel">
-            <StackPanel
-                Margin="50 0">
-                <Grid
-                    x:Name="newProductBlock">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition
-                            Height="30"/>
-                    </Grid.RowDefinitions>
-                    <local:ProductBlockByCategory
+                    Margin="50 30 50 0"
+                    Grid.Row="2"
+                    VerticalAlignment="Top">
+                    <Grid
+                        x:Name="newProductBlock">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <local:ProductBlockByCategory
                             DataContext="{Binding NewProductBlock}"
-                            MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"/>
-                </Grid>
-                <Grid
-                     x:Name="bestSellerProductBlock">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition
-                            Height="30"/>
-                    </Grid.RowDefinitions>
-                    <local:ProductBlockByCategory
-                        DataContext="{Binding BestSelledProductBlock}"
-                        MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"/>
-                </Grid>
+                            MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"
+                            SizeChanged="ProductBlockByCategory_SizeChanged">
+                        </local:ProductBlockByCategory>
+                    </Grid>
+                    <Grid
+                        x:Name="bestSellerProductBlock">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <local:ProductBlockByCategory
+                            DataContext="{Binding BestSellerProductBlock}"
+                            MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"
+                            SizeChanged="ProductBlockByCategory_SizeChanged">
+                        </local:ProductBlockByCategory>
+                    </Grid>
 
+                    <Grid
+                        x:Name="favoriteProductBlock">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <local:ProductBlockByCategory
+                            DataContext="{Binding FavoriteProductBlock}"
+                            MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"
+                            SizeChanged="ProductBlockByCategory_SizeChanged"/>
+                    </Grid>
+                    <Grid
+                     x:Name="allProductBlock">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <local:ProductBlockByCategory
+                            DataContext="{Binding AllProductBlock}"
+                            MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"/>
+                    </Grid>
+                </StackPanel>
                 <Grid
-                    x:Name="favoriteProductBlock">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition
-                            Height="30"/>
-                    </Grid.RowDefinitions>
-                    <local:ProductBlockByCategory
-                        DataContext="{Binding FavoriteProductBlock}"
-                        MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"/>
+                    Grid.Row="3"
+                    Height="20">
                 </Grid>
-                <Grid
-                    x:Name="allProductBlock">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition
-                            Height="30"/>
-                    </Grid.RowDefinitions>
-                    <local:ProductBlockByCategory
-                        DataContext="{Binding AllProductBlock}"
-                        MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"/>
-                </Grid>
-            </StackPanel>
+            </Grid>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="ScrollChanged">
                     <i:InvokeCommandAction
@@ -286,35 +268,63 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ScrollViewer>
-        <Grid
-            Grid.Row="3"
-            Height="20">
-        </Grid>
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="Loaded">
-                <i:InvokeCommandAction
-                        Command="{Binding LoadedCommand}">
-                    <i:InvokeCommandAction.CommandParameter>
-                        <MultiBinding Converter="{StaticResource ScrollViewerShopMainConverter}">
-                            <Binding ElementName="newProductBlock" Path="ActualHeight"/>
-                            <Binding ElementName="bestSellerProductBlock" Path="ActualHeight"/>
-                            <Binding ElementName="favoriteProductBlock" Path="ActualHeight"/>
-                        </MultiBinding>
-                    </i:InvokeCommandAction.CommandParameter>
-                </i:InvokeCommandAction>
-            </i:EventTrigger>
-            <i:EventTrigger EventName="SizeChanged">
-                <i:InvokeCommandAction
-                        Command="{Binding LoadedCommand}">
-                    <i:InvokeCommandAction.CommandParameter>
-                        <MultiBinding Converter="{StaticResource ScrollViewerShopMainConverter}">
-                            <Binding ElementName="newProductBlock" Path="ActualHeight"/>
-                            <Binding ElementName="bestSellerProductBlock" Path="ActualHeight"/>
-                            <Binding ElementName="favoriteProductBlock" Path="ActualHeight"/>
-                        </MultiBinding>
-                    </i:InvokeCommandAction.CommandParameter>
-                </i:InvokeCommandAction>
-            </i:EventTrigger>
-        </i:Interaction.Triggers>
+        <Canvas
+            Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}"
+            VerticalAlignment="Top"
+            ScrollViewer.CanContentScroll="False"
+            PreviewMouseWheel="Scroll_PreviewMouseWheel">
+            <Grid
+                x:Name="categoryGrid"
+                Canvas.Top="190"
+                ScrollViewer.CanContentScroll="False"
+                Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <RadioButton
+                    ScrollViewer.CanContentScroll="False"
+                    Background="White"
+                    Grid.Column="0"
+                    Style="{StaticResource RadioTabButton}"
+                    Content="New Products"
+                    IsEnabled="{c:Binding 'NewProductBlock.FullProducts.Count != 0'}"
+                    IsChecked="{Binding IsNewProductsCheck, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding MoveToNewProducts}"
+                    CommandParameter="{Binding ElementName=scroll}"/>
+                <RadioButton
+                    ScrollViewer.CanContentScroll="False"
+                    Background="White"
+                    Grid.Column="1"
+                    Style="{StaticResource RadioTabButton}"
+                    Content="Best Seller Products"
+                    IsEnabled="{c:Binding 'BestSellerProductBlock.FullProducts.Count != 0'}"
+                    IsChecked="{Binding IsBestSellerProductsCheck, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding MoveToBestSellerProducts}"
+                    CommandParameter="{Binding ElementName=scroll}"/>
+                <RadioButton
+                    ScrollViewer.CanContentScroll="False"
+                    Background="White"
+                    Grid.Column="2"
+                    Style="{StaticResource RadioTabButton}"
+                    Content="Favorite Products"
+                    IsEnabled="{c:Binding 'FavoriteProductBlock.FullProducts.Count != 0'}"
+                    IsChecked="{Binding IsFavoriteProductsCheck, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding MoveToFavoriteProducts}"
+                    CommandParameter="{Binding ElementName=scroll}"/>
+                <RadioButton
+                    ScrollViewer.CanContentScroll="False"
+                    Background="White"
+                    Grid.Column="3"
+                    Style="{StaticResource RadioTabButton}"
+                    Content="All Products"
+                    IsEnabled="{c:Binding 'AllProductBlock.FullProducts.Count != 0'}"
+                    IsChecked="{Binding IsAllProductsCheck, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding MoveToAllProducts}"
+                    CommandParameter="{Binding ElementName=scroll}"/>
+            </Grid>
+        </Canvas>
     </Grid>
 </UserControl>

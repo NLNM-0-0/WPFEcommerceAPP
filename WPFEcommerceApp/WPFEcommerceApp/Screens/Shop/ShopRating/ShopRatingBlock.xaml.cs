@@ -83,6 +83,7 @@ namespace WPFEcommerceApp
         public ShopRatingBlock()
         {
             InitializeComponent();
+            IsLoadingCheck.IsLoading--;
         }
     }
 }

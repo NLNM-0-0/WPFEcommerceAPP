@@ -18,8 +18,8 @@ namespace WPFEcommerceApp {
 
 		public event Action OrderListChanged;
 
-		private ObservableCollection<Order> orderList;
-		public ObservableCollection<Order> OrderList {
+		private List<Order> orderList;
+		public List<Order> OrderList {
 			get { return orderList; }
 			set { 
 				orderList = value;
@@ -39,10 +39,11 @@ namespace WPFEcommerceApp {
 			Task.Run(async () => await Load());
             OrderListChanged?.Invoke();
         }
-		public async Task Load() {
-			MainViewModel.IsLoading = true;
+
+        #region Load
+        public async Task Load() {
             OrderList?.Clear();
-            OrderList = new ObservableCollection<Order>();
+            OrderList = new List<Order>();
             if(user == null) {
                 MainViewModel.IsLoading = false;
                 return;
@@ -92,6 +93,7 @@ namespace WPFEcommerceApp {
 
 			for(int i = 0; i < mOrders.Count; i++) { 
 				var order = await orderRepo.GetSingleAsync(d => d.Id == mOrders[i].Id, d => d.MUser1);
+				var t = order.ShippingSpeedMethod;
 				Order ordertemp = new Order(
 						order.Id,
 						order.IdCustomer,
@@ -101,15 +103,17 @@ namespace WPFEcommerceApp {
 						listOrderProduct[i],
 						(DateTime)order.DateBegin,
 						order.MUser1.Name,
-						order.MUser1.SourceImageAva
+						order.MUser1.SourceImageAva,
+						order.ShippingSpeedMethod
 					) {
 				};
 				OrderList.Add(ordertemp);
 			}
             OrderListChanged?.Invoke();
-            MainViewModel.IsLoading = false;
         }
+        #endregion
 
+        #region Generator
         MOrder GenerateOrder(Order p) {
             MOrder temp = new MOrder();
             temp.Id = p.ID;
@@ -120,6 +124,7 @@ namespace WPFEcommerceApp {
             temp.DateEnd = p.DateEnd;
             temp.OrderTotal = (int)p.OrderTotal;
             temp.Status = p.Status;
+			temp.ShippingSpeedMethod = p.ShippingSpeedMethod;
 			return temp;
         }
 
@@ -144,6 +149,9 @@ namespace WPFEcommerceApp {
             }
             OrderListChanged?.Invoke();
         }
+        #endregion
+
+        #region Api
         public async Task Add(Order p) {
             MainViewModel.IsLoading = true;
             p.ID = await GenerateID.Gen(typeof(MOrder));
@@ -176,6 +184,7 @@ namespace WPFEcommerceApp {
             temp.DateEnd = p.DateEnd;
             temp.OrderTotal = (int)p.OrderTotal;
             temp.Status = p.Status;
+			temp.ShippingSpeedMethod = p.ShippingSpeedMethod;
             await orderRepo.Update(temp);
             OrderListChanged?.Invoke();
             MainViewModel.IsLoading = false;
@@ -186,5 +195,6 @@ namespace WPFEcommerceApp {
 			}
 			return null;
 		}
+        #endregion
     }
 }

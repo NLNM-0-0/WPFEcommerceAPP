@@ -22,6 +22,10 @@ namespace WPFEcommerceApp {
         }
 
         #region General
+        static public INavigationService OfflineScreen() {
+            return new NavigationService<OfflineScreenVM>(
+                serviceProvider.GetRequiredService<OfflineScreenVM>);
+        }
         static public INavigationService ProfileScreen() {
             return new NavigationService<MyProfileViewModel>(
                 serviceProvider.GetRequiredService<MyProfileViewModel>);

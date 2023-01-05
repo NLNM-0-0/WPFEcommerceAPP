@@ -24,6 +24,13 @@ namespace WPFEcommerceApp {
             }
         }
 
+        public void NoBackNavigate() {
+            navigationStore.CurrentViewModel = CreateVM();
+        }
+        public void NoBackNavigate(object o) {
+            throw new NotImplementedException();
+        }
+
         public Type GetViewModel() {
             Type viewModelType = typeof(TViewModel);
             return viewModelType;

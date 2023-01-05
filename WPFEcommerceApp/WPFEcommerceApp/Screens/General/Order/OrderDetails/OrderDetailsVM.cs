@@ -102,7 +102,11 @@ namespace WPFEcommerceApp {
                 var t = p as Order;
                 List<ReviewProduct> products = new List<ReviewProduct>();
                 for(int i = 0; i < t.ProductList.Count; i++) {
-                        products.Add(new ReviewProduct(t.ProductList[i], t.ID));
+					products.Add(new ReviewProduct() {
+						Product = t.ProductList[i],
+						IdOrder = t.ID,
+						Rating = 5
+					});
                 }
                 var view = new ReviewProductDialog() {
                     ProductList = products,

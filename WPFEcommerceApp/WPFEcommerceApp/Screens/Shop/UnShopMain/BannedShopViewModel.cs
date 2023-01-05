@@ -53,16 +53,26 @@ namespace WPFEcommerceApp
         }
         public BannedShopViewModel()
         {
-            Icon = PackIconKind.CartOff;
-            TextContent = "This shop have been banned by us.";
-            LabelExcuteContent = "Contact us.";
-            UnShopCommand = new RelayCommand<bool>(p => p, p =>
+            Task.Run(() =>
             {
-                NotificationDialog notificationDialog = new NotificationDialog();
-                notificationDialog.Header = "Contact Info";
-                notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
-                DialogHost.Show(notificationDialog, "Main");
+                Icon = PackIconKind.CartOff;
+                TextContent = "This shop have been banned by us.";
+                LabelExcuteContent = "Contact us.";
+                UnShopCommand = new RelayCommand<bool>(p => p, async p =>
+                {
+                    MainViewModel.IsLoading = true;
+                    NotificationDialog notificationDialog = new NotificationDialog();
+                    notificationDialog.Header = "Contact Info";
+                    notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(notificationDialog, "Main");
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    IsLoadingCheck.IsLoading--;
+                }));
             });
+            
         }
     }
 }

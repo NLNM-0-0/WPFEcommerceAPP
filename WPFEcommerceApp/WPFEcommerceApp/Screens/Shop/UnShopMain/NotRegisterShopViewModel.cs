@@ -56,16 +56,28 @@ namespace WPFEcommerceApp
         }
         public NotRegisterShopViewModel()
         {
-            Task task = Task.Run(async () => await Load());
-            while (!task.IsCompleted) { }
-            if(!isRequest)
+            Task.Run(async () =>
             {
-                LoadNotRegistered();
-            }
-            else
+                await Load();
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    IsLoadingCheck.IsLoading--;
+                }));
+            }).ContinueWith((p) =>
             {
-                LoadRegistered();
-            }
+                if (!isRequest)
+                {
+                    LoadNotRegistered();
+                }
+                else
+                {
+                    LoadRegistered();
+                }
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    IsLoadingCheck.IsLoading--;
+                }));
+            }, TaskContinuationOptions.RunContinuationsAsynchronously);
         }
 
         private void ClosedRegisterShopDialog(object sender, DialogClosedEventArgs eventArgs)
@@ -92,11 +104,13 @@ namespace WPFEcommerceApp
             Icon = PackIconKind.EmoticonSadOutline;
             TextContent = "You have not registed a shop yet.";
             LabelExcuteContent = "Register now.";
-            UnShopCommand = new RelayCommand<bool>(p=>p,p=>
+            UnShopCommand = new RelayCommand<bool>(p=>p,async p=>
             {
+                MainViewModel.IsLoading = true;
                 RegisterShopDialog registerShopDialog = new RegisterShopDialog();
                 registerShopDialog.DataContext = new RegisterShopDialogViewModel();
-                DialogHost.Show(registerShopDialog, "Main", null, null, ClosedRegisterShopDialog);
+                MainViewModel.IsLoading = false;
+                await DialogHost.Show(registerShopDialog, "Main", null, null, ClosedRegisterShopDialog);
             });
         }
         private async Task Load()
