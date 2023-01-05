@@ -81,6 +81,19 @@
     <Compile Include="Api\FavouriteApi.cs" />
     <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
+    <Compile Include="Models\AdInUse.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
     <Compile Include="Models\Advertisement.cs">
@@ -365,6 +378,7 @@
       <DependentUpon>WindowControlBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\WindowControlBar\WindowControlBarVM.cs" />
+    <Compile Include="Utils\Converters\DateTimeToShortConverter.cs" />
     <Compile Include="Utils\Converters\FalsesToTrueConverter.cs" />
     <Compile Include="Utils\Converters\MultiValueConverter.cs" />
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
@@ -405,6 +419,7 @@
     <Compile Include="Screens\General\Payment\components\Dialogs\EditInforDialog.xaml.cs">
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ValidationRule\EmailValidateRule.cs" />
     <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\General\Payment\components\HiddenTab\HiddenTab.xaml.cs">
       <DependentUpon>HiddenTab.xaml</DependentUpon>
