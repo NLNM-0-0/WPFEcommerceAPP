@@ -130,12 +130,21 @@ namespace WPFEcommerceApp
             RoleOptions = new List<string> { "User", "Shop", "Admin" };
             GenderOptions = new List<string> { "Male", "Female" };
 
-            Task.Run(async () => await Load());
-
             RemoveUserCommand = new RelayCommand<object>(p => p != null, async(p)=>await RemoveUser(p));
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
             AddUserCommand = new RelayCommand<object>((p)=>CheckNewUser(p), async(p)=>await AddUser(p));
+
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+            }).ContinueWith((first) =>
+            {
+                MainViewModel.IsLoading = false;
+
+            });
+
             MainViewModel.IsLoading = false;
         }
 
