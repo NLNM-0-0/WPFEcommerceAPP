@@ -20,20 +20,22 @@
     <Window.Resources>
         <local:MultiValueConverter x:Key="MultiValueConverter"/>
     </Window.Resources>
-    <materialDesign:DialogHost
-        CloseOnClickAway="True"
-        Identifier="Login">
-        <Grid>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <!--ControlBar-->
-            <local:WindowControlBar Minimize="False" Maximize="False" 
-                                    CloseCM="{Binding ElementName=LoginWindow,Path=DataContext.CloseCM}"/>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--ControlBar-->
+        <local:WindowControlBar Minimize="False" Maximize="False" 
+                                CloseCM="{Binding ElementName=LoginWindow,Path=DataContext.CloseCM}"/>
+        <materialDesign:DialogHost
+        CloseOnClickAway="False"
+        Identifier="Login"
+            Grid.Row="1">
             <!--Content-->
-            <Grid Grid.Row="1">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="2.1*"/>
@@ -71,14 +73,15 @@
                             Width="auto"
                             HorizontalContentAlignment="Stretch"
                             materialDesign:HintAssist.HelperText=""/>
-                        
+
                         <Grid Margin="0 19" >
                             <CheckBox
-                            HorizontalAlignment="Left"
-                            Background="{StaticResource BlackColorBrush}"
-                            Content="Remember me"
-                            Foreground="{StaticResource BlackColorBrush}"
-                            FontSize="{DynamicResource FontSizeDescription}"/>
+                                IsChecked="{Binding ElementName=LoginWindow, Path=DataContext.KeepSignIn}"
+                                HorizontalAlignment="Left"
+                                Background="{StaticResource BlackColorBrush}"
+                                Content="Keep me sign in"
+                                Foreground="{StaticResource BlackColorBrush}"
+                                FontSize="{DynamicResource FontSizeDescription}"/>
                             <Button
                             Grid.Column="1"
                             Margin="0 3 0 0"
@@ -135,7 +138,8 @@
                     </StackPanel>
                 </Border>
             </Grid>
-        </Grid>
-    </materialDesign:DialogHost>
-
+        </materialDesign:DialogHost>
+        <local:LoadingScreen Grid.Row="1" Visibility="{Binding ElementName=LoginWindow, 
+            Path=DataContext.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    </Grid>
 </Window>

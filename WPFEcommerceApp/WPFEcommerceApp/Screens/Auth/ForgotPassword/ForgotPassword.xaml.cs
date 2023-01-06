@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,16 +15,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
-namespace WPFEcommerceApp
-{
+namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for ForgotPassword.xaml
     /// </summary>
-    public partial class ForgotPassword : UserControl
-    {
-        public ForgotPassword()
-        {
+    public partial class ForgotPassword : UserControl {
+        public ForgotPassword() {
             InitializeComponent();
         }
     }

@@ -4,9 +4,12 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -37,10 +40,13 @@ namespace WPFEcommerceApp {
             get => password; set { password = value; OnPropertyChanged(); }
         }
 
+        public bool KeepSignIn { get; set; }
+        public static bool IsLoading { get; set; } = false;
         public ICommand OnLogin { get; set; }
         public ICommand CloseCM { get; set; }
         public ICommand OnSignUp { get; set; }
         public ICommand OnGoogleSignIn { get; set; }
+        public ICommand OnForgotPassword { get; set; }
         public LoginViewModel(object o) {
 
             //_accountStore.CurrentAccount = ;
@@ -64,11 +70,19 @@ namespace WPFEcommerceApp {
                 };
                 DialogHost.Show(register, "Login");
             });
+            #region Google SignIn
             OnGoogleSignIn = new ImmediateCommand<object>(async p => {
                 var auth = new OAuth();
                 (p as Window).Activate();
-                var x = await auth.Authentication();
-                Debug.WriteLine(x);
+                Tuple<string, object> x = null;
+                var y = await Task.WhenAny(auth.Authentication(), timeout());
+                x = await y;
+
+                (p as Window).WindowState = WindowState.Minimized;
+                (p as Window).WindowState = WindowState.Maximized;
+                IsLoading = false;
+
+                if(x == null) return;
                 if(x.Item1 == null || x.Item2 == null) {
                     ErrorMessage();
                     return;
@@ -78,8 +92,8 @@ namespace WPFEcommerceApp {
                     var ins2 = (x.Item2 as Tuple<object, object>).Item2 as Dictionary<string, object>;
                     string birthdays = null, coverPhotos = null, phoneNumbers = null, genders = null;
                     try {
-                        birthdays = ins2["birthdays"]?.ToString();
                         coverPhotos = ins2["coverPhotos"]?.ToString();
+                        birthdays = ins2["birthdays"]?.ToString();
                         phoneNumbers = ins2["phoneNumbers"]?.ToString();
                         genders = ins2["genders"]?.ToString();
                     } catch { }
@@ -92,7 +106,7 @@ namespace WPFEcommerceApp {
                     if(coverPhotos != null) {
                         Stdize(ref coverPhotos);
                         var cp = JsonConvert.DeserializeObject<Dictionary<string, object>>(coverPhotos);
-                        ins1["coverPhoto"] =  (cp as Dictionary<string, object>)["url"].ToString();
+                        ins1["coverPhoto"] =  cp["url"].ToString();
                     }
                     if(phoneNumbers != null) {
                         //handle here
@@ -105,27 +119,41 @@ namespace WPFEcommerceApp {
                         await CreateAccount(ins1);
                     }
                     var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1);
+                    IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
                     (p as Window).Hide();
-                    (o as Window).WindowState = WindowState.Minimized;
                     (o as Window).Show();
-                    (o as Window).WindowState = WindowState.Normal;
                     (p as Window).Close();
 
                 } catch { ErrorMessage(); }
             });
+            #endregion
+            OnForgotPassword = new ImmediateCommand<object>(p => {
+                var view = new ForgotPassword() {
+                    DataContext = new ForgotPasswordVM()
+                };
+                DialogHost.Show(view, "Login");
+            });
         }
 
+        public async Task<Tuple<string, object>> timeout(int to = 10000) {
+            await Task.Delay(to);
+            IsLoading = false;
+            return new Tuple<string, object>(null, null);
+        }
         public async Task<bool> CreateAccount(Dictionary<string, string> user) {
             try {
-                string phoneNumber = "", gender = null, cover = null, birthday = null;
+                string phoneNumber = null, gender = null, cover = null, birthday = null;
                 user.TryGetValue("phoneNumber",out phoneNumber);
                 user.TryGetValue("gender", out gender);
                 user.TryGetValue("coverPhoto", out cover);
                 user.TryGetValue("birthday", out birthday);
-                if(phoneNumber == null) {
-                    phoneNumber = "";
-                }
+
+                if(phoneNumber == null) phoneNumber = "";
+                if(gender == null) gender = "";
+                if(cover == null) cover = "";
+                if(birthday == null) birthday = "";
+
                 bool flag = true;
                 DateTime t = DateTime.Now;
                 try {
@@ -151,7 +179,8 @@ namespace WPFEcommerceApp {
                 await loginRepo.Add(new Models.UserLogin() {
                     IdUser = user["sub"],
                     Password = null,
-                    Username = user["email"]
+                    Username = user["email"],
+                    Provider = 1
                 });
             } catch(Exception e) {
                 Debug.WriteLine(e.Message);
@@ -184,6 +213,15 @@ namespace WPFEcommerceApp {
                 var userRepo = new GenericDataRepository<MUser>();
                 var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1);
                 AccountStore.instance.CurrentAccount = user;
+
+                if(KeepSignIn) {
+                    WPFEcommerceApp.Properties.Settings.Default.Cookie = user.Id;
+                    WPFEcommerceApp.Properties.Settings.Default.Save();
+                }
+                else {
+                    WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
+                    WPFEcommerceApp.Properties.Settings.Default.Save();
+                }
                 return true;
             }
 

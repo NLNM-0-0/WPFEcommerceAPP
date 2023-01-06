@@ -25,7 +25,7 @@ namespace WPFEcommerceApp {
             }
         }
 
-        public byte[] SaltHash(byte[] data, byte[] salt) {
+        byte[] SaltHash(byte[] data, byte[] salt) {
             using(var sha256 = SHA256.Create()) {
                 var combinedHash = Combine(data, salt);
                 return sha256.ComputeHash(combinedHash);

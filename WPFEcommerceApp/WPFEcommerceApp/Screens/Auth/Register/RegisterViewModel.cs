@@ -142,7 +142,8 @@ namespace WPFEcommerceApp {
                 await loginRepo.Add(new Models.UserLogin() {
                     IdUser = idUser,
                     Password = encrypted,
-                    Username = Email
+                    Username = Email,
+                    Provider = 0
                 });
             } catch(Exception e) {
                 Debug.WriteLine(e.Message);
