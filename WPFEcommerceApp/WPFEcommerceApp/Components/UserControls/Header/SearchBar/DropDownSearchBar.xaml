@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="500"
@@ -30,11 +31,12 @@
                                         <Style TargetType="ListBoxItem" 
                                            BasedOn="{StaticResource MaterialDesignNavigationListBoxItem}">
                                             <Setter Property="Margin" Value="0 0 8 0"/>
+                                            <Setter Property="Padding" Value="2"/>
                                         </Style>
                                     </ListBox.ItemContainerStyle>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <local:SearchItem Height="40"/>
+                                            <local:SearchItem Height="50"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                     <ListBox.Template>

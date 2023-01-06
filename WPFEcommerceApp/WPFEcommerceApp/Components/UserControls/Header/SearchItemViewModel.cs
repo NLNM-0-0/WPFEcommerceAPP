@@ -32,10 +32,13 @@ namespace WPFEcommerceApp
         public ICommand MouseDownCommand { get; set; }
         public SearchItemViewModel()
         {
-            MouseDownCommand = new RelayCommandWithNoParameter(ToProduct);
+            MouseDownCommand = new RelayCommand<object>(p=>p!=null,ToProduct);
         }
 
-        private void ToProduct() {
+        private void ToProduct(object p) {
+            var header = p as HeaderViewModel;
+            header.IsSearchOpen = false;
+
             if(IsProduct) {
                 NavigateProvider.ProductDetailScreen().Navigate(Model);
             }

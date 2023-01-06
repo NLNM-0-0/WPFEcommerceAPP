@@ -76,7 +76,7 @@
     </UserControl.Resources>
 
     <materialDesign:DialogHost Background="Transparent" Height="40">
-        <Grid FocusManager.FocusedElement="{Binding ElementName=Search}">
+        <Grid>
 
 
             <Border x:Name="Container" Background="{Binding Path=Background, ElementName=Search}"

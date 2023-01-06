@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="800">
 
@@ -13,11 +14,12 @@
         <Grid.Effect>
             <DropShadowEffect ShadowDepth="5" Opacity="0.2"/>
         </Grid.Effect>
-        <Border Background="{StaticResource WhiteColorBrush}"/>
+        <Border Background="{StaticResource WhiteColorBrush}"
+                x:Name="border"/>
 
-        <DockPanel 
+        <DockPanel LastChildFill="True"
                    x:Name="container">
-
+            
             <!-- The Back button -->
             <Button Style="{StaticResource TransparentButton}" 
                         HorizontalAlignment="Left" 
@@ -38,7 +40,7 @@
 
             <!-- Cart and heart icon -->
 
-            <Button Style="{StaticResource TransparentButton}"
+            <Button Style="{StaticResource TransparentButton}" x:Name="loginBt"
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                     Margin="10 10 30 10" DockPanel.Dock="Right"
                     Background="{StaticResource WhiteColorBrush}"
@@ -53,19 +55,20 @@
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                     Margin="10" DockPanel.Dock="Right"
                     Background="{StaticResource WhiteColorBrush}"
-                    Command="{Binding OpenSearchCommand}">
-                <fa:FontAwesome Icon="Search" FontSize="20" />
+                    Command="{Binding ToNoteCommand}">
+                <fa:FontAwesome Icon="Bell" FontSize="20" />
             </Button>
-            <TabControl x:Name="tab"
-                        DockPanel.Dock="Left">
 
-                <TabItem Header="Men" Margin="0 0 0 -20"></TabItem>
-                <TabItem Header="Men" Margin="0 0 0 -20"></TabItem>
-                <TabItem Header="Men" Margin="0 0 0 -20"></TabItem>
-                <TabItem Header="Men" Margin="0 0 0 -20"></TabItem>
-                <TabItem Header="Men" Margin="0 0 0 -20"></TabItem>
-                <TabItem Header="Men" Margin="0 0 0 -20"></TabItem>
-            </TabControl>
+            <local:SearchBar x:Name="searchBar"
+                             Width="450"
+                             >
+            </local:SearchBar>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="GotKeyboardFocus" SourceName="searchBar">
+                    <i:InvokeCommandAction Command="{Binding OpenSearchCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </DockPanel>
 
         <Popup IsOpen="{Binding IsSearchOpen}" StaysOpen="False"
