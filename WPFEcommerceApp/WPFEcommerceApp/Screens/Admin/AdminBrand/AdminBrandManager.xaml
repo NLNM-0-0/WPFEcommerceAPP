@@ -6,17 +6,18 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="1500" d:DesignWidth="1440"
             >
-    <Grid Margin="0 0 0 50">
+    <Grid Margin="50 0 50 50">
 
         <ScrollViewer VerticalScrollBarVisibility="Hidden" 
                       CanContentScroll="True" 
                       Background="{StaticResource WhiteColorBrush}"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
-            <StackPanel Margin="50 20">
-                <DockPanel >
+            <DockPanel Margin="0 20" LastChildFill="False">
+                <DockPanel DockPanel.Dock="Top">
                     <TextBlock Text="Brands"
                                    FontFamily="{StaticResource Bold}"
                                    FontSize="{StaticResource FontSizeHeadline}"
@@ -48,7 +49,7 @@
                     </StackPanel>
                 </DockPanel>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
                            FontSize="{StaticResource FontSizeText}"/>
 
@@ -59,33 +60,47 @@
                           IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
-                <DataGrid ItemsSource="{Binding FilteredBrands}" Margin="0 20" x:Name="datagrid"
-                              MaxHeight="700" IsReadOnly="True" CanUserAddRows="False"
+                <DataGrid DockPanel.Dock="Top" Margin="0 20"
+                              ItemsSource="{Binding FilteredBrands}" x:Name="datagrid"
+                               IsReadOnly="True" CanUserAddRows="False"
+                              Height="650"
                               CanUserReorderColumns="False" CanUserDeleteRows="False"
                               AutoGenerateColumns="False"
+                              ScrollViewer.CanContentScroll="True"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                       SelectedItem="{Binding SelectedItem}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Width="200" MaxWidth="200" MinWidth="100" Binding="{Binding Id}" SortDirection="Ascending"/>
                         <DataGridTextColumn Header="Name" Width="*" MinWidth="500" Binding="{Binding Name}" SortDirection="Ascending"/>
                     </DataGrid.Columns>
-
-
                 </DataGrid>
 
-                <TextBlock Text="Brand Requests"
+
+
+                <TextBlock DockPanel.Dock="Top" Text="Brand Requests"
                                Margin="0 20"
                                 FontFamily="{StaticResource Bold}"
                                 FontSize="{StaticResource FontSizeHeadline}"
                                    />
-                <local:BrandRequestList Height="500" Margin="0 20"/>
-                <StackPanel.InputBindings>
+                <Grid DockPanel.Dock="Top">
+                    <local:BrandRequestList Margin="0 20"/>
+
+                    <TextBlock Text="No request"
+                                   Margin="20 40 40 40"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   FontSize="{StaticResource FontSizeHeadline2}"
+                                   Visibility="{c:Binding '(RequestList.Items.Count==0)', FalseToVisibility=Collapsed}"/>
+
+                </Grid>
+                <DockPanel.InputBindings>
                     <KeyBinding Key="Enter"
                             Command="{Binding SearchCommand}"/>
                     <KeyBinding Key="Esc"
                             Command="{Binding CloseSearchCommand}"/>
-                </StackPanel.InputBindings>
+                </DockPanel.InputBindings>
 
-            </StackPanel>
+            </DockPanel>
         </ScrollViewer>
     </Grid>
 

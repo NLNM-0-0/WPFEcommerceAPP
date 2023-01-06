@@ -23,7 +23,6 @@ namespace WPFEcommerceApp
         public AdminBrandManager()
         {
             InitializeComponent();
-            this.DataContext = new AdminBrandViewModel();
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

@@ -150,10 +150,7 @@ namespace WPFEcommerceApp
 
             BrandRepository = new GenericDataRepository<Brand>();
             RequestRepo = new GenericDataRepository<BrandRequest>();
-            NoteRepo = new GenericDataRepository<Models.Notification>(); 
-
-            Task.Run(async () => await Load());
-
+            NoteRepo = new GenericDataRepository<Models.Notification>();
             RequestList = new BrandRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
             SearchBy = SearchByOptions[1];
@@ -167,12 +164,23 @@ namespace WPFEcommerceApp
 
             _lastSearchText = string.Empty;
             _lastSearchOption = string.Empty;
-            MainViewModel.IsLoading =false;
+
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+            }).ContinueWith((first) =>
+            {
+                MainViewModel.IsLoading = false;
+
+            });
+
+            
 
         }
 
-
         #endregion
+
 
         #region Command Methods
         public async Task Load()
@@ -205,10 +213,13 @@ namespace WPFEcommerceApp
         }
         public async Task AddNewBrand(string brandName)
         {
+            DialogHost.CloseDialogCommand.Execute(null, null);
+
             MainViewModel.IsLoading = true;
 
+            brandName=brandName.Trim();
             NewBrandName = string.Empty;
-            var brand = await BrandRepository.GetSingleAsync(item => item.Name.Equals(brandName));
+            var brand = await BrandRepository.GetSingleAsync(item => item.Name.ToLower().Equals(brandName.ToLower()));
             if (brand != null)
             {
                 if (brand.Status == Status.Banned.ToString())
@@ -225,7 +236,6 @@ namespace WPFEcommerceApp
 
             MainViewModel.IsLoading = false;
 
-            DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public async Task RemoveBrand(object obj)
@@ -287,7 +297,7 @@ namespace WPFEcommerceApp
             if (request == null)
                 return;
 
-            var brand = await BrandRepository.GetSingleAsync(item => item.Name.Equals(request.BrandName));
+            var brand = await BrandRepository.GetSingleAsync(item => item.Name.ToLower().Trim().Equals(request.BrandName.ToLower().Trim()));
             if (brand != null)
             {
                 if (brand.Status == Status.Banned.ToString())
