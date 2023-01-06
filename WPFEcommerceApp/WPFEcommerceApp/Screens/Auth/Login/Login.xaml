@@ -44,7 +44,7 @@
                            FontSize="63" 
                            FontWeight="Bold" 
                            Margin="65,100,0,-5"/>
-                    <Image Source="..\..\..\Assets\Images\img_Boarding.jpg" Margin="-50,50,-30,80"></Image>
+                    <Image Source="..\..\..\Assets\Images\img_Boarding.jpg" Margin="-30,50,-30,80"></Image>
                 </StackPanel>
                 <!--Right Column-->
                 <Border Padding="30 0 40 0" Grid.Column="1">
@@ -119,7 +119,8 @@
                         HorizontalAlignment="Center"
                         Margin="0 22 0 0"
                         Style="{StaticResource Pressable}"
-                        Command="" 
+                        Command="{Binding OnGoogleSignIn}" 
+                        CommandParameter="{Binding ElementName=LoginWindow}"
                         materialDesign:RippleAssist.Feedback ="Transparent"
                         FontSize="10">
                             <StackPanel Orientation="Horizontal">
