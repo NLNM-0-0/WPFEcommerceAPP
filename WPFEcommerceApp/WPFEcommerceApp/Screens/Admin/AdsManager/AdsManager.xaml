@@ -10,96 +10,114 @@
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440">
     <materialDesign:DialogHost Identifier="adsView">
-        
-    <StackPanel Margin="50 20">
-        <DockPanel Margin="0 20" LastChildFill="False">
-            <TextBlock Text="Advertisements In Use"
+
+        <StackPanel Margin="50 20">
+            <DockPanel Margin="0 20" LastChildFill="False">
+                <TextBlock Text="Advertisements In Use"
                                    FontFamily="{StaticResource Bold}"
                                    FontSize="{StaticResource FontSizeHeadline}"
                                    />
 
-            <Button DockPanel.Dock="Right"
-                                Content="Add"
-                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
-                <Button.CommandParameter>
-                    <local:AddAdsDialog/>
-                </Button.CommandParameter>
-            </Button>
-
-            <Button DockPanel.Dock="Right" Margin="0 0 10 0"
+                
+                <Button DockPanel.Dock="Right"
                     Content="Remove"
-                    Command="{Binding RemoveAdsCommand}"
-                    CommandParameter="{Binding SelectedItem}"
+                    Command="{Binding RemoveInUseAdsCommand}"
+                    CommandParameter="{Binding }"
                     >
-            </Button>
+                </Button>
 
 
-        </DockPanel>
+            </DockPanel>
 
-        <ListView ItemsSource="{Binding InUseAds}" BorderThickness="0" x:Name="miniList"
-                  Focusable="False">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <local:AdsItem Width="{cal:Binding ElementName=miniList, Path=ActualWidth*0.32}"/>
-                    </Grid>
-                    
-                </DataTemplate>
-            </ListView.ItemTemplate>
-
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
-
-        <DockPanel LastChildFill="False">
-            <TextBlock Text="All" Margin="0 30 0 10"
-                                   FontFamily="{StaticResource Bold}"
-                                   FontSize="{StaticResource FontSizeHeadline}"
-                                   />
-            <Button DockPanel.Dock="Right"
-                    Content="Apply"
-                    Command="{Binding ApplyAdsCommand}"
-                    CommandParameter="{Binding SelectedItem}"
-                    >
-            </Button>
-            <ComboBox Margin="10 0" DockPanel.Dock="Right" SelectedItem="{Binding CurrentPos, UpdateSourceTrigger=PropertyChanged}"
-                      ItemsSource="{Binding ComboBoxSource}"
-                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                            materialDesign:HintAssist.Hint="Position"
-                            materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
-                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}">
-            </ComboBox>
-        </DockPanel>
-        
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0 0 -10 0" CanContentScroll="True"
-                          materialDesign:ScrollBarAssist.ThumbCornerRadius="20"
-                      >
-            <ListView ItemsSource="{Binding Ads}" x:Name="itemList" Margin="0 0 10 0"
-                      Height="600" HorizontalAlignment="Stretch"
-                      BorderThickness="0" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      >
+            <ListView ItemsSource="{Binding InUseAds}" BorderThickness="0" x:Name="miniList"
+                      SelectedItem="{Binding InUseSelected, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <local:AdsItem Width="300"/>
-                        </StackPanel>
-                        
-                        
+                        <Grid>
+                            <local:AdsItem Width="{cal:Binding ElementName=miniList, Path=ActualWidth*0.312}"
+                                       DataContext="{Binding Path=Advertisement}"/>
+                        </Grid>
+
                     </DataTemplate>
                 </ListView.ItemTemplate>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource BlurColorBrush}"/>
+                        <Setter Property="Margin" Value="2"/>
+                        
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
-            </ListView>
-        </ScrollViewer>
 
-    </StackPanel>
+            </ListView>
+
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="All" Margin="0 30 0 10"
+                                   FontFamily="{StaticResource Bold}"
+                                   FontSize="{StaticResource FontSizeHeadline}"
+                                   />
+                <Button DockPanel.Dock="Right"
+                    Content="Remove"
+                    Command="{Binding RemoveAdsCommand}"
+                    CommandParameter="{Binding SelectedItem}"
+                    >
+                </Button>
+                
+                <Button DockPanel.Dock="Right" Margin="10 0 10 0"
+                                Content="Add"
+                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                    <Button.CommandParameter>
+                        <local:AddAdsDialog/>
+                    </Button.CommandParameter>
+                </Button>
+
+                <Button DockPanel.Dock="Right"
+                    Content="Apply"
+                    Command="{Binding ApplyAdsCommand}"
+                    CommandParameter="{Binding SelectedItem}"
+                    >
+                </Button>
+                <ComboBox Margin="10 0" DockPanel.Dock="Right" SelectedItem="{Binding CurrentPos, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding ComboBoxSource}"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                            materialDesign:HintAssist.Hint="Position"
+                            materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
+                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}">
+                </ComboBox>
+            </DockPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0 0 -10 0" CanContentScroll="True"
+                          materialDesign:ScrollBarAssist.ThumbCornerRadius="20"
+                      >
+                <ListView ItemsSource="{Binding Ads}" x:Name="itemList" Margin="0 0 10 0"
+                      Height="600" HorizontalAlignment="Stretch"
+                      BorderThickness="0" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <local:AdsItem Width="300"/>
+                            </StackPanel>
+
+
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </ScrollViewer>
+
+        </StackPanel>
     </materialDesign:DialogHost>
 
 </UserControl>
