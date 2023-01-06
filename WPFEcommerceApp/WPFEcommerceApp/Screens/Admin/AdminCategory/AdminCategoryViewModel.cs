@@ -140,8 +140,6 @@ namespace WPFEcommerceApp
             cateRequestRepo = new GenericDataRepository<CategoryRequest>();
             noteRepo = new GenericDataRepository<Models.Notification>();
 
-            Task.Run(async () => await Load());
-
             RequestList = new CategoryRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
             SearchBy = SearchByOptions[1];
@@ -153,8 +151,16 @@ namespace WPFEcommerceApp
             AddRequestCommand = new RelayCommand<object>(p => p != null, async(p)=>await AddRequest(p));
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
-            MainViewModel.IsLoading = false;
 
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+            }).ContinueWith((first) =>
+            {
+                MainViewModel.IsLoading = false;
+
+            });
         }
 
         private async Task Load()
@@ -194,9 +200,9 @@ namespace WPFEcommerceApp
         public async Task AddNewCategory(string cateName)
         {
             MainViewModel.IsLoading = true;
-
+            cateName = cateName.Trim();
             NewName = string.Empty;
-            var cate = await cateRepo.GetSingleAsync(item => item.Name.Equals(cateName));
+            var cate = await cateRepo.GetSingleAsync(item => item.Name.ToLower().Equals(cateName.ToLower()));
             if (cate != null)
             {
                 if (cate.Status == Status.Banned.ToString())
@@ -267,7 +273,7 @@ namespace WPFEcommerceApp
             if (request == null)
                 return;
 
-            var cate = await cateRepo.GetSingleAsync(item => item.Name.Equals(request.CategoryName));
+            var cate = await cateRepo.GetSingleAsync(item => item.Name.ToLower().Trim().Equals(request.CategoryName.ToLower().Trim()));
             if (cate != null)
             {
                 if (cate.Status == Status.Banned.ToString())

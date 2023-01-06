@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440"
             >
@@ -14,8 +15,8 @@
                       CanContentScroll="True"
                       Background="{StaticResource WhiteColorBrush}"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
-            <StackPanel Margin="50 20">
-                <DockPanel>
+            <DockPanel Margin="50 20" LastChildFill="False">
+                <DockPanel DockPanel.Dock="Top">
                     <TextBlock Text="Categories"
                                    FontFamily="{StaticResource Bold}"
                                    FontSize="{StaticResource FontSizeHeadline}"
@@ -48,7 +49,7 @@
                     </StackPanel>
                 </DockPanel>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
                     <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
                            FontSize="{StaticResource FontSizeText}"/>
 
@@ -62,8 +63,9 @@
 
 
 
-                <DataGrid ItemsSource="{Binding FilteredCategories}" x:Name="datagrid" ScrollViewer.CanContentScroll="True"
-                      Margin="0 20" MaxHeight="700" CanUserReorderColumns="False" IsReadOnly="True"
+                <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredCategories}" x:Name="datagrid" ScrollViewer.CanContentScroll="True"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      Margin="0 20" Height="650" CanUserReorderColumns="False" IsReadOnly="True"
                       AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Width="200" MinWidth="100" MaxWidth="200" Binding="{Binding Id}" SortDirection="Ascending"/>
@@ -72,25 +74,32 @@
 
                 </DataGrid>
 
-                <StackPanel>
+                <StackPanel DockPanel.Dock="Top">
                     <TextBlock Text="Category Requests"
                                Margin="0 20"
                                 FontFamily="{StaticResource Bold}"
                                 FontSize="{StaticResource FontSizeHeadline}"
                                    />
                     <Grid Margin="0 0 0 50">
-                        <local:CategoryRequestList Height="500"/>
+                        <local:CategoryRequestList />
+                        <TextBlock Text="No request"
+                                   Margin="20"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   FontSize="{StaticResource FontSizeHeadline2}"
+                                   Visibility="{c:Binding '(RequestList.Items.Count==0)', FalseToVisibility=Collapsed}"/>
+
                     </Grid>
 
                 </StackPanel>
 
-                <StackPanel.InputBindings>
+                <DockPanel.InputBindings>
                     <KeyBinding Key="Enter"
                             Command="{Binding SearchCommand}"/>
                     <KeyBinding Key="Esc"
                             Command="{Binding CloseSearchCommand}"/>
-                </StackPanel.InputBindings>
-            </StackPanel>
+                </DockPanel.InputBindings>
+            </DockPanel>
 
 
         </ScrollViewer>
