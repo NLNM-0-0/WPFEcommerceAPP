@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Remoting.Proxies;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -23,6 +24,7 @@ namespace WPFEcommerceApp
         public ICommand SearchCommand { get; set; }
         public ICommand SignInOutCommand { get; set; }
         public ICommand OnBack { get; set; }
+        public ICommand ToNoteCommand { get; set; }
         #endregion
 
         #region Properties
@@ -30,6 +32,8 @@ namespace WPFEcommerceApp
         private GenericDataRepository<MUser> userRepo;
         private GenericDataRepository<Models.Product> productRepo;
         private bool _isSearchOpen = false;
+        private bool _isFirstLoad = false;
+        public bool IsFirstLoad { get => _isFirstLoad; set { _isFirstLoad = value; OnPropertyChanged(); } }
         public bool IsSearchOpen
         {
             get { return _isSearchOpen; }
@@ -49,6 +53,7 @@ namespace WPFEcommerceApp
             get { return _allItems; }
             set { _allItems = value; OnPropertyChanged(); }
         }
+        public ObservableCollection<SearchItemViewModel> DefaultItems { get; set; }
 
         private string _searchText;
         public string SearchText
@@ -59,6 +64,7 @@ namespace WPFEcommerceApp
                 if (_searchText == value)
                     return;
                 _searchText = value;
+
                 OnPropertyChanged();
                 Search();
             }
@@ -73,7 +79,8 @@ namespace WPFEcommerceApp
 
         public HeaderViewModel()
         {
-            if(AccountStore.instance!=null)
+            MainViewModel.IsLoading = true;
+            if (AccountStore.instance != null)
                 AccountStore.instance.AccountChanged += OnAccountChange;
 
             userRepo = new GenericDataRepository<MUser>();
@@ -84,13 +91,18 @@ namespace WPFEcommerceApp
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
             SearchCommand = new RelayCommandWithNoParameter(Search);
             SignInOutCommand = new RelayCommand<object>(p => true, SignInOut);
-            OnBack = new RelayCommand<object>(p => NavigationStore.instance.stackScreen.Count > 1, p => {
+            OnBack = new RelayCommand<object>(p => NavigationStore.instance.stackScreen.Count > 1, p =>
+            {
                 NavigateProvider.Back();
             });
-
-            Task.Run(async()=>await Load());
+            ToNoteCommand = new RelayCommandWithNoParameter(ToNote);
+            var task=Task.Run(async () => await Load());
+            while (!task.IsCompleted) ;
 
             SearchText = string.Empty;
+            _isFirstLoad = true;
+
+            MainViewModel.IsLoading = false;
         }
 
         private void OnAccountChange()
@@ -102,7 +114,7 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             var users = new ObservableCollection<MUser>(
-                await userRepo.GetListAsync(user => user.StatusShop == Status.NotBanned.ToString() || user.StatusUser == Status.NotBanned.ToString()));
+                await userRepo.GetListAsync(user => user.StatusShop == Status.NotBanned.ToString()));
 
             var products = new ObservableCollection<Models.Product>(
                 await productRepo.GetListAsync(prd => prd.Status == Status.NotBanned.ToString(), prd => prd.ImageProducts));
@@ -116,13 +128,13 @@ namespace WPFEcommerceApp
                     Model = user,
                 }));
 
-            
+
             var productsSearchItems = new ObservableCollection<SearchItemViewModel>(
                 products.Select(prd => new SearchItemViewModel
                 {
 
                     Name = prd.Name,
-                    SourceImage = ReturnDefault(prd.ImageProducts.Count()!=0?prd.ImageProducts.FirstOrDefault().Source:null),
+                    SourceImage = ReturnDefault(prd.ImageProducts.Count() != 0 ? prd.ImageProducts.FirstOrDefault().Source : null),
                     IsProduct = true,
                     Model = prd
                 }));
@@ -130,19 +142,37 @@ namespace WPFEcommerceApp
             AllItems = userSearchItems;
             foreach (var product in productsSearchItems)
                 AllItems.Add(product);
-            
-            ItemsSource=AllItems;
+
+            Random rnd = new Random();
+            if (AllItems.Count() > 0)
+            {
+                DefaultItems = new ObservableCollection<SearchItemViewModel>
+                {
+                    AllItems.ElementAtOrDefault(rnd.Next(0, AllItems.Count/2)),
+                    AllItems.ElementAtOrDefault(rnd.Next(AllItems.Count/2, AllItems.Count)),
+                };
+            }
+            else
+                DefaultItems = null;
+
+            ItemsSource = DefaultItems;
 
         }
 
         private string ReturnDefault(string s)
         {
-            return string.IsNullOrEmpty(s)? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZyOpzMZDaV-Cs1E-hjOJ-Dr2m4UIqc6j7w&usqp=CAU" : s;
+            return string.IsNullOrEmpty(s) ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZyOpzMZDaV-Cs1E-hjOJ-Dr2m4UIqc6j7w&usqp=CAU" : s;
         }
 
         #region Command Methods
         public void OpenSearch()
         {
+            if (_isFirstLoad)
+            {
+                _isFirstLoad = false;
+                Keyboard.ClearFocus();
+                return;
+            }
             IsSearchOpen = true;
         }
 
@@ -160,7 +190,7 @@ namespace WPFEcommerceApp
         public void Search()
         {
             if (SearchText == string.Empty)
-                ItemsSource = new ObservableCollection<SearchItemViewModel>();
+                ItemsSource = DefaultItems;
 
             else
                 ItemsSource = new ObservableCollection<SearchItemViewModel>(AllItems.Where(item => (item.Name.ToLower()).Contains(SearchText.ToLower())));
@@ -168,10 +198,13 @@ namespace WPFEcommerceApp
 
         public void SignInOut(object o)
         {
-            if(AccountStore.instance.CurrentAccount != null) {
-                var dialog = new ConfirmDialog() {
+            if (AccountStore.instance.CurrentAccount != null)
+            {
+                var dialog = new ConfirmDialog()
+                {
                     Param = "",
-                    CM = new RelayCommand<object>(p => true, p => {
+                    CM = new RelayCommand<object>(p => true, p =>
+                    {
                         //need to be HomeScreen here
                         NavigateProvider.HomeScreen().Navigate();
                         AccountStore.instance.CurrentAccount = null;
@@ -186,6 +219,10 @@ namespace WPFEcommerceApp
             //Sign In handle here
         }
 
+        public void ToNote()
+        {
+            NavigateProvider.NotificationScreen().Navigate();
+        }
         #endregion
 
         public override void Dispose()

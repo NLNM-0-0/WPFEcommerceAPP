@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -23,6 +24,7 @@ namespace WPFEcommerceApp
 
         private GenericDataRepository<Models.Product> prodRepo;
         private GenericDataRepository<Advertisement> adsRepo;
+        private GenericDataRepository<AdInUse> adInUseRepo;
         public ObservableCollection<ProductBlockViewModel> Products { get; set; }
         public ObservableCollection<ProductBlockViewModel> BestSeller { get; set; }
         public ObservableCollection<ProductBlockViewModel> JustIn { get; set; }
@@ -36,10 +38,12 @@ namespace WPFEcommerceApp
         {
             prodRepo = new GenericDataRepository<Models.Product>();
             adsRepo = new GenericDataRepository<Advertisement>();
+            adInUseRepo = new GenericDataRepository<AdInUse>();
             RightCommand = new RelayCommand<object>(p => true, Right);
             LeftCommand = new RelayCommand<object>(p => true, Left);
             Task.Run(async () => await Load());
         }
+
 
         public async Task Load()
         {
@@ -59,17 +63,17 @@ namespace WPFEcommerceApp
             JustIn=new ObservableCollection<ProductBlockViewModel>(
                 products.Take(5).Select(pr=>new ProductBlockViewModel(pr)));
 
-            
 
-            var ads = await adsRepo.GetListAsync(item => item.Status == "InUse");
-            foreach(var ad in ads)
+
+            var ads = await adInUseRepo.GetAllAsync(item => item.Advertisement);
+            foreach (var ad in ads)
             {
                 if (ad.Position == 1)
-                    Banner1 = ad.Image;
+                    Banner1 = ad.Advertisement.Image;
                 else if (ad.Position == 2)
-                    Banner2 = ad.Image;
+                    Banner2 = ad.Advertisement.Image;
                 else if (ad.Position == 3)
-                    Banner3 = ad.Image;
+                    Banner3 = ad.Advertisement.Image;
             }
 
         }
@@ -100,13 +104,14 @@ namespace WPFEcommerceApp
                 return 0;
         }
 
-        public void Right(object obj)
+        public static void Right(object obj)
         {
             var listView = obj as ListView;
             //ScrollViewer scrollViewer = listView.GetVisualChild<ScrollViewer>();
 
             // Get the border of the listview (first child of a listview)
             Decorator border = VisualTreeHelper.GetChild(listView, 0) as Decorator;
+
 
             // Get scrollviewer
             ScrollViewer scrollViewer = border.Child as ScrollViewer;
@@ -117,7 +122,7 @@ namespace WPFEcommerceApp
                 {
                     var temp = scrollViewer.HorizontalOffset;
                     var temp2 = scrollViewer.ViewportWidth;
-                    var temp3 = (int)((temp + temp2) / 400);
+                    var temp3 = (int)((temp + temp2) / 350);
                     var items = listView.ItemsSource.Cast<object>();
                     listView.ScrollIntoView(items.ElementAt(temp3));
                 }
@@ -127,7 +132,7 @@ namespace WPFEcommerceApp
             }
         }
 
-        public void Left(object obj)
+        public static void Left(object obj)
         {
             var listView = obj as ListView;
             //ScrollViewer scrollViewer = listView.GetVisualChild<ScrollViewer>();
@@ -145,9 +150,8 @@ namespace WPFEcommerceApp
                     var temp = scrollViewer.HorizontalOffset;
                     var temp2 = scrollViewer.ViewportWidth;
 
-                    var temp3 =(int) Math.Round(temp / 410) - 1;
-                    if (temp3 == -1)
-                        temp3 = 0;
+                    int temp3 = (int)Math.Ceiling(temp/365)-1;
+
                     var items = listView.ItemsSource.Cast<object>();
                     listView.ScrollIntoView(items.ElementAt(temp3));
                 }

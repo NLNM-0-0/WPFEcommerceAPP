@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -86,10 +86,23 @@
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\DropImage\MoveThumb.cs" />
+    <Compile Include="Models\AdInUse.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Utils\IsLoadingCheck.cs" />
     <Compile Include="Models\Address.cs">
@@ -389,6 +402,7 @@
       <DependentUpon>WindowControlBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\WindowControlBar\WindowControlBarVM.cs" />
+    <Compile Include="Utils\Converters\DateTimeToShortConverter.cs" />
     <Compile Include="Utils\Converters\FalsesToTrueConverter.cs" />
     <Compile Include="Utils\Converters\MultiValueConverter.cs" />
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
@@ -430,6 +444,7 @@
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ImmediateCommand.cs" />
+    <Compile Include="Utils\ValidationRule\EmailValidateRule.cs" />
     <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\General\Payment\components\HiddenTab\HiddenTab.xaml.cs">
       <DependentUpon>HiddenTab.xaml</DependentUpon>

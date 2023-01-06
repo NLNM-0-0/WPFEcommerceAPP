@@ -11,7 +11,7 @@
         <local:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
     </UserControl.Resources>
     
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
             <ColumnDefinition Width="*"/>
@@ -28,7 +28,7 @@
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseDown">
                 <i:InvokeCommandAction Command="{Binding MouseDownCommand}"
-                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:HeaderViewModel, Mode=FindAncestor}}"/>
+                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:Header, Mode=FindAncestor}, Path=DataContext}"/>
             </i:EventTrigger>
         </i:Interaction.Triggers>
         

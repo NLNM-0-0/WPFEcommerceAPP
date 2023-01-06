@@ -11,6 +11,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using System;
+using System.Net.Security;
 
 namespace WPFEcommerceApp
 {
@@ -19,10 +21,12 @@ namespace WPFEcommerceApp
         #region Commands
 
         private GenericDataRepository<Advertisement> adsRepo;
+        private GenericDataRepository<AdInUse> adInUseRepo;
         public ICommand AddBackgroundImageCommand { get; set; }
         public ICommand AddAdsCommand { get; set; }
         public ICommand CancelAdsCommand { get; set; }
         public ICommand RemoveAdsCommand { get; set; }
+        public ICommand RemoveInUseAdsCommand { get; set; }
         public ICommand ApplyAdsCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
         #endregion
@@ -30,7 +34,7 @@ namespace WPFEcommerceApp
         #region Properties
 
         public ObservableCollection<Advertisement> Ads { get; set; }
-        public ObservableCollection<Advertisement> InUseAds { get; set; }
+        public ObservableCollection<AdInUse> InUseAds { get; set; }
 
         private ImageSource _sourceImage;
         public ImageSource SourceImage
@@ -46,6 +50,17 @@ namespace WPFEcommerceApp
             set
             {
                 _selectedItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private AdInUse _inUseSelected;
+        public AdInUse InUseSelected
+        {
+            get => _inUseSelected;
+            set
+            {
+                _inUseSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -73,12 +88,12 @@ namespace WPFEcommerceApp
         {
             MainViewModel.IsLoading = true;
             adsRepo = new GenericDataRepository<Advertisement>();
+            adInUseRepo = new GenericDataRepository<AdInUse>();
             CurrentAds = new Advertisement();
-
-            Task.Run(async () => await Load());
 
             SelectedCommand = new RelayCommand<object>(p => p != null, Selected);
             RemoveAdsCommand = new RelayCommand<object>(p => _selectedItem != null, async(p)=>await RemoveAds(p));
+            RemoveInUseAdsCommand = new RelayCommand<object>(p => _inUseSelected != null, async (p) => await RemoveInUseAds(p));
             ApplyAdsCommand = new RelayCommand<object>(p => p != null && CurrentPos != null, async(p)=>await ApplyAds(p));
             CancelAdsCommand = new RelayCommandWithNoParameter(CancelAds);
             AddAdsCommand = new RelayCommand<object>(p=>p!=null, async(p)=>await AddAds(p));
@@ -94,6 +109,16 @@ namespace WPFEcommerceApp
 
                 }
             });
+
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+            }).ContinueWith((first) =>
+            {
+                MainViewModel.IsLoading = false;
+
+            });
             MainViewModel.IsLoading = false;
 
         }
@@ -101,33 +126,26 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             Ads = new ObservableCollection<Advertisement>(
-                await adsRepo.GetAllAsync());
+                await adsRepo.GetAllAsync(item=>item.AdInUses));
 
-            var inUse = new List<Advertisement>(
-                await adsRepo.GetListAsync(ad => ad.Status == "InUse"));
+            InUseAds = new ObservableCollection<AdInUse>
+            {
+                await adInUseRepo.GetSingleAsync(item=>item.Position==1, item=>item.Advertisement),
+                await adInUseRepo.GetSingleAsync(item=>item.Position==2, item=>item.Advertisement),
+                await adInUseRepo.GetSingleAsync(item=>item.Position==3, item=>item.Advertisement),
 
-            inUse.Sort(comparisonToPosition);
-            InUseAds = new ObservableCollection<Advertisement>(inUse);
-
+            };
+            var temp = InUseAds[0];
         }
 
-        private int comparisonToPosition(Advertisement x, Advertisement y)
-        {
-            if (x == null || y == null)
-                return 0;
-            if (x.Position > y.Position)
-                return 1;
-            else if (x.Position < y.Position)
-                return -1;
-            else
-                return 0;
-        }
 
         #endregion
 
         #region Command Methods
         public async Task AddAds(object obj)
         {
+            DialogHost.CloseDialogCommand.Execute(null, null);
+
             MainViewModel.IsLoading = true;
 
             if (string.IsNullOrEmpty(CurrentAds.Image))
@@ -136,13 +154,11 @@ namespace WPFEcommerceApp
             CurrentAds.Id = await GenerateID.Gen(typeof(Advertisement));
 
             CurrentAds.Image = await FireStorageAPI.Push(CurrentAds.Image, "Default", $"Banner_{CurrentAds.Id}");
-            CurrentAds.Status = "NotUse";
             await adsRepo.Add(CurrentAds);
             await Load();
             Image = null;
             MainViewModel.IsLoading = false;
 
-            DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public void CancelAds()
@@ -153,26 +169,71 @@ namespace WPFEcommerceApp
 
         public async Task RemoveAds(object obj)
         {
-            MainViewModel.IsLoading = true;
-
             if (SelectedItem == null)
                 return;
 
-            if (SelectedItem.Status == "InUse")
+            if (SelectedItem.AdInUses.Count != 0)
             {
-
                 var view = new ConfirmDialog()
                 {
+                    CM = new RelayCommandWithNoParameter(async () =>
+                    {
+                        MainViewModel.IsLoading = true;
+                        await adInUseRepo.Remove(SelectedItem.AdInUses.ToArray());
+                        await RemoveAdsDB();
+                    }),
                     Header = "Banner is in use",
-                    Content = "Change the in use banner to another and try again.",
+                    Content = "Are you sure to remove it?",
                 };
                 await DialogHost.Show(view, "adsView");
             }
             else
+                await RemoveAdsDB();
+
+
+        }
+
+        public async Task RemoveInUseAds(object obj)
+        {
+            if (InUseSelected == null)
+                return;
+
+            var view = new ConfirmDialog()
             {
-                await adsRepo.Remove(_selectedItem);
-                await Load();
-            }
+                CM = new RelayCommandWithNoParameter(async () =>
+                {
+                    MainViewModel.IsLoading = true;
+                    await adInUseRepo.Remove(SelectedItem.AdInUses.ToArray());
+                    await RemoveInUseAdsDB();
+                }),
+                Header = "Banner is in use",
+                Content = "Are you sure to remove it?",
+            };
+            await DialogHost.Show(view, "adsView");
+
+        }
+
+        public async Task RemoveAdsDB()
+        {
+            MainViewModel.IsLoading = true;
+
+            await adsRepo.Remove(_selectedItem);
+            await FireStorageAPI.Delete(_selectedItem.Image);
+            await Load();
+            MainViewModel.IsLoading = false;
+
+        }
+
+        public async Task RemoveInUseAdsDB()
+        {
+            MainViewModel.IsLoading = true;
+
+            var current = await adInUseRepo.GetSingleAsync(item => item.Id == _inUseSelected.Id);
+
+            if(current!=null)
+                await adInUseRepo.Remove(current);
+
+            await Load();
             MainViewModel.IsLoading = false;
 
         }
@@ -183,46 +244,72 @@ namespace WPFEcommerceApp
             if (ad == null)
                 return;
 
-            if (ad.Status == "InUse")
+            foreach (var item in InUseAds)
             {
-                var view = new ConfirmDialog()
+                if(item!= null)
                 {
-                    Header = "Banner is currently in use",
-                    Content = "Change the in use banner to another and try again.",
-                };
-                await DialogHost.Show(view, "adsView");
-                return;
-            }
+                    if (item.Position.ToString() == CurrentPos)
+                    {
+                        if(item.Advertisement.Id==ad.Id)
+                        {
+                            var existed = new ConfirmDialog()
+                            {
+                                Header = "Already set",
+                                Content = "The banner has been placed at the position chosen!"
+                            };
+                            await DialogHost.Show(existed, "adsView");
+                            return;
+                        }
+                        var view = new ConfirmDialog()
+                        {
+                            Header = "Replace",
+                            Content = "The position chosen has already had a banner, are you sure you want to replace it?",
+                            CM = new RelayCommandWithNoParameter(async () =>
+                            {
+                                MainViewModel.IsLoading = true;
+                                await adInUseRepo.Remove(item);
+                                await SetAds(ad);
+                            })
+                        };
+                        await DialogHost.Show(view, "adsView");
+                        MainViewModel.IsLoading = false;
 
+                        return;
+                    }
+                }
+                
+            }
             MainViewModel.IsLoading = true;
 
-            for (int i = 1; i < 4; i++)
-            {
-                if (CurrentPos == i.ToString())
-                {
-                    var lastAd = await adsRepo.GetSingleAsync(item => item.Position == i && item.Status == "InUse");
-                    if (lastAd != null)
-                    {
-                        lastAd.Status = "NotUse";
-                        await adsRepo.Update(lastAd);
-                    }
-
-                    ad.Status = "InUse";
-                    ad.Position = i;
-                    await adsRepo.Update(ad);
-                    break;
-                }
-            }
-
-            await Load();
+            await SetAds(ad);
             MainViewModel.IsLoading = false;
 
         }
 
+        private async Task SetAds(Advertisement ad)
+        {
+            var adInUse = new AdInUse
+            {
+                Position = int.Parse(CurrentPos),
+                Id = ad.Id,
+            };
+
+            await adInUseRepo.Add(adInUse);
+            await Load();
+            MainViewModel.IsLoading = false;
+
+
+        }
         public void Selected(object obj)
         {
             var ads = obj as Advertisement;
+            
             SelectedItem = ads;
+            foreach(var item in InUseAds)
+            {
+                if (item != null && item.Id == SelectedItem.Id)
+                    InUseSelected = item;
+            }
         }
         #endregion
     }

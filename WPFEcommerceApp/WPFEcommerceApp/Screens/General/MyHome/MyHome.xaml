@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -12,11 +14,12 @@
         <local:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
     </UserControl.Resources>
     <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
-        <StackPanel>
+        <StackPanel x:Name="stack" Background="{StaticResource WhiteColorBrush}">
             <!-- Banner 1 -->
             <Grid Height="{cal:Binding RelativeSource={RelativeSource Self},
                 Path=ActualWidth*0.35}"
-                Margin="0 0 0 50">
+                Margin="0 0 0 50"
+                Visibility="{c:Binding Path='(Banner1!=null)', FalseToVisibility=Collapsed}">
 
                 <Image 
                         Stretch="Fill"
@@ -76,7 +79,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:ProductBlock/>
+                        <local:ProductBlock Width="350" Height="500"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -84,7 +87,8 @@
             <!-- Banner 2 -->
             <Grid Height="{cal:Binding RelativeSource={RelativeSource Self},
                 Path=ActualWidth*0.35}"
-                Margin="0 0 0 50">
+                Margin="0 0 0 50"
+                Visibility="{c:Binding Path='(Banner2!=null)', FalseToVisibility=Collapsed}">
 
                 <Image 
                         Stretch="Fill"
@@ -144,7 +148,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:ProductBlock/>
+                        <local:ProductBlock Width="350" Height="500"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -153,7 +157,8 @@
             <!-- Banner 3 -->
             <Grid Height="{cal:Binding RelativeSource={RelativeSource Self},
                 Path=ActualWidth*0.35}"
-                Margin="0 0 0 50">
+                Margin="0 0 0 50"
+                Visibility="{c:Binding Path='(Banner3!=null)', FalseToVisibility=Collapsed}">
 
                 <Image 
                         Stretch="Fill"
@@ -195,7 +200,7 @@
                     </Button.Content>
                 </Button>
             </DockPanel>
-            
+
             <ListView ItemsSource="{Binding Products}" Margin="20" x:Name="moreList"
                   SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
                   ScrollViewer.CanContentScroll="True"
@@ -213,7 +218,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:ProductBlock/>
+                        <local:ProductBlock Width="350" Height="500"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

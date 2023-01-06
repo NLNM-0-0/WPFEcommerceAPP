@@ -11,16 +11,17 @@
              d:DesignHeight="900" d:DesignWidth="1440">
     <Grid Background="{StaticResource WhiteColorBrush}"
           >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0"
-                VerticalAlignment="Stretch">
+        <Grid Grid.Row="0"
+              >
             <Border
                     x:Name="MainBorder"
-                    CornerRadius="0 0 30 0"
+                    CornerRadius="0 0 50 0"
                     ClipToBounds="True"
                     Background="{StaticResource WhiteColorBrush}">
             </Border>
@@ -28,29 +29,28 @@
                 <Border.OpacityMask>
                     <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
                 </Border.OpacityMask>
-                <ScrollViewer
-                        HorizontalScrollBarVisibility="Hidden"
-                        VerticalScrollBarVisibility="Hidden">
-                    <Image Height="{Binding ElementName=MainBorder, Path=ActualHeight}" 
-                           Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
-                        Stretch="Fill"
-                        Source="{Binding EditSourceImageBackground}"
-                        ScrollViewer.CanContentScroll="False">
-                        <Image.OpacityMask>
-                            <VisualBrush Visual="{Binding ElementName=MainBorder}"
-                                         RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Image.OpacityMask>
-                    </Image>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="False">
+                    <local:AsyncImage
+                                    Stretch="Fill"
+                                    Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
+                                    Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
+                                    ScrollViewer.CanContentScroll="True">
+                        <local:AsyncImage.OpacityMask>
+                            <VisualBrush 
+                                            Visual="{Binding ElementName=MainBorder}" 
+                                            RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </local:AsyncImage.OpacityMask>
+                    </local:AsyncImage>
                 </ScrollViewer>
             </Border>
-            <DockPanel
-                    Margin="0 30 0 30">
+            <DockPanel HorizontalAlignment="Left"
+                    Margin="100 10">
                 <Button DockPanel.Dock="Top" Style="{StaticResource WhiteButton}"
-                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        Command="{Binding OpenAvaDialog}"
                         FontFamily="{StaticResource Regular}"
                         Padding="5" Height="30"
                         HorizontalAlignment="Center"
-                        Margin="0 0 0 5"
+                        Margin="10"
                         FontSize="{StaticResource FontSizeDescription}"
                         Foreground="{StaticResource BlackColorBrush}">
                     <Button.Content>
@@ -67,40 +67,40 @@
                                     VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button.Content>
-                    <Button.CommandParameter>
-                        <local:ProfileShopAvaDialog/>
-                    </Button.CommandParameter>
+                  
                 </Button>
-                <Border BorderThickness="1.5" BorderBrush="{StaticResource BlurColorBrush}"
-                        DockPanel.Dock="Top"
+                <Border DockPanel.Dock="Top"
+                        Grid.Row="1"
+                        BorderBrush="{StaticResource BoxLineColorBrush}"
+                        BorderThickness="1"
                         Background="White"
-                        CornerRadius="52"
-                        Width="103"
-                        Height="103">
-                    <Image
-                            Height="100"
-                            Width="100"
-                            Stretch="Fill"
-                            Source="{Binding SourceImageAvaTemp}">
-                        <Image.Clip>
+                        CornerRadius="50"
+                        Width="100"
+                        Height="100">
+                    <local:AsyncImage 
+                            Height="98"
+                            Width="98"
+                            Stretch="UniformToFill"
+                            Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
+                        <local:AsyncImage.Clip>
                             <EllipseGeometry
-                                    Center="50 50"
-                                    RadiusX="50"
-                                    RadiusY="50"/>
-                        </Image.Clip>
-                    </Image>
+                                    Center="49 49"
+                                    RadiusX="49"
+                                    RadiusY="49"/>
+                        </local:AsyncImage.Clip>
+                    </local:AsyncImage>
                 </Border>
-                <Button Width="130" Height="30"
+                <Button Width="150" Height="30" Margin="10"
                         DockPanel.Dock="Top"
                         VerticalAlignment="Bottom"
-                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        Command="{Binding OpenBackgroundDialog}"
                         Style="{StaticResource WhiteButton}"
                         FontFamily="{StaticResource Regular}"
                         Padding="0"
                         FontSize="{StaticResource FontSizeDescription}"
                         >
                     <Button.Content>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" >
                             <fa:ImageAwesome
                                     Margin="0 0 5 0"
                                     Icon="Edit"
@@ -113,20 +113,25 @@
                                     VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button.Content>
-                    <Button.CommandParameter>
-                        <local:ProfileShopBackgroundDialog/>
-                    </Button.CommandParameter>
                 </Button>
             </DockPanel>
         </Grid>
 
-        <Grid Grid.Column="1">
-            <!-- Profile -->
-            <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="My Profile" Margin="95 20" 
+        <TextBlock Text="My Profile" Margin="0 40 0 20" 
+                   Grid.Row="1"
                             FontFamily="{StaticResource Bold}"
                             FontSize="{StaticResource FontSizeHeadline}"
                             TextAlignment="Center"/>
+        
+        <Grid Grid.Row="2" Margin="0 0 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Profile -->
+            <StackPanel HorizontalAlignment="Center">
+                
                 <TextBox    Margin="0 15 0 15" x:Name="UserNametb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="500"
@@ -136,59 +141,77 @@
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
+                            MaxLength="200"/>
                 <TextBox    Margin="0 15 0 15" x:Name="Emailtb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Email"
-                            Text="{Binding EditUser.Email, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="0"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
+                            MaxLength="200">
+                    <Binding Path="EditUser.Email"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:EmailValidateRule
+                                ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
                 <TextBox    Margin="0 15 0 15" x:Name="Phonetb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Phone Number"
-                            Text="{Binding EditUser.PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="0"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
+                            MaxLength="10">
+                    <Binding Path="EditUser.PhoneNumber"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:PhoneValidateRule
+                                            ValidatesOnTargetUpdated="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+            </StackPanel>
 
-                <TextBox    Margin="0 15 0 15" x:Name="Gendertb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
-                            materialDesign:HintAssist.Hint="Gender"
-                            Text="{Binding EditUser.Gender, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
-                <TextBox    Margin="0 15 0 15" x:Name="Birthtb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Center">
+                <ComboBox Margin="0 15 0 15" ItemsSource="{Binding GenderOptions}"
+                                    materialDesign:HintAssist.Hint="Gender"
+                                    VerticalAlignment="Center">
+                    <ComboBox.SelectedItem>
+                        <Binding Path="EditUser.Gender" Converter="{x:Static local:BooleanToGenderConverter.Instance}"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <local:NotEmptyValidationRule
+                                              ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedItem>
+                </ComboBox>
+                <DatePicker Grid.Row="0" SelectedDate="{Binding EditUser.DOB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Width="auto" Margin="0 15 0 15" Padding="15 0 -50 0"
+                            Height="55"
+                            DisplayDateEnd="{Binding FromSelectedDateMax, Mode=OneWay}"
+                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                             materialDesign:HintAssist.Hint="Date of Birth"
-                            Text="{Binding EditUser.DOB, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
-
+                            FontSize="{StaticResource FontSizeText}"
+                            >
+                </DatePicker>
                 <TextBox    Margin="0 15 0 15" x:Name="Addresstb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
+                            Width="500"
                             materialDesign:HintAssist.Hint="Address"
                             Text="{Binding EditUser.Address, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="0"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="27"/>
+                            MaxLength="200"/>
                 <DockPanel>
                     <Button DockPanel.Dock="Right"
                     x:Name="SaveButton"
@@ -218,28 +241,14 @@
                         </Button.CommandParameter>
                     </Button>
                 </DockPanel>
-
-
-
             </StackPanel>
 
 
         </Grid>
         <Grid.InputBindings>
             <KeyBinding Key="Esc" Command="{Binding CancelProfileCommand}"/>
-            <KeyBinding Key="Enter" Command="{Binding SaveProfileCommand}">
-                <!--<KeyBinding.CommandParameter>
-                    <MultiBinding Converter="{x:Static local:MyProfileValueConverter.Instance}">
-                        <Binding ElementName="UserNametb" Path="Text"/>
-                        <Binding ElementName="FullNametb" Path="Text"/>
-                        <Binding ElementName="Emailtb" Path="Text"/>
-                        <Binding ElementName="Phonetb" Path="Text"/>
-                        <Binding ElementName="Gendertb" Path="Text"/>
-                        <Binding ElementName="Birthtb" Path="Text"/>
-                        <Binding ElementName="Addresstb" Path="Text"/>
-                    </MultiBinding>
-                </KeyBinding.CommandParameter>-->
-            </KeyBinding>
+            <KeyBinding Key="Enter" Command="{Binding SaveProfileCommand}" 
+                                CommandParameter="{Binding Path=EditUser}"/>
         </Grid.InputBindings>
     </Grid>
 </UserControl>

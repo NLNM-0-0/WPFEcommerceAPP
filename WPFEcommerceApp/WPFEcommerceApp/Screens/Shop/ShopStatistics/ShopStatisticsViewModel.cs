@@ -13,6 +13,8 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Globalization;
+using System.Security.Cryptography;
 
 namespace WPFEcommerceApp
 {
@@ -69,22 +71,29 @@ namespace WPFEcommerceApp
         #region Constructor
         public ShopStatisticsViewModel()
         {
+
             orderinfoRepo = new GenericDataRepository<OrderInfo>();
-            FromSelectedDate = new DateTime(2022, 11, 1);
-            ToSelectedDate =DateTime.Now;
             LoadCommand = new RelayCommandWithNoParameter(async () => await Load());
 
-            Task.Run(async()=>await Load());
+            FromSelectedDate = new DateTime(2022, 11, 1);
+            ToSelectedDate = DateTime.Now;
 
+            Task.Run(async () => await Load()).ContinueWith((p) =>
+            {
+                FromSelectedDate = new DateTime(2022, 11, 1);
+                ToSelectedDate = DateTime.Now;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
-
         #endregion
 
         public async Task Load()
         {
+            MainViewModel.IsLoading = true;
+
             OrderInfos = new List<OrderInfo>(await orderinfoRepo.GetListAsync(
                 ord => ord.MOrder.IdShop == AccountStore.instance.CurrentAccount.Id,
                 ord => ord.MOrder, ord=>ord.Rating));
+            var id=AccountStore.instance.CurrentAccount.Id;
 
             var fromDate = FromSelectedDate.Date;
             var toDate = ToSelectedDate.Date;
@@ -118,39 +127,22 @@ namespace WPFEcommerceApp
 
             #region Revenue
 
-
-            var dayCount = (toDate - fromDate).Days / 30;
             var labels = new List<string>();
-
-            if(dayCount<=0)
-            {
-                for(int i=0; ;i++)
-                {
-                    var day = (fromDate + new TimeSpan(i, 0, 0, 0));
-                    if (day >= toDate)
-                        break;
-                    labels.Add(day.ToString("dd/MM/yyyy"));
-                }
-            }
-            else
-            {
-                for (int i = 0; ; i++)
-                {
-                    var day = (fromDate + new TimeSpan(i * dayCount, 0, 0, 0));
-                    if (day >= toDate)
-                        break;
-                    labels.Add(day.ToString("dd/MM/yyyy"));
-                }
-            }   
-            labels.Add(toDate.ToString("dd/MM/yyy"));
-            RevenueLabels = labels.ToArray();
-            yRevenueFormatter = (value) => value.ToString("C");
+            var dayList=new List<DateTime>();
 
             var revenueList = new List<long> ();
 
-            var dayList = new List<string>(RevenueLabels).Select(item => DateTime.Parse(item));
 
-            foreach (var day in dayList)
+            for (int i = 0; ; i++)
+            {
+                var day = (fromDate + new TimeSpan(i, 0, 0, 0));
+                labels.Add(day.ToString("dd/MM/yyyy"));
+                dayList.Add(day);
+                if (day >= toDate)
+                    break;
+            }
+
+            foreach(var day in dayList)
             {
                 long temp = 0;
                 foreach (var ord in OrderInfos)
@@ -164,12 +156,17 @@ namespace WPFEcommerceApp
                 revenueList.Add(temp);
             }
 
+            RevenueLabels = labels.ToArray();
+
+            yRevenueFormatter = (value) => value.ToString("C");
+
             RevenueSeriesCollection = new SeriesCollection
             {
                 new LineSeries
                 {
                     Title="Revenue",
-                    Values=new ChartValues<long>(revenueList)
+                    Values=new ChartValues<long>(revenueList),
+                    PointGeometrySize=0,
                 },
             };
             #endregion
@@ -265,6 +262,8 @@ namespace WPFEcommerceApp
                 }
             };
             #endregion
+
+            MainViewModel.IsLoading = false;
         }
     }
 }

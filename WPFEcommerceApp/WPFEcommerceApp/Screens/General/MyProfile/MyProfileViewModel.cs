@@ -2,15 +2,19 @@
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WPFEcommerceApp.Models;
+using static System.Windows.Forms.LinkLabel;
 
 namespace WPFEcommerceApp
 {
@@ -21,62 +25,60 @@ namespace WPFEcommerceApp
         private GenericDataRepository<MUser> userRepo;
         public MUser EditUser { get; set; }
 
-        private string _sourceImageAva;
-        public string SourceImageAva
-        {
-            get
-            {
-                return _sourceImageAva;
-            }
-            set
-            {
-                _sourceImageAva = value;
-                OnPropertyChanged();
-            }
-        }
-        private string _sourceImageAvaTemp;
-        public string SourceImageAvaTemp
-        {
-            get
-            {
-                return _sourceImageAvaTemp;
-            }
-            set
-            {
-                _sourceImageAvaTemp = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        private string _sourceImageBackground;
         public string SourceImageBackground
         {
             get
             {
-                return _sourceImageBackground;
-            }
-            set
-            {
-                _sourceImageBackground = value;
-                OnPropertyChanged();
+                if (AccountStore.instance.CurrentAccount == null || string.IsNullOrEmpty(AccountStore.instance.CurrentAccount.SourceImageBackground))
+                {
+                    return Properties.Resources.DefaultShopBackgroundImage;
+                }
+                else
+                {
+                    return AccountStore.instance.CurrentAccount.SourceImageBackground;
+                }
             }
         }
-
-        private string _editSourceImageBackground;
-        public string EditSourceImageBackground
+        public string SourceImageAva
         {
             get
             {
-                return _editSourceImageBackground;
+                if (AccountStore.instance.CurrentAccount == null || string.IsNullOrEmpty(AccountStore.instance.CurrentAccount.SourceImageAva))
+                {
+                    return Properties.Resources.DefaultShopAvaImage;
+                }
+                else
+                {
+                    return AccountStore.instance.CurrentAccount.SourceImageAva;
+                }
             }
+        }
+
+        private CroppedBitmap imageAva;
+        public CroppedBitmap ImageAva
+        {
+            get => imageAva;
             set
             {
-                _editSourceImageBackground = value;
+                imageAva = value;
+                OnPropertyChanged(nameof(SourceImageAva));
                 OnPropertyChanged();
             }
         }
 
+        private CroppedBitmap imageBackground;
+        public CroppedBitmap ImageBackground
+        {
+            get => imageBackground;
+            set
+            {
+                imageBackground = value;
+                OnPropertyChanged(nameof(imageBackground));
+                OnPropertyChanged();
+            }
+        }
+
+        public List<string> GenderOptions => new List<string> { "Female", "Male" };
         #endregion
 
         #region Commands
@@ -91,6 +93,10 @@ namespace WPFEcommerceApp
         public ICommand SaveAvaShopCommand { get; set; }
 
         public ICommand CancelProfileCommand { get; set; }
+
+        public ICommand OpenAvaDialog { get; set; }
+        public ICommand OpenBackgroundDialog { get; set; }
+
         #endregion
 
         #region Constructor
@@ -99,44 +105,32 @@ namespace WPFEcommerceApp
         {
             userRepo = new GenericDataRepository<MUser>();
 
-            Task.Run(async () => await Load());
 
-            ChangeAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenAvaDialog = new RelayCommandWithNoParameter(async () =>
             {
-                OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png";
-                op.ShowDialog();
-                if (op.FileName != "")
-                {
-                    SourceImageAva = op.FileName;
-
-
-                }
+                var avaDialog = new ProfileShopAvaDialog();
+                ImageAva = new CroppedBitmap(new BitmapImage(new Uri(SourceImageAva)), new Int32Rect(0, 0, 0, 0));
+                avaDialog.DataContext = new ProfileShopAvaDialogViewModel(ImageAva);
+                await DialogHost.Show(avaDialog, "Main", null, null,SaveAva);
             });
 
-            ChangeToDefaultAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+            OpenBackgroundDialog = new RelayCommandWithNoParameter(async () =>
             {
-                SourceImageAva = null;
+                ProfileShopBackgroundDialog bgrDialog = new ProfileShopBackgroundDialog();
+                ImageBackground = new CroppedBitmap(new BitmapImage(new Uri(SourceImageBackground)), new Int32Rect(0, 0, 0, 0));
+                bgrDialog.DataContext = new ProfileShopBackgroundDialogViewModel(ImageBackground);
+                await DialogHost.Show(bgrDialog, "Main", null, null, SaveBackground);
             });
 
-            ChangeBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png";
-                op.ShowDialog();
-                if (op.FileName != "")
-                {
-                    SourceImageBackground = op.FileName;
-                }
-            });
-            ChangeToDefaultBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                SourceImageBackground = string.Empty;
-            });
-            SaveBackgroundShopCommand = new RelayCommandWithNoParameter(async()=>await SaveBackground());
 
-            SaveProfileCommand = new RelayCommand<object>(p => p != null,async(p)=>await SaveProfile(p));
-            SaveAvaShopCommand = new RelayCommandWithNoParameter(async()=>await SaveAva());
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+                MainViewModel.IsLoading = false;
+            });
+
+            SaveProfileCommand = new RelayCommand<object>(p => p != null, async (p) => await SaveProfile(p));
             CancelProfileCommand = new RelayCommand<object>(p => p != null, async (p) => await CancelProfile(p));
         }
         #endregion
@@ -145,61 +139,82 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             EditUser = await userRepo.GetSingleAsync(usr => usr.Id == AccountStore.instance.CurrentAccount.Id);
-            if (!string.IsNullOrEmpty(AccountStore.instance.CurrentAccount.SourceImageAva))
+
+
+        }
+
+        private async void SaveAva(object sender, DialogClosedEventArgs eventArgs)
+        {
+            MainViewModel.IsLoading = true;
+            if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
-                SourceImageAvaTemp = AccountStore.instance.CurrentAccount.SourceImageAva;
-                SourceImageAva = AccountStore.instance.CurrentAccount.SourceImageAva;
-            }
-            if(!string.IsNullOrEmpty(AccountStore.instance.CurrentAccount.SourceImageBackground))
-            {
-                EditSourceImageBackground = AccountStore.instance.CurrentAccount.SourceImageBackground;
-                SourceImageBackground= AccountStore.instance.CurrentAccount.SourceImageBackground;
+                ImageAva = (eventArgs.Parameter as CroppedBitmap);
+
+                string link;
+                if (String.IsNullOrEmpty(SourceImageAva) || SourceImageAva.Contains("https://firebasestorage.googleapis.com"))
+                {
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageAva, "User", $"Ava_{AccountStore.instance.CurrentAccount.Id}", AccountStore.instance.CurrentAccount.SourceImageAva);
+                }
+                else
+                {
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageAva, "User", $"Ava_{AccountStore.instance.CurrentAccount.Id}");
+                }
+
+                AccountStore.instance.CurrentAccount.SourceImageAva = link;
+                await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
+                await Load();
             }
 
+            MainViewModel.IsLoading = false;
+        }
+
+        private async void SaveBackground(object sender, DialogClosedEventArgs eventArgs)
+        {
+            MainViewModel.IsLoading = true;
+            if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
+            {
+                ImageBackground = (eventArgs.Parameter as CroppedBitmap);
+
+                string link;
+                if (String.IsNullOrEmpty(SourceImageBackground) || SourceImageBackground.Contains("https://firebasestorage.googleapis.com"))
+                {
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageBackground, "User", $"Background_{AccountStore.instance.CurrentAccount.Id}", AccountStore.instance.CurrentAccount.SourceImageAva);
+                }
+                else
+                {
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageBackground, "User", $"Background_{AccountStore.instance.CurrentAccount.Id}");
+                }
+
+                AccountStore.instance.CurrentAccount.SourceImageBackground = link;
+                await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
+                await Load();
+            }
+
+            MainViewModel.IsLoading = false;
         }
 
         public async Task SaveProfile(object obj)
         {
+            MainViewModel.IsLoading = true;
             var user = obj as MUser;
             if (user == null)
                 return;
             await AccountStore.instance.Update(user);
             await Load();
-        }
-        public async Task SaveAva()
-        {
+            MainViewModel.IsLoading = false;
 
-            var link = await FireStorageAPI.Push(SourceImageAva, "User", $"Ava_{AccountStore.instance.CurrentAccount.Id}");
-
-            SourceImageAva = link;
-            SourceImageAvaTemp = link;
-            EditUser.SourceImageAva = link;
-            var nav = NavigationStore.instance.stackScreen;
-            AccountStore.instance.CurrentAccount.SourceImageAva = link;
-            await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
-            DialogHost.CloseDialogCommand.Execute(null, null);
-        }
-
-        public async Task SaveBackground()
-        {
-            var link = await FireStorageAPI.Push(SourceImageBackground, "User", $"Background_{AccountStore.instance.CurrentAccount.Id}");
-
-            SourceImageBackground = link;
-            EditSourceImageBackground = link;
-            EditUser.SourceImageBackground = link;
-
-            AccountStore.instance.CurrentAccount.SourceImageBackground=link;
-            await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
-            DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public async Task CancelProfile(object obj)
         {
+            MainViewModel.IsLoading = true;
+
             var user = obj as MUser;
             if (user == null)
                 return;
 
             await Load();
+            MainViewModel.IsLoading = false;
 
         }
         #endregion

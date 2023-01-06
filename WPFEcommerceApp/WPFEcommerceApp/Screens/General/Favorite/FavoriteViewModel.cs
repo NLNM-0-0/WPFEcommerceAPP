@@ -35,9 +35,25 @@ namespace WPFEcommerceApp
             proRepo = new GenericDataRepository<Models.Product>();
             userRepo = new GenericDataRepository<MUser>();
             TestCommand = new RelayCommandWithNoParameter(Test);
-            Task t= Task.Run(async () => await Load());
-            while (!t.IsCompleted) ;
+
+            FavoriteStore.instance.FavoriteListChanged += OnFavoriteListChanged;
+
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+            }).ContinueWith((first) =>
+            {
+                MainViewModel.IsLoading = false;
+
+            });
+
             MainViewModel.IsLoading = false;
+        }
+
+        private async void OnFavoriteListChanged()
+        {
+            await Load();
         }
 
         private void Test()
@@ -47,12 +63,12 @@ namespace WPFEcommerceApp
 
         public async Task Load()
         {
-            
+            MainViewModel.IsLoading = true;
             var favProducts = await userRepo.GetSingleAsync(
                 item=>item.Id==AccountStore.instance.CurrentAccount.Id, 
                 item=>item.Products1);
 
-            Products = new ObservableCollection<ProductBlockViewModel>();
+            var pro = new ObservableCollection<ProductBlockViewModel>();
 
             foreach (var favProduct in favProducts.Products1)
             {
@@ -62,8 +78,15 @@ namespace WPFEcommerceApp
                     pr => pr.Category, 
                     pr => pr.Brand);
 
-                Products.Add(new ProductBlockViewModel(prod));
+                pro.Add(new ProductBlockViewModel(prod));
             }
+
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                Products = new ObservableCollection<ProductBlockViewModel>(pro);
+            }));
+            
+            MainViewModel.IsLoading = false;
         }
     }
 }

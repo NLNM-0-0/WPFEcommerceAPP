@@ -184,11 +184,20 @@ namespace WPFEcommerceApp
             productRepo=new GenericDataRepository<Models.Product>();
             SearchByOptions = new List<string> { "ID", "ShopID", "Name", "Category", "Brand" };
 
-            Task.Run(async () =>await Load());
-
             RemoveProductCommand = new RelayCommand<object>(p => p != null,async(p)=>await RemoveProduct(p));
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
+
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+            }).ContinueWith((first) =>
+            {
+                MainViewModel.IsLoading = false;
+
+            });
+
             MainViewModel.IsLoading = false;
 
         }
