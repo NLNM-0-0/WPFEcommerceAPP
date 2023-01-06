@@ -11,12 +11,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Net.Mail;
 
 namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public class OAuth {
+        #region RetrieveDataConfig
         public async Task<Tuple<string, object>> Authentication() {
             // Generates state and PKCE values.
             string state = randomDataBase64url(32);
@@ -55,7 +57,7 @@ namespace WPFEcommerceApp {
             // Sends an HTTP response to the browser.
             var response = context.Response;
             string responseString = string.Format(
-                "<html><head><meta http-equiv='refresh' content='10;url=https://google.com'></head><body>Return to the WANO....</body></html>"
+                "<html><head><meta http-equiv='refresh' content='1;url=https://google.com'></head><body><h1>Return to the WANO....</h1></body></html>"
                 );
             var buffer = Encoding.UTF8.GetBytes(responseString);
             response.ContentLength64 = buffer.Length;
@@ -65,6 +67,7 @@ namespace WPFEcommerceApp {
                 http.Stop();
                 Console.WriteLine("HTTP server stopped.");
             }, TaskScheduler.FromCurrentSynchronizationContext());
+            LoginViewModel.IsLoading = true;
 
             // Checks for errors.
             if(context.Request.QueryString.Get("error") != null) {
@@ -92,7 +95,6 @@ namespace WPFEcommerceApp {
             // Starts the code exchange at the Token Endpoint.
             return await performCodeExchange(code, code_verifier, redirectURI);
         }
-
         async Task<Tuple<string, object>> performCodeExchange(string code, string code_verifier, string redirectURI) {
             //output("Exchanging code for tokens...");
 
@@ -196,10 +198,30 @@ namespace WPFEcommerceApp {
                     var parse = JsonConvert.DeserializeObject<Dictionary<string, object>>(userinfoResponseText);
                     return new Tuple<object, object>(jsonParse, parse);
                 }
-            } catch { Debug.WriteLine("UserDetail"); return null; }
+            } catch { Debug.WriteLine("UserDetail"); return new Tuple<object, object>(jsonParse, null); }
         }
+        #endregion
+        #region MethodsConfig
+        public static async Task<bool> SendEmail(string receiver, string Subject, string Body) {
+            try {
+                using(MailMessage mail = new MailMessage()) {
+                    mail.From = new MailAddress(email);
+                    mail.To.Add(receiver);
+                    mail.Subject = Subject;
+                    mail.Body = Body;
+                    mail.IsBodyHtml = true;
+                    mail.Priority = MailPriority.High;
 
-        #region Methods
+                    using(SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587)) {
+                        smtp.UseDefaultCredentials = false;
+                        smtp.Credentials = new NetworkCredential(email, apwsrt);
+                        smtp.EnableSsl = true;
+                        await Task.Run(() => smtp.Send(mail));
+                    }
+                }
+                return true;
+            } catch { return false; }
+        }
         public static int GetRandomUnusedPort() {
             var listener = new TcpListener(IPAddress.Loopback, 0);
             listener.Start();
@@ -236,9 +258,11 @@ namespace WPFEcommerceApp {
             return base64;
         }
         #endregion
-        #region client configuration
+        #region ClientConfig
         const string clientID = "129105441268-ljk3ijg5f7nulvac5qi9dm0hiqq8rlqf.apps.googleusercontent.com";
         const string clientSecret = "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";
+        const string email = "wanoservice.noreply@gmail.com";
+        const string apwsrt = "cttagrctbyvbjddt";
         const string authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
         const string tokenEndpoint = "https://www.googleapis.com/oauth2/v4/token";
         const string userInfoEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo";
@@ -262,9 +286,9 @@ namespace WPFEcommerceApp {
         }
         string[] personFields = { "genders", "birthdays", "coverPhotos", "phoneNumbers" };
         string[] scopes = {
-                "https://www.googleapis.com/auth/user.birthday.read",
-                "https://www.googleapis.com/auth/user.gender.read",
-                "https://www.googleapis.com/auth/user.phonenumbers.read",
+                //"https://www.googleapis.com/auth/user.birthday.read",
+                //"https://www.googleapis.com/auth/user.gender.read",
+                //"https://www.googleapis.com/auth/user.phonenumbers.read",
                 "https://www.googleapis.com/auth/userinfo.email",
                 "https://www.googleapis.com/auth/userinfo.profile"
         };

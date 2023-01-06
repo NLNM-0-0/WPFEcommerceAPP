@@ -10,7 +10,7 @@
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IndexId" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IndexId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="PhoneNumer" Type="varchar" MaxLength="13" />
@@ -39,7 +39,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Reason" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -49,7 +49,7 @@
             <PropertyRef Name="IdProduct" />
             <PropertyRef Name="Size" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IdProduct" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Amount" Type="int" />
           <Property Name="Size" Type="varchar" MaxLength="7" Nullable="false" />
@@ -67,7 +67,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Reason" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -76,7 +76,7 @@
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IdProduct" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IdProduct" Type="varchar" MaxLength="8" Nullable="false" />
         </EntityType>
         <EntityType Name="ImageProduct">
@@ -92,8 +92,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdCustomer" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdCustomer" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="ShipTotal" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
           <Property Name="DateEnd" Type="smalldatetime" />
@@ -107,7 +107,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Id" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Role" Type="varchar" MaxLength="5" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="10" Nullable="false" />
@@ -126,8 +126,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdReceiver" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdSender" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdReceiver" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="IdSender" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Date" Type="smalldatetime" Nullable="false" />
           <Property Name="Content" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -152,7 +152,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="IdCategory" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdBrand" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Price" Type="bigint" Nullable="false" />
           <Property Name="Sale" Type="int" Nullable="false" />
           <Property Name="InStock" Type="int" Nullable="false" />
@@ -173,7 +173,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
@@ -200,7 +200,7 @@
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdPromo" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -217,7 +217,7 @@
             <PropertyRef Name="IdRating" />
             <PropertyRef Name="DateReply" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IdRating" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Comment" Type="varchar" MaxLength="500" />
           <Property Name="DateReply" Type="smalldatetime" Nullable="false" />
@@ -227,16 +227,17 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdUser" Type="varchar" MaxLength="8" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="UserLogin">
           <Key>
             <PropertyRef Name="IdUser" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" />
           <Property Name="Username" Type="varchar" MaxLength="100" />
+          <Property Name="Provider" Type="int" />
         </EntityType>
         <Association Name="FK__Cart__IdProduct__46E78A0C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
@@ -824,7 +825,7 @@
             <PropertyRef Name="IdProduct" />
             <PropertyRef Name="Size" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Amount" Type="Int32" />
           <Property Name="Size" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
@@ -835,17 +836,18 @@
           <Key>
             <PropertyRef Name="IdUser" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
+          <Property Name="Provider" Type="Int32" />
         </EntityType>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IndexId" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IndexId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumer" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
@@ -876,7 +878,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="BrandRequest" ToRole="MUser" />
@@ -895,7 +897,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="CategoryRequest" ToRole="MUser" />
@@ -914,8 +916,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdCustomer" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdCustomer" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ShipTotal" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
           <Property Name="DateEnd" Type="DateTime" Precision="0" />
@@ -932,7 +934,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Role" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -966,8 +968,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdReceiver" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdSender" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdReceiver" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IdSender" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="Notification" ToRole="MUser" />
@@ -997,7 +999,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="IdCategory" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdBrand" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int64" Nullable="false" />
           <Property Name="Sale" Type="Int32" Nullable="false" />
           <Property Name="InStock" Type="Int32" Nullable="false" />
@@ -1026,7 +1028,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -1048,7 +1050,7 @@
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdPromo" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_PromoRequest_idUser" FromRole="PromoRequest" ToRole="MUser" />
           <NavigationProperty Name="Promo" Relationship="EcommerceAppModel.FK_PromoRequest_idPromo" FromRole="PromoRequest" ToRole="Promo" />
         </EntityType>
@@ -1069,7 +1071,7 @@
             <PropertyRef Name="IdRating" />
             <PropertyRef Name="DateReply" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IdRating" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DateReply" Type="DateTime" Nullable="false" Precision="0" />
@@ -1081,7 +1083,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdUser" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
@@ -1388,6 +1390,7 @@
           <EntitySetMapping Name="UserLogins">
             <EntityTypeMapping TypeName="EcommerceAppModel.UserLogin">
               <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />

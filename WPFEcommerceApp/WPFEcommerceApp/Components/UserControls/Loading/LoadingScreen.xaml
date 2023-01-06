@@ -20,7 +20,6 @@
         </i:Interaction.Triggers>
         <Grid Background="{StaticResource BlackColorBrush}" Opacity="0.39"/>
         <Border CornerRadius="15"
-                Margin="60 0 0 0"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
               Background="{StaticResource BlackColorBrush}"
                 Opacity="0.69"
