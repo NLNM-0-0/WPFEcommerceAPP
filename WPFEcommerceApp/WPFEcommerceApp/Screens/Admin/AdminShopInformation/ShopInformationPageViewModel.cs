@@ -173,8 +173,6 @@ namespace WPFEcommerceApp
             SearchByOptions = new List<string> { "ID", "Name", "Des" };
             SearchBy = SearchByOptions[1];
 
-            Task.Run(async () => await Load());
-
             RequestList = new ShopRequestListViewModel();
             ShopRequestItemViewModel.RemoveRequestCommand = new RelayCommandWithNoParameter(async () => await RemoveRequest());
             ShopRequestItemViewModel.AddRequestCommand = new RelayCommandWithNoParameter(async () => await AddRequest());
@@ -182,6 +180,16 @@ namespace WPFEcommerceApp
             SearchCommand = new RelayCommandWithNoParameter(Search);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
             OpenRequestCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenDialog(p));
+
+            Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+            }).ContinueWith((first) =>
+            {
+                MainViewModel.IsLoading = false;
+
+            });
 
             MainViewModel.IsLoading = false;
 
@@ -361,6 +369,7 @@ namespace WPFEcommerceApp
             var newShop = await userRepo.GetSingleAsync(user => user.Id.Equals(item.IdUser));
             newShop.Role = "Shop";
             newShop.StatusShop = Status.NotBanned.ToString();
+            newShop.Description=RequestSelectedItem.Description;
 
             var note = new Models.Notification
             {
