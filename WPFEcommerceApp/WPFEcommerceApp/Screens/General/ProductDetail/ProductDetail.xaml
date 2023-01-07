@@ -8,197 +8,288 @@
              xmlns:it="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
-             mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1440">
+             mc:Ignorable="d"
+             Width="1330">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.75*"></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0"
-                    Background="{StaticResource BoxShadowColorBrush}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="10*"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="1">
-                    <Image Source="{Binding SelectedImage}"
-                           Margin="0,30,0,0"
-                           Width="650"
-                           Height="450">
+        <Grid
+            x:Name="grid"
+            HorizontalAlignment="Center"
+            Grid.Column="0"
+            Background="{StaticResource BoxShadowColorBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1">
+                <Image Source="{Binding SelectedImage}"
+                        Margin="0,30,0,0"
+                        Width="650"
+                        Height="450">
 
-                    </Image>
-                    <TextBox
-                        Style="{StaticResource TextBoxHintWrapText}"
-                        Width="600"
-                        Height="100"
-                        Margin="20"
-                        IsReadOnly="True"
-                        Background="{StaticResource BackgroundColorBrush}"
-                        materialDesign:HintAssist.Hint="Description"
-                        Text="{Binding SelectedProduct.Description}"/>
-                </StackPanel>
-                <Button Grid.Column="0"
-                        Width="30"
-                        Height="30"
-                        Style="{StaticResource TransparentButton}"
-                        Padding="0"
-                        Command="{Binding PreviousImageCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                        Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}">
-                    <fa:ImageAwesome
-                        Icon="ChevronCircleLeft"
-                        Foreground="{StaticResource BlackColorBrush}"/>
-                </Button>
-                <Button Grid.Column="2"
-                        VerticalAlignment="Center"
-                        Width="30"
-                        Height="30"
-                        Style="{StaticResource TransparentButton}"
-                        Padding="0"
-                        Command="{Binding NextImageCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                        Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}">
-                    <fa:ImageAwesome
-                        Icon="ChevronCircleRight"
-                        Foreground="{StaticResource BlackColorBrush}"/>
+                </Image>
+                <TextBox
+                    Style="{StaticResource TextBoxHintWrapText}"
+                    Width="600"
+                    Height="100"
+                    Margin="20"
+                    IsReadOnly="True"
+                    Background="{StaticResource BackgroundColorBrush}"
+                    materialDesign:HintAssist.Hint="Description"
+                    Text="{Binding SelectedProduct.Description}"/>
+            </StackPanel>
+            <Button Grid.Column="0"
+                    Width="30"
+                    Height="30"
+                    Style="{StaticResource TransparentButton}"
+                    Padding="0"
+                    Command="{Binding PreviousImageCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
+                    Opacity="0.5"
+                    Margin="30 0 0 0">
+                <fa:ImageAwesome
+                    Icon="ChevronCircleLeft"
+                    Foreground="{StaticResource BlackColorBrush}"/>
+            </Button>
+            <Button Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Width="30"
+                    Height="30"
+                    Style="{StaticResource TransparentButton}"
+                    Padding="0"
+                    Command="{Binding NextImageCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
+                    Opacity="0.5"
+                    Margin="0 0 30 0">
+                <fa:ImageAwesome
+                    Icon="ChevronCircleRight"
+                    Foreground="{StaticResource BlackColorBrush}"/>
 
 
-                </Button>
-            </Grid>
-        </StackPanel>
-        <StackPanel Grid.Column="1">
-            <TextBlock Text="{Binding SelectedProduct.Name}"
+            </Button>
+        </Grid>
+        <Grid
+            Grid.Column="1"
+                    HorizontalAlignment="Stretch">
+            <StackPanel>
+                <TextBlock Text="{Binding SelectedProduct.Name}"
                        FontSize="30"
                        FontWeight="SemiBold"
                        Margin="40">
 
-            </TextBlock>
-            <TextBlock Text="{Binding SelectedProduct.Brand.Name}"
+                </TextBlock>
+                <TextBlock Text="{Binding SelectedProduct.Brand.Name}"
                        Margin="40,0,0,20"
                        FontSize="12"
                        Foreground="{StaticResource NotAvailableColorBrush}">
 
-            </TextBlock>
-            <TextBlock Text="{Binding SelectedProduct.Category.Name}"
+                </TextBlock>
+                <TextBlock Text="{Binding SelectedProduct.Category.Name}"
                        Margin="40,0,0,0"
                        FontSize="12"
                        Foreground="{StaticResource NotAvailableColorBrush}">
 
-            </TextBlock>
-            <TextBlock Text="{i:Binding '(100 -SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
+                </TextBlock>
+                <TextBlock Text="{i:Binding '(100 -SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
                        Margin="40,20,0,0"
                        FontWeight="Bold"
                        FontSize="12"
                        Foreground="{StaticResource NotAvailableColorBrush}">
 
-            </TextBlock>
-            <TextBlock Text="Size"
+                </TextBlock>
+                <TextBlock Text="Size"
                        Margin="40,40,0,0"
                        FontWeight="Bold"
                        FontSize="12"
                        Foreground="{StaticResource BlackColorBrush}">
 
-            </TextBlock>
-            <Grid Margin="25,20,25,40">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="1.25*"/>
-                    </Grid.ColumnDefinitions>
-                    <RadioButton Content="S"
+                </TextBlock>
+                <Grid Margin="25,20,25,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Content="S"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="0"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
-                                 IsChecked="{Binding IsHadSizeS}">
-                    </RadioButton>
-                    <RadioButton Content="M"
+                                 IsChecked="{Binding IsHadSizeS}"
+                                 Visibility="{i:Binding 'SelectedProduct.IsHadSizeS'}">
+                        </RadioButton>
+                        <RadioButton Content="M"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="1"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
-                                 IsChecked="{Binding IsHadSizeM}">
-                    </RadioButton>
-                    <RadioButton Content="L"
+                                 IsChecked="{Binding IsHadSizeM}"
+                                 Visibility="{i:Binding 'SelectedProduct.IsHadSizeM'}">
+                        </RadioButton>
+                        <RadioButton Content="L"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="2"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
-                                 IsChecked="{Binding IsHadSizeL}">
-                    </RadioButton>
-                    <RadioButton Content="XL"
+                                 IsChecked="{Binding IsHadSizeL}"
+                                 Visibility="{i:Binding 'SelectedProduct.IsHadSizeL'}">
+                        </RadioButton>
+                        <RadioButton Content="XL"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="3"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
-                                 IsChecked="{Binding IsHadSizeXL}">
-                    </RadioButton>
-                    <RadioButton Content="XXL"
+                                 IsChecked="{Binding IsHadSizeXL}"
+                                 Visibility="{i:Binding 'SelectedProduct.IsHadSizeXL'}">
+                        </RadioButton>
+                        <RadioButton Content="XXL"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="4"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
-                                 IsChecked="{Binding IsHadSizeXXL}">
-                    </RadioButton>
-                    <RadioButton Content="OneSize"
+                                 IsChecked="{Binding IsHadSizeXXL}"
+                                 Visibility="{i:Binding 'SelectedProduct.IsHadSizeXXL'}">
+                        </RadioButton>
+                        <RadioButton Content="OneSize"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="5"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
-                                 IsChecked="{Binding IsHadOneSize}">
-                    </RadioButton>
+                                 IsChecked="{Binding IsHadOneSize}"
+                                 Visibility="{i:Binding 'SelectedProduct.IsOneSize'}">
+                        </RadioButton>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Button Content="Add to bag"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.25*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Amount"
+                           Grid.Column="0"
+                       Margin="40,20,0,10"
+                       FontWeight="Bold"
+                       FontSize="12"
+                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+
+                    <Button Grid.Column="1"
+                    Content="-"
+                        Margin="0,0,0,2"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding Tamount, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"
+                    Style="{StaticResource TransparentButton}">
+
+                    </Button>
+                    <TextBlock Width="20"
+                         Height="20"
+                         Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}"
+                         Grid.Column="2"
+                         Margin="0,0,0,5"
+                         VerticalAlignment="Bottom">
+
+                    </TextBlock>
+                    <Button Grid.Column="3"
+                    Content="+"
+                    Margin="0,0,0,2"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding Plusamount, UpdateSourceTrigger=PropertyChanged}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"
+                    Style="{StaticResource TransparentButton}">
+
+                    </Button>
+                </Grid>
+
+                <Button Content="Add to bag"
                     Width="auto"
                     Command="{Binding AddToBagCommand}"
                     CommandParameter="{Binding SelectedProduct}"
                     Margin="50,50,50,0">
-                <it:Interaction.Triggers>
-                    <it:EventTrigger EventName="Click">
-                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                    </it:EventTrigger>
-                </it:Interaction.Triggers>
-            </Button>
-            <Button
+                    <it:Interaction.Triggers>
+                        <it:EventTrigger EventName="Click">
+                            <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                        </it:EventTrigger>
+                    </it:Interaction.Triggers>
+                </Button>
+                <Button
                 Style="{StaticResource WhiteButton}"
-                Content="Favourite"
                 Command="{Binding FavouriteCommand}"
                 CommandParameter="{Binding SelectedProduct}"
                 Width="auto"
-                Margin="50,20,50,0">
-                <it:Interaction.Triggers>
+                Margin="50,20,50,0"
+                Visibility="{i:Binding '!IsFavorite', UpdateSourceTrigger=PropertyChanged}">
+                    <StackPanel
+                    Orientation="Horizontal">
+                        <TextBlock
+                        Text="Favorite"
+                        FontSize="{StaticResource FontSizeText}"
+                        Margin="0 0 10 0"/>
+                        <materialDesign:PackIcon
+                        Kind="HeartOutline"/>
+                    </StackPanel>
+                    <!--<it:Interaction.Triggers>
                     <it:EventTrigger EventName="Click">
                         <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
                     </it:EventTrigger>
-                </it:Interaction.Triggers>
-            </Button>
-            <Button Content="Buy now"
+                </it:Interaction.Triggers>-->
+                </Button>
+                <Button
+                Style="{StaticResource WhiteButton}"
+                Command="{Binding UnFavouriteCommand}"
+                CommandParameter="{Binding SelectedProduct}"
+                Width="auto"
+                Margin="50,20,50,0"
+                Visibility="{i:Binding 'IsFavorite', UpdateSourceTrigger=PropertyChanged}">
+                    <Button.Content>
+                        <StackPanel
+                        Orientation="Horizontal">
+                            <TextBlock
+                            Text="Un Favorite"
+                            FontSize="{StaticResource FontSizeText}"
+                            Margin="0 0 10 0"/>
+                            <materialDesign:PackIcon
+                            Kind="Heart"/>
+                        </StackPanel>
+                    </Button.Content>
+                    <!--<it:Interaction.Triggers>
+                    <it:EventTrigger EventName="Click">
+                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </it:EventTrigger>
+                </it:Interaction.Triggers>-->
+                </Button>
+                <Button Content="Buy now"
                     Width="auto"
                     Command="{Binding BuyNowCommand}"
                     CommandParameter="{Binding SelectedProduct}"
                     Margin="50,50,50,0">
-                <it:Interaction.Triggers>
-                    <it:EventTrigger EventName="Click">
-                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                    </it:EventTrigger>
-                </it:Interaction.Triggers>
-            </Button>
+                    <it:Interaction.Triggers>
+                        <it:EventTrigger EventName="Click">
+                            <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                        </it:EventTrigger>
+                    </it:Interaction.Triggers>
+                </Button>
 
-        </StackPanel>
-
-
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
 

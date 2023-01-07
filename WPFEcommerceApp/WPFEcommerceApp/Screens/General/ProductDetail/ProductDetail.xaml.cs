@@ -24,7 +24,6 @@ namespace WPFEcommerceApp
         public ProductDetail()
         {
             InitializeComponent();
-            
         }
     }
 }
