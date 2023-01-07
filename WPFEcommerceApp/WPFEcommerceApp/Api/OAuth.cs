@@ -211,7 +211,7 @@ namespace WPFEcommerceApp {
         }
         #endregion
         #region MethodsConfig
-        public static async Task<bool> SendEmail(string receiver, string Subject, string Body) {
+        public async Task<bool> SendEmail(string receiver, string Subject, string Body) {
             try {
                 using(MailMessage mail = new MailMessage()) {
                     mail.From = new MailAddress(email);

@@ -233,7 +233,9 @@ namespace WPFEcommerceApp {
         }
         static public void OnClosing(object sender, CancelEventArgs e) {
             e.Cancel = true;
-            App.Current.MainWindow.Show();
+            if(App.Current.MainWindow != null)
+                App.Current.MainWindow.Show();
+            else (sender as Window).Close();
             (sender as Window).Hide();
         }
     }
