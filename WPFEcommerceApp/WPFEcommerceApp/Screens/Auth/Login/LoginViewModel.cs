@@ -251,7 +251,7 @@ namespace WPFEcommerceApp {
             e.Cancel = true;
             if(App.Current.MainWindow != null)
                 App.Current.MainWindow.Show();
-            else (sender as Window).Close();
+            else return;
             (sender as Window).Hide();
         }
     }
