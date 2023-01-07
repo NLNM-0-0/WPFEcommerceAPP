@@ -8,21 +8,28 @@
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="IdUser" />
-            <PropertyRef Name="CreatedTime" />
+            <PropertyRef Name="IndexId" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="CreatedTime" Type="smalldatetime" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="IndexId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="PhoneNumer" Type="varchar" MaxLength="13" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="AdInUse">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Position" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Position" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Advertisement">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Status" Type="varchar" MaxLength="10" />
-          <Property Name="Position" Type="int" />
           <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="Brand">
@@ -38,7 +45,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Reason" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -48,7 +55,7 @@
             <PropertyRef Name="IdProduct" />
             <PropertyRef Name="Size" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IdProduct" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Amount" Type="int" />
           <Property Name="Size" Type="varchar" MaxLength="7" Nullable="false" />
@@ -66,7 +73,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Reason" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -75,7 +82,7 @@
             <PropertyRef Name="IdUser" />
             <PropertyRef Name="IdProduct" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IdProduct" Type="varchar" MaxLength="8" Nullable="false" />
         </EntityType>
         <EntityType Name="ImageProduct">
@@ -91,21 +98,22 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdCustomer" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdCustomer" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="ShipTotal" Type="int" />
           <Property Name="DateBegin" Type="smalldatetime" />
           <Property Name="DateEnd" Type="smalldatetime" />
           <Property Name="OrderTotal" Type="bigint" Nullable="false" />
           <Property Name="ShippingMethod" Type="int" />
           <Property Name="ShippingSpeedMethod" Type="int" />
+          <Property Name="AddressIndex" Type="int" />
           <Property Name="Status" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="MUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Id" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Role" Type="varchar" MaxLength="5" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="10" Nullable="false" />
@@ -118,14 +126,15 @@
           <Property Name="StatusShop" Type="varchar" MaxLength="10" />
           <Property Name="SourceImageAva" Type="nvarchar" MaxLength="200" />
           <Property Name="SourceImageBackground" Type="nvarchar" MaxLength="200" />
+          <Property Name="DefaultAdress" Type="int" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdReceiver" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdSender" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdReceiver" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="IdSender" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Date" Type="smalldatetime" Nullable="false" />
           <Property Name="Content" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -150,7 +159,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="IdCategory" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdBrand" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Price" Type="bigint" Nullable="false" />
           <Property Name="Sale" Type="int" Nullable="false" />
           <Property Name="InStock" Type="int" Nullable="false" />
@@ -171,7 +180,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdShop" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Code" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
@@ -198,7 +207,7 @@
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdPromo" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -215,7 +224,7 @@
             <PropertyRef Name="IdRating" />
             <PropertyRef Name="DateReply" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IdRating" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Comment" Type="varchar" MaxLength="500" />
           <Property Name="DateReply" Type="smalldatetime" Nullable="false" />
@@ -225,17 +234,30 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdUser" Type="varchar" MaxLength="8" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="UserLogin">
           <Key>
             <PropertyRef Name="IdUser" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="20" />
-          <Property Name="Username" Type="nvarchar" MaxLength="200" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+          <Property Name="Username" Type="varchar" MaxLength="100" />
+          <Property Name="Provider" Type="int" />
         </EntityType>
+        <Association Name="FK__AdInUse__Id__5812160E">
+          <End Role="Advertisement" Type="Self.Advertisement" Multiplicity="1" />
+          <End Role="AdInUse" Type="Self.AdInUse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advertisement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdInUse">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Cart__IdProduct__46E78A0C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
@@ -260,7 +282,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__6EF57B66">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
           <End Role="ShopRequest" Type="Self.ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -562,6 +584,7 @@
         </Association>
         <EntityContainer Name="EcommerceAppModelStoreContainer">
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdInUse" EntityType="Self.AdInUse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Advertisement" EntityType="Self.Advertisement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrandRequest" EntityType="Self.BrandRequest" Schema="dbo" store:Type="Tables" />
@@ -582,6 +605,10 @@
           <EntitySet Name="RatingInfo" EntityType="Self.RatingInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopRequest" EntityType="Self.ShopRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AdInUse__Id__5812160E" Association="Self.FK__AdInUse__Id__5812160E">
+            <End Role="Advertisement" EntitySet="Advertisement" />
+            <End Role="AdInUse" EntitySet="AdInUse" />
+          </AssociationSet>
           <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="Self.FK__Cart__IdProduct__46E78A0C">
             <End Role="Product" EntitySet="Product" />
             <End Role="Cart" EntitySet="Cart" />
@@ -590,7 +617,7 @@
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__6EF57B66" Association="Self.FK__ShopReque__IdUse__6EF57B66">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="Self.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="ShopRequest" EntitySet="ShopRequest" />
           </AssociationSet>
@@ -699,6 +726,7 @@
           <EntitySet Name="Carts" EntityType="EcommerceAppModel.Cart" />
           <EntitySet Name="UserLogins" EntityType="EcommerceAppModel.UserLogin" />
           <EntitySet Name="Addresses" EntityType="EcommerceAppModel.Address" />
+          <EntitySet Name="AdInUses" EntityType="EcommerceAppModel.AdInUse" />
           <EntitySet Name="Advertisements" EntityType="EcommerceAppModel.Advertisement" />
           <EntitySet Name="Brands" EntityType="EcommerceAppModel.Brand" />
           <EntitySet Name="BrandRequests" EntityType="EcommerceAppModel.BrandRequest" />
@@ -718,6 +746,10 @@
           <AssociationSet Name="FK_Address_IdUser" Association="EcommerceAppModel.FK_Address_IdUser">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdInUse__Id__5812160E" Association="EcommerceAppModel.FK__AdInUse__Id__5812160E">
+            <End Role="Advertisement" EntitySet="Advertisements" />
+            <End Role="AdInUse" EntitySet="AdInUses" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Brand" Association="EcommerceAppModel.FK_Product_Brand">
             <End Role="Brand" EntitySet="Brands" />
@@ -759,7 +791,7 @@
             <End Role="MOrder" EntitySet="MOrders" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__6EF57B66" Association="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="ShopRequest" EntitySet="ShopRequests" />
           </AssociationSet>
@@ -822,7 +854,7 @@
             <PropertyRef Name="IdProduct" />
             <PropertyRef Name="Size" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Amount" Type="Int32" />
           <Property Name="Size" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
@@ -833,31 +865,41 @@
           <Key>
             <PropertyRef Name="IdUser" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Provider" Type="Int32" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="IdUser" />
-            <PropertyRef Name="CreatedTime" />
+            <PropertyRef Name="IndexId" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedTime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IndexId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumer" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
           <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="Address" ToRole="MUser" />
+        </EntityType>
+        <EntityType Name="AdInUse">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Position" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Advertisement" Relationship="EcommerceAppModel.FK__AdInUse__Id__5812160E" FromRole="AdInUse" ToRole="Advertisement" />
         </EntityType>
         <EntityType Name="Advertisement">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Position" Type="Int32" />
           <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AdInUses" Relationship="EcommerceAppModel.FK__AdInUse__Id__5812160E" FromRole="Advertisement" ToRole="AdInUse" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -873,7 +915,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="BrandRequest" ToRole="MUser" />
@@ -892,7 +934,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Reason" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="CategoryRequest" ToRole="MUser" />
@@ -911,14 +953,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdCustomer" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdCustomer" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ShipTotal" Type="Int32" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
           <Property Name="DateEnd" Type="DateTime" Precision="0" />
           <Property Name="OrderTotal" Type="Int64" Nullable="false" />
           <Property Name="ShippingMethod" Type="Int32" />
           <Property Name="ShippingSpeedMethod" Type="Int32" />
+          <Property Name="AddressIndex" Type="Int32" />
           <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MOrder" ToRole="MUser" />
           <NavigationProperty Name="MUser1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MOrder" ToRole="MUser" />
@@ -928,7 +971,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Role" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -941,13 +984,14 @@
           <Property Name="StatusShop" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="SourceImageAva" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SourceImageBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultAdress" Type="Int32" />
           <NavigationProperty Name="Addresses" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="MUser" ToRole="Address" />
           <NavigationProperty Name="BrandRequests" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="MUser" ToRole="BrandRequest" />
           <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="MUser" ToRole="Cart" />
           <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
           <NavigationProperty Name="MOrders1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MUser" ToRole="MOrder" />
-          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66" FromRole="MUser" ToRole="ShopRequest" />
+          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="MUser" ToRole="ShopRequest" />
           <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
@@ -962,8 +1006,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdReceiver" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdSender" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdReceiver" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IdSender" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="Notification" ToRole="MUser" />
@@ -993,7 +1037,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="IdCategory" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdBrand" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Int64" Nullable="false" />
           <Property Name="Sale" Type="Int32" Nullable="false" />
           <Property Name="InStock" Type="Int32" Nullable="false" />
@@ -1022,7 +1066,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -1044,7 +1088,7 @@
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdPromo" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_PromoRequest_idUser" FromRole="PromoRequest" ToRole="MUser" />
           <NavigationProperty Name="Promo" Relationship="EcommerceAppModel.FK_PromoRequest_idPromo" FromRole="PromoRequest" ToRole="Promo" />
         </EntityType>
@@ -1065,7 +1109,7 @@
             <PropertyRef Name="IdRating" />
             <PropertyRef Name="DateReply" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IdRating" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DateReply" Type="DateTime" Nullable="false" Precision="0" />
@@ -1077,9 +1121,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdUser" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__6EF57B66" FromRole="ShopRequest" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
         <Association Name="FK_Address_IdUser">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
@@ -1090,6 +1134,18 @@
             </Principal>
             <Dependent Role="Address">
               <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdInUse__Id__5812160E">
+          <End Type="EcommerceAppModel.Advertisement" Role="Advertisement" Multiplicity="1" />
+          <End Type="EcommerceAppModel.AdInUse" Role="AdInUse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advertisement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdInUse">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1213,7 +1269,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__6EF57B66">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
           <End Type="EcommerceAppModel.ShopRequest" Role="ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1384,6 +1440,7 @@
           <EntitySetMapping Name="UserLogins">
             <EntityTypeMapping TypeName="EcommerceAppModel.UserLogin">
               <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
@@ -1393,11 +1450,20 @@
           <EntitySetMapping Name="Addresses">
             <EntityTypeMapping TypeName="EcommerceAppModel.Address">
               <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Address1" ColumnName="Address" />
                 <ScalarProperty Name="PhoneNumer" ColumnName="PhoneNumer" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="IndexId" ColumnName="IndexId" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdInUses">
+            <EntityTypeMapping TypeName="EcommerceAppModel.AdInUse">
+              <MappingFragment StoreEntitySet="AdInUse">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1405,8 +1471,6 @@
             <EntityTypeMapping TypeName="EcommerceAppModel.Advertisement">
               <MappingFragment StoreEntitySet="Advertisement">
                 <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1461,6 +1525,7 @@
             <EntityTypeMapping TypeName="EcommerceAppModel.MOrder">
               <MappingFragment StoreEntitySet="MOrder">
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AddressIndex" ColumnName="AddressIndex" />
                 <ScalarProperty Name="ShippingSpeedMethod" ColumnName="ShippingSpeedMethod" />
                 <ScalarProperty Name="ShippingMethod" ColumnName="ShippingMethod" />
                 <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
@@ -1476,6 +1541,7 @@
           <EntitySetMapping Name="MUsers">
             <EntityTypeMapping TypeName="EcommerceAppModel.MUser">
               <MappingFragment StoreEntitySet="MUser">
+                <ScalarProperty Name="DefaultAdress" ColumnName="DefaultAdress" />
                 <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
                 <ScalarProperty Name="SourceImageAva" ColumnName="SourceImageAva" />
                 <ScalarProperty Name="StatusShop" ColumnName="StatusShop" />
@@ -1614,7 +1680,7 @@
               <ScalarProperty Name="Id" ColumnName="IdProduct" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

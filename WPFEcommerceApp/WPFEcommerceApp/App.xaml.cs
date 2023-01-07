@@ -52,6 +52,10 @@ namespace WPFEcommerceApp {
                 }
 
                 var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+
+                Login p = serviceProvider.GetRequiredService<Login>(); //initial
+                p.Show();
+                p.Hide();
                 //Subcribe access SplashScreen from MainWindow
                 mainWindow.Loaded += (sender, args) => {
                     splashScreen.Close();
@@ -67,7 +71,7 @@ namespace WPFEcommerceApp {
         //All the shit need to be load in here
         async Task load() {
             var t = new GenericDataRepository<MUser>();
-            var u = await t.GetSingleAsync(d => d.Id.Equals("user01"));
+            var u = await t.GetSingleAsync(d => d.Id.Equals(WPFEcommerceApp.Properties.Settings.Default.Cookie));
             AccountStore.instance.CurrentAccount = u;
         }
     }

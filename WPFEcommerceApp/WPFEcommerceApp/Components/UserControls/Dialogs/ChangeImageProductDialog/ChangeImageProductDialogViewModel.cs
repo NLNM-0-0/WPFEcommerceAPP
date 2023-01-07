@@ -86,7 +86,8 @@ namespace WPFEcommerceApp
             ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
                 Image image = p as Image;
-                if(image.Source == null) 
+                //VHCMT => Null error
+                if(image == null || image.Source == null) 
                 {
                     return;
                 }

@@ -6,7 +6,12 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" d:Background="White" d:DesignHeight="56" d:DesignWidth="1024">
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             mc:Ignorable="d" 
+             d:Background="White" 
+             d:DesignHeight="56" 
+             d:DesignWidth="1024"
+             x:Name="TitleBar">
     <UserControl.Resources>
 
         <local:MultiValueConverter x:Key="MultiValueConverter"/>
@@ -83,8 +88,11 @@
                                         Grid.Column="1">
 
                 <Button Style="{StaticResource controlButton}"
-                                Command="{Binding MinimizeCM}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
+                        Command="{Binding MinimizeCM}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
+                        Visibility="{Binding ElementName=TitleBar, 
+                            Path=Minimize, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}">
                     <materialDesign:PackIcon Kind="Minus" 
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
@@ -92,7 +100,11 @@
                                                  Foreground="{StaticResource BlackColorBrush}"/>
                 </Button>
                 <Button Style="{StaticResource controlButton}"
-                                Command="{Binding MaximizeCM}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}">
+                        Command="{Binding MaximizeCM}" 
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
+                        Visibility="{Binding ElementName=TitleBar, 
+                            Path=Maximize, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}">
                     <materialDesign:PackIcon Style="{StaticResource myPackIcon}" 
                                                          x:Name="MaximizeIcon"
                                                  VerticalAlignment="Center" 
@@ -101,8 +113,11 @@
                                                  Foreground="{StaticResource BlackColorBrush}"/>
                 </Button>
                 <Button Style="{StaticResource CloseButton}" 
-                                Command="{Binding CloseCM}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"/>
+                        Command="{c:Binding ElementName=TitleBar, Path='(CloseCM == null)?DataContext.CloseCM : CloseCM'}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}}"
+                        Visibility="{Binding ElementName=TitleBar, 
+                            Path=Close, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </StackPanel>
         </Grid>
     </Border>

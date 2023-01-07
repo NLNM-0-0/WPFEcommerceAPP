@@ -15,10 +15,11 @@ namespace WPFEcommerceApp.Models
     public partial class Address
     {
         public string IdUser { get; set; }
-        public System.DateTime CreatedTime { get; set; }
+        public int IndexId { get; set; }
         public string Name { get; set; }
         public string PhoneNumer { get; set; }
         public string Address1 { get; set; }
+        public Nullable<bool> Status { get; set; }
     
         public virtual MUser MUser { get; set; }
     }

@@ -28,6 +28,7 @@ namespace WPFEcommerceApp.Models
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<AdInUse> AdInUses { get; set; }
         public virtual DbSet<Advertisement> Advertisements { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<BrandRequest> BrandRequests { get; set; }

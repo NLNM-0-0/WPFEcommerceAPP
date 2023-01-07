@@ -44,8 +44,7 @@
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                     Margin="10 10 30 10" DockPanel.Dock="Right"
                     Background="{StaticResource WhiteColorBrush}"
-                    Command="{Binding SignInOutCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    Command="{Binding SignInOutCommand}">
                 <fa:FontAwesome Icon="{Binding Icon}" FontSize="20" ToolTip="{Binding IconTooltip}" 
                                 ToolTipService.InitialShowDelay="100">
                 </fa:FontAwesome>

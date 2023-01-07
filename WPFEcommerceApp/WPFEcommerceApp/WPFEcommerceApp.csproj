@@ -82,6 +82,8 @@
     <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
     <Compile Include="Api\Internet.cs" />
+    <Compile Include="Api\OAuth.cs" />
+    <Compile Include="Api\TaskHelper.cs" />
     <Compile Include="Components\UserControls\AsyncImage\AsyncImage.xaml.cs">
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
@@ -94,16 +96,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
+    <Compile Include="Models\UserLogin.cs">
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Screens\Auth\ForgotPassword\ForgotPasswordVM.cs" />
+    <Compile Include="Api\Hashing.cs" />
     <Compile Include="Utils\IsLoadingCheck.cs" />
     <Compile Include="Models\Address.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -144,9 +144,6 @@
     <Compile Include="Models\Model.Designer.cs">
       <DependentUpon>Model.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\MOrder.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\MUser.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -163,9 +160,6 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ShopRequest.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserLogin.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="DTO\Product.cs" />
@@ -1107,6 +1101,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Screens\Auth\ForgotPassword\email.html" />
+    <Resource Include="Assets\Icon\icon_facebook.png" />
+    <Resource Include="Assets\Icon\icon_github.png" />
+    <Resource Include="Assets\Icon\icon_instagram.png" />
+    <Resource Include="Assets\Images\img_Boarding.jpg" />
+    <Resource Include="Assets\Icon\icon_google.png" />
     <Content Include="Models\Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model.Context.cs</LastGenOutput>

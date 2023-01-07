@@ -29,6 +29,7 @@ namespace WPFEcommerceApp.Models
         public long OrderTotal { get; set; }
         public Nullable<int> ShippingMethod { get; set; }
         public Nullable<int> ShippingSpeedMethod { get; set; }
+        public Nullable<int> AddressIndex { get; set; }
         public string Status { get; set; }
     
         public virtual MUser MUser { get; set; }

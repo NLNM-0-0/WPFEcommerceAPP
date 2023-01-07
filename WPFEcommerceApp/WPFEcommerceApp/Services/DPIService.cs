@@ -73,6 +73,11 @@ namespace WPFEcommerceApp {
                 DataContext = s.GetRequiredService<MainViewModel>()
             });
 
+            services.AddTransient<LoginViewModel>();
+            services.AddSingleton<Login>(s => new Login() {
+                DataContext = s.GetRequiredService<LoginViewModel>()
+            });
+
             serviceProvider = services.BuildServiceProvider();
 
             NavigateProvider.serviceProvider = serviceProvider;

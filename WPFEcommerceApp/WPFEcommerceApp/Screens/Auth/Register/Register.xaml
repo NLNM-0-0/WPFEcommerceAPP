@@ -7,7 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             d:DesignHeight="900" d:DesignWidth="780">
+             d:DesignHeight="900" Width="780">
     <materialDesign:DialogHost  
         CloseOnClickAway="True"
         Identifier="Regist">
@@ -75,11 +75,11 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock 
                 Grid.ColumnSpan="2"
-                   Text="BECOME A WANO MEMBER" 
+                   Text="BECOME A WANO's MEMBER" 
                    TextAlignment="Center"
                    FontWeight="Bold"
                    FontSize="30"
-                   Margin="200,30,200,30"
+                   Margin="30 40 0 15"
                    TextWrapping="Wrap"/>
                 <Button
                         x:Name="ButtonClose"
@@ -105,7 +105,7 @@
                    TextAlignment="Center"
                    FontWeight="Bold"
                    FontSize="20"
-                   Margin="100,0,100,30"
+                   Margin="0 0 0 15"
                    TextWrapping="Wrap">
 
             </TextBlock>
@@ -117,14 +117,17 @@
                     Margin="30,20,30,5">
 
             </TextBox>
-            <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
-                    materialDesign:HintAssist.Hint="Password"
-                    Width="auto"
-                    Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                    HorizontalContentAlignment="Stretch"
-                    Margin="30,20,30,5">
 
-            </TextBox>
+            <PasswordBox
+                    x:Name="Password"
+                    materialDesign:PasswordBoxAssist.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                    Style="{StaticResource PasswordOutlinedReveal}"            
+                    materialDesign:HintAssist.Hint="Password"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    Width="auto"
+                    Margin="30,20,30,5"
+                    HorizontalContentAlignment="Stretch"
+                    materialDesign:HintAssist.HelperText=""/>
             <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Phone Number"
                     Width="auto"
@@ -171,13 +174,12 @@
                 Content="Female" />
             </Grid>
             <CheckBox
-            Margin="30"
+            Margin="30 30 0 15"
             IsChecked="{Binding IsCheckAgree}"
             Content="Agree to WANO's Privacy Policy and Terms of Use"
             FontSize="15"
-            Background="{StaticResource BlackColorBrush}">
-
-            </CheckBox>
+            Background="{StaticResource BlackColorBrush}"/>
+                
             <Button Width="auto"
                 Margin="30"
                 Content="Register"

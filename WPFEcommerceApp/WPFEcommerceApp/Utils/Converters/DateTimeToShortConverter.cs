@@ -9,6 +9,8 @@ namespace WPFEcommerceApp
         public static DateTimeToShortConverter Instance=>new DateTimeToShortConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            //VHCMT => Value can be null in edge case
+            if(value == null) return null;
             var item = (DateTime)value;
             if (item != null)
             {

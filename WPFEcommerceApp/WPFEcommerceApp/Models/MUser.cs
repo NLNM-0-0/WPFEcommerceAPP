@@ -46,6 +46,7 @@ namespace WPFEcommerceApp.Models
         public string StatusShop { get; set; }
         public string SourceImageAva { get; set; }
         public string SourceImageBackground { get; set; }
+        public Nullable<int> DefaultAdress { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Address> Addresses { get; set; }

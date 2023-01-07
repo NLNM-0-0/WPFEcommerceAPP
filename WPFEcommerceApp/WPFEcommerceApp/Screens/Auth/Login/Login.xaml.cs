@@ -12,22 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WPFEcommerceApp
-{
+namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class Login : Window
-    {
-        public Login(object o)
-        {
+    public partial class Login : Window {
+        public Login() {
             InitializeComponent();
-            this.DataContext = new LoginViewModel(o);
-        }
-
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-
+            Closing += LoginViewModel.OnClosing;
         }
     }
 }
