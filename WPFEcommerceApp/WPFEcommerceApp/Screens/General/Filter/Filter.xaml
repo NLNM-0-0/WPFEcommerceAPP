@@ -11,7 +11,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="4.5*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0"
               Background="{StaticResource BoxShadowColorBrush}">
@@ -20,76 +20,75 @@
                        TextWrapping="Wrap"
                        FontWeight="Bold"
                        Margin="25">
-                
+
             </TextBlock>
             <TextBlock Text="All Category"
                        FontSize="{StaticResource FontSizeHeadline3}"
-                       Foreground="{StaticResource BoxLineColorBrush}"
+                       Foreground="{StaticResource BlackColorBrush}"
                        Margin="30,30,5,5">
-                
+
             </TextBlock>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <RadioButton Grid.Row="0"
-                        Style="{StaticResource RadioButtonFill}"
-                        Content="Coat"
-                        Margin="20,5,5,0"
-                        HorizontalContentAlignment="Left"
-                        BorderBrush="{StaticResource BoxShadowColorBrush}"
-                        Background="{StaticResource BoxShadowColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}">
-                    
-                </RadioButton>
-                <RadioButton Grid.Row="1"
-                        Style="{StaticResource RadioButtonFill}"
-                        Content="T-Shirt"
-                        Margin="20,0,5,0"
-                        HorizontalContentAlignment="Left"
-                        BorderBrush="{StaticResource BoxShadowColorBrush}"
-                        Background="{StaticResource BoxShadowColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}">
+            <ListView ItemsSource="{Binding CategoryCheckBoxViewModels}" Margin="10"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      BorderBrush="{StaticResource BoxShadowColorBrush}"
+                      Background="{StaticResource BoxShadowColorBrush}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger SourceName="ProductList" EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding OnProductChoice}" CommandParameter="{Binding ElementName=ProductList, Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
 
-                </RadioButton>
-                <RadioButton Grid.Row="2"
-                        Style="{StaticResource RadioButtonFill}"
-                        Content="Skirt"
-                        Margin="20,0,5,0"
-                        HorizontalContentAlignment="Left"
-                        BorderBrush="{StaticResource BoxShadowColorBrush}"
-                        Background="{StaticResource BoxShadowColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox
+                            Content="{Binding Category.Name}"
+                            IsChecked="{Binding IsChecked}"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Filter}, Path=DataContext.SearchCommand}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-                </RadioButton>
-                <RadioButton Grid.Row="3"
-                        Style="{StaticResource RadioButtonFill}"
-                        Content="Hoodie"
-                        Margin="20,0,5,0"
-                        HorizontalContentAlignment="Left"
-                        BorderBrush="{StaticResource BoxShadowColorBrush}"
-                        Background="{StaticResource BoxShadowColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}">
+            <TextBlock Text="All Brand"
+                       FontSize="{StaticResource FontSizeHeadline3}"
+                       Foreground="{StaticResource BlackColorBrush}"
+                       Margin="30,30,5,5">
 
-                </RadioButton>
-                <RadioButton Grid.Row="4"
-                        Style="{StaticResource RadioButtonFill}"
-                        Content="More"
-                        Margin="20,0,5,0"
-                        HorizontalContentAlignment="Left"
-                        BorderBrush="{StaticResource BoxShadowColorBrush}"
-                        Background="{StaticResource BoxShadowColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}">
+            </TextBlock>
+            <ListView ItemsSource="{Binding BrandCheckViewModels}" Margin="10"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      BorderBrush="{StaticResource BoxShadowColorBrush}"
+                      Background="{StaticResource BoxShadowColorBrush}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger SourceName="ProductList" EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding OnProductChoice}" CommandParameter="{Binding ElementName=ProductList, Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
 
-                </RadioButton>
-            </Grid>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox
+                            Content="{Binding Brand.Name}"
+                            IsChecked="{Binding IsCheckBrand}"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Filter}, Path=DataContext.SearchCommand}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
             <TextBlock Text="Price"
                        FontSize="{StaticResource FontSizeHeadline3}"
-                       Foreground="{StaticResource BoxLineColorBrush}"
+                       Foreground="{StaticResource BlackColorBrush}"
                        Margin="30,30,5,5">
 
             </TextBlock>
@@ -152,26 +151,27 @@
                     Height="50">
                 <Grid Background="{StaticResource BoxShadowColorBrush}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="0.75*"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0"
                                Text="Sort by"
                                FontSize="14"
                                VerticalAlignment="Bottom"
                                Margin="80,0,0,12"
-                               Foreground="{StaticResource BoxLineColorBrush}">
-                        
+                               Foreground="{StaticResource BlackColorBrush}">
+
                     </TextBlock>
                     <RadioButton Grid.Column="1"
                                  Style="{StaticResource RadioButtonFill}"
-                                 Content="Popular"
+                                 Content="Big Discount"
                                  Height="35"
+                                 IsChecked="{Binding IsBigDiscount}"
                                  FontSize="{StaticResource FontSizeDescription}"
-                                 Foreground="{StaticResource BoxLineColorBrush}"
+                                 Foreground="{StaticResource BlackColorBrush}"
                                  Margin="30,5,0,0">
 
                     </RadioButton>
@@ -179,25 +179,32 @@
                                  Style="{StaticResource RadioButtonFill}"
                                  Content="New"
                                  Height="35"
+                                 IsChecked="{Binding IsNew}"
                                  FontSize="{StaticResource FontSizeDescription}"
-                                 Foreground="{StaticResource BoxLineColorBrush}"
-                                 Margin="5,5,5,0">
+                                 Foreground="{StaticResource BlackColorBrush}"
+                                 Margin="5,5,0,0">
 
                     </RadioButton>
                     <RadioButton Grid.Column="3"
                                  Style="{StaticResource RadioButtonFill}"
                                  Content="Best Seller"
+                                 IsChecked="{Binding IsBestSeller}"
                                  Height="35"
                                  FontSize="{StaticResource FontSizeDescription}"
-                                 Foreground="{StaticResource BoxLineColorBrush}"
-                                 Margin="5,5,5,0">
+                                 Foreground="{StaticResource BlackColorBrush}"
+                                 Margin="5,5,0,0">
 
                     </RadioButton>
-                    <ComboBox Grid.Column="4"
-                              Margin="10,5,10,5"
-                              Height="35">
-                        
-                    </ComboBox>
+                    <RadioButton Grid.Column="4"
+                                 Style="{StaticResource RadioButtonFill}"
+                                 Content="None"
+                                 IsChecked="{Binding IsNoFilter}"
+                                 Height="35"
+                                 FontSize="{StaticResource FontSizeDescription}"
+                                 Foreground="{StaticResource BlackColorBrush}"
+                                 Margin="5,5,10,0">
+
+                    </RadioButton>
                 </Grid>
             </Border>
             <ScrollViewer CanContentScroll="True"
@@ -255,24 +262,22 @@
                     </StackPanel>
                 </Grid>-->
 
-                <ListView ItemsSource="{Binding Products}" Height="700" Margin="10"
+                <ListView ItemsSource="{Binding ProductViewModels}" Height="700" Margin="10"
                           SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           x:Name="ProductList">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger SourceName="ProductList" EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding OnProductChoice}" CommandParameter="{Binding ElementName=ProductList, Path=SelectedItem}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
-                    
+
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <local:ProductBlock Height="500" Width="350"/>
+                            <local:ProductBlock 
+                                Height="500" 
+                                Width="350"
+                                DataContext="{Binding}"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

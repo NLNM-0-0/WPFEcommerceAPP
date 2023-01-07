@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WPFEcommerceApp
 {
-    public class BrandCheckViewModel:BaseViewModel
+    public class BrandCheckViewModel : BaseViewModel
     {
         private Models.Brand brand;
         public Models.Brand Brand

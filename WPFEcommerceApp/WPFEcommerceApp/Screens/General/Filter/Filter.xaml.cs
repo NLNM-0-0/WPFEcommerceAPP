@@ -27,23 +27,6 @@ namespace WPFEcommerceApp
         public Filter()
         {
             InitializeComponent();
-            this.DataContext = new FilterViewModel();
-            /*List<string> listCategory = new List<string>();
-            List<string> listBrand = new List<string>();
-            listCategory.Add("Clothes");
-            listCategory.Add("Shoes");
-            listCategory.Add("Coat");
-            listCategory.Add("Hoddie");
-            listCategory.Add("Men");
-            listCategory.Add("Women");
-            listCategory.Add("Cap");
-            listCategory.Add("Pants");
-            listCategory.Add("T-Shirt");
-            listBrand.Add("Hii");
-            listBrand.Add("Adu");
-            listBrand.Add("HiiHuu");
-            Category.ItemsSource = listCategory;
-            Brand.ItemsSource = listBrand;*/
         }
     }
 }
