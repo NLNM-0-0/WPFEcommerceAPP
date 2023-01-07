@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using DataAccessLayer;
 using LiveCharts;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.DependencyInjection;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
@@ -90,7 +91,25 @@ namespace WPFEcommerceApp
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearchText);
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
             SearchCommand = new RelayCommandWithNoParameter(Search);
-            SignInOutCommand = new RelayCommand<object>(p => true, SignInOut);
+            SignInOutCommand = new ImmediateCommand<object>(async o => {
+                if(AccountStore.instance.CurrentAccount != null) {
+                    var dialog = new ConfirmDialog() {
+                        Param = "",
+                        CM = new RelayCommand<object>(p => true, p =>
+                        {
+                            //need to be HomeScreen here
+                            AccountStore.instance.CurrentAccount = null;
+                            NavigateProvider.HomeScreen().Navigate();
+                        })
+                    };
+                    await DialogHost.Show(dialog, "App");
+                    return;
+                }
+                Login login = App.serviceProvider.GetRequiredService<Login>();
+                login.Show();
+                App.Current.MainWindow.Hide();
+
+            });
             OnBack = new RelayCommand<object>(p => NavigationStore.instance.stackScreen.Count > 1, p =>
             {
                 NavigateProvider.Back();
@@ -194,29 +213,6 @@ namespace WPFEcommerceApp
 
             else
                 ItemsSource = new ObservableCollection<SearchItemViewModel>(AllItems.Where(item => (item.Name.ToLower()).Contains(SearchText.ToLower())));
-        }
-
-        public void SignInOut(object o)
-        {
-            if (AccountStore.instance.CurrentAccount != null)
-            {
-                var dialog = new ConfirmDialog()
-                {
-                    Param = "",
-                    CM = new RelayCommand<object>(p => true, p =>
-                    {
-                        //need to be HomeScreen here
-                        NavigateProvider.HomeScreen().Navigate();
-                        AccountStore.instance.CurrentAccount = null;
-                    })
-                };
-                DialogHost.Show(dialog, "App");
-                return;
-            }
-            (o as Window).Hide();
-            Login login = new Login(o);
-            login.Show();
-            //Sign In handle here
         }
 
         public void ToNote()
