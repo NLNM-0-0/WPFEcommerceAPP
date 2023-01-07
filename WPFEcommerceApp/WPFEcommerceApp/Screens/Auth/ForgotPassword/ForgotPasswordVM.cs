@@ -45,7 +45,7 @@ namespace WPFEcommerceApp {
                     Code = GenerateID.RandomID();
                     body = body.Replace("[SECRETCODE]", Code);
                     IsLoading = true;
-                    await Task.Run(async () => await OAuth.SendEmail(Email, "[WANO] - Reset password Code", body))
+                    await Task.Run(async () => await new OAuth().SendEmail(Email, "[WANO] - Reset password Code", body))
                         .ContinueWith(_ => {
                             FunctionName = "ENTER CODE";
                             FunctionNumber++;
@@ -56,6 +56,13 @@ namespace WPFEcommerceApp {
                     if(ResetCode == Code) {
                         FunctionName = "RESET PASSWORD";
                         FunctionNumber++;
+                    }
+                    else {
+                        var dl = new ConfirmDialog() {
+                            Header = "Oops",
+                            Content = "Code is wrong, please check again"
+                        };
+                        await DialogHost.Show(dl, "ForgotPassword");
                     }
                 }
                 else {

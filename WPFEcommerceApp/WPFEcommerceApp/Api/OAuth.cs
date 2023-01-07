@@ -19,6 +19,7 @@ namespace WPFEcommerceApp {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public class OAuth {
+        
         #region RetrieveData
         public async Task<Tuple<string, object>> Authentication() {
             // Generates state and PKCE values.
@@ -210,7 +211,7 @@ namespace WPFEcommerceApp {
         }
         #endregion
         #region MethodsConfig
-        public static async Task<bool> SendEmail(string receiver, string Subject, string Body) {
+        public async Task<bool> SendEmail(string receiver, string Subject, string Body) {
             try {
                 using(MailMessage mail = new MailMessage()) {
                     mail.From = new MailAddress(email);
@@ -267,14 +268,20 @@ namespace WPFEcommerceApp {
         }
         #endregion
         #region ClientConfig
-        const string clientID = "129105441268-ljk3ijg5f7nulvac5qi9dm0hiqq8rlqf.apps.googleusercontent.com";
-        const string clientSecret = "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";
-        const string email = "wanoservice.noreply@gmail.com";
-        const string apwsrt = "cttagrctbyvbjddt";
+        string clientID = "MTI5MTA1NDQxMjY4LWxqazNpamc1ZjdudWx2YWM1cWk5ZG0waGlxcThybHFmLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29t";
+        string clientSecret = "R09DU1BYLXR2Sl9OWWY4NlNUeTF0cXNJZFpWLXo5Y0VGeko=";
+        string email = "d2Fub3NlcnZpY2Uubm9yZXBseUBnbWFpbC5jb20=";
+        string apwsrt = "Y3R0YWdyY3RieXZiamRkdA==";
         const string authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
         const string tokenEndpoint = "https://www.googleapis.com/oauth2/v4/token";
         const string userInfoEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo";
         const string peopleEndpoint = "https://people.googleapis.com/v1/people/";
+        public OAuth() {
+            clientID = Hashing.Base64Decode(clientID);
+            clientSecret = Hashing.Base64Decode(clientSecret);
+            email = Hashing.Base64Decode(email);
+            apwsrt = Hashing.Base64Decode(apwsrt);
+        }
         string CreatePeopleEndpoint(string id, string[] personFields) {
             string res = peopleEndpoint;
             res += id + "?personFields=";
