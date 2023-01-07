@@ -67,7 +67,7 @@ namespace WPFEcommerceApp {
             get => _isMen; set {
                 _isMen = value;
                 if(value) {
-                    Gt = true;
+                    Gt = false;
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace WPFEcommerceApp {
             get => _isWomen; set {
                 _isWomen = value;
                 if(value) {
-                    Gt = false;
+                    Gt = true;
                 }
             }
         }
@@ -168,6 +168,8 @@ namespace WPFEcommerceApp {
                         Content = "Back to Login",
                         CM = new RelayCommand<object>(pr => true, pr => {
                             DialogHost.Close("Login");
+                            em = Email;
+                            pw = Password;
                         }),
                         Param = ""
                     };

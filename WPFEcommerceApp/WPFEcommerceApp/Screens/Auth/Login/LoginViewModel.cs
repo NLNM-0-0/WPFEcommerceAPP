@@ -21,16 +21,6 @@ namespace WPFEcommerceApp {
         private readonly GenericDataRepository<Models.MUser> userRepo = new GenericDataRepository<MUser>();
         private readonly GenericDataRepository<Models.UserLogin> loginRepo = new GenericDataRepository<UserLogin>();
 
-
-        private ObservableCollection<Models.UserLogin> accounts;
-        public ObservableCollection<Models.UserLogin> Accounts {
-            get { return accounts; }
-            set {
-                accounts = value;
-                OnPropertyChanged();
-            }
-        }
-
         private string username;
         private string password;
         public string Username {
@@ -169,7 +159,7 @@ namespace WPFEcommerceApp {
                     Name = user["name"],
                     Email = user["email"],
                     PhoneNumber = phoneNumber,
-                    Gender = gender == "Nam" ? true : false,
+                    Gender = gender == "Male" ? false : true,
                     SourceImageAva = user["picture"],
                     SourceImageBackground = cover,
                     Address = "",
@@ -227,6 +217,8 @@ namespace WPFEcommerceApp {
                     WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
                     WPFEcommerceApp.Properties.Settings.Default.Save();
                 }
+                Username = "";
+                Password = "";
                 return true;
             }
 

@@ -108,13 +108,13 @@
                             </Grid.Resources>
                             <Button
                             HorizontalAlignment="Left"
-                            Content="Login"
-                            Command="{Binding OnLogin}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            Content="Sign up"
+                            Command="{Binding OnSignUp}"/>
                             <Button
                                 HorizontalAlignment="Right"
-                                Content="Sign up"
-                                Command="{Binding OnSignUp}">
+                                Content="Login"
+                                Command="{Binding OnLogin}"
+                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                             </Button>
                         </Grid>
 
