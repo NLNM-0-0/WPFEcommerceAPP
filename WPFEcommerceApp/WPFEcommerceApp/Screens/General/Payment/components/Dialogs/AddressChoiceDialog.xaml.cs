@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace WPFEcommerceApp {
     /// <summary>
-    /// Interaction logic for HiddenTab.xaml
+    /// Interaction logic for AddressChoiceDialog.xaml
     /// </summary>
-    public partial class HiddenTab : UserControl {
-        public HiddenTab() {
+    public partial class AddressChoiceDialog : UserControl {
+        public AddressChoiceDialog() {
             InitializeComponent();
         }
     }

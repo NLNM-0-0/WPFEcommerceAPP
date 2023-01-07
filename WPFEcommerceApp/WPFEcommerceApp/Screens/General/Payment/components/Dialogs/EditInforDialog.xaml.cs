@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
@@ -20,13 +21,10 @@ namespace WPFEcommerceApp {
     /// Interaction logic for EditInforDialog.xaml
     /// </summary>
     public partial class EditInforDialog : UserControl {
-        private readonly AccountStore accountStore;
-        public EditInforDialog(AccountStore accountStore) {
+        public EditInforDialog() {
             InitializeComponent();
             DataContext = this;
-            this.accountStore = accountStore;
         }
-
 
         public string Username {
             get { return (string)GetValue(UsernameProperty); }
@@ -35,7 +33,7 @@ namespace WPFEcommerceApp {
 
         // Using a DependencyProperty as the backing store for Username.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UsernameProperty =
-            DependencyProperty.Register("Username", typeof(string), typeof(EditInforDialog), new PropertyMetadata("Name"));
+            DependencyProperty.Register("Username", typeof(string), typeof(EditInforDialog), new PropertyMetadata(""));
 
 
         public string Phone {
@@ -45,7 +43,7 @@ namespace WPFEcommerceApp {
 
         // Using a DependencyProperty as the backing store for Phone.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PhoneProperty =
-            DependencyProperty.Register("Phone", typeof(string), typeof(EditInforDialog), new PropertyMetadata("0123456789"));
+            DependencyProperty.Register("Phone", typeof(string), typeof(EditInforDialog), new PropertyMetadata(""));
 
         public string Address {
             get { return (string)GetValue(AddressProperty); }
@@ -54,30 +52,31 @@ namespace WPFEcommerceApp {
 
         // Using a DependencyProperty as the backing store for Address.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AddressProperty =
-            DependencyProperty.Register("Address", typeof(string), typeof(EditInforDialog), new PropertyMetadata("Address"));
+            DependencyProperty.Register("Address", typeof(string), typeof(EditInforDialog), new PropertyMetadata(""));
 
 
 
-        public CheckoutScreenVM EditData {
-            get { return (CheckoutScreenVM)GetValue(EditDataProperty); }
-            set { SetValue(EditDataProperty, value); }
+        public ICommand OnAddAddress {
+            get { return (ICommand)GetValue(OnAddAddressProperty); }
+            set { SetValue(OnAddAddressProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for EditData.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty EditDataProperty =
-            DependencyProperty.Register("EditData", typeof(CheckoutScreenVM), typeof(EditInforDialog), new PropertyMetadata(null));
+        // Using a DependencyProperty as the backing store for command.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OnAddAddressProperty =
+            DependencyProperty.Register("OnAddAddress", typeof(ICommand), typeof(EditInforDialog), new PropertyMetadata(null));
 
-        private async void Button_Click(object sender, RoutedEventArgs e) {
-            MainViewModel.IsLoading = true;
 
-            var t = accountStore.CurrentAccount;
-            t.Name = Username;
-            t.PhoneNumber = Phone;
-            t.Address = Address;
-            await accountStore.Update(t);
-
-            MainViewModel.IsLoading = false;
-
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            var id = GenerateID.DateTimeID();
+            Address add = new Address() {
+                Id = id,
+                IdUser = AccountStore.instance.CurrentAccount.Id,
+                Name = Username,
+                PhoneNumber = Phone,
+                Address1 = Address,
+                Status = true
+            };
+            OnAddAddress.Execute(add);
         }
     }
 }
