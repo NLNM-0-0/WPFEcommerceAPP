@@ -34,9 +34,9 @@ namespace WPFEcommerceApp
         }
         private async Task Load()
         {
-
-            var noteList =new ObservableCollection<Models.Notification>( await NoteRepo.GetListAsync(item => item.IdReceiver == AccountStore.instance.CurrentAccount.Id,
-                                                        item=>item.MUser
+            MainViewModel.IsLoading = true;
+            var noteList = new ObservableCollection<Models.Notification>(await NoteRepo.GetListAsync(item => item.IdReceiver == AccountStore.instance.CurrentAccount.Id,
+                                                        item => item.MUser
                                                         ));
 
             Notifications = new ObservableCollection<NotificationBlock>(noteList.Select(item => new NotificationBlock
@@ -45,7 +45,8 @@ namespace WPFEcommerceApp
                 UserName = item.MUser.Name,
                 Date = item.Date.ToString(),
                 NotificationContent = item.Content
-            })) ;
+            }));
+            MainViewModel.IsLoading = false;
         }
     }
 }
