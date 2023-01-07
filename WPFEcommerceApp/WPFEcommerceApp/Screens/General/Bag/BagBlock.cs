@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace WPFEcommerceApp
@@ -28,6 +30,7 @@ namespace WPFEcommerceApp
             set
             {
                 productImage = value;
+                OnPropertyChanged();
             }
         }
         private string productName;
@@ -37,6 +40,7 @@ namespace WPFEcommerceApp
             set
             {
                 productName = value;
+                OnPropertyChanged();
             }
         }
         private string shopName;
@@ -46,6 +50,17 @@ namespace WPFEcommerceApp
             set
             {
                 shopName = value;
+                OnPropertyChanged();
+            }
+        }
+        private string productSize;
+        public string ProductSize
+        {
+            get => productSize;
+            set
+            {
+                productSize = value;
+                OnPropertyChanged();
             }
         }
 
@@ -56,6 +71,7 @@ namespace WPFEcommerceApp
             set
             {
                 unitPrice = value;
+                OnPropertyChanged();
             }
         }
         private long amount;
@@ -65,6 +81,7 @@ namespace WPFEcommerceApp
             set
             {
                 amount = value;
+                OnPropertyChanged();
             }
         }
         private long price;
@@ -74,6 +91,7 @@ namespace WPFEcommerceApp
             set
             {
                 price = value;
+                OnPropertyChanged();
             }
         }
         private string iD;
@@ -83,7 +101,33 @@ namespace WPFEcommerceApp
             set
             {
                 iD = value;
+                OnPropertyChanged();
             }
+        }
+        private ICommand plusamount;
+        public ICommand Plusamount
+        {
+            get => plusamount;
+            set
+            {
+                plusamount = value;
+                OnPropertyChanged();
+            }
+        }
+        private ICommand tamount;
+        public ICommand Tamount
+        {
+            get => tamount;
+            set
+            {
+                tamount = value;
+                OnPropertyChanged();
+            }
+        }
+        public BagBlock()
+        {
+            Plusamount = new RelayCommandWithNoParameter(() => { });
+            Tamount = new RelayCommandWithNoParameter(() => { });
         }
     }
 
