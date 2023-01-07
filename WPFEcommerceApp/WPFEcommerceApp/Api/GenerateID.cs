@@ -79,5 +79,13 @@ namespace WPFEcommerceApp {
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        static public string DateTimeID() {
+            var time = DateTime.Now;
+            string res = time.Year.ToString("D2") + time.Month.ToString("D2")
+                + time.Day.ToString("D2") + time.Hour.ToString("D2")
+                + time.Minute.ToString("D2") + time.Second.ToString("D2");
+            return res;
+        }
     }
 }
