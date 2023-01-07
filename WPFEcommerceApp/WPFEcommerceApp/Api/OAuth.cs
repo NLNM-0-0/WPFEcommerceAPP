@@ -268,8 +268,8 @@ namespace WPFEcommerceApp {
         }
         #endregion
         #region ClientConfig
-        string clientID = "MTI5MTA1NDQxMjY4LWxqazNpamc1ZjdudWx2YWM1cWk5ZG0waGlxcThybHFmLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29t";
-        string clientSecret = "R09DU1BYLXR2Sl9OWWY4NlNUeTF0cXNJZFpWLXo5Y0VGeko=";
+        string clientID = "MTI5MTA1NDQxMjY4LXNta2Z1dDUyZDAzaXRkbnJnZjJmcWUxc2FpcHVkOGMyLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29t";
+        string clientSecret = "R09DU1BYLWNBT1RaSGxzTXJQc2xzRk5pWHNJRnVTOVp1SWw=";
         string email = "d2Fub3NlcnZpY2Uubm9yZXBseUBnbWFpbC5jb20=";
         string apwsrt = "Y3R0YWdyY3RieXZiamRkdA==";
         const string authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
