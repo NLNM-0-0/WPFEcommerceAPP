@@ -22,6 +22,7 @@
                 <ResourceDictionary Source="Components/Datagrid/Datagrid.xaml"/>
                 <ResourceDictionary Source="Components/DatePickers/DatePickers.xaml"/>
                 <ResourceDictionary Source="Components/Scroll.xaml"/>
+                <ResourceDictionary Source="Components/ListView/ListView.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

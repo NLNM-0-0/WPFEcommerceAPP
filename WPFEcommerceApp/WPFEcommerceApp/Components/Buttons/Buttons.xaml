@@ -14,5 +14,6 @@
         <ResourceDictionary Source="OutLineBlackButtonRectangle.xaml"/>
         <ResourceDictionary Source="RadioButton.xaml"/>
         <ResourceDictionary Source="Pressable.xaml"/>
+        <ResourceDictionary Source="RadioButtonOutlineCard.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
