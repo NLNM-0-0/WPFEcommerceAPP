@@ -12,11 +12,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     internal class RegisterViewModel : BaseViewModel {
         private readonly GenericDataRepository<Models.MUser> userRepo = new GenericDataRepository<Models.MUser>();
         private readonly GenericDataRepository<Models.UserLogin> loginRepo = new GenericDataRepository<Models.UserLogin>();
+        private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
+
 
         private string _name;
         private string _email;
@@ -127,7 +130,9 @@ namespace WPFEcommerceApp {
 
             var encrypted = new Hashing().Encrypt(Email, Password);
             try {
-                await userRepo.Add(new Models.MUser() {
+                var addressId = GenerateID.DateTimeID();
+
+                var user = new Models.MUser() {
                     Id = idUser,
                     Name = Name,
                     Email = Email,
@@ -137,14 +142,26 @@ namespace WPFEcommerceApp {
                     Description = "",
                     StatusShop = "NotExist",
                     StatusUser = "NotBanned",
-                    Role = "User"
-                });
+                    Role = "User",
+                };
+                await userRepo.Add(user);
                 await loginRepo.Add(new Models.UserLogin() {
                     IdUser = idUser,
                     Password = encrypted,
                     Username = Email,
                     Provider = 0
                 });
+                Address address = new Address() {
+                    Id = addressId,
+                    IdUser = idUser,
+                    Name = Name,
+                    PhoneNumber = Phone,
+                    Address1 = Address,
+                    Status = true
+                };
+                await addressRepo.Add(address);
+                user.DefaultAddress = addressId;
+                await userRepo.Update(user);
             } catch(Exception e) {
                 Debug.WriteLine(e.Message);
                 return false;

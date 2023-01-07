@@ -7,13 +7,12 @@
     <Schema Namespace="EcommerceAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Address">
           <Key>
-            <PropertyRef Name="IdUser" />
-            <PropertyRef Name="IndexId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="IndexId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="IdUser" Type="varchar" MaxLength="30" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
-          <Property Name="PhoneNumer" Type="varchar" MaxLength="13" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="13" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
           <Property Name="Status" Type="bit" />
         </EntityType>
@@ -126,7 +125,7 @@
           <Property Name="StatusShop" Type="varchar" MaxLength="10" />
           <Property Name="SourceImageAva" Type="nvarchar" MaxLength="200" />
           <Property Name="SourceImageBackground" Type="nvarchar" MaxLength="200" />
-          <Property Name="DefaultAdress" Type="int" />
+          <Property Name="DefaultAddress" Type="varchar" MaxLength="14" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -295,7 +294,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Address_IdUser">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
+          <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
           <End Role="Address" Type="Self.Address" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MUser">
@@ -399,6 +398,18 @@
             </Principal>
             <Dependent Role="MOrder">
               <PropertyRef Name="IdShop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MUser_defaultAddress">
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+          <End Role="MUser" Type="Self.MUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MUser">
+              <PropertyRef Name="DefaultAddress" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -657,6 +668,10 @@
             <End Role="MUser" EntitySet="MUser" />
             <End Role="MOrder" EntitySet="MOrder" />
           </AssociationSet>
+          <AssociationSet Name="FK_MUser_defaultAddress" Association="Self.FK_MUser_defaultAddress">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="MUser" EntitySet="MUser" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notification_UserReceiver" Association="Self.FK_Notification_UserReceiver">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Notification" EntitySet="Notification" />
@@ -746,6 +761,10 @@
           <AssociationSet Name="FK_Address_IdUser" Association="EcommerceAppModel.FK_Address_IdUser">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MUser_defaultAddress" Association="EcommerceAppModel.FK_MUser_defaultAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="MUser" EntitySet="MUsers" />
           </AssociationSet>
           <AssociationSet Name="FK__AdInUse__Id__5812160E" Association="EcommerceAppModel.FK__AdInUse__Id__5812160E">
             <End Role="Advertisement" EntitySet="Advertisements" />
@@ -873,16 +892,16 @@
         </EntityType>
         <EntityType Name="Address">
           <Key>
-            <PropertyRef Name="IdUser" />
-            <PropertyRef Name="IndexId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="IndexId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumer" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
           <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="Address" ToRole="MUser" />
+          <NavigationProperty Name="MUsers" Relationship="EcommerceAppModel.FK_MUser_defaultAddress" FromRole="Address" ToRole="MUser" />
         </EntityType>
         <EntityType Name="AdInUse">
           <Key>
@@ -984,8 +1003,9 @@
           <Property Name="StatusShop" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="SourceImageAva" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SourceImageBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="DefaultAdress" Type="Int32" />
+          <Property Name="DefaultAddress" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Addresses" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="MUser" ToRole="Address" />
+          <NavigationProperty Name="Address1" Relationship="EcommerceAppModel.FK_MUser_defaultAddress" FromRole="MUser" ToRole="Address" />
           <NavigationProperty Name="BrandRequests" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="MUser" ToRole="BrandRequest" />
           <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="MUser" ToRole="Cart" />
           <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
@@ -1126,7 +1146,7 @@
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
         <Association Name="FK_Address_IdUser">
-          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
           <End Type="EcommerceAppModel.Address" Role="Address" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MUser">
@@ -1134,6 +1154,18 @@
             </Principal>
             <Dependent Role="Address">
               <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MUser_defaultAddress">
+          <End Type="EcommerceAppModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MUser">
+              <PropertyRef Name="DefaultAddress" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1452,10 +1484,10 @@
               <MappingFragment StoreEntitySet="Address">
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Address1" ColumnName="Address" />
-                <ScalarProperty Name="PhoneNumer" ColumnName="PhoneNumer" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IndexId" ColumnName="IndexId" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1541,7 +1573,7 @@
           <EntitySetMapping Name="MUsers">
             <EntityTypeMapping TypeName="EcommerceAppModel.MUser">
               <MappingFragment StoreEntitySet="MUser">
-                <ScalarProperty Name="DefaultAdress" ColumnName="DefaultAdress" />
+                <ScalarProperty Name="DefaultAddress" ColumnName="DefaultAddress" />
                 <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
                 <ScalarProperty Name="SourceImageAva" ColumnName="SourceImageAva" />
                 <ScalarProperty Name="StatusShop" ColumnName="StatusShop" />
