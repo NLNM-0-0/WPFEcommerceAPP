@@ -6,27 +6,30 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d">
-    <StackPanel>
-        <TextBlock Text="WANO'S BAG"
+    <ScrollViewer>
+        <StackPanel>
+            <TextBlock Text="WANO'S BAG"
                    Margin="20,30"
                    FontSize="{StaticResource FontSizeHeadline}">
 
-        </TextBlock>
-        <Border  BorderBrush="{StaticResource BoxLineColorBrush}"
+            </TextBlock>
+            <Border  BorderBrush="{StaticResource BoxLineColorBrush}"
                  BorderThickness="1"
                  Margin="20,0,20,0">
-            <Grid Margin="0,20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <CheckBox 
+                <Grid Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox 
                     Width="20"
                     Height="20"
                     HorizontalAlignment="Center"
@@ -35,82 +38,91 @@
                     Background="{StaticResource BlackColorBrush}"
                     IsChecked="{Binding IsCheckedAll}">
 
-                </CheckBox>
-                <TextBlock Grid.Column="1"
+                    </CheckBox>
+                    <TextBlock Grid.Column="1"
                            Text="Product"
                            FontSize="{StaticResource FontSizeText}"
                            TextAlignment="Center"
                            Foreground="{StaticResource NotAvailableColorBrush}">
 
-                </TextBlock>
-                <TextBlock Grid.Column="3"
+                    </TextBlock>
+                    <TextBlock Grid.Column="3"
                            Text="Shop name"
                            Margin="-50,0,0,0"
                            TextAlignment="Left"
                            FontSize="{StaticResource FontSizeText}"
                            Foreground="{StaticResource NotAvailableColorBrush}">
 
-                </TextBlock>
-                <TextBlock Grid.Column="4"
+                    </TextBlock>
+                    <TextBlock Grid.Column="4"
+                           Text="Size"
+                           Margin="-50,0,0,0"
+                           TextAlignment="Left"
+                           FontSize="{StaticResource FontSizeText}"
+                           Foreground="{StaticResource NotAvailableColorBrush}">
+
+                    </TextBlock>
+                    <TextBlock Grid.Column="5"
                            Text="Unit price"
-                           TextAlignment="Center"
+                           TextAlignment="Left"
                            FontSize="{StaticResource FontSizeText}"
                            Foreground="{StaticResource NotAvailableColorBrush}">
 
-                </TextBlock>
-                <TextBlock Grid.Column="5"
+                    </TextBlock>
+                    <TextBlock Grid.Column="6"
                            Text="Amount"
-                           TextAlignment="Center"
+                           Margin="15,0,0,0"
+                           TextAlignment="Left"
                            FontSize="{StaticResource FontSizeText}"
                            Foreground="{StaticResource NotAvailableColorBrush}">
 
-                </TextBlock>
-                <TextBlock Grid.Column="6"
+                    </TextBlock>
+                    <TextBlock Grid.Column="7"
                            Text="Price"
                            TextAlignment="Center"
                            FontSize="{StaticResource FontSizeText}"
                            Foreground="{StaticResource NotAvailableColorBrush}">
 
-                </TextBlock>
-            </Grid>
+                    </TextBlock>
+                </Grid>
 
-        </Border>
-        <ScrollViewer Margin="20,20,20,0"
-                      Height="500">
-            <StackPanel>
-                <ItemsControl ItemsSource="{Binding Bags}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <local:BagBlockUC
-                                IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ProductImage="{Binding ProductImage}"
-                                ProductName="{Binding ProductName}"
-                                ShopName="{Binding ShopName}"
-                                UnitPrice="{Binding UnitPrice}"
-                                Amount="{Binding Amount}"
-                                Price="{Binding Price}"
-                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ItemsControl}}, Path=DataContext.CheckAllProductCommand}"
-                                CommandParameter="{RelativeSource Mode=Self}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
-        <Border
+            </Border>
+            <ListView
+                        ItemsSource="{Binding Bags}"
+                        ScrollViewer.CanContentScroll="False"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        Height="500"
+                        Margin="20,20,20,0"
+                        HorizontalContentAlignment="Stretch">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:BagBlockUC
+                                DataContext="{Binding}">
+                        </local:BagBlockUC>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <Setter Property="Padding" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <Border
             Width="600"
-            Margin="0,50,20,0"
+            Margin="0,50,20,10"
             BorderBrush="{StaticResource BoxLineColorBrush}"
             BorderThickness="1"
             VerticalAlignment="Stretch"
             HorizontalAlignment="Right">
-            <Grid Margin="0,20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0"
+                <Grid Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
                     Style="{StaticResource ButtonRectangle}"
                     Content="Detele"
                     FontSize="10"
@@ -118,25 +130,27 @@
                     CommandParameter="{Binding DelCommand}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{StaticResource BoxShadowColorBrush}"
-                    Foreground="{StaticResource BoxLineColorBrush}"
+                    Background="{StaticResource BlackColorBrush}"
+                    Foreground="{StaticResource WhiteColorBrush}"
                     Width="100"
-                    Height="25">
+                    Height="30">
 
-                </Button>
-                <TextBlock Text="Total price"
+                    </Button>
+                    <TextBlock Text="Total price"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
+                       FontWeight="Bold"
                        Grid.Column="1"
                        Foreground="{StaticResource NotAvailableColorBrush}"
                        ></TextBlock>
-                <TextBlock Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBlock Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
                        Grid.Column="2"
+                       FontWeight="Bold"
                        Foreground="{StaticResource NotAvailableColorBrush}"
                        ></TextBlock>
-                <Button Grid.Column="5"
+                    <Button Grid.Column="5"
                     Style="{StaticResource ButtonRectangle}"
                     Content="Buy now"
                     FontSize="10"
@@ -145,15 +159,17 @@
                     CommandParameter="{Binding BuyCommand}"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Background="{StaticResource BoxShadowColorBrush}"
-                    Foreground="{StaticResource BoxLineColorBrush}"
+                    Background="{StaticResource BlackColorBrush}"
+                    Foreground="{StaticResource WhiteColorBrush}"
                     Width="100"
-                    Height="25">
+                    Height="30">
 
-                </Button>
-            </Grid>
-        </Border>
+                    </Button>
+                </Grid>
+            </Border>
 
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+
 </UserControl>
 
