@@ -12,18 +12,11 @@ namespace WPFEcommerceApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Advertisement
+    public partial class AdInUse
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Advertisement()
-        {
-            this.AdInUses = new HashSet<AdInUse>();
-        }
-    
         public string Id { get; set; }
-        public string Image { get; set; }
+        public int Position { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdInUse> AdInUses { get; set; }
+        public virtual Advertisement Advertisement { get; set; }
     }
 }

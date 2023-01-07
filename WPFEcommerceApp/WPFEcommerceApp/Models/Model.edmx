@@ -17,13 +17,19 @@
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
           <Property Name="Status" Type="bit" />
         </EntityType>
+        <EntityType Name="AdInUse">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Position" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Position" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Advertisement">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Status" Type="varchar" MaxLength="10" />
-          <Property Name="Position" Type="int" />
           <Property Name="Image" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="Brand">
@@ -120,6 +126,7 @@
           <Property Name="StatusShop" Type="varchar" MaxLength="10" />
           <Property Name="SourceImageAva" Type="nvarchar" MaxLength="200" />
           <Property Name="SourceImageBackground" Type="nvarchar" MaxLength="200" />
+          <Property Name="DefaultAdress" Type="int" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -239,6 +246,18 @@
           <Property Name="Username" Type="varchar" MaxLength="100" />
           <Property Name="Provider" Type="int" />
         </EntityType>
+        <Association Name="FK__AdInUse__Id__5812160E">
+          <End Role="Advertisement" Type="Self.Advertisement" Multiplicity="1" />
+          <End Role="AdInUse" Type="Self.AdInUse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advertisement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdInUse">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Cart__IdProduct__46E78A0C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
@@ -263,7 +282,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__70DDC3D8">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
           <End Role="ShopRequest" Type="Self.ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -565,6 +584,7 @@
         </Association>
         <EntityContainer Name="EcommerceAppModelStoreContainer">
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdInUse" EntityType="Self.AdInUse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Advertisement" EntityType="Self.Advertisement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BrandRequest" EntityType="Self.BrandRequest" Schema="dbo" store:Type="Tables" />
@@ -585,6 +605,10 @@
           <EntitySet Name="RatingInfo" EntityType="Self.RatingInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopRequest" EntityType="Self.ShopRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AdInUse__Id__5812160E" Association="Self.FK__AdInUse__Id__5812160E">
+            <End Role="Advertisement" EntitySet="Advertisement" />
+            <End Role="AdInUse" EntitySet="AdInUse" />
+          </AssociationSet>
           <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="Self.FK__Cart__IdProduct__46E78A0C">
             <End Role="Product" EntitySet="Product" />
             <End Role="Cart" EntitySet="Cart" />
@@ -593,7 +617,7 @@
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__70DDC3D8" Association="Self.FK__ShopReque__IdUse__70DDC3D8">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="Self.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="ShopRequest" EntitySet="ShopRequest" />
           </AssociationSet>
@@ -702,6 +726,7 @@
           <EntitySet Name="Carts" EntityType="EcommerceAppModel.Cart" />
           <EntitySet Name="UserLogins" EntityType="EcommerceAppModel.UserLogin" />
           <EntitySet Name="Addresses" EntityType="EcommerceAppModel.Address" />
+          <EntitySet Name="AdInUses" EntityType="EcommerceAppModel.AdInUse" />
           <EntitySet Name="Advertisements" EntityType="EcommerceAppModel.Advertisement" />
           <EntitySet Name="Brands" EntityType="EcommerceAppModel.Brand" />
           <EntitySet Name="BrandRequests" EntityType="EcommerceAppModel.BrandRequest" />
@@ -721,6 +746,10 @@
           <AssociationSet Name="FK_Address_IdUser" Association="EcommerceAppModel.FK_Address_IdUser">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdInUse__Id__5812160E" Association="EcommerceAppModel.FK__AdInUse__Id__5812160E">
+            <End Role="Advertisement" EntitySet="Advertisements" />
+            <End Role="AdInUse" EntitySet="AdInUses" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Brand" Association="EcommerceAppModel.FK_Product_Brand">
             <End Role="Brand" EntitySet="Brands" />
@@ -762,7 +791,7 @@
             <End Role="MOrder" EntitySet="MOrders" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__70DDC3D8" Association="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="ShopRequest" EntitySet="ShopRequests" />
           </AssociationSet>
@@ -839,8 +868,8 @@
           <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
           <Property Name="Provider" Type="Int32" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_User_Login" FromRole="UserLogin" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Address">
           <Key>
@@ -855,14 +884,22 @@
           <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="Address" ToRole="MUser" />
         </EntityType>
+        <EntityType Name="AdInUse">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Position" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Advertisement" Relationship="EcommerceAppModel.FK__AdInUse__Id__5812160E" FromRole="AdInUse" ToRole="Advertisement" />
+        </EntityType>
         <EntityType Name="Advertisement">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Position" Type="Int32" />
           <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AdInUses" Relationship="EcommerceAppModel.FK__AdInUse__Id__5812160E" FromRole="Advertisement" ToRole="AdInUse" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -947,13 +984,14 @@
           <Property Name="StatusShop" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="SourceImageAva" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SourceImageBackground" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DefaultAdress" Type="Int32" />
           <NavigationProperty Name="Addresses" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="MUser" ToRole="Address" />
           <NavigationProperty Name="BrandRequests" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="MUser" ToRole="BrandRequest" />
           <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="MUser" ToRole="Cart" />
           <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
           <NavigationProperty Name="MOrders1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MUser" ToRole="MOrder" />
-          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" FromRole="MUser" ToRole="ShopRequest" />
+          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="MUser" ToRole="ShopRequest" />
           <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
@@ -1085,7 +1123,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdUser" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" FromRole="ShopRequest" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
         <Association Name="FK_Address_IdUser">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
@@ -1096,6 +1134,18 @@
             </Principal>
             <Dependent Role="Address">
               <PropertyRef Name="IdUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdInUse__Id__5812160E">
+          <End Type="EcommerceAppModel.Advertisement" Role="Advertisement" Multiplicity="1" />
+          <End Type="EcommerceAppModel.AdInUse" Role="AdInUse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Advertisement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdInUse">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1219,7 +1269,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__70DDC3D8">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
           <End Type="EcommerceAppModel.ShopRequest" Role="ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1409,12 +1459,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AdInUses">
+            <EntityTypeMapping TypeName="EcommerceAppModel.AdInUse">
+              <MappingFragment StoreEntitySet="AdInUse">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Advertisements">
             <EntityTypeMapping TypeName="EcommerceAppModel.Advertisement">
               <MappingFragment StoreEntitySet="Advertisement">
                 <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1485,6 +1541,7 @@
           <EntitySetMapping Name="MUsers">
             <EntityTypeMapping TypeName="EcommerceAppModel.MUser">
               <MappingFragment StoreEntitySet="MUser">
+                <ScalarProperty Name="DefaultAdress" ColumnName="DefaultAdress" />
                 <ScalarProperty Name="SourceImageBackground" ColumnName="SourceImageBackground" />
                 <ScalarProperty Name="SourceImageAva" ColumnName="SourceImageAva" />
                 <ScalarProperty Name="StatusShop" ColumnName="StatusShop" />

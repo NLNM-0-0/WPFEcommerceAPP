@@ -12,24 +12,26 @@
 					<AssociationConnector Association="EcommerceAppModel.FK_Orderinfor_Shop" />
 					<AssociationConnector Association="EcommerceAppModel.FK_RatingInfo_Product" />
 					<AssociationConnector Association="EcommerceAppModel.FK_RatingInfo_Rating" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Address" Width="1.5" PointX="8.9970996701145083" PointY="18.359966688957051" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Advertisement" Width="1.5" PointX="11.630068491972084" PointY="12.836225113289535" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Brand" Width="1.5" PointX="0.64297677606482839" PointY="16.055666022028618" />
-        <EntityTypeShape EntityType="EcommerceAppModel.BrandRequest" Width="1.5" PointX="3.2440875485744738" PointY="10.276647170203107" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Category" Width="1.5" PointX="1.1158538689445026" PointY="18.57535071045875" />
-        <EntityTypeShape EntityType="EcommerceAppModel.CategoryRequest" Width="1.5" PointX="9.515741479357585" PointY="10.349001188925003" />
-        <EntityTypeShape EntityType="EcommerceAppModel.ImageProduct" Width="1.5" PointX="1.3679388861022606" PointY="25.328913000099785" />
-        <EntityTypeShape EntityType="EcommerceAppModel.MOrder" Width="1.5" PointX="0.63595979876628139" PointY="4.7999551467597277" />
-        <EntityTypeShape EntityType="EcommerceAppModel.MUser" Width="1.5" PointX="6.0912007531575867" PointY="19.698217699163695" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Notification" Width="1.5" PointX="2.71490204274417" PointY="5.5500780667877185" />
-        <EntityTypeShape EntityType="EcommerceAppModel.OrderInfo" Width="1.5" PointX="2.3707220490885534" PointY="17.639819853771392" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Product" Width="1.5" PointX="2.1449212330137013" PointY="31.05151866332233" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Promo" Width="1.5" PointX="11.096126647245198" PointY="13.126018992218198" />
-        <EntityTypeShape EntityType="EcommerceAppModel.PromoRequest" Width="1.5" PointX="6.616270280730105" PointY="21.556552584076556" />
-        <EntityTypeShape EntityType="EcommerceAppModel.Rating" Width="1.5" PointX="0.71439390476531994" PointY="13.599925390258397" />
-        <EntityTypeShape EntityType="EcommerceAppModel.RatingInfo" Width="1.5" PointX="2.9728714967951513" PointY="27.118003708831036" />
-        <EntityTypeShape EntityType="EcommerceAppModel.ShopRequest" Width="1.5" PointX="1.7153907165468627" PointY="10.380349506801156" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Address" Width="1.5" PointX="4.9140989207262633" PointY="9.2892960055215728" />
+        <EntityTypeShape EntityType="EcommerceAppModel.AdInUse" Width="1.5" PointX="5.12432878144287" PointY="21.1284024962822" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Advertisement" Width="1.5" PointX="10.166132406408961" PointY="12.275788074487721" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Brand" Width="1.5" PointX="0.15160307481493943" PointY="3.6741485016765765" />
+        <EntityTypeShape EntityType="EcommerceAppModel.BrandRequest" Width="1.5" PointX="10.744139905434167" PointY="21.48366815852172" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Category" Width="1.5" PointX="8.2387862970301828" PointY="7.7832683957103956" />
+        <EntityTypeShape EntityType="EcommerceAppModel.CategoryRequest" Width="1.5" PointX="5.1007946045607309" PointY="21.189501355024753" />
+        <EntityTypeShape EntityType="EcommerceAppModel.ImageProduct" Width="1.5" PointX="3.8995769023427633" PointY="31.890482515045665" />
+        <EntityTypeShape EntityType="EcommerceAppModel.MOrder" Width="1.5" PointX="7.8981906901570929" PointY="27.654239458802266" />
+        <EntityTypeShape EntityType="EcommerceAppModel.MUser" Width="1.5" PointX="0.54118298764395667" PointY="21.882098386940591" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Notification" Width="1.5" PointX="10.628985218065319" PointY="30.120370387155734" />
+        <EntityTypeShape EntityType="EcommerceAppModel.OrderInfo" Width="1.5" PointX="5.19471993725501" PointY="18.909095206721265" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Product" Width="1.5" PointX="5.3722963395399486" PointY="0.96060974940686006" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Promo" Width="1.5" PointX="2.9265816933133557" PointY="29.17508160936417" />
+        <EntityTypeShape EntityType="EcommerceAppModel.PromoRequest" Width="1.5" PointX="9.2789991280431856" PointY="4.870434629204885" />
+        <EntityTypeShape EntityType="EcommerceAppModel.Rating" Width="1.5" PointX="5.0308954105856341" PointY="19.001245686319304" />
+        <EntityTypeShape EntityType="EcommerceAppModel.RatingInfo" Width="1.5" PointX="0.91252025818103943" PointY="8.70054917442638" />
+        <EntityTypeShape EntityType="EcommerceAppModel.ShopRequest" Width="1.5" PointX="0.80716475881969774" PointY="3.3644470886161768" />
         <AssociationConnector Association="EcommerceAppModel.FK_Address_IdUser" />
+        <AssociationConnector Association="EcommerceAppModel.FK__AdInUse__Id__5812160E" />
         <AssociationConnector Association="EcommerceAppModel.FK_Product_Brand" />
         <AssociationConnector Association="EcommerceAppModel.FK_BrandRequest_Shop" />
         <AssociationConnector Association="EcommerceAppModel.FK_Product_Category" />
@@ -38,7 +40,7 @@
         <AssociationConnector Association="EcommerceAppModel.FK_MOrder_MUser" />
         <AssociationConnector Association="EcommerceAppModel.FK_MOrder_Shop" />
         <AssociationConnector Association="EcommerceAppModel.FK_OrderInfo_MOrder" />
-        <AssociationConnector Association="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" />
+        <AssociationConnector Association="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" />
         <AssociationConnector Association="EcommerceAppModel.FK_Notification_UserReceiver" />
         <AssociationConnector Association="EcommerceAppModel.FK_Notification_UserSender" />
         <AssociationConnector Association="EcommerceAppModel.FK_Product_Shop" />

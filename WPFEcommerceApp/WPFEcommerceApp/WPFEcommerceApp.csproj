@@ -83,6 +83,7 @@
     <Compile Include="Api\GenerateID.cs" />
     <Compile Include="Api\Internet.cs" />
     <Compile Include="Api\OAuth.cs" />
+    <Compile Include="Api\TaskHelper.cs" />
     <Compile Include="Components\UserControls\AsyncImage\AsyncImage.xaml.cs">
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>

@@ -12,13 +12,14 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Net.Mail;
+using System.Windows.Threading;
 
 namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public class OAuth {
-        #region RetrieveDataConfig
+        #region RetrieveData
         public async Task<Tuple<string, object>> Authentication() {
             // Generates state and PKCE values.
             string state = randomDataBase64url(32);
@@ -52,7 +53,14 @@ namespace WPFEcommerceApp {
             System.Diagnostics.Process.Start(authorizationRequest);
 
             // Waits for the OAuth authorization response.
-            var context = await http.GetContextAsync();
+            HttpListenerContext context = null;
+            var token = new CancellationTokenSource();
+            token.CancelAfter(10000);
+            try {
+                context = await http.GetContextAsync().AsCancellable(token.Token);
+            } catch {
+                return null;
+            }
 
             // Sends an HTTP response to the browser.
             var response = context.Response;

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFEcommerceApp"
         xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+        Icon="..\..\..\Assets\Icon\Home.png"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -53,7 +54,7 @@
                     <StackPanel 
                             x:Name="RightColumnContainer">
 
-                        <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="26,250,0,20"/>
+                        <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="0,220,0,20"/>
                         <TextBox
                             x:Name="Email"
                             Style="{StaticResource TextBoxHintBlackBorder}"
@@ -139,7 +140,7 @@
                 </Border>
             </Grid>
         </materialDesign:DialogHost>
-        <local:LoadingScreen Grid.Row="1" Visibility="{Binding ElementName=LoginWindow, 
-            Path=DataContext.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <!--<local:LoadingScreen Grid.Row="1" Visibility="{Binding ElementName=LoginWindow, 
+            Path=DataContext.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
     </Grid>
 </Window>

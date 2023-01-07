@@ -19,10 +19,7 @@ namespace WPFEcommerceApp {
     public partial class Login : Window {
         public Login() {
             InitializeComponent();
-        }
-
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e) {
-
+            Closing += LoginViewModel.OnClosing;
         }
     }
 }

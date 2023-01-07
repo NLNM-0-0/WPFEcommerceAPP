@@ -38,6 +38,10 @@ namespace WPFEcommerceApp {
                 stream = File.Open(tempJPG, FileMode.Open, FileAccess.Read, FileShare.Read);
                 CreatedFile = true;
             }
+            else {
+                stream.Close();
+                stream = File.Open(Path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            }
 
             var task = CreateRef(Root, Name, child);
             int clone = 0;

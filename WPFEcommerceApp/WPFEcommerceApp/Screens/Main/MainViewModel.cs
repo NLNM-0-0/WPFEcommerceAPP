@@ -66,6 +66,7 @@ namespace WPFEcommerceApp {
                 CM = new RelayCommand<object>(t => true, t => {
                     (t as Window).Closing -= MainViewModel.OnClosing;
                     (t as Window).Close();
+                    App.Current.Shutdown();
                 }),
                 Header = "Are you sure?",
                 Content = "Your process may not be saved if you close the app. Please check your work before closing the app!"

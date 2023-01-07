@@ -89,12 +89,11 @@ namespace WPFEcommerceApp {
                             var dialog = new ConfirmDialog() {
                                 Header = "Oops!",
                                 Content = "You need to login to do this!",
-                                CM = new RelayCommand<object>(pr => true, pr => {
-                                    (pr as Window).Hide();
+                                CM = new ImmediateCommand<object>(pr => {
                                     Login login = App.serviceProvider.GetRequiredService<Login>();
                                     login.Show();
+                                    App.Current.MainWindow.Hide();
                                 }),
-                                Param = WindowControlBarVM.getWindow(p as FrameworkElement)
                             };
                             DialogHost.Show(dialog, "Main", ClosingEventHandler);
                             return;
@@ -231,7 +230,10 @@ namespace WPFEcommerceApp {
 
         void ChangeIndex(INavigationService nav, object o = null) {
             if(!Internet.IsConnected) {
-                NavigationStore.instance.stackScreen.Add(new Tuple<INavigationService, object>(nav, o));
+                if(AccountStore.instance.CurrentAccount == null)
+                    SelectedIndex = 0;
+                else
+                    NavigationStore.instance.stackScreen.Add(new Tuple<INavigationService, object>(nav, o));
                 return;
             }
             if(nav.GetViewModel() != NavigationStore.instance.CurrentViewModel.GetType()) {

@@ -47,21 +47,19 @@ namespace WPFEcommerceApp {
         public ICommand OnSignUp { get; set; }
         public ICommand OnGoogleSignIn { get; set; }
         public ICommand OnForgotPassword { get; set; }
-        public LoginViewModel(object o) {
+        public LoginViewModel() {
 
             //_accountStore.CurrentAccount = ;
             OnLogin = new RelayCommand<object>(p => true, async p => {
                 if(await Login()) {
                     (p as Window).Hide();
-                    (o as Window).Show();
-                    (p as Window).Close();
+                    App.Current.MainWindow.Show();
                 }
             });
 
             CloseCM = new RelayCommand<object>(p => true, p => {
                 (p as Window).Hide();
-                (o as Window).Show();
-                (p as Window).Close();
+                App.Current.MainWindow.Show();
             });
 
             OnSignUp = new ImmediateCommand<object>(p => {
@@ -75,14 +73,23 @@ namespace WPFEcommerceApp {
                 var auth = new OAuth();
                 (p as Window).Activate();
                 Tuple<string, object> x = null;
-                var y = await Task.WhenAny(auth.Authentication(), timeout());
-                x = await y;
+                //var y = await Task.WhenAny(auth.Authentication(), timeout());
+                //x = await y;
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(10000);
+
+                try {
+                    x = await auth.Authentication().AsCancellable(cts.Token);
+                } catch(TaskCanceledException) { }
 
                 (p as Window).WindowState = WindowState.Minimized;
-                (p as Window).WindowState = WindowState.Maximized;
+                (p as Window).WindowState = WindowState.Normal;
                 IsLoading = false;
 
-                if(x == null) return;
+                if(x == null) {
+                    MessageBox.Show("yey");
+                    return;
+                }
                 if(x.Item1 == null || x.Item2 == null) {
                     ErrorMessage();
                     return;
@@ -122,9 +129,7 @@ namespace WPFEcommerceApp {
                     IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
                     (p as Window).Hide();
-                    (o as Window).Show();
-                    (p as Window).Close();
-
+                    App.Current.MainWindow.Show();
                 } catch { ErrorMessage(); }
             });
             #endregion
@@ -139,12 +144,12 @@ namespace WPFEcommerceApp {
         public async Task<Tuple<string, object>> timeout(int to = 10000) {
             await Task.Delay(to);
             IsLoading = false;
-            return new Tuple<string, object>(null, null);
+            return new Tuple<string, object>("timeout", null);
         }
         public async Task<bool> CreateAccount(Dictionary<string, string> user) {
             try {
                 string phoneNumber = null, gender = null, cover = null, birthday = null;
-                user.TryGetValue("phoneNumber",out phoneNumber);
+                user.TryGetValue("phoneNumber", out phoneNumber);
                 user.TryGetValue("gender", out gender);
                 user.TryGetValue("coverPhoto", out cover);
                 user.TryGetValue("birthday", out birthday);
@@ -233,6 +238,11 @@ namespace WPFEcommerceApp {
             };
             await DialogHost.Show(dl, "Login");
             return false;
+        }
+        static public void OnClosing(object sender, CancelEventArgs e) {
+            e.Cancel = true;
+            App.Current.MainWindow.Show();
+            (sender as Window).Hide();
         }
     }
 }

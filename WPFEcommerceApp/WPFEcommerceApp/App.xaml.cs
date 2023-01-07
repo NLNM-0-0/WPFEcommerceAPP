@@ -52,6 +52,10 @@ namespace WPFEcommerceApp {
                 }
 
                 var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+
+                Login p = serviceProvider.GetRequiredService<Login>(); //initial
+                p.Show();
+                p.Hide();
                 //Subcribe access SplashScreen from MainWindow
                 mainWindow.Loaded += (sender, args) => {
                     splashScreen.Close();
