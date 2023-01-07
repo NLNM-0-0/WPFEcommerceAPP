@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WPFEcommerceApp
 {
-    public class CategoryCheckBoxViewModel:BaseViewModel
+    public class CategoryCheckBoxViewModel : BaseViewModel
     {
         private Models.Category category;
         public Models.Category Category
