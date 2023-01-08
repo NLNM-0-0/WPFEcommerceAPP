@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="WPFEcommerceApp.PromoProductBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             ScrollViewer.CanContentScroll="False"
+             mc:Ignorable="d">
+    <Border
+        Background="Transparent"
+        Padding="0 10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Margin="5 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <local:AsyncImage
+                        Height="{Binding RelativeSource={RelativeSource Mode=Self},Path=ActualWidth}"
+                        Stretch="Fill"
+                        Grid.Column="0"
+                        Source="{Binding ProductImage, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Border
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        Margin="5 0"
+                        Grid.Column="2">
+                        <TextBlock
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                            Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Left"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            TextTrimming="CharacterEllipsis"/>
+                    </Border>
+                </Grid>
+            </Grid>
+            <Border
+                Margin="5 0"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch">
+                <TextBlock
+                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                    Text="{Binding SelectedProduct.Category.Name, UpdateSourceTrigger=PropertyChanged}"
+                    HorizontalAlignment="Left"
+                    FontSize="{StaticResource FontSizeDescription}"
+                    TextTrimming="CharacterEllipsis"/>
+            </Border>
+
+            <Border
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch"
+                Margin="5 0"
+                Grid.Column="2">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                    Text="{Binding SelectedProduct.Brand.Name, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="{StaticResource FontSizeDescription}"
+                    TextTrimming="CharacterEllipsis"/>
+            </Border>
+
+            <Grid
+                Margin="5 0"
+                Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*" x:Name="priceWidth"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Text="đ"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Foreground="{StaticResource NotAvailableColorBrush}"/>
+                <Border
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch">
+                    <TextBlock
+                        MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                        Text="{c:Binding 'SelectedProduct.Price * (100 - SelectedProduct.Sale) / 100', UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalAlignment="Left"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        TextTrimming="CharacterEllipsis"/>
+                </Border>
+            </Grid>
+            <Button
+                Margin="5 0"
+                Grid.Column="4"
+                Style="{StaticResource WhiteButton}"
+                Padding="10"
+                Width="auto"
+                HorizontalAlignment="Center"
+                Command="{Binding DeleteCommand, UpdateSourceTrigger=PropertyChanged}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:PromoProductBlock}, Path=DataContext}"
+                Visibility="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}">
+                <Button.Content>
+                    <materialDesign:PackIcon
+                        Height="20"
+                        Width="20"
+                        Kind="Delete"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>
