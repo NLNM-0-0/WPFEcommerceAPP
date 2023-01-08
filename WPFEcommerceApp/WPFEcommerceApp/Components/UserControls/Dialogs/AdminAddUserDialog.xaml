@@ -9,6 +9,10 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
+    </UserControl.Resources>
+
     <materialDesign:DialogHost>
         <StackPanel Margin="20">
             <Grid Margin="0 30">
@@ -179,6 +183,16 @@
                 <Button.CommandParameter>
                     <Binding Path="NewUser"/>
                 </Button.CommandParameter>
+
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                        <Binding ElementName="username" Path="(Validation.HasError)"/>
+                        <Binding ElementName="phonenumber" Path="(Validation.HasError)"/>
+                        <Binding ElementName="address" Path="(Validation.HasError)"/>
+                        <Binding ElementName="email" Path="(Validation.HasError)"/>
+                        <Binding ElementName="role" Path="(Validation.HasError)"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
             </Button>
         </StackPanel>
     </materialDesign:DialogHost>
