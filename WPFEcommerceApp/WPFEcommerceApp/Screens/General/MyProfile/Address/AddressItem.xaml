@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AddressItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             mc:Ignorable="d" 
+             x:Name="uc"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="{StaticResource WhiteColorBrush}">
+        <DockPanel LastChildFill="False" Margin="15">
+            <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                <Border DockPanel.Dock="Left" BorderThickness="0 0 1 0" Height="20"
+                        BorderBrush="{StaticResource BlackColorBrush}"
+                        Padding="0 0 10 0">
+                    <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"
+                           FontWeight="SemiBold" TextWrapping="Wrap"
+                           Text="{Binding Address.Name}" VerticalAlignment="Center"
+                />
+
+                </Border>
+                
+                <!--<Grid Width="0.5" Background="Black" DockPanel.Dock="Left" Height="20" Margin="15 0"/>-->
+
+                <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"
+                DockPanel.Dock="Left" Margin="15 0 0 0"
+                Text="{Binding Address.PhoneNumber}"
+                />
+
+                <TextBlock Text="Default" DockPanel.Dock="Right"
+                           VerticalAlignment="Center"
+                           Visibility="{c:Binding IsDefault, FalseToVisibility=Collapsed}"
+                           FontSize="{StaticResource FontSizeText}"
+                           Foreground="{StaticResource SuccessColorBrush}"/>
+            </DockPanel>
+
+            <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"
+                DockPanel.Dock="Top"
+                Text="{Binding Address.Address1}"
+                TextWrapping="WrapWithOverflow"
+                />
+        </DockPanel>
+    </Grid>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown" SourceName="uc">
+            <i:InvokeCommandAction Command="{Binding EditAddressCommand}"
+                                       CommandParameter="{Binding}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+</UserControl>
