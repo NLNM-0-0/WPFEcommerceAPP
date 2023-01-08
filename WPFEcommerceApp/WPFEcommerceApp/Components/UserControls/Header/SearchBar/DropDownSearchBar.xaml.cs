@@ -20,18 +20,6 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class DropDownSearchBar : UserControl
     {
-       // public static readonly DependencyProperty SearchTextProperty =
-       //DependencyProperty.Register(
-       //   "SearchText",
-       //   typeof(string),
-       //   typeof(SearchBar),
-       //   new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-       // public string SearchText
-       // {
-       //     get { return (string)GetValue(SearchTextProperty); }
-       //     set { SetValue(SearchTextProperty, value); }
-       // }
         public DropDownSearchBar()
         {
             InitializeComponent();

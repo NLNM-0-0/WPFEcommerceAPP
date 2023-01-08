@@ -24,12 +24,14 @@
             <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
+                    <!--CornerRadius="{c:Binding '!(Text == \'\')?\'0\': \'0 20 20 0\'', RelativeSource={RelativeSource TemplatedParent}}"-->
+
                     <ControlTemplate TargetType="{x:Type TextBoxBase}">
                         <Grid>
                             <Grid>
                                 <Border x:Name="border" Background="{TemplateBinding Background}"  
                                         BorderThickness="{TemplateBinding BorderThickness}" 
-                                        CornerRadius="{c:Binding '!(Text == \'\')?\'0\': \'0 20 20 0\'', RelativeSource={RelativeSource TemplatedParent}}"
+                                        CornerRadius="{c:Binding '!(Text == &quot;&quot;)?&quot;0&quot;: &quot;0 20 20 0&quot;', RelativeSource={RelativeSource TemplatedParent}}"
                                         SnapsToDevicePixels="True">
                                     <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
                                                   HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
@@ -117,7 +119,6 @@
                          Tag="Search"
                          Text="{Binding SearchText, RelativeSource={RelativeSource AncestorType={x:Type local:SearchBar}}, UpdateSourceTrigger=PropertyChanged}" 
                          local:KeyboardFocus.On="{Binding ElementName=Search}">
-                         
                     </TextBox>
                 </Grid>
 
@@ -130,14 +131,13 @@
                         x:Name="CloseButton"
                         Command="{Binding CloseSearchCommand}"
                         Background="{Binding Path=Background, ElementName=Search}"
-                        >
+                        Visibility="{c:Binding ElementName=Search, Path='(Text!=&quot;&quot;)',FalseToVisibility=Collapsed}">
                         <fa:FontAwesome Icon="Close"/>
                     </Button>
-
                 </Grid>
             </Grid>
         </Grid>
-        
     </materialDesign:DialogHost>
+
 
 </UserControl>
