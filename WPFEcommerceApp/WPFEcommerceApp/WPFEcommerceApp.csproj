@@ -78,6 +78,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\UserControls\CategoryRequest\DropDown.xaml.cs">
+      <DependentUpon>DropDown.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -85,6 +88,27 @@
     </Compile>
     <Compile Include="Models\MOrder.cs" />
     <Compile Include="Models\UserLogin.cs" />
+    <Compile Include="Screens\Admin\AdminPromo\AdminPromo.xaml.cs">
+      <DependentUpon>AdminPromo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Admin\AdminPromo\AdminPromoViewModel.cs" />
+    <Compile Include="Screens\General\MyProfile\Address\AddressDialog\AddAddressDialog.xaml.cs">
+      <DependentUpon>AddAddressDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\General\MyProfile\Address\AddressDialog\AddressDialogViewModel.cs" />
+    <Compile Include="Screens\General\MyProfile\Address\AddressesControl.xaml.cs">
+      <DependentUpon>AddressesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\General\MyProfile\Address\AddressItem.xaml.cs">
+      <DependentUpon>AddressItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\General\MyProfile\Address\AddressItemViewModel.cs" />
+    <Compile Include="Screens\General\MyProfile\MyPassword\MyPassword.xaml.cs">
+      <DependentUpon>MyPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\General\MyProfile\ProfileControl.xaml.cs">
+      <DependentUpon>ProfileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\Shop\ShopPromo\ShopPromoBlock\DropdownPromoItem.xaml.cs">
       <DependentUpon>DropdownPromoItem.xaml</DependentUpon>
     </Compile>
@@ -274,9 +298,6 @@
       <DependentUpon>MyHome.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\General\MyHome\MyHomeViewModel.cs" />
-    <Compile Include="Screens\General\MyProfile\MyPassword.xaml.cs">
-      <DependentUpon>MyPassword.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Screens\General\MyProfile\MyProfile.xaml.cs">
       <DependentUpon>MyProfile.xaml</DependentUpon>
     </Compile>
@@ -562,6 +583,34 @@
     <Compile Include="Utils\ValidationRule\NotEmptyValidationRule.cs" />
     <Compile Include="Utils\ValidationRule\NumberTextBoxValidation.cs" />
     <Compile Include="Utils\ValidationRule\PromoCodeValidation.cs" />
+    <Page Include="Components\UserControls\CategoryRequest\DropDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Admin\AdminPromo\AdminPromo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\General\MyProfile\Address\AddressDialog\AddAddressDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\General\MyProfile\Address\AddressesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\General\MyProfile\Address\AddressItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\General\MyProfile\MyPassword\MyPassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\General\MyProfile\ProfileControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\Shop\ShopPromo\ShopPromoBlock\DropdownPromoItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -735,10 +784,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\General\MyHome\MyHome.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Screens\General\MyProfile\MyPassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
