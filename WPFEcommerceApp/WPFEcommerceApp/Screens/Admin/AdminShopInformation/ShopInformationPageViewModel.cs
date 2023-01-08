@@ -191,7 +191,6 @@ namespace WPFEcommerceApp
 
             });
 
-            MainViewModel.IsLoading = false;
 
         }
 

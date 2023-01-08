@@ -198,8 +198,6 @@ namespace WPFEcommerceApp
 
             });
 
-            MainViewModel.IsLoading = false;
-
         }
 
         private async Task Load()

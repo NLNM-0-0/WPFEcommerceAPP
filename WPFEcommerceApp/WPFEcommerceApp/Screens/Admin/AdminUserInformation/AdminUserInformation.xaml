@@ -75,7 +75,7 @@
                     <DataGridTextColumn Header="Phone" Width="auto" MinWidth="100" MaxWidth="200" Binding="{Binding PhoneNumber}"/>
                     <DataGridTextColumn Header="Birth" Width="auto" MinWidth="80" MaxWidth="200" Binding="{Binding DOB, Converter={x:Static local:DateTimeToShortConverter.Instance}}"/>
                     <DataGridTextColumn Header="Gender" Width="auto" MinWidth="100" MaxWidth="200" Binding="{Binding Gender, Converter={x:Static local:BooleanToGenderConverter.Instance}}"/>
-                    <DataGridTextColumn Header="Address" Width="500" MinWidth="200" MaxWidth="700" Binding="{Binding Address}"/>
+                    <DataGridTextColumn Header="Address" Width="700" MinWidth="200" MaxWidth="700" Binding="{Binding Address}"/>
                 </DataGrid.Columns>
 
             </DataGrid>
