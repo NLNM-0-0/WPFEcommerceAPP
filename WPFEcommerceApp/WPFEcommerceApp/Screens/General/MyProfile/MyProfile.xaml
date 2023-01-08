@@ -5,15 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440">
-    <Grid Background="{StaticResource WhiteColorBrush}"
-          >
+    <UserControl.Resources>
+        <Style BasedOn="{StaticResource {x:Type TabItem}}" TargetType="TabItem" x:Key="RadioTabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <RadioButton IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                     Style="{StaticResource RadioTabButton}"
+                                     Content="{TemplateBinding Header}"
+                                     FontSize="{StaticResource FontSizeHeadline2}"
+                                     FontWeight="Regular"
+                                     Width="{TemplateBinding Width}"
+                                     />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Background="{StaticResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
@@ -117,134 +134,39 @@
             </DockPanel>
         </Grid>
 
-        <TextBlock Text="My Profile" Margin="0 40 0 20" 
-                   Grid.Row="1"
-                            FontFamily="{StaticResource Bold}"
-                            FontSize="{StaticResource FontSizeHeadline}"
-                            TextAlignment="Center"/>
-        
-        <Grid Grid.Row="2" Margin="0 0 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <!-- Profile -->
-            <StackPanel HorizontalAlignment="Center">
-                
-                <TextBox    Margin="0 15 0 15" x:Name="UserNametb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="500"
-                            materialDesign:HintAssist.Hint="User Name"
-                            Text="{Binding EditUser.Name, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="200"/>
-                <TextBox    Margin="0 15 0 15" x:Name="Emailtb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
-                            materialDesign:HintAssist.Hint="Email"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="200">
-                    <Binding Path="EditUser.Email"
-                             UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <local:EmailValidateRule
-                                ValidatesOnTargetUpdated="True"/>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-                <TextBox    Margin="0 15 0 15" x:Name="Phonetb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
-                            materialDesign:HintAssist.Hint="Phone Number"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="10">
-                    <Binding Path="EditUser.PhoneNumber"
-                             UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <local:PhoneValidateRule
-                                            ValidatesOnTargetUpdated="True"/>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox>
-            </StackPanel>
+        <TabControl Grid.Row="1" Margin="100 20 50 20" x:Name="tabcontrol">
+            <TabItem Style="{StaticResource RadioTabItem}"
+                     Header="My Profile" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}">
+                <local:ProfileControl Margin="0 -100 0 0"/>
+            </TabItem>
 
-            <StackPanel Grid.Column="1"
-                        HorizontalAlignment="Center">
-                <ComboBox Margin="0 15 0 15" ItemsSource="{Binding GenderOptions}"
-                                    materialDesign:HintAssist.Hint="Gender"
-                                    VerticalAlignment="Center">
-                    <ComboBox.SelectedItem>
-                        <Binding Path="EditUser.Gender" Converter="{x:Static local:BooleanToGenderConverter.Instance}"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <local:NotEmptyValidationRule
-                                              ValidatesOnTargetUpdated="True"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </ComboBox.SelectedItem>
-                </ComboBox>
-                <DatePicker Grid.Row="0" SelectedDate="{Binding EditUser.DOB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            Width="auto" Margin="0 15 0 15" Padding="15 0 -50 0"
-                            Height="55"
-                            DisplayDateEnd="{Binding FromSelectedDateMax, Mode=OneWay}"
-                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                            materialDesign:HintAssist.Hint="Date of Birth"
-                            FontSize="{StaticResource FontSizeText}"
-                            >
-                </DatePicker>
-                <TextBox    Margin="0 15 0 15" x:Name="Addresstb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="500"
-                            materialDesign:HintAssist.Hint="Address"
-                            Text="{Binding EditUser.Address, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="200"/>
-                <DockPanel>
-                    <Button DockPanel.Dock="Right"
-                    x:Name="SaveButton"
-                    Command="{Binding SaveProfileCommand}"
-                    Grid.Column="1"
-                    Width="100"
-                    Content="Save"
-                    HorizontalAlignment="Right"
-                    Margin="5 0 0 0"
-                    >
-                        <Button.CommandParameter>
-                            <Binding Path="EditUser"/>
-                        </Button.CommandParameter>
-                    </Button>
+            <TabItem Header="My Address" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}"
+                     Style="{StaticResource RadioTabItem}"
+                     Visibility="{c:Binding !IsAdmin, FalseToVisibility=Collapsed}">
+                <Grid Height="{c:Binding ElementName=tabcontrol, Path=ActualHeight-100}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <local:AddressesControl Grid.Row="0" Margin="0 0 0 20"
+                        Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth*0.6}"
+                                        />
 
-                    <Button DockPanel.Dock="Right"
-                    x:Name="CancelButton"
-                    Command="{Binding CancelProfileCommand}"
-                    Grid.Column="1"
-                    Width="100"
-                    Content="Cancel"
-                    Margin="0 0 5 0"
-                    HorizontalAlignment="Right"
-                    >
-                        <Button.CommandParameter>
-                            <Binding Path="EditUser"/>
-                        </Button.CommandParameter>
-                    </Button>
-                </DockPanel>
-            </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Button Content="Add new address"
+                                Width="auto"
+                                Command="{Binding AddAddressCommand}"
+                                Style="{StaticResource ButtonRectangle}"/>
+                    </Grid>
+                </Grid>
 
+            </TabItem>
 
-        </Grid>
+            <TabItem Header="My Password" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}"
+                     Style="{StaticResource RadioTabItem}">
+                <local:MyPassword/>
+            </TabItem>
+        </TabControl>
         <Grid.InputBindings>
             <KeyBinding Key="Esc" Command="{Binding CancelProfileCommand}"/>
             <KeyBinding Key="Enter" Command="{Binding SaveProfileCommand}" 
