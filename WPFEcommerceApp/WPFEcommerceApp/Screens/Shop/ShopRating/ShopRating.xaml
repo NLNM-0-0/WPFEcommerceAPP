@@ -464,13 +464,7 @@
                             <DataTemplate>
                                 <local:ShopRatingBlock
                                     Margin="0 0 0 20"
-                                    Customer="{Binding Customer}"
-                                    Product ="{Binding OrderInfo.Product}"
-                                    Rating="{Binding OrderInfo.Rating.Rating1}"
-                                    Order ="{Binding Order}"
-                                    DateRating="{Binding OrderInfo.Rating.DateRating}"
-                                    CustomerImageAva="{Binding SourceImageAva}"
-                                    ProductImage="{Binding ImageProduct}"
+                                    DataContext="{Binding}"
                                     Grid.Column="0"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

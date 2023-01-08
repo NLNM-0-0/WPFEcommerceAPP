@@ -1,0 +1,209 @@
+﻿<UserControl x:Class="WPFEcommerceApp.ShopPromoBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             mc:Ignorable="d"
+             d:DesignWidth="800">
+    <Border
+        Background="Transparent"
+        Padding="0 10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid
+                Margin="5 5 0 5"
+                VerticalAlignment="Center"
+                Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid
+                    Background="{Binding OverlayBackground, UpdateSourceTrigger=PropertyChanged}"
+                    Opacity="0.3"/>
+                <materialDesign:PackIcon
+                    Margin="1"
+                    Grid.Column="0"
+                    Kind="{Binding Icon, UpdateSourceTrigger=PropertyChanged}"
+                    Foreground="{Binding OverlayBackground, UpdateSourceTrigger=PropertyChanged}"
+                    Width="60"
+                    Height="60"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"/>
+                <Grid
+                    Grid.Column="2"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Stretch"
+                        Grid.Row="0">
+                        <TextBlock 
+                            Text="{Binding Promo.Code, UpdateSourceTrigger=PropertyChanged}"
+                            VerticalAlignment="Center"
+                            FontWeight="SemiBold"
+                            HorizontalAlignment="Left"
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                            FontSize="{StaticResource FontSizeText}"
+                            TextTrimming="CharacterEllipsis"/>
+                    </Border>
+                    <Border
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Stretch"
+                        Grid.Row="2">
+                        <TextBlock 
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            Text="{Binding Promo.Name, UpdateSourceTrigger=PropertyChanged}"
+                            VerticalAlignment="Center"
+                            FontWeight="Normal"
+                            HorizontalAlignment="Left"
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            TextTrimming="CharacterEllipsis"/>
+                    </Border>
+                </Grid>
+            </Grid>
+            <Border
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch"
+                Grid.Column="1"
+                Margin="5 5 0 5">
+                <TextBlock 
+                    Text="{Binding TargetCustomer, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                    FontSize="{StaticResource FontSizeText}"
+                    TextTrimming="CharacterEllipsis"/>
+            </Border>
+            <Grid
+                Grid.Column="2"
+                Margin="5 5 0 5"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Border
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch">
+                    <TextBlock 
+                        Text="{Binding Promo.Sale, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        FontSize="{StaticResource FontSizeText}"/>
+                </Border>
+                <TextBlock 
+                    Grid.Column="1"
+                    Text=" %"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    FontSize="{StaticResource FontSizeText}"/>
+            </Grid>
+            <Border
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch"
+                Grid.Column="3"
+                Margin="5 5 0 5">
+                <TextBlock 
+                    Text="{Binding Promo.Products.Count, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                    FontSize="{StaticResource FontSizeText}"
+                    TextTrimming="CharacterEllipsis"/>
+            </Border>
+            <Border
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch"
+                Grid.Column="4"
+                Margin="5 5 0 5">
+                <TextBlock 
+                    Text="{Binding Promo.AmountUsed, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                    FontSize="{StaticResource FontSizeText}"
+                    TextTrimming="CharacterEllipsis"/>
+            </Border>
+            <Grid
+                Grid.Column="5"
+                Margin="5 5 0 5"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch"
+                    Grid.Row="0">
+                    <Grid>
+                        <Grid
+                            Background="{Binding StatusOverlay, UpdateSourceTrigger=PropertyChanged}"
+                            Opacity="0.05"
+                            Width="{Binding ElementName=statusTextBlock, Path=ActualWidth}"
+                            HorizontalAlignment="Left"/>
+                        <TextBlock 
+                            Background="Transparent"
+                            x:Name="statusTextBlock"
+                            Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                            FontSize="{StaticResource FontSizeText}"
+                            TextTrimming="CharacterEllipsis"
+                            Foreground="{Binding StatusOverlay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </Border>
+                <Border
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch"
+                    Grid.Row="2">
+                    <TextBlock 
+                        Text="{Binding Promo.DateBegin, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                        FontSize="{StaticResource FontSizeText}"
+                        TextTrimming="CharacterEllipsis"/>
+                </Border>
+                <Border
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch"
+                    Grid.Row="4">
+                    <TextBlock 
+                        Text="{Binding Promo.DateEnd, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                        FontSize="{StaticResource FontSizeText}"
+                        TextTrimming="CharacterEllipsis"/>
+                </Border>
+            </Grid>
+            <local:DropdownPromoItem
+                Grid.Column="6"/>
+        </Grid>
+    </Border>
+</UserControl>

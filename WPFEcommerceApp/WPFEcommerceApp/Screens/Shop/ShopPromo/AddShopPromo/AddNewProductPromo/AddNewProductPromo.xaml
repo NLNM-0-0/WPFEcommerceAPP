@@ -1,0 +1,328 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AddNewProductPromo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             mc:Ignorable="d">
+    <Grid>
+        <Border
+            BorderBrush="{StaticResource BoxLineColorBrush}"
+            BorderThickness="1">
+            <StackPanel
+                Width="940"
+                Margin="30 30">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.ColumnSpan="2"
+                        Text="Add Product"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontFamily="{StaticResource Regular}"
+                        FontSize="{StaticResource FontSizeHeadline}"/>
+                    <Button
+                        x:Name="ButtonClose"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Grid.Column="1"
+                        Margin="0 0 10 0"
+                        Padding="0"
+                        Height="30"
+                        Width="30"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
+                        <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+                    </Button>
+                </Grid>
+                <Grid
+                    Margin="0 30 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        x:Name="searchByComboBox"
+                        Height="{Binding ElementName=textBoxSearch, Path=ActualHeight}"
+                        materialDesign:TextFieldAssist.TextFieldCornerRadius="5 0 0 5"
+                        Grid.Column="0"
+                        IsEditable="False"
+                        materialDesign:HintAssist.Hint="Search By"
+                        BorderThickness="1 1 0 1"
+                        SelectedValuePath="Content"
+                        SelectedValue="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBoxItem Content="Id"/>
+                        <ComboBoxItem Content="Product Name"/>
+                    </ComboBox>
+                    <TextBox 
+                        Grid.Column="1"
+                        x:Name="textBoxSearch"
+                        materialDesign:TextFieldAssist.TextFieldCornerRadius="0 5 5 0"
+                        Width="auto"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                        materialDesign:HintAssist.Hint="{Binding ElementName=searchByComboBox, Path=Text}"
+                        Text="{Binding SearchByValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <Grid
+                    Margin="0 30 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="Category"
+                        DisplayMemberPath="Name"
+                        Grid.Column="0"
+                        Text="{Binding SelectedCategory.Name, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.SelectedItem>
+                            <Binding Path="SelectedCategory" UpdateSourceTrigger="PropertyChanged"/>
+                        </ComboBox.SelectedItem>
+                    </ComboBox>
+                    <ComboBox
+                        ItemsSource="{Binding Brands, UpdateSourceTrigger=PropertyChanged}"
+                        DisplayMemberPath="Name"
+                        materialDesign:HintAssist.Hint="Brand"
+                        Grid.Column="2"
+                        Text="{Binding SelectedBrand.Name, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.SelectedItem>
+                            <Binding Path="SelectedBrand" UpdateSourceTrigger="PropertyChanged"/>
+                        </ComboBox.SelectedItem>
+                    </ComboBox>
+                </Grid>
+                <Grid
+                    Margin="0 30 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0"
+                        Style="{StaticResource ButtonRectangle}"
+                        Width="120"
+                        Padding="20 0"
+                        Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}">
+                        <Button.Content>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Kind="Search"
+                                    VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Text=" Search"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Grid.Column="2"
+                        Style="{StaticResource WhiteButtonRectangle}"
+                        Padding="10 0"
+                        Width="120"
+                        Command="{Binding ResetCommand, UpdateSourceTrigger=PropertyChanged}">
+                        <Button.Content>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Kind="Reload"
+                                    VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Text=" Reset"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <CheckBox
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        Content="Show selected product only"
+                        FontSize="{StaticResource FontSizeText}"
+                        FontWeight="SemiBold"
+                        IsChecked="{Binding IsShowSelectedProductOnly, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <Border
+                    Grid.Row="12"
+                    Margin="0 30 0 0"
+                    Background="Transparent">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border
+                            BorderBrush="{StaticResource BlackColorBrush}"
+                            BorderThickness="1"
+                            Padding="0 5"
+                            Margin="0 0 0 10">
+                            <Grid
+                            Grid.Row="0"
+                            Background="{StaticResource BackgroundColorBrush}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox
+                                    Style="{StaticResource MaterialDesignCheckBox}"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding IsCheckedAll, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock
+                                    Text="Product Name"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Padding="5 0"
+                                    FontWeight="DemiBold"
+                                    FontSize="{StaticResource FontSizeText}"/>
+                                <TextBlock
+                                    Text="Sale"
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    Padding="5 0"
+                                    FontWeight="DemiBold"
+                                    FontSize="{StaticResource FontSizeText}"/>
+                                <TextBlock
+                                    Text="Price"
+                                    Grid.Column="3"
+                                    VerticalAlignment="Center"
+                                    Padding="5 0"
+                                    FontWeight="DemiBold"
+                                    FontSize="{StaticResource FontSizeText}"/>
+                                <TextBlock
+                                    Text="In Stock"
+                                    Grid.Column="4"
+                                    VerticalAlignment="Center"
+                                    Padding="5 0"
+                                    FontWeight="DemiBold"
+                                    FontSize="{StaticResource FontSizeText}"/>
+                            </Grid>
+                        </Border>
+
+                        <ListView 
+                            x:Name="listView"
+                            Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                            ItemsSource="{Binding FilterPromoProductBlocks, UpdateSourceTrigger=PropertyChanged}"
+                            IsHitTestVisible="True"
+                            ScrollViewer.CanContentScroll="False"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            HorizontalContentAlignment ="Stretch"
+                            Grid.Row="1"
+                            Height="400"
+                            MaxHeight="400">
+                            <ListView.ItemTemplate >
+                                <DataTemplate>
+                                    <local:AddProductDetailBlock
+                                        DataContext="{Binding}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AddNewProductPromo}, Path=DataContext.ClickProductCommand}"
+                                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AddProductDetailBlock}, Path=DataContext}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </local:AddProductDetailBlock>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Border>
+                <Grid
+                    Margin="0 30 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        x:Name="notification"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Visibility="{c:Binding 'TotalProducts != 0', UpdateSourceTrigger=PropertyChanged}">
+                        <TextBlock
+                            Text="You have chosen "
+                            FontSize="{StaticResource FontSizeDescription}"
+                            Foreground="{StaticResource SuccessColorBrush}"/>
+                        <TextBlock
+                            Text="{Binding TotalProducts, UpdateSourceTrigger=PropertyChanged}"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            Foreground="{StaticResource SuccessColorBrush}"/>
+                        <TextBlock
+                            Text=" products"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            Foreground="{StaticResource SuccessColorBrush}"/>
+                    </StackPanel>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Text="You have not chosen any product. Please pick one!"
+                        Visibility="{c:Binding 'TotalProducts == 0', UpdateSourceTrigger=PropertyChanged}"
+                        Foreground="{StaticResource ErrorColorBrush}"/>
+                    <Button
+                        Grid.Column="2"
+                        Style="{StaticResource WhiteButtonRectangle}"
+                        Width="120"
+                        Padding="20 0"
+                        Command="{Binding CancelCommand, UpdateSourceTrigger=PropertyChanged}">
+                        <Button.Content>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                        Kind="Close"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock
+                                        Text=" Cancel"
+                                        VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Grid.Column="4"
+                        Style="{StaticResource ButtonRectangle}"
+                        Padding="10 0"
+                        Width="120"
+                        Command="{Binding CompletedCommand, UpdateSourceTrigger=PropertyChanged}">
+                        <Button.Content>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Kind="CheckBold"
+                                    VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Text=" Done"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="Enter"
+            Command="{Binding SearchCommand}"/>
+    </UserControl.InputBindings>
+</UserControl>

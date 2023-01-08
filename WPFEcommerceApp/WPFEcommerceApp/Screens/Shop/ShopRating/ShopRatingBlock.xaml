@@ -4,182 +4,298 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
-             mc:Ignorable="d"
-             x:Name="shopRatingBlock"
-             ScrollViewer.CanContentScroll="True">
+             mc:Ignorable="d" 
+             d:DesignWidth="800">
     <Border
-        BorderBrush="{StaticResource NotAvailableColorBrush}"
-        BorderThickness="1"
-        Background="Transparent">
+        BorderBrush="{StaticResource BoxLineColorBrush}"
+        BorderThickness="0 1 0 0"
+        Padding="20">
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid
-                Grid.Row="0"
-                Background="{StaticResource NotAvailableColorBrush}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel
-                    Grid.Column="0"
-                    Margin="20 0"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Foreground="{StaticResource WhiteColorBrush}"
-                        Text="UserName: "
-                        FontFamily="{StaticResource Medium}"
-                        FontSize="{StaticResource FontSizeDescription}"
-                        VerticalAlignment="Center"/>
-                    <Grid Margin="10 5 0 5">
-                        <StackPanel
-                            Orientation="Horizontal">
-                            <Border
-                                Background="{StaticResource WhiteColorBrush}"
-                                CornerRadius="10"
-                                Width="20"
-                                Height="20">
-                                <ScrollViewer>
-                                    <Image
-                                        Height="20"
-                                        Width="20"
-                                        Stretch="UniformToFill"
-                                        Source="{Binding Path=CustomerImageAva, ElementName=shopRatingBlock, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <Image.Clip>
-                                            <EllipseGeometry
-                                                Center="10 10"
-                                                RadiusX="10"
-                                                RadiusY="10"/>
-                                        </Image.Clip>
-                                    </Image>
-                                </ScrollViewer>
-                            </Border>
-                            <TextBlock 
-                                Foreground="{StaticResource WhiteColorBrush}"
-                                Text="{Binding ElementName=shopRatingBlock, Path=Customer.Name}" TextWrapping="Wrap"
-                                Margin="5 4 5 2"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontWeight="Medium"
-                                FontSize="{StaticResource FontSizeDescription}"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-                <StackPanel
-                    Margin="20 0"
-                    HorizontalAlignment="Right"
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Foreground="{StaticResource WhiteColorBrush}"
-                        Text="IdOrder: "
-                        FontFamily="{StaticResource Medium}"
-                        FontSize="{StaticResource FontSizeDescription}"
-                        VerticalAlignment="Center"/>
-                    <TextBlock
-                        Foreground="{StaticResource WhiteColorBrush}"
-                        Text="{Binding ElementName=shopRatingBlock, Path=Order.Id}"
-                        FontFamily="{StaticResource Bold}"
-                        FontSize="{StaticResource FontSizeDescription}"
-                        FontWeight="Bold"
-                        VerticalAlignment="Center"/>
-                </StackPanel>
-            </Grid>
-            <Grid
-                    Margin="20 10"
-                    Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0"
-                          HorizontalAlignment="Left">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <local:AsyncImage
-                            Height="65"
-                            Width="65"
-                            Stretch="UniformToFill"
-                            Margin="0 0 10 0"
-                            Source="{Binding Path=ProductImage, ElementName=shopRatingBlock, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True,Mode=TwoWay}">
-                        </local:AsyncImage>
-                        <StackPanel
-                            Grid.Column="1">
-                            <TextBlock Text="{Binding ElementName=shopRatingBlock, Path=Product.Name}" 
-                                   FontFamily="{StaticResource Bold}"
-                                   FontSize="{StaticResource FontSizeHeadline3}"
-                                   FontWeight="Medium"
-                                   Margin="0 10 0 10"/>
-                            <TextBlock Text="{Binding ElementName=shopRatingBlock, Path=Product.Description}" 
-                                   FontFamily="{StaticResource Bold}"
-                                   FontSize="{StaticResource FontSizeDescription}"
-                                   FontWeight="Regular"
-                                   TextWrapping="WrapWithOverflow"/>
-                        </StackPanel>
-                    </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border
+                Grid.Column="0"
+                HorizontalAlignment="Stretch">
                 <Grid
-                    Grid.Column="1">
+                    HorizontalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel
-                        Grid.Row="0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="20"
-                            Icon="Star"
-                            Visibility="{c:Binding 'Rating >= 1', ElementName=shopRatingBlock}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="20"
-                            Icon="Star"
-                            Visibility="{c:Binding 'Rating >= 2', ElementName=shopRatingBlock}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="20"
-                            Icon="Star"
-                            Visibility="{c:Binding 'Rating >= 3', ElementName=shopRatingBlock}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="20"
-                            Icon="Star"
-                            Visibility="{c:Binding 'Rating >= 4', ElementName=shopRatingBlock}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="20"
-                            Icon="Star"
-                            Visibility="{c:Binding 'Rating >= 5', ElementName=shopRatingBlock}"/>
-                    </StackPanel>
-                    <TextBlock
+                    <Border
+                        Background="{StaticResource WhiteColorBrush}"
+                        CornerRadius="35"
+                        Width="70"
+                        Height="70"
+                        Grid.Row="0">
+                        <ScrollViewer>
+                            <local:AsyncImage
+                                Height="70"
+                                Width="70"
+                                Stretch="UniformToFill"
+                                Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
+                                <local:AsyncImage.Clip>
+                                    <EllipseGeometry
+                                        Center="35 35"
+                                        RadiusX="35"
+                                        RadiusY="35"/>
+                                </local:AsyncImage.Clip>
+                            </local:AsyncImage>
+                        </ScrollViewer>
+                    </Border>
+                    <Border
+                        Margin="0 30 0 0"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
                         Grid.Row="1"
-                        Text="{Binding ElementName=shopRatingBlock, Path=DateRating}"
-                        FontFamily="{StaticResource Medium}"
-                        FontSize="{StaticResource FontSizeDescription}"
-                        VerticalAlignment="Center"/>
+                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid},Path=ActualWidth}">
+                        <TextBlock 
+                            Text="{Binding OrderInfo.MOrder.MUser.Name, UpdateSourceTrigger=PropertyChanged}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            FontWeight="Medium"
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            TextTrimming="CharacterEllipsis"/>
+                    </Border>
                 </Grid>
-                    
+            </Border>
+            
+            <Grid
+                Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border
+                    VerticalAlignment="Top"
+                    Grid.Row="0">
+                    <TextBlock 
+                        Text="{Binding OrderInfo.Product.Name, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center"
+                        FontWeight="Medium"
+                        MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                        FontSize="{StaticResource FontSizeHeadline2}"
+                        TextTrimming="CharacterEllipsis"/>
+                </Border>
+                <Grid
+                Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid
+                        Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid
+                            HorizontalAlignment="Stretch"
+                            Grid.Row="0">
+                            <local:AsyncImage
+                                Height="100"
+                                Width="100"
+                                Stretch="UniformToFill"
+                                HorizontalAlignment="Left"
+                                Source="{Binding ImageProduct, UpdateSourceTrigger=PropertyChanged}">
+                            </local:AsyncImage>
+                        </Grid>
+
+                        <Grid
+                            Grid.Row="2"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock 
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Text="Size: "
+                                VerticalAlignment="Center"
+                                FontWeight="Normal"
+                                FontSize="{StaticResource FontSizeDescription}"/>
+                            <Border
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                Grid.Column="1">
+                                <TextBlock 
+                                    Foreground="{StaticResource NotAvailableColorBrush}"
+                                    Text="{Binding OrderInfo.Size, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Normal"
+                                    HorizontalAlignment="Left"
+                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                                    FontSize="{StaticResource FontSizeDescription}"
+                                    TextTrimming="CharacterEllipsis"/>
+                            </Border>
+                        </Grid>
+                        <Grid
+                        Grid.Row="4"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock 
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Text="Date Rating: "
+                                VerticalAlignment="Center"
+                                FontWeight="Normal"
+                                FontSize="{StaticResource FontSizeDescription}"/>
+                            <Border
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                Grid.Column="2">
+                                <TextBlock 
+                                    Foreground="{StaticResource NotAvailableColorBrush}"
+                                    Text="{Binding TimeRating, UpdateSourceTrigger=PropertyChanged}"
+                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualWidth}"
+                                    TextTrimming="CharacterEllipsis"
+                                    VerticalAlignment="Center"
+                                    FontWeight="Normal"
+                                    HorizontalAlignment="Left"
+                                    FontSize="{StaticResource FontSizeDescription}"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <Grid
+                    Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel
+                            Grid.Row="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Orientation="Horizontal">
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="20"
+                                Icon="Star"
+                                Visibility="{c:Binding 'OrderInfo.Rating.Rating1 >= 1', UpdateSourceTrigger=PropertyChanged}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="20"
+                                Icon="Star"
+                                Visibility="{c:Binding 'OrderInfo.Rating.Rating1 >= 2', UpdateSourceTrigger=PropertyChanged}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="20"
+                                Icon="Star"
+                                Visibility="{c:Binding 'OrderInfo.Rating.Rating1 >= 3', UpdateSourceTrigger=PropertyChanged}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="20"
+                                Icon="Star"
+                                Visibility="{c:Binding 'OrderInfo.Rating.Rating1 >= 4', UpdateSourceTrigger=PropertyChanged}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="20"
+                                Icon="Star"
+                                Visibility="{c:Binding 'OrderInfo.Rating.Rating1 >= 5', UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <Border
+                            VerticalAlignment="Top"
+                            Grid.Row="2">
+                            <TextBlock 
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Text="{Binding OrderInfo.Rating.Comment, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Center"
+                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                                FontSize="{StaticResource FontSizeDescription}"
+                                TextWrapping="Wrap"/>
+                        </Border>
+                    </Grid>
+                </Grid>
+                <Grid
+                    Grid.Row="4">
+                    <Button
+                        HorizontalAlignment="Left"
+                        Content="Reply"
+                        Style="{StaticResource TransparentButton}"
+                        materialDesign:ButtonAssist.CornerRadius="0"
+                        FontSize="{StaticResource FontSizeText}"
+                        Foreground="#4B8CDE"
+                        Command="{Binding OpenReplyCommand,UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+                <local:AddNewReplyBlock
+                    Grid.Row="5"
+                    Margin="0 30 0 0"
+                    DataContext="{Binding NewRelayblockViewModel, UpdateSourceTrigger=PropertyChanged}"
+                    Visibility="{c:Binding DataContext.IsReplying, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ShopRatingBlock}, FalseToVisibility=Collapsed}"/>
+                <StackPanel 
+                    IsHitTestVisible="True"
+                    Grid.Row="6"
+                    Margin="0 30 0 0"
+                    Visibility="{c:Binding 'DataContext.DisplayShopRatingBlockModels.Count != 0', UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ShopRatingBlock}, FalseToVisibility=Collapsed}">
+                    <ItemsControl ItemsSource="{Binding DisplayedBlocksViewModels, UpdateSourceTrigger=PropertyChanged}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <local:ReplyBlock
+                                Margin="0 0 0 20"
+                                DataContext="{Binding}"
+                                Grid.Column="0"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <Grid
+                    Grid.Row="7"
+                    Margin="0 10 0 0">
+                    <Button
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource TransparentButton}"
+                        materialDesign:ButtonAssist.CornerRadius="0"
+                        FontSize="{StaticResource FontSizeText}"
+                        Command="{Binding OpenAllCommands,UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{c:Binding IsShowAll, UpdateSourceTrigger=PropertyChanged}">
+                        <Button.Content>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Kind="SubdirectoryArrowRight"
+                                    Margin="0 0 10 0"
+                                    Foreground="#4B8CDE"/>
+                                <TextBlock
+                                    Text="See more "
+                                    FontSize="{StaticResource FontSizeText}"
+                                    Foreground="#4B8CDE"/>
+                                <TextBlock
+                                    Text="{c:Binding 'OrderInfo.Rating.RatingInfoes.Count - 1', UpdateSourceTrigger=PropertyChanged}"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    Foreground="#4B8CDE"/>
+                                <TextBlock
+                                    Text=" comments"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    Foreground="#4B8CDE"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                 </Grid>
             </Grid>
+        </Grid>
     </Border>
-    <!--<i:Interaction.Triggers>
-            <i:EventTrigger EventName="MouseDown" >
-                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ShopInformationPage}}, Path=DataContext.OpenRequestCommand}">
-                    <i:InvokeCommandAction.CommandParameter>
-                        <Binding ElementName="shopRatingBlock" Path="Product"/>
-                    </i:InvokeCommandAction.CommandParameter>
-                </i:InvokeCommandAction>
-            </i:EventTrigger>
-        </i:Interaction.Triggers>-->
 </UserControl>

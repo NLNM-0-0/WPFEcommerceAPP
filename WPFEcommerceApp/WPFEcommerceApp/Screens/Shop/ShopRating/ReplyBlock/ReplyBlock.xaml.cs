@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFEcommerceApp.UserControls.Dialogs.AddProductDialog;
 
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for ShopRatingBlock.xaml
+    /// Interaction logic for ReplyBlock.xaml
     /// </summary>
-    public partial class ShopRatingBlock : UserControl
+    public partial class ReplyBlock : UserControl
     {
-        public ShopRatingBlock()
+        public ReplyBlock()
         {
             InitializeComponent();
-            IsLoadingCheck.IsLoading--;
         }
     }
 }

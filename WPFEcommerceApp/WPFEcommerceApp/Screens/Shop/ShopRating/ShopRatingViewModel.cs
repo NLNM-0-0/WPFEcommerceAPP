@@ -535,9 +535,6 @@ namespace WPFEcommerceApp
                 }));
             });
         }
-        public void ChangeStatus()
-        {
-        }
         public void Search()
         {
             if (DateFrom != null && DateTo != null && DateFrom > DateTo)
@@ -546,7 +543,7 @@ namespace WPFEcommerceApp
                 return;
             }
             DisplayShopRatingBlockModels = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelFilter.Where(x => x.OrderInfo.Product.Name.Contains(ProductName ?? "") &&
-                                                                                                                 x.Customer.Name.Contains(UserName ?? "") &&
+                                                                                                                 x.OrderInfo.MOrder.MUser.Name.Contains(UserName ?? "") &&
                                                                                                                 ((SelectedCategory == null) ? true : (x.OrderInfo.Product.IdCategory == SelectedCategory.Id)) &&
                                                                                                                 ((SelectedBrand == null) ? true : (x.OrderInfo.Product.IdBrand == SelectedBrand.Id)) &&
                                                                                                                 ((DateFrom == null) ? true : (x.OrderInfo.Rating.DateRating >= DateFrom)) &&
@@ -572,16 +569,14 @@ namespace WPFEcommerceApp
             {
                 ObservableCollection<Models.OrderInfo> orderInfos = new ObservableCollection<OrderInfo>(await orderInfoReposition.GetListAsync(oi => (oi.IdOrder == order.Id && oi.IdRating != null),
                                                                                                                                                oi => oi.Product,
-                                                                                                                                               oi => oi.Rating));
+                                                                                                                                               oi => oi.Rating,
+                                                                                                                                               oi => oi.Rating.RatingInfoes,
+                                                                                                                                               oi => oi.Rating.RatingInfoes.Select(ri => ri.MUser),
+                                                                                                                                               oi => oi.MOrder, 
+                                                                                                                                               oi => oi.MOrder.MUser));
                 for (int i = 0; i < orderInfos.Count; i++)
                 {
-                    ShopRatingBlockModel shopRatingBlockModel = new ShopRatingBlockModel()
-                    {
-                        Order = order,
-                        Customer = order.MUser,
-                        OrderInfo = orderInfos[i],
-                        ImageProduct = orderInfos[i].ImageProduct
-                    };
+                    ShopRatingBlockModel shopRatingBlockModel = new ShopRatingBlockModel(orderInfos[i]);
                     ShopRatingBlockModelsAll.Add(shopRatingBlockModel);
                 }
             }

@@ -78,6 +78,47 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MOrder.cs" />
+    <Compile Include="Models\UserLogin.cs" />
+    <Compile Include="Screens\Shop\ShopPromo\ShopPromoBlock\DropdownPromoItem.xaml.cs">
+      <DependentUpon>DropdownPromoItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdInUse.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Promo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PromoRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RatingInfo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\AddNewProductPromo\AddProductDetailBlock\AddProductDetailBlock.xaml.cs">
+      <DependentUpon>AddProductDetailBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\AddNewProductPromo\AddNewProductPromo.xaml.cs">
+      <DependentUpon>AddNewProductPromo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\AddNewProductPromo\AddNewProductPromoViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\AddShopPromo.xaml.cs">
+      <DependentUpon>AddShopPromo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\AddShopPromoViewModel.cs" />
     <Compile Include="Api\FavouriteApi.cs" />
     <Compile Include="Api\FireStorageAPI.cs" />
     <Compile Include="Api\GenerateID.cs" />
@@ -88,20 +129,34 @@
       <DependentUpon>AsyncImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\DropImage\MoveThumb.cs" />
-    <Compile Include="Models\AdInUse.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\PromoProductBlock\PromoProductBlock.xaml.cs">
+      <DependentUpon>PromoProductBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\PromoProductBlock\PromoProductBlockViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\PromoTypeBlock\PromoTypeBlock.xaml.cs">
+      <DependentUpon>PromoTypeBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\MOrder.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+    <Compile Include="Screens\Shop\ShopPromo\ShopPromo.xaml.cs">
+      <DependentUpon>ShopPromo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserLogin.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+    <Compile Include="Screens\Shop\ShopPromo\ShopPromoBlock\ShopPromoBlock.xaml.cs">
+      <DependentUpon>ShopPromoBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\Shop\ShopPromo\ShopPromoBlock\ShopPromoBlockViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopPromo\ShopPromoViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopRating\AddNewRelyBlock\AddNewReplyBlock.xaml.cs">
+      <DependentUpon>AddNewReplyBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopRating\AddNewRelyBlock\AddNewReplyBlockViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopRating\ReplyBlock\ReplyBlock.xaml.cs">
+      <DependentUpon>ReplyBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopRating\ReplyBlock\ReplyBlockViewModel.cs" />
+    <Compile Include="Services\DPIService.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\NavigateProvider.cs" />
+    <Compile Include="Services\NavigateService.cs" />
+    <Compile Include="Services\ParamNavigationService.cs" />
     <Compile Include="Screens\Auth\ForgotPassword\ForgotPasswordVM.cs" />
     <Compile Include="Api\Hashing.cs" />
     <Compile Include="Utils\IsLoadingCheck.cs" />
@@ -284,8 +339,6 @@
     <Compile Include="Screens\Shop\UnShopMain\UnShopMain.xaml.cs">
       <DependentUpon>UnShopMain.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\DPIService.cs" />
-    <Compile Include="Services\NavigateProvider.cs" />
     <Compile Include="Components\UserControls\BrandRequest\BrandRequestItem.xaml.cs">
       <DependentUpon>BrandRequestItem.xaml</DependentUpon>
     </Compile>
@@ -455,9 +508,6 @@
       <DependentUpon>ShopProduct.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Main\MainViewModel.cs" />
-    <Compile Include="Services\INavigationService.cs" />
-    <Compile Include="Services\NavigateService.cs" />
-    <Compile Include="Services\ParamNavigationService.cs" />
     <Compile Include="Stores\AccountStore.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="Stores\OrderStore.cs" />
@@ -511,6 +561,23 @@
     <Compile Include="Utils\RelayCommandWithNoParameter.cs" />
     <Compile Include="Utils\ValidationRule\NotEmptyValidationRule.cs" />
     <Compile Include="Utils\ValidationRule\NumberTextBoxValidation.cs" />
+    <Compile Include="Utils\ValidationRule\PromoCodeValidation.cs" />
+    <Page Include="Screens\Shop\ShopPromo\ShopPromoBlock\DropdownPromoItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\AddShopPromo\AddNewProductPromo\AddProductDetailBlock\AddProductDetailBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\AddShopPromo\AddNewProductPromo\AddNewProductPromo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\AddShopPromo\AddShopPromo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Buttons\ButtonRectangle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -773,6 +840,30 @@
     <Page Include="Screens\Shop\ShopProduct\ShopProduct.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\AddShopPromo\PromoProductBlock\PromoProductBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\AddShopPromo\PromoTypeBlock\PromoTypeBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\ShopPromo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\ShopPromoBlock\ShopPromoBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopRating\AddNewRelyBlock\AddNewReplyBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopRating\ReplyBlock\ReplyBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Shop\ShopRating\ShopRatingBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
