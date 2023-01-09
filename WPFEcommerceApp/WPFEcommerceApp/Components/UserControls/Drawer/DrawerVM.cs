@@ -200,15 +200,18 @@ namespace WPFEcommerceApp {
                 case "AdsManagerViewModel":
                     SelectedIndex = 3;
                     break;
-                case "AdminCategoryViewModel":
+                case "AdminPromoViewModel":
                     SelectedIndex = 4;
                     break;
-                case "AdminBrandViewModel":
+                case "AdminCategoryViewModel":
                     SelectedIndex = 5;
+                    break;
+                case "AdminBrandViewModel":
+                    SelectedIndex = 6;
                     break;
                 case "MyProfileViewModel":
                     if(CurrentUser.Role == "Admin")
-                        SelectedIndex= 6;
+                        SelectedIndex= 7;
                     else SelectedIndex = 5;
                     break;
                 case "MyHomeViewModel":

@@ -29,7 +29,7 @@ namespace WPFEcommerceApp {
 
             isFirstTime = drawerVM.SelectedIndex == 4;
 
-            SelectedIndex = new ObservableCollection<bool>() { false, false, false, false };
+            SelectedIndex = new ObservableCollection<bool>() { false, false, false, false, false };
 
             OnChecked = new RelayCommand<object>(p => true, p => {
                 drawerVM.CanReload = false;

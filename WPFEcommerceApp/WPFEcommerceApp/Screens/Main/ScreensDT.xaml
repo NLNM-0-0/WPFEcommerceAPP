@@ -63,6 +63,12 @@
     <DataTemplate DataType="{x:Type local:ShopPromoViewModel}">
         <local:ShopPromo/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type local:AddShopPromoViewModel}">
+        <local:AddShopPromo/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:PromoInformationViewModel}">
+        <local:PromoInformation/>
+    </DataTemplate>
     <!--#endregion-->
     
     <!--#region Admin-->

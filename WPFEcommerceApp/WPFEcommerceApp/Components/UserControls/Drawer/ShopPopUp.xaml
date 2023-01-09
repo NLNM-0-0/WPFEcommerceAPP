@@ -81,7 +81,7 @@
             <RadioButton Command="{Binding OnChecked}"
                          CommandParameter="4"
                          GroupName="ShopPopup"
-                         IsChecked="{Binding SelectedIndex[1]}">
+                         IsChecked="{Binding SelectedIndex[2]}">
                 <TextBlock VerticalAlignment="Center" 
                            HorizontalAlignment="Center"
                            Text="Promo"/>
@@ -89,7 +89,7 @@
             <RadioButton Command="{Binding OnChecked}"
                          CommandParameter="5"
                          GroupName="ShopPopup"
-                         IsChecked="{Binding SelectedIndex[2]}">
+                         IsChecked="{Binding SelectedIndex[3]}">
                 <TextBlock VerticalAlignment="Center"  
                                HorizontalAlignment="Center"
                                Text="Rating"/>
@@ -97,7 +97,7 @@
             <RadioButton Command="{Binding OnChecked}"
                          CommandParameter="6"
                          GroupName="ShopPopup"
-                         IsChecked="{Binding SelectedIndex[3]}">
+                         IsChecked="{Binding SelectedIndex[4]}">
                 <TextBlock VerticalAlignment="Center"  
                                HorizontalAlignment="Center"
                                Text="Statistic"/>
