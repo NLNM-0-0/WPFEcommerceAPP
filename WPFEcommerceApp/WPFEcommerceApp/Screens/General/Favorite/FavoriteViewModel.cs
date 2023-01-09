@@ -88,5 +88,11 @@ namespace WPFEcommerceApp
             
             MainViewModel.IsLoading = false;
         }
+
+        public override void Dispose()
+        {
+            FavoriteStore.instance.FavoriteListChanged -= OnFavoriteListChanged;
+            base.Dispose();
+        }
     }
 }

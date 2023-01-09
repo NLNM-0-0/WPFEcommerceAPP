@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for SearchBar.xaml
+    /// Interaction logic for ProfileControl.xaml
     /// </summary>
-    public partial class DropDownSearchBar : UserControl
+    public partial class ProfileControl : UserControl
     {
-        public DropDownSearchBar()
+        public ProfileControl()
         {
             InitializeComponent();
         }

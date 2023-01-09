@@ -144,8 +144,6 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = false;
 
             });
-
-            MainViewModel.IsLoading = false;
         }
 
         private async Task Load()

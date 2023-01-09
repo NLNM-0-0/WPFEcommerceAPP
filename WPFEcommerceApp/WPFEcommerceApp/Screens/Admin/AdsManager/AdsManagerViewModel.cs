@@ -119,7 +119,6 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = false;
 
             });
-            MainViewModel.IsLoading = false;
 
         }
 

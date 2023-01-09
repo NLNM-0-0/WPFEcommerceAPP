@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="800">
 
@@ -17,7 +18,7 @@
         <Border Background="{StaticResource WhiteColorBrush}"
                 x:Name="border"/>
 
-        <DockPanel LastChildFill="True"
+        <DockPanel LastChildFill="False"
                    x:Name="container">
             
             <!-- The Back button -->
@@ -58,10 +59,15 @@
                 <fa:FontAwesome Icon="Bell" FontSize="20" />
             </Button>
 
-            <local:SearchBar x:Name="searchBar"
-                             Width="450"
-                             >
-            </local:SearchBar>
+            <Button Style="{StaticResource TransparentButton}"
+                    Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                    Margin="10" DockPanel.Dock="Right"
+                    Background="{StaticResource WhiteColorBrush}"
+                    Command="{Binding AdminOpenSearchCommand}"
+                    Visibility="{c:Binding IsAdmin, FalseToVisibility=Collapsed}"
+                    >
+                <fa:FontAwesome Icon="Search" FontSize="20" />
+            </Button>
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="GotKeyboardFocus" SourceName="searchBar">
@@ -69,6 +75,13 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </DockPanel>
+
+        <local:SearchBar x:Name="searchBar"
+                         Width="450"
+                         HorizontalAlignment="Center"
+                         Visibility="{c:Binding !IsAdmin, FalseToVisibility=Collapsed}"    
+                         >
+        </local:SearchBar>
 
         <Popup IsOpen="{Binding IsSearchOpen}" StaysOpen="False"
                AllowsTransparency="True"

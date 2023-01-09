@@ -16,13 +16,22 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for SearchBar.xaml
+    /// Interaction logic for AdminPromo.xaml
     /// </summary>
-    public partial class DropDownSearchBar : UserControl
+    public partial class AdminPromo : UserControl
     {
-        public DropDownSearchBar()
+        public AdminPromo()
         {
             InitializeComponent();
+            DataContext = new AdminPromoViewModel();
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var scv = sender as ScrollViewer;
+            if (scv == null) return;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 }

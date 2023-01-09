@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="50 0">
+        <Grid Grid.Row="0" Margin="50 20">
             <DockPanel>
                 <TextBlock Text="Products Information"
                                    FontFamily="{StaticResource Bold}"
@@ -56,7 +56,7 @@
 
         <Grid Grid.Row="2" x:Name="grid"  Background="{StaticResource WhiteColorBrush}" Margin="50 10">
             <DataGrid ItemsSource="{Binding FilteredProducts}" x:Name="datagrid"
-                    MaxHeight="{Binding ElementName=grid, Path=ActualHeight}"
+                    Height="{Binding ElementName=grid, Path=ActualHeight}"
                     AutoGenerateColumns="False" CanUserDeleteRows="False"
                       CanUserAddRows="False" CanUserReorderColumns="False"
                       IsReadOnly="True">

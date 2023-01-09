@@ -25,13 +25,7 @@ namespace WPFEcommerceApp
           "SearchText",
           typeof(string),
           typeof(SearchBar),
-          new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault
-          /*new PropertyChangedCallback(OnValueChanged))*/));
-
-        //public static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-            
-        //}
+          new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public string SearchText
         {

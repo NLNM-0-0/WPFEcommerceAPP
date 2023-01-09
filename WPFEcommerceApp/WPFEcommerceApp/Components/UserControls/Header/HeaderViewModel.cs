@@ -20,6 +20,7 @@ namespace WPFEcommerceApp
     {
         #region Commands
         public ICommand OpenSearchCommand { get; set; }
+        public ICommand AdminOpenSearchCommand { get; set; }
         public ICommand CloseSearchCommand { get; set; }
         public ICommand ClosePopupCommand { get; set; }
         public ICommand SearchCommand { get; set; }
@@ -76,6 +77,11 @@ namespace WPFEcommerceApp
             set { OnPropertyChanged(); }
         }
         public string IconTooltip { get => AccountStore.instance.CurrentAccount != null ? "Sign Out" : "Sign In"; set { } }
+        public bool IsAdmin
+        {
+            get => AccountStore.instance.CurrentAccount != null
+                && AccountStore.instance.CurrentAccount.Role == "Admin";
+        }
         #endregion
 
         public HeaderViewModel()
@@ -87,6 +93,7 @@ namespace WPFEcommerceApp
             userRepo = new GenericDataRepository<MUser>();
             productRepo = new GenericDataRepository<Models.Product>();
 
+            AdminOpenSearchCommand = new RelayCommandWithNoParameter(() => { IsSearchOpen = true; });
             OpenSearchCommand = new RelayCommandWithNoParameter(OpenSearch);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearchText);
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
@@ -115,7 +122,12 @@ namespace WPFEcommerceApp
                 NavigateProvider.Back();
             });
             ToNoteCommand = new RelayCommandWithNoParameter(ToNote);
-            var task=Task.Run(async () => await Load());
+            var task=Task.Run(async () =>
+            {
+                MainViewModel.IsLoading = true;
+                await Load();
+                MainViewModel.IsLoading = false;
+            });
             while (!task.IsCompleted) ;
 
             SearchText = string.Empty;
@@ -128,6 +140,7 @@ namespace WPFEcommerceApp
         {
             OnPropertyChanged(nameof(Icon));
             OnPropertyChanged(nameof(IconTooltip));
+            OnPropertyChanged(nameof(IsAdmin));
         }
 
         public async Task Load()

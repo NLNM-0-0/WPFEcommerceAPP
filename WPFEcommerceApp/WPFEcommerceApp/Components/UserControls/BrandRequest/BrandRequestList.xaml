@@ -15,8 +15,9 @@
         <Border CornerRadius="15"
                 Background="{StaticResource WhiteColorBrush}"
                 BorderThickness="2"
-                BorderBrush="{StaticResource BlackColorBrush}"
-                x:Name="Container"/>
+                BorderBrush="{StaticResource WhiteColorBrush}"
+                x:Name="Container"
+                Padding="5"/>
         <Grid Margin="5">
             <Grid.OpacityMask>
                 <VisualBrush Visual="{Binding ElementName=Container}"/>
@@ -27,53 +28,17 @@
                 <ListView ItemsSource="{Binding RequestList.Items}" x:Name="itemList" 
                           HorizontalContentAlignment="Stretch"
                           BorderThickness="0">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <DockPanel Margin="5" LastChildFill="False">
                                 <local:BrandRequestItem DockPanel.Dock="Left" x:Name="selectedItem"/>
 
-                                <Button Style="{StaticResource TransparentButton}" DockPanel.Dock="Right"
-                                                x:Name="button"
-                                                Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                                Command="{Binding DropdownButtonCommand}"
-                                                >
-                                    <Button.Content>
-                                        <fa:FontAwesome Icon="EllipsisV"/>
-                                    </Button.Content>
-                                </Button>
-
-                                <!-- Drop down Popup -->
-                                <Popup IsOpen="{Binding IsDropdown}"
-                                               StaysOpen="False"
-                                               Placement="Left"
-                                               PlacementTarget="{Binding ElementName=button}"
-                                               >
-                                    <Grid Background="{StaticResource WhiteColorBrush}">
-                                        <Border Padding="2" BorderThickness="1"
-                                                BorderBrush="{StaticResource BoxLineColorBrush}">
-
-                                            <StackPanel>
-                                                <Button Style="{StaticResource OutLineBlackButtonRectangle}"
-                                                        BorderThickness="0"
-                                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.RemoveRequestCommand}"
-                                                        CommandParameter="{Binding}">
-                                                    <Button.Content>
-                                                        <TextBlock Text="Remove"/>
-                                                    </Button.Content>
-                                                </Button>
-
-                                                <Button Style="{StaticResource OutLineBlackButtonRectangle}"
-                                                                BorderThickness="0"
-                                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.AddRequestCommand}"
-                                                                CommandParameter="{Binding}">
-                                                    <Button.Content>
-                                                        <TextBlock Text="Accept"/>
-                                                    </Button.Content>
-                                                </Button>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
-                                </Popup>
+                                <local:DropDown DockPanel.Dock="Right"/>
                             </DockPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
