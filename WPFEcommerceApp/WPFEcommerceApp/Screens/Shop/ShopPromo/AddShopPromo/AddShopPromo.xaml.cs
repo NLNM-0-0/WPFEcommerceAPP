@@ -23,20 +23,7 @@ namespace WPFEcommerceApp
         public AddShopPromo()
         {
             InitializeComponent();
-            Models.Promo promo = new Models.Promo();
-            promo.CustomerType = 0;
-            promo.IdShop = "user02";
-            promo.Name = "Something new";
-            promo.Description = "HeHe";
-            promo.Code = "123";
-            promo.Sale = 10;
-            promo.Amount= 20;
-            promo.MinCost = 0;
-            promo.MaxSale = double.MaxValue;
-            promo.DateBegin = new DateTime(2020, 5, 19);
-            promo.DateEnd = new DateTime(2020, 5, 20);
-            promo.Status = 0;
-            this.DataContext = new AddShopPromoViewModel(promo);
+            this.DataContext = new AddShopPromoViewModel();
             this.Loaded += AddShopPromo_Loaded;
         }
 

@@ -10,7 +10,7 @@
              ScrollViewer.CanContentScroll="False"
              mc:Ignorable="d">
     <Border
-        Background="Transparent"
+        Background="White"
         Padding="0 10">
         <Grid>
             <Grid.ColumnDefinitions>

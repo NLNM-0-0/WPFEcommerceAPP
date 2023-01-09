@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WPFEcommerceApp.AddShopPromo"
+﻿<UserControl x:Class="WPFEcommerceApp.PromoInformation"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,6 +18,7 @@
             Margin="50 0 50 0">
             <Grid Background="Transparent">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
@@ -80,7 +81,7 @@
                             HorizontalAlignment="Stretch"
                             OverlayBackground="#abc4ff"
                             ContentPromoBlock="New customer"
-                            IsChecked="{c:Binding 'TargetCustomer == 0', UpdateSourceTrigger=PropertyChanged}"
+                            IsChecked="{c:Binding 'SelectedPromo.CustomerType == 0', UpdateSourceTrigger=PropertyChanged}"
                             Margin="0 0 30 0"
                             GroupName="targetCustomer"
                             Width="200"
@@ -113,15 +114,16 @@
                         materialDesign:HintAssist.Hint="Name"
                         Width="auto"
                         VerticalAlignment="Center"
-                        IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
+                        IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                        MaxLength="150">
                         <TextBox.Text>
                             <Binding
-                                Path="Name"
+                                Path="SelectedPromo.Name"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NotEmptyValidationRule 
-                                        ValidatesOnTargetUpdated="True"
-                                        IsNotCheckFirstTime="False"/>
+                                        ValidatesOnTargetUpdated="True"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -134,16 +136,15 @@
                         Width="auto"
                         VerticalAlignment="Center"
                         CharacterCasing="Upper"
-                        MaxLength="15"
+                        MaxLength="20"
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
-                                Path="Code"
+                                Path="SelectedPromo.Code"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:PromoCodeValidation 
-                                        ValidatesOnTargetUpdated="True"
-                                        IsNotCheckFirstTime="False"/>
+                                        ValidatesOnTargetUpdated="True"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -165,25 +166,23 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <DatePicker
-                            x:Name="dateFromTextBox"
                             Grid.Column="0"
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="From"
                             Width="auto"
                             VerticalAlignment="Center"
-                            SelectedDate ="{Binding DateBegin, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDateEnd="{Binding DateEnd, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedDate="{Binding SelectedPromo.DateBegin, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDateEnd="{Binding SelectedPromo.DateEnd, UpdateSourceTrigger=PropertyChanged}"
                             IsEnabled="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         </DatePicker>
                         <DatePicker
-                            x:Name="dateToTextBox"
                             Grid.Column="2"
                             Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="To"
                             Width="auto"
                             VerticalAlignment="Center"
-                            SelectedDate="{Binding DateEnd, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDateStart="{Binding DateBegin, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedDate="{Binding SelectedPromo.DateEnd, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayDateStart="{Binding SelectedPromo.DateBegin, UpdateSourceTrigger=PropertyChanged}"
                             IsEnabled="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         </DatePicker>
                     </Grid>
@@ -197,15 +196,16 @@
                     Margin="30 30 30 0"
                     Height="200"
                     VerticalAlignment="Center"
-                    IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
+                    IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}"
+                    materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                    MaxLength="200">
                     <TextBox.Text>
                         <Binding
-                            Path="Description"
+                            Path="SelectedPromo.Description"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <local:NotEmptyValidationRule 
-                                    ValidatesOnTargetUpdated="True"
-                                    IsNotCheckFirstTime="False"/>
+                                    ValidatesOnTargetUpdated="True"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -245,13 +245,12 @@
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
-                                Path="Amount"
+                                Path="SelectedPromo.Amount"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NumberTextBoxValidation 
                                         Min="1"
-                                        ValidatesOnTargetUpdated="True"
-                                        IsNotCheckFirstTime="False"/>
+                                        ValidatesOnTargetUpdated="True"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -267,14 +266,13 @@
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
-                                Path="Sale"
+                                Path="SelectedPromo.Sale"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NumberTextBoxValidation
                                         Min="1"
                                         Max="100"
-                                        ValidatesOnTargetUpdated="True"
-                                        IsNotCheckFirstTime="False"/>
+                                        ValidatesOnTargetUpdated="True"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -293,14 +291,13 @@
                     IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.Text>
                         <Binding
-                            Path="MinCost"
+                            Path="SelectedPromo.MinCost"
                             UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <local:NumberTextBoxValidation
                                     Type="DoubleType"
                                     Min="0"
-                                    ValidatesOnTargetUpdated="True"
-                                    IsNotCheckFirstTime="False"/>
+                                    ValidatesOnTargetUpdated="True"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -358,13 +355,12 @@
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
-                                Path="MaxSale"
+                                Path="SelectedPromo.MaxSale"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:NumberTextBoxValidation
                                         Min="0"
-                                        ValidatesOnTargetUpdated="True"
-                                        IsNotCheckFirstTime="False"/>
+                                        ValidatesOnTargetUpdated="True"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -476,8 +472,7 @@
                             Height="{Binding ElementName=textBoxSearch, Path=Height}"
                             Padding="20 0"
                             Visibility="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}"
-                            Command="{Binding SaveCommand, UpdateSourceTrigger=PropertyChanged}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                            Command="{Binding SaveCommand, UpdateSourceTrigger=PropertyChanged}">
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
                                     <Binding ElementName="nameTextBox" Path="(Validation.HasError)"/>
@@ -485,9 +480,9 @@
                                     <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="amountTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="saleTextBox" Path="(Validation.HasError)"/>
-                                    <Binding ElementName="dateFromTextBox" Path="(Validation.HasError)"/>
-                                    <Binding ElementName="dateToTextBox" Path="(Validation.HasError)"/>
-                                </MultiBinding> 
+                                    <Binding ElementName="minCostTextBox" Path="(Validation.HasError)"/>
+                                    <Binding ElementName="maxSaleTextBox" Path="(Validation.HasError)"/>
+                                </MultiBinding>
                             </Button.IsEnabled>
                             <Button.Content>
                                 <StackPanel
@@ -595,6 +590,56 @@
                         </ListView>
                     </Grid>
                 </Border>
+                <Grid
+                    Margin="0 30 0 0"
+                    Grid.Row="13">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="1"
+                        Height="{Binding ElementName=textBoxSearch, Path=Height}"
+                        Style="{StaticResource WhiteButtonRectangle}"
+                        Width="120"
+                        Padding="20 0"
+                        Command="{Binding DeleteCommand, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
+                        <Button.Content>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                        Kind="Close"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock
+                                        Text=" Delete"
+                                        VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Grid.Column="3"
+                        Height="{Binding ElementName=textBoxSearch, Path=Height}"
+                        Style="{StaticResource ButtonRectangle}"
+                        Padding="10 0"
+                        Width="120"
+                        Command="{Binding AcceptCommand, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
+                        <Button.Content>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Kind="CheckBold"
+                                    VerticalAlignment="Center"/>
+                                <TextBlock
+                                    Text=" Accept"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </Grid>
             </Grid>
         </Grid>
     </ScrollViewer>

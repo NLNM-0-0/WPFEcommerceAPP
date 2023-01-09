@@ -6,6 +6,7 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d">
     <Grid>
         <Button Style="{StaticResource TransparentButton}" DockPanel.Dock="Right"
@@ -27,11 +28,12 @@
                 <Border Padding="2" BorderThickness="1"
                                                 BorderBrush="{StaticResource BoxLineColorBrush}">
                     <Grid>
-                        <StackPanel Visibility="{c:Binding IsShop, FalseToVisibility=Collapsed}">
+                        <StackPanel Visibility="{c:Binding IsShop, FalseToVisibility=Collapsed, UpdateSourceTrigger=PropertyChanged}">
                             <Button Style="{StaticResource OutLineBlackButtonRectangle}"
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.EditPromoCommand}"
-                                CommandParameter="{Binding}">
+                                CommandParameter="{Binding}"
+                                    Visibility="{c:Binding IsRequest, UpdateSourceTrigger=PropertyChanged}">
                                 <Button.Content>
                                     <TextBlock Text="Edit"/>
                                 </Button.Content>
@@ -42,21 +44,96 @@
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.CopyPromoCommand}"
                                 CommandParameter="{Binding}">
                                 <Button.Content>
-                                    <TextBlock Text="Copy"/>
+                                    <Grid>
+                                        <TextBlock
+                                            x:Name="copyTextBlock"
+                                            Text="Copy"/>
+                                        <ProgressBar
+                                            x:Name="processBar"
+                                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                            Value="0"
+                                            IsIndeterminate="True"
+                                            Opacity="0"/>
+                                        <materialDesign:PackIcon
+                                            x:Name="icon"
+                                            Kind="CheckboxMarkedCircle"
+                                            Foreground="{StaticResource SuccessColorBrush}"
+                                            Opacity="0"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"/>
+                                    </Grid>
                                 </Button.Content>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="copyTextBlock"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.0"
+                                                    Duration="0:0:0.01"
+                                                    From="1"
+                                                    To="0"/>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="icon"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.0"
+                                                    Duration="0:0:0.01"
+                                                    From="0"
+                                                    To="0"/>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="processBar"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.0"
+                                                    Duration="0:0:0.05"
+                                                    From="0"
+                                                    To="1"/>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="processBar"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.05"
+                                                    Duration="0:0:0.051"
+                                                    From="1"
+                                                    To="0"/>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="icon"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.05"
+                                                    Duration="0:0:0.1"
+                                                    From="0"
+                                                    To="1"/>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="icon"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.5"
+                                                    Duration="0:0:0.51"
+                                                    From="1"
+                                                    To="0"/>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="copyTextBlock"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    BeginTime="0:0:0.5"
+                                                    Duration="0:0:0.51"
+                                                    From="0"
+                                                    To="1"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
                             </Button>
 
                             <Button Style="{StaticResource OutLineBlackButtonRectangle}"
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.RemovePromoCommand}"
-                                CommandParameter="{Binding}">
+                                CommandParameter="{Binding}"
+                                    Visibility="{c:Binding !IsDeleted}">
                                 <Button.Content>
                                     <TextBlock Text="Remove"/>
                                 </Button.Content>
                             </Button>
                         </StackPanel>
 
-                        <StackPanel Visibility="{c:Binding !IsShop, FalseToVisibility=Collapsed}">
+                        <StackPanel Visibility="{c:Binding !IsShop, FalseToVisibility=Collapsed, UpdateSourceTrigger=PropertyChanged}">
                             <Button Style="{StaticResource OutLineBlackButtonRectangle}"
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.ViewPromoCommand}"
@@ -66,7 +143,9 @@
                                 </Button.Content>
                             </Button>
 
-                            <Button Style="{StaticResource OutLineBlackButtonRectangle}" Visibility="{c:Binding IsRequest, FalseToVisibility=Collapsed}"
+                            <Button
+                                Style="{StaticResource OutLineBlackButtonRectangle}" 
+                                Visibility="{c:Binding IsRequest, FalseToVisibility=Collapsed, UpdateSourceTrigger=PropertyChanged}"
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.AcceptPromoCommand}"
                                 CommandParameter="{Binding}">
@@ -75,10 +154,11 @@
                                 </Button.Content>
                             </Button>
 
-                            <Button Style="{StaticResource OutLineBlackButtonRectangle}" Visibility="{c:Binding IsRequest, FalseToVisibility=Collapsed}"
-                                BorderThickness="0"
-                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.RemovePromoCommand}"
-                                CommandParameter="{Binding}">
+                            <Button Style="{StaticResource OutLineBlackButtonRectangle}"
+                                    BorderThickness="0"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.RemovePromoCommand}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{c:Binding 'IsRequest', UpdateSourceTrigger=PropertyChanged}">
                                 <Button.Content>
                                     <TextBlock Text="Remove"/>
                                 </Button.Content>
