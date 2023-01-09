@@ -23,6 +23,7 @@ namespace WPFEcommerceApp
         public ICommand ChangeAvaShopCommand { get; set; }
         public ICommand ChangeToDefaultAvaShopCommand { get; set; }
         public ICommand SaveAvaShopCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
 
         private string sourceImageAva = "";
         public string SourceImageAva
@@ -47,12 +48,12 @@ namespace WPFEcommerceApp
                     WidthImage = 500;
                     HeightImage = imageAva.Height * 500 / imageAva.Width;
                     CanvasLeft = 0;
-                    CanvasTop = -(HeightImage - 400) / 2;
+                    CanvasTop = -(HeightImage - 500) / 2;
                 }
                 else
                 {
-                    HeightImage = 400;
-                    WidthImage = imageAva.Width * 400 / imageAva.Height;
+                    HeightImage = 500;
+                    WidthImage = imageAva.Width * 500 / imageAva.Height;
                     CanvasLeft = -(WidthImage - 500) / 2;
                     CanvasTop = 0;
                 }
@@ -121,15 +122,19 @@ namespace WPFEcommerceApp
                 double ratio = ImageAva.PixelHeight / HeightImage;
 
                 CroppedBitmap temp = new CroppedBitmap(ImageAva, new System.Windows.Int32Rect(
-                    (int)Math.Round((Math.Abs(CanvasLeft) + 75) * ratio),
-                    (int)Math.Round((Math.Abs(canvasTop) + 25) * ratio),
-                    (int)Math.Round(350 * ratio),
-                    (int)Math.Round(350 * ratio)));
+                    (int)Math.Round((Math.Abs(CanvasLeft)) * ratio),
+                    (int)Math.Round((Math.Abs(canvasTop)) * ratio),
+                    (int)Math.Round(500 * ratio),
+                    (int)Math.Round(500 * ratio)));
 
                 ImageAva  = temp;
                 croppedBitmap = temp;
 
                 DialogHost.CloseDialogCommand.Execute(temp, null);
+            });
+            CancelCommand = new RelayCommandWithNoParameter(() =>
+            {
+                DialogHost.CloseDialogCommand.Execute(null, null);
             });
         }
     }

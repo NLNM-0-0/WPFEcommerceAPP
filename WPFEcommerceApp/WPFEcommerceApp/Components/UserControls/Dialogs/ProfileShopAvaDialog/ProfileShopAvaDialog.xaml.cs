@@ -51,19 +51,19 @@ namespace WPFEcommerceApp
                         Canvas.SetLeft(content, Canvas.GetLeft(content) * ratio - 250 * (ratio - 1));
                     }
                 }
-                if (Canvas.GetTop(content) * ratio - 200 * (ratio - 1) > 0)
+                if (Canvas.GetTop(content) * ratio - 250 * (ratio - 1) > 0)
                 {
                     Canvas.SetTop(content, 0);
                 }
                 else
                 {
-                    if (Canvas.GetTop(content) * ratio - 200 * (ratio - 1) < 400 - (DataContext as ProfileShopAvaDialogViewModel).HeightImage)
+                    if (Canvas.GetTop(content) * ratio - 250 * (ratio - 1) < 500 - (DataContext as ProfileShopAvaDialogViewModel).HeightImage)
                     {
-                        Canvas.SetTop(content, 400 - (DataContext as ProfileShopAvaDialogViewModel).HeightImage);
+                        Canvas.SetTop(content, 500 - (DataContext as ProfileShopAvaDialogViewModel).HeightImage);
                     }
                     else
                     {
-                        Canvas.SetTop(content, Canvas.GetTop(content) * ratio - 200 * (ratio - 1));
+                        Canvas.SetTop(content, Canvas.GetTop(content) * ratio - 250 * (ratio - 1));
                     }
                 }
             } 

@@ -29,8 +29,8 @@
                             <local:MoveThumb 
                                 Cursor="SizeAll" 
                                 Template="{StaticResource MoveThumbTemplate}"
-                                HeightCanvas="400"
-                                WidthCanvas="500"/>
+                                HeightCanvas="130"
+                                WidthCanvas="520"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -124,8 +124,8 @@
             CanContentScroll="False"
             PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
             <Grid
-                Height="400"
-                Width="500"
+                Height="130"
+                Width="520"
                 Background="{StaticResource BoxShadowColorBrush}"
                 Margin="0 30 0 0">
                 <Canvas 
@@ -141,25 +141,81 @@
                         Content="{Binding ImageBackground, UpdateSourceTrigger=PropertyChanged}">
                     </ContentControl>
                 </Canvas>
-                <Path 
-                    Stroke="{StaticResource BlackColorBrush}" 
-                    StrokeThickness="3"
-                    HorizontalAlignment="Left" 
-                    VerticalAlignment="Top"
-                    Fill="{StaticResource BoxShadowColorBrush}"
-                    Opacity="0.5"
-                    IsHitTestVisible="False">
-                    <Path.Data>
-                        <CombinedGeometry GeometryCombineMode="Exclude">
-                            <CombinedGeometry.Geometry1>
-                                <RectangleGeometry Rect="0 0 500 400" />
-                            </CombinedGeometry.Geometry1>
-                            <CombinedGeometry.Geometry2>
-                                <RectangleGeometry Rect="75 25 350 350" />
-                            </CombinedGeometry.Geometry2>
-                        </CombinedGeometry>
-                    </Path.Data>
-                </Path>
+                <Grid IsHitTestVisible="False" Opacity="1">
+                    <Rectangle 
+                        SnapsToDevicePixels="True"
+                        StrokeThickness="1"
+                        Margin="1"
+                        Stroke="Black"/>
+                    <Path 
+                        Stroke="Black" 
+                        StrokeThickness="3"
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top">
+                        <Path.Data>
+                            <!-- Combines two geometries using the exclude combine mode. -->
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="0 0 30 1" />
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <RectangleGeometry Rect="0 0 1 30" />
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+                    <Path 
+                        Stroke="Black" 
+                        StrokeThickness="3"
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Bottom">
+                        <Path.Data>
+                            <!-- Combines two geometries using the exclude combine mode. -->
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="0 0 30 1" />
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <RectangleGeometry Rect="0 -30 1 30" />
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+                    <Path 
+                        Stroke="Black" 
+                        StrokeThickness="3"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top">
+                        <Path.Data>
+                            <!-- Combines two geometries using the exclude combine mode. -->
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="-30 0 30 1" />
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <RectangleGeometry Rect="0 0 1 30" />
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+                    <Path 
+                        Stroke="Black" 
+                        StrokeThickness="3"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom">
+                        <Path.Data>
+                            <!-- Combines two geometries using the exclude combine mode. -->
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="-30 0 30 1" />
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <RectangleGeometry Rect="0 -30 1 30" />
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+                </Grid>
             </Grid>
         </ScrollViewer>
         <Slider
@@ -169,18 +225,27 @@
             Style="{StaticResource MaterialDesignDiscreteSlider}"
             ToolTip="MaterialDesignDiscreteSlider"
             Value="100"
-            Width="500"
+            Width="520"
             Foreground="Black"
             x:Name="slider"
             ValueChanged="slider_ValueChanged"/>
-
-        <Button
-            Command="{Binding SaveBackgroundShopCommand}"
-            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"
-            Width="150"
+        <StackPanel
             Margin="0 30 0 0"
             HorizontalAlignment="Right"
-            Content="Save"/>
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding CancelCommand, UpdateSourceTrigger=PropertyChanged}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"
+                Width="150"
+                Style="{StaticResource WhiteButton}"
+                Content="Cancel"
+                Margin="0 0 30 0"/>
+            <Button
+                Command="{Binding SaveBackgroundShopCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"
+                Width="150"
+                Content="Save"/>
+        </StackPanel>
     </StackPanel>
     <UserControl.InputBindings>
         <KeyBinding Key="Enter"

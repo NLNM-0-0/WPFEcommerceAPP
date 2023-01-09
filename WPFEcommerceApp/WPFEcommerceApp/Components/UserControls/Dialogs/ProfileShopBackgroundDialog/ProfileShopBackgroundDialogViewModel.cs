@@ -20,6 +20,7 @@ namespace WPFEcommerceApp
         public ICommand ChangeToDefaultBackgroundShopCommand { get; set; }
         public ICommand ChangeBackgroundShopCommand { get; set; }
         public ICommand SaveBackgroundShopCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
         private string sourceImageBackground;
         public string SourceImageBackground
         {
@@ -38,18 +39,18 @@ namespace WPFEcommerceApp
             set
             {
                 imageBackground = value;
-                if (imageBackground.Height >= imageBackground.Width)
+                if (imageBackground.Height * 4 >= imageBackground.Width)
                 {
-                    WidthImage = 500;
-                    HeightImage = imageBackground.Height * 500 / imageBackground.Width;
+                    WidthImage = 520;
+                    HeightImage = imageBackground.Height * 520 / imageBackground.Width;
                     CanvasLeft = 0;
-                    CanvasTop = - (HeightImage - 400) / 2;
+                    CanvasTop = - (HeightImage - 130) / 2;
                 }
                 else
                 {
-                    HeightImage = 400;
-                    WidthImage = imageBackground.Width * 400 / imageBackground.Height;
-                    CanvasLeft = -(WidthImage - 500) / 2;
+                    HeightImage = 130;
+                    WidthImage = imageBackground.Width * 130 / imageBackground.Height;
+                    CanvasLeft = -(WidthImage - 520) / 2;
                     CanvasTop = 0;
                 }
                 OnPropertyChanged();
@@ -117,15 +118,19 @@ namespace WPFEcommerceApp
                 double ratio = ImageBackground.PixelHeight / HeightImage;
 
                 CroppedBitmap temp = new CroppedBitmap(ImageBackground, new System.Windows.Int32Rect(
-                    (int)Math.Round((Math.Abs(CanvasLeft) + 75) * ratio),
-                    (int)Math.Round((Math.Abs(canvasTop) + 25) * ratio),
-                    (int)Math.Round(350 * ratio),
-                    (int)Math.Round(350 * ratio)));
+                    (int)Math.Round((Math.Abs(CanvasLeft)) * ratio),
+                    (int)Math.Round((Math.Abs(canvasTop)) * ratio),
+                    (int)Math.Round(520 * ratio),
+                    (int)Math.Round(130 * ratio)));
 
                 ImageBackground = temp;
                 croppedBitmap = temp;
 
                 DialogHost.CloseDialogCommand.Execute(temp, null);
+            });
+            CancelCommand = new RelayCommandWithNoParameter(() =>
+            {
+                DialogHost.CloseDialogCommand.Execute(null, null);
             });
         }
     }
