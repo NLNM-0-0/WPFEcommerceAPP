@@ -34,25 +34,26 @@ namespace WPFEcommerceApp {
             OnChecked = new RelayCommand<object>(p => true, p => {
                 drawerVM.CanReload = false;
                 drawerVM.SelectedIndex = 4;
-                var temp = p as string;
-                if(temp == "1") {
+                var temp = Convert.ToInt32(p);
+                if(temp > 1)
+                    tempFunc(SelectedIndex, temp - 2, ref isFirstTime);
+                if(temp == 1) {
                     NavigateProvider.ShopViewScreen().Navigate(AccountStore.instance.CurrentAccount);
                 }
-                else if(temp == "2") {
+                else if(temp == 2) {
                     NavigateProvider.ShopOrderScreen().Navigate();
-                    tempFunc(SelectedIndex, 0, ref isFirstTime);
                 }
-                else if(temp == "3") {
+                else if(temp == 3) {
                     NavigateProvider.ShopProductScreen().Navigate();
-                    tempFunc(SelectedIndex, 1, ref isFirstTime);
                 }
-                else if(temp == "4") {
+                else if(temp == 4) {
+                    NavigateProvider.ShopPromoScreen().Navigate();
+                }
+                else if(temp == 5) {
                     NavigateProvider.ShopRatingScreen().Navigate();
-                    tempFunc(SelectedIndex, 2, ref isFirstTime);
                 }
                 else {
                     NavigateProvider.ShopStatisticScreen().Navigate();
-                    tempFunc(SelectedIndex, 3, ref isFirstTime);
                 }
             });
 

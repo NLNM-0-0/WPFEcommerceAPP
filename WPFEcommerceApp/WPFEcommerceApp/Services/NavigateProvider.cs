@@ -110,6 +110,10 @@ namespace WPFEcommerceApp {
             return new NavigationService<AdsManagerViewModel>(
                 serviceProvider.GetRequiredService<AdsManagerViewModel>);
         }
+        static public INavigationService AdminPromoScreen() {
+            return new NavigationService<AdminPromoViewModel>(
+                serviceProvider.GetRequiredService<AdminPromoViewModel>);
+        }
         #endregion
 
         #region Shop
@@ -135,6 +139,10 @@ namespace WPFEcommerceApp {
         static public INavigationService ShopStatisticScreen() {
             return new NavigationService<ShopStatisticsViewModel>(
                 serviceProvider.GetRequiredService<ShopStatisticsViewModel>);
+        }
+        static public INavigationService ShopPromoScreen() {
+            return new NavigationService<ShopPromoViewModel>(
+                serviceProvider.GetRequiredService<ShopPromoViewModel>);
         }
         #endregion
     }

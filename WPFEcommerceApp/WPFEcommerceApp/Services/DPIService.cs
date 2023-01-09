@@ -39,6 +39,7 @@ namespace WPFEcommerceApp {
             services.AddTransient<ShopProductViewModel>();
             services.AddTransient<ShopOrderViewModel>();
             services.AddTransient<ShopStatisticsViewModel>();
+            services.AddTransient<ShopPromoViewModel>();
             #endregion
 
             //Admin
@@ -49,6 +50,7 @@ namespace WPFEcommerceApp {
             services.AddTransient<AdminProductManagerViewModel>();
             services.AddTransient<AdminUserManagerViewModel>();
             services.AddTransient<AdsManagerViewModel>();
+            services.AddTransient<AdminPromoViewModel>();
             #endregion
 
             #region General

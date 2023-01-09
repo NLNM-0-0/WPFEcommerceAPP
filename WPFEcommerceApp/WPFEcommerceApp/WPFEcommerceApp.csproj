@@ -81,13 +81,71 @@
     <Compile Include="Components\UserControls\CategoryRequest\DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Address.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdInUse.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Advertisement.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Brand.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BrandRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cart.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CategoryRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ImageProduct.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MOrder.cs" />
-    <Compile Include="Models\UserLogin.cs" />
+    <Compile Include="Models\MOrder.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MUser.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderInfo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Promo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PromoRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rating.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RatingInfo.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ShopRequest.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserLogin.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Screens\Admin\AdminPromo\AdminPromo.xaml.cs">
       <DependentUpon>AdminPromo.xaml</DependentUpon>
     </Compile>
@@ -111,26 +169,6 @@
     </Compile>
     <Compile Include="Screens\Shop\ShopPromo\ShopPromoBlock\DropdownPromoItem.xaml.cs">
       <DependentUpon>DropdownPromoItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Address.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AdInUse.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Promo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PromoRequest.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RatingInfo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Screens\Shop\ShopPromo\AddShopPromo\AddNewProductPromo\AddProductDetailBlock\AddProductDetailBlock.xaml.cs">
       <DependentUpon>AddProductDetailBlock.xaml</DependentUpon>
@@ -188,62 +226,11 @@
     </Compile>
     <Compile Include="Screens\General\Payment\components\Dialogs\AddressChoiceDialogVM.cs" />
     <Compile Include="Utils\IsLoadingCheck.cs" />
-    <Compile Include="Models\Address.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Promo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PromoRequest.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RatingInfo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
-    <Compile Include="Models\Advertisement.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Brand.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BrandRequest.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Cart.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Category.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CategoryRequest.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ImageProduct.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Model.Designer.cs">
       <DependentUpon>Model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\MUser.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Notification.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\OrderInfo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Product.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Rating.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ShopRequest.cs">
-      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\Order.cs" />
