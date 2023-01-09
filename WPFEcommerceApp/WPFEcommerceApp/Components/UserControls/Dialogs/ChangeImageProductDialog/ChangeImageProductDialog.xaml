@@ -103,11 +103,11 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid
-                                    Background="{StaticResource BoxShadowColorBrush}"
-                                    Height="70"
-                                    Width="70"
-                                    Margin="0 0 0 10"
-                                    IsHitTestVisible="True">
+                                        Background="{StaticResource BoxShadowColorBrush}"
+                                        Height="70"
+                                        Width="70"
+                                        Margin="0 0 0 10"
+                                        IsHitTestVisible="True">
                                         <Image>
                                             <Image.Source>
                                                 <BitmapImage 
@@ -116,12 +116,12 @@
                                             </Image.Source>
                                         </Image>
                                         <behavior:Interaction.Triggers>
-                                            <behavior:EventTrigger EventName="MouseMove">
+                                            <behavior:EventTrigger EventName="MouseEnter">
                                                 <behavior:InvokeCommandAction
-                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                            AncestorType={x:Type UserControl}}, 
-                                            Path=DataContext.ChangeSelectedImageCommand}" 
-                                            CommandParameter="{Binding ElementName=ImageProduct}"/>
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                    AncestorType={x:Type UserControl}}, 
+                                                    Path=DataContext.ChangeSelectedImageCommand}" 
+                                                    CommandParameter="{Binding ElementName=ImageProduct}"/>
                                             </behavior:EventTrigger>
                                         </behavior:Interaction.Triggers>
                                     </Grid>

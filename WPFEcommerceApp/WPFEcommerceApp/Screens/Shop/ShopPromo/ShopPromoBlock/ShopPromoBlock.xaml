@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignWidth="800">
     <Border
-        Background="Transparent"
+        Background="White"
         Padding="0 10">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -136,12 +136,12 @@
                 Grid.Column="4"
                 Margin="5 5 0 5">
                 <TextBlock 
-                    Text="{Binding Promo.AmountUsed, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding NumberString, UpdateSourceTrigger=PropertyChanged}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Left"
                     MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
                     FontSize="{StaticResource FontSizeText}"
-                    TextTrimming="CharacterEllipsis"/>
+                    TextWrapping="Wrap"/>
             </Border>
             <Grid
                 Grid.Column="5"

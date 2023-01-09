@@ -24,6 +24,13 @@
                 From="0"
                 To="0"/>
             <DoubleAnimation
+                Storyboard.TargetName="FavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.0"
+                Duration="0:0:0.4"
+                From="1"
+                To="1"/>
+            <DoubleAnimation
                 Storyboard.TargetName="FavoriteHeartScale"
                 Storyboard.TargetProperty="ScaleX"
                 BeginTime="0:0:0"
@@ -82,6 +89,13 @@
                 Duration="0:0:0.01"
                 From="0"
                 To="0"/>
+            <DoubleAnimation
+                Storyboard.TargetName="UnFavoriteHeart"
+                Storyboard.TargetProperty="Opacity"
+                BeginTime="0:0:0.0"
+                Duration="0:0:0.4"
+                From="1"
+                To="1"/>
             <DoubleAnimation
                 Storyboard.TargetName="UnFavoriteHeartScale"
                 Storyboard.TargetProperty="ScaleX"
@@ -335,13 +349,13 @@
                     Height="40"
                     Width="40"
                     RenderTransformOrigin="0.5 0.5" 
-                    Opacity="{c:Binding IsFavoriteFirst?1:0, UpdateSourceTrigger=PropertyChanged}"
+                    Opacity="{c:Binding IsFavoriteFirst?1:0, UpdateSourceTrigger=Explicit}"
                     Foreground="{StaticResource ErrorColorBrush}">
                     <materialDesign:PackIcon.RenderTransform>
                         <ScaleTransform
                             x:Name="FavoriteHeartScale"
-                            ScaleX="{c:Binding IsFavoriteFirst?1:1.5, UpdateSourceTrigger=PropertyChanged}"
-                            ScaleY="{c:Binding IsFavoriteFirst?1:1.5, UpdateSourceTrigger=PropertyChanged}"/>
+                            ScaleX="{c:Binding IsFavoriteFirst?1:1.5, UpdateSourceTrigger=Explicit}"
+                            ScaleY="{c:Binding IsFavoriteFirst?1:1.5, UpdateSourceTrigger=Explicit}"/>
                     </materialDesign:PackIcon.RenderTransform>
                 </materialDesign:PackIcon>
                 <materialDesign:PackIcon 
@@ -353,12 +367,12 @@
                     Width="40"
                     RenderTransformOrigin="0.5 0.5" 
                     Foreground="{StaticResource BlackColorBrush}"
-                    Opacity="{c:Binding IsFavoriteFirst?0:1, UpdateSourceTrigger=PropertyChanged}">
+                    Opacity="{c:Binding IsFavoriteFirst?0:1, UpdateSourceTrigger=Explicit}">
                     <materialDesign:PackIcon.RenderTransform>
                         <ScaleTransform
                             x:Name="UnFavoriteHeartScale"
-                            ScaleX="{c:Binding IsFavoriteFirst?1.5:1, UpdateSourceTrigger=PropertyChanged}"
-                            ScaleY="{c:Binding IsFavoriteFirst?1.5:1, UpdateSourceTrigger=PropertyChanged}"/>
+                            ScaleX="{c:Binding IsFavoriteFirst?1.5:1, UpdateSourceTrigger=Explicit}"
+                            ScaleY="{c:Binding IsFavoriteFirst?1.5:1, UpdateSourceTrigger=Explicit}"/>
                     </materialDesign:PackIcon.RenderTransform>
                 </materialDesign:PackIcon>
             </Grid>

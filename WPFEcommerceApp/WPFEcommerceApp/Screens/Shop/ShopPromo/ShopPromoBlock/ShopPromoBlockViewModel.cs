@@ -27,13 +27,15 @@ namespace WPFEcommerceApp
                 OnPropertyChanged(nameof(StatusOverlay));
                 OnPropertyChanged(nameof(IsShop));
                 OnPropertyChanged(nameof(IsRequest));
+                OnPropertyChanged(nameof(NumberString));
+                OnPropertyChanged(nameof(IsDeleted));
             }
         }
         public bool IsShop
         {
             get
             {
-                return Promo.MUser.StatusShop == "NotBanned";
+                return AccountStore.instance.CurrentAccount.StatusShop == "NotBanned";
             }
         }
         public bool IsRequest
@@ -42,7 +44,14 @@ namespace WPFEcommerceApp
             {
                 return Promo.Status == 0;
             }
-        }    
+        }
+        public bool IsDeleted
+        {
+            get
+            {
+                return Promo.Status == 2;
+            }
+        }
         private bool isDropdown;
         public bool IsDropdown
         {
@@ -110,7 +119,7 @@ namespace WPFEcommerceApp
                 }    
                 else if(Promo.Status == 0 && Promo.DateEnd <= DateTime.Now)
                 {
-                    return "Deleted";
+                    return "Expired";
                 }    
                 return "Expired";
             }
@@ -140,6 +149,21 @@ namespace WPFEcommerceApp
                 }
                 return new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
             }
+        }
+        public string NumberString
+        {
+            get 
+            {
+                return $"{Promo.AmountUsed} / {Promo.Amount}";
+            }
+        }
+        public void ChangeStatus()
+        {
+            OnPropertyChanged(nameof(Status));
+            OnPropertyChanged(nameof(StatusOverlay));
+            OnPropertyChanged(nameof(IsShop));
+            OnPropertyChanged(nameof(IsRequest));
+            OnPropertyChanged(nameof(IsDeleted));
         }
         public ShopPromoBlockViewModel(Models.Promo promo)
         {

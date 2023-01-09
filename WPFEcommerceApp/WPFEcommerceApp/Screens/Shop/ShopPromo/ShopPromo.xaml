@@ -16,13 +16,35 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock
+        <Grid
             Grid.Row="0"
-            Text="Shop Promo"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            FontSize="{StaticResource FontSizeHeadline}"
-            Margin="0 30"/>
+            Margin="0 30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="Shop Promo"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                FontSize="{StaticResource FontSizeHeadline}"/>
+            <Button
+                Grid.Column="1"
+                Padding="0"
+                Width="50"
+                Height="50"
+                Margin="0 0 10 0"
+                Command="{Binding AddPromoCommand,UpdateSourceTrigger=PropertyChanged}">
+                <materialDesign:PackIcon
+                    Kind="PlusBold"
+                    Margin="10"
+                    Height="30"
+                    Width="30"/>
+            </Button>
+        </Grid>
+        
         <Border Background="{StaticResource BackgroundColorBrush}"
                 Padding="50 30"
                 Margin="0 0 0 30"
@@ -194,7 +216,7 @@
                     FontWeight="DemiBold"
                     FontSize="{StaticResource FontSizeText}"/>
                 <TextBlock
-                    Text="Num Products"
+                    Text="Num Pros"
                     Grid.Column="3"
                     VerticalAlignment="Center"
                     Padding="5 0"
@@ -231,13 +253,20 @@
             ItemsSource="{Binding FilterPromos, UpdateSourceTrigger=PropertyChanged}"
             ScrollViewer.CanContentScroll="False"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
-            Margin="50 0">
+            Margin="50 0"
+            BorderBrush="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <local:ShopPromoBlock
                         DataContext="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0 5"/>
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
         <Grid
             Grid.Row="5"

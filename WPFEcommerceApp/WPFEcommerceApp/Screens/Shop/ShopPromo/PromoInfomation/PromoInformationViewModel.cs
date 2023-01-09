@@ -11,12 +11,17 @@ using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
-    public class AddShopPromoViewModel: BaseViewModel
+    public class PromoInformationViewModel : BaseViewModel
     {
         public ICommand AddNewProductCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteProductCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+
+        #region Thu
+        public ICommand AcceptCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
+        #endregion
 
         private string searchByValue;
         public string SearchByValue
@@ -25,7 +30,7 @@ namespace WPFEcommerceApp
             set
             {
                 searchByValue = value;
-                OnPropertyChanged();    
+                OnPropertyChanged();
             }
         }
         private bool isMaxSale;
@@ -38,13 +43,14 @@ namespace WPFEcommerceApp
             set
             {
                 isMaxSale = value;
-                if(!value)
+                if (SelectedPromo != null && isMaxSale && (SelectedPromo.MaxSale == null || SelectedPromo.MaxSale == double.MaxValue))
                 {
-                    MaxSale = 0;
-                }    
+                    SelectedPromo.MaxSale = 0;
+                    OnPropertyChanged(nameof(SelectedPromo));
+                }
                 OnPropertyChanged();
             }
-            
+
         }
         private ObservableCollection<PromoProductBlockViewModel> selectedProductPromos;
         public ObservableCollection<PromoProductBlockViewModel> SelectedProductPromos
@@ -87,133 +93,29 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private int targetCustomer;
-        public int TargetCustomer
+        private Models.Promo selectedPromo;
+        public Models.Promo SelectedPromo
         {
-            get => targetCustomer;
+            get { return selectedPromo; }
             set
             {
-                targetCustomer = value;
+                selectedPromo = value;
                 OnPropertyChanged();
             }
         }
-        private string code;
-        public string Code
+        private Models.Promo initialPromo;
+        public PromoInformationViewModel(Models.Promo promo, bool isAdmin = false)
         {
-            get => code;
-            set
-            {
-                code = value;
-                OnPropertyChanged();
-            }    
-        }
-        private string name;
-        public string Name
-        {
-            get => name;
-            set
-            {
-                name = value;
-                OnPropertyChanged();
-            }
-        }
-        private DateTime? dateBegin;
-        public DateTime? DateBegin
-        {
-            get => dateBegin;
-            set
-            {
-                dateBegin = value;
-                OnPropertyChanged();
-            }
-        }
-        private DateTime? dateEnd;
-        public DateTime? DateEnd
-        {
-            get => dateEnd;
-            set
-            {
-                dateEnd = value;
-                OnPropertyChanged();
-            }
-        }
-        private string description;
-        public string Description
-        {
-            get => description;
-            set
-            {
-                description = value;
-                OnPropertyChanged();
-            }
-        }
-        private int amount;
-        public int Amount
-        {
-            get => amount;
-            set
-            {
-                amount = value;
-                OnPropertyChanged();
-            }
-        }
-        private int sale;
-        public int Sale
-        {
-            get => sale;
-            set
-            {
-                sale = value;
-                OnPropertyChanged();
-            }
-        }
-        private double minCost;
-        public double MinCost
-        {
-            get => minCost;
-            set
-            {
-                minCost = value;
-                OnPropertyChanged();
-            }
-        }
-        private double maxSale;
-        public double MaxSale
-        {
-            get => maxSale;
-            set
-            {
-                maxSale = value;
-                OnPropertyChanged();
-            }
-        }
-        public AddShopPromoViewModel()
-        {
-            IsAdmin = isAdmin;
-            IsMaxSale = false;
-            SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
-            FilterProductPromos = SelectedProductPromos;
-            SearchBy = "Id";
+            initialPromo = promo;
             AddNewProductCommand = new RelayCommandWithNoParameter(() =>
             {
                 AddNewProductPromo addNewProductPromo = new AddNewProductPromo();
-                addNewProductPromo.DataContext = new AddNewProductPromoViewModel(SelectedProductPromos);
+                addNewProductPromo.DataContext = new AddNewProductPromoViewModel(SelectedProductPromos, SelectedPromo.MUser);
                 DialogHost.Show(addNewProductPromo, "Main", null, null, LoadList);
             });
-            SaveCommand = new RelayCommand<object>((p) =>
+            SaveCommand = new RelayCommandWithNoParameter(() =>
             {
-                return !String.IsNullOrEmpty(Code) &&
-                        !String.IsNullOrEmpty(Name) &&
-                        DateBegin != null &&
-                        DateEnd != null &&
-                        !String.IsNullOrEmpty(Description) &&
-                        Amount > 0 &&
-                        Sale > 0 &&
-                        MinCost >= 0 &&
-                        MaxSale >= 0 ;
-            },async (p) =>
-            {
-                await SaveProduct();
+                Task.Run(async () => await SaveProduct());
             });
             DeleteProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
@@ -225,38 +127,63 @@ namespace WPFEcommerceApp
             {
                 Search();
             });
+            #region Thu
+            AcceptCommand = new RelayCommandWithNoParameter(() => { });
+            DeleteCommand = new RelayCommandWithNoParameter(() => { });
+            #endregion
+            IsAdmin = isAdmin;
+            Task.Run(async () => await Load()).Wait();
+            if (SelectedPromo.MaxSale == null || SelectedPromo.MaxSale == double.MaxValue)
+            {
+                IsMaxSale = false;
+            }
+            else
+            {
+                IsMaxSale = true;
+            }
+            SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
+            foreach (Models.Product product in promo.Products)
+            {
+                PromoProductBlockViewModel promoProductBlockViewModel = new PromoProductBlockViewModel(product);
+                promoProductBlockViewModel.DeleteCommand = DeleteProductCommand;
+                SelectedProductPromos.Add(promoProductBlockViewModel);
+            }
+            FilterProductPromos = SelectedProductPromos;
+            SearchBy = "Id";
         }
         private async Task SaveProduct()
         {
             GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Promo>();
-            string id = await GenerateID.Gen(typeof(Models.Promo));
-            await promoRepository.Add(new Models.Promo()
+            Models.Promo promo = await promoRepository.GetSingleAsync(p => p.Id == SelectedPromo.Id);
+            promo.Code = SelectedPromo.Code;
+            promo.Description = SelectedPromo.Description;
+            promo.DateBegin = SelectedPromo.DateBegin;
+            promo.DateEnd = SelectedPromo.DateEnd;
+            promo.Amount = SelectedPromo.Amount;
+            promo.AmountUsed = 0;
+            promo.MaxSale = (IsMaxSale ? SelectedPromo.MaxSale : double.MaxValue);
+            promo.MinCost = SelectedPromo.MinCost;
+            promo.Sale = SelectedPromo.Sale;
+            promo.CustomerType = SelectedPromo.CustomerType;
+            promo.Name = SelectedPromo.Name;
+            await promoRepository.Update(promo);
+            foreach(Models.Product p in SelectedPromo.Products)
             {
-                Id = id,
-                IdShop = AccountStore.instance.CurrentAccount.Id,
-                Code = this.Code,
-                Description = this.Description,
-                DateBegin = this.DateBegin,
-                DateEnd = this.DateEnd,
-                Amount = this.Amount,
-                AmountUsed = 0,
-                MaxSale = (IsMaxSale?this.MaxSale:double.MaxValue),
-                MinCost = this.MinCost,
-                Sale = this.Sale,
-                CustomerType = this.TargetCustomer,
-                Name = this.Name
-            }) ;
+                await PromoDetailAPI.Delete(promo.Id, p.Id);
+            }
+            SelectedPromo.Products.Clear();
             foreach (PromoProductBlockViewModel promoProductBlock in SelectedProductPromos)
             {
-                await PromoDetailAPI.Add(id, promoProductBlock.SelectedProduct.Id);   
-            }    
+                await PromoDetailAPI.Add(promo.Id, promoProductBlock.SelectedProduct.Id);
+                SelectedPromo.Products.Add(promoProductBlock.SelectedProduct);
+            }
         }
         private void LoadList(object sender, DialogClosedEventArgs eventArgs)
         {
             if (eventArgs == null || eventArgs.Parameter == null || eventArgs.Parameter.GetType() != typeof(ObservableCollection<PromoProductBlockViewModel>))
             {
                 return;
-            } 
+            }
             else
             {
                 ObservableCollection<PromoProductBlockViewModel> result = eventArgs.Parameter as ObservableCollection<PromoProductBlockViewModel>;
@@ -266,18 +193,25 @@ namespace WPFEcommerceApp
                     product.DeleteCommand = DeleteProductCommand;
                 }
                 Search();
-            }       
+            }
+        }
+        private async Task Load()
+        {
+            GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Models.Promo>();
+            SelectedPromo = await promoRepository.GetSingleAsync(p => p.Id == initialPromo.Id,
+                                                                p => p.MUser,
+                                                                p => p.Products);
         }
         private void Search()
         {
-            if(SearchBy == "Id")
+            if (SearchBy == "Id")
             {
                 FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Id.Contains(SearchByValue??"")));
-            }    
-            else if(SearchBy == "Name")
+            }
+            else if (SearchBy == "Name")
             {
                 FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Name.Contains(SearchByValue??"")));
-            }    
+            }
         }
     }
 }

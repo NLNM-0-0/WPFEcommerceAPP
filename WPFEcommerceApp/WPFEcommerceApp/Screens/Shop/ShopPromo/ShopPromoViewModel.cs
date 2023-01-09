@@ -22,6 +22,7 @@ namespace WPFEcommerceApp
         public ICommand RemovePromoCommand { get; set; }
         public ICommand ViewPromoCommand { get; set; }
         public ICommand AcceptPromoCommand { get; set; }
+        public ICommand AddPromoCommand { get; set; }
         private ObservableCollection<ShopPromoBlockViewModel> allPromos;
         public ObservableCollection<ShopPromoBlockViewModel> AllPromos
         {
@@ -252,7 +253,9 @@ namespace WPFEcommerceApp
             });
             EditPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
-
+                PromoInformation promoInformation = new PromoInformation();
+                promoInformation.DataContext = new PromoInformationViewModel((p as ShopPromoBlockViewModel).Promo);
+                /*navigate*/
             });
             CopyPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
@@ -260,15 +263,37 @@ namespace WPFEcommerceApp
             });
             RemovePromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
-
+                ShopPromoBlockViewModel shopPromoBlockViewModel = p as ShopPromoBlockViewModel;
+                Task.Run(async () => await DeletePromo(shopPromoBlockViewModel.Promo));
+                shopPromoBlockViewModel.Promo.Status = 2;
+                shopPromoBlockViewModel.ChangeStatus();
+                if (StatusInProcess)
+                {
+                    InProcessPromos.Remove(shopPromoBlockViewModel);
+                    FilterPromos.Remove(shopPromoBlockViewModel);
+                }    
+                else if(StatusUpcoming)
+                {
+                    UpcommingPromos.Remove(shopPromoBlockViewModel);
+                    FilterPromos.Remove(shopPromoBlockViewModel);
+                }    
+                else if(StatusExpired) 
+                {
+                    ExpiredPromos.Remove(shopPromoBlockViewModel);
+                    FilterPromos.Remove(shopPromoBlockViewModel);
+                }
+                else if(StatusRequesting)
+                {
+                    RequestingPromos.Remove(shopPromoBlockViewModel);
+                    FilterPromos.Remove(shopPromoBlockViewModel);
+                }    
+                DeletedPromos.Insert(0, shopPromoBlockViewModel);
             });
-            ViewPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
+            AddPromoCommand = new RelayCommandWithNoParameter(() =>
             {
-
-            });
-            AcceptPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
-            {
-
+                AddShopPromo addShopPromo = new AddShopPromo();
+                addShopPromo.DataContext = new AddShopPromoViewModel();
+                /*Navigate*/
             });
         }
         public void Search()
@@ -290,7 +315,8 @@ namespace WPFEcommerceApp
         {
             GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Models.Promo>();
             ObservableCollection<Models.Promo>  allPromos = new ObservableCollection<Models.Promo>(await promoRepository.GetListAsync(p => p.IdShop == AccountStore.instance.CurrentAccount.Id,
-                                                                                                                                        p=>p.MUser));
+                                                                                                                                        p=> p.MUser, 
+                                                                                                                                        p => p.Products));
             foreach(var promo in allPromos) 
             {
                 ShopPromoBlockViewModel shopPromoBlockViewModel = new ShopPromoBlockViewModel(promo);
@@ -314,15 +340,18 @@ namespace WPFEcommerceApp
                 {
                     RequestingPromos.Add(shopPromoBlockViewModel);
                 }
-                else if (promo.Status == 0 && promo.DateEnd <= DateTime.Now)
-                {
-                    DeletedPromos.Add(shopPromoBlockViewModel);
-                }
                 else
                 {
                     ExpiredPromos.Add(shopPromoBlockViewModel);
                 }
             }
+        }
+        public async Task DeletePromo(Models.Promo promo)
+        {
+            GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Models.Promo>();
+            Models.Promo temp = await promoRepository.GetSingleAsync(p=>p.Id == promo.Id);
+            temp.Status = 2;
+            await promoRepository.Update(temp);
         }
     }
 }

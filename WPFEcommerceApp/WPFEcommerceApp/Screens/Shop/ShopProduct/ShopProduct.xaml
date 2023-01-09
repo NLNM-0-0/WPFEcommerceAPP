@@ -167,13 +167,13 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock
-                x:Name="Header"
-                Grid.ColumnSpan="2"
-                Text="Product"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                FontSize="{StaticResource FontSizeHeadline}"
-                Margin="0 30"/>
+                        x:Name="Header"
+                        Grid.ColumnSpan="2"
+                        Text="Product"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontSize="{StaticResource FontSizeHeadline}"
+                        Margin="0 30"/>
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -181,54 +181,66 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel
                             Visibility="{Binding ElementName=Extent, 
-                                                Path=IsChecked,
-                                                Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Path=IsChecked,
+                            Converter={StaticResource BooleanToVisibilityConverter}}"
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
-                            <Button
-                                Margin="0 0 10 0"
-                                Style="{StaticResource RoundButton}"
-                                Command="{Binding OpenAddProductDialogCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                                ToolTip="Add new Product">
-                                <materialDesign:PackIcon
-                                    Foreground="{StaticResource WhiteColorBrush}"
-                                    Kind="Archive"
-                                    Height="30"
-                                    Width="30" />
-                            </Button>
-
-                            <Button
-                                Style="{StaticResource RoundButton}"
-                                Margin="0 0 10 0"
-                                Command="{Binding OpenAddCategoryDialogCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                                ToolTip="Add new category">
-                                <materialDesign:PackIcon
-                                Foreground="{StaticResource WhiteColorBrush}"
-                                Kind="Shape"
-                                Height="30"
-                                Width="30" />
-                            </Button>
-                            <Button
-                                Style="{StaticResource RoundButton}"
-                                Margin="0 0 10 0"
-                                Command="{Binding OpenAddBrandDialogCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                                ToolTip="Add new brand">
-                                <materialDesign:PackIcon
-                                Foreground="{StaticResource WhiteColorBrush}"
-                                Kind="Watermark"
-                                Height="30"
-                                Width="30" />
-                            </Button>
-                        </StackPanel>
-                        <ToggleButton 
-                        x:Name="Extent"
-                        Grid.Column="1"
-                        IsChecked="False"
-                        Style="{DynamicResource RoundButtonAdd}"/>
-                    </Grid>
+                            <StackPanel
+                                Margin="0 0 10 0">
+                                <Button
+                                    Style="{StaticResource RoundButton}"
+                                    Command="{Binding OpenAddProductDialogCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                    <materialDesign:PackIcon
+                                        Foreground="{StaticResource WhiteColorBrush}"
+                                        Kind="Archive"
+                                        Height="30"
+                                        Width="30" />
+                                </Button>
+                                <TextBlock
+                                    Text="Product"
+                                    FontSize="{StaticResource FontSizeDescription}"/>
+                            </StackPanel>
+                                <StackPanel
+                                    Margin="0 0 10 0">
+                                    <Button
+                                        Style="{StaticResource RoundButton}"
+                                        Command="{Binding OpenAddCategoryDialogCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                        <materialDesign:PackIcon
+                                            Foreground="{StaticResource WhiteColorBrush}"
+                                            Kind="Shape"
+                                            Height="30"
+                                            Width="30"/>
+                                    </Button>
+                                    <TextBlock
+                                        Text="Category"
+                                        FontSize="{StaticResource FontSizeDescription}"/>
+                                </StackPanel>
+                                <StackPanel
+                                    Margin="0 0 10 0">
+                                    <Button
+                                        Style="{StaticResource RoundButton}"
+                                        Command="{Binding OpenAddBrandDialogCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                                        <materialDesign:PackIcon
+                                            Foreground="{StaticResource WhiteColorBrush}"
+                                            Kind="Watermark"
+                                            Height="30"
+                                            Width="30"/>
+                                    </Button>
+                                    <TextBlock
+                                    Text="Category"
+                                    FontSize="{StaticResource FontSizeDescription}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <ToggleButton 
+                                Margin="0 -15 0 0"
+                                x:Name="Extent"
+                                Grid.Column="1"
+                                IsChecked="False"
+                                Style="{DynamicResource RoundButtonAdd}"/>
+                        </Grid>
                 </Grid>
             </Border>
             <Border Background="{StaticResource BackgroundColorBrush}"

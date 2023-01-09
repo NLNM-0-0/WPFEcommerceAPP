@@ -15,26 +15,24 @@
         CloseOnClickAway="True"
         CloseOnClickAwayParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
         <Grid
-            Width="800"
-            Height="400">
+            Width="850">
             <Grid.Resources>
                 <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
             </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid
-                Grid.Column="0"
-                Width="210"
+                Grid.Row="0"
                 VerticalAlignment="Top">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="50"/>
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
                 <Border
                     x:Name="MainBorder"
-                    MaxHeight="350"
+                    MaxHeight="200"
                     CornerRadius="0 0 30 0"
                     ClipToBounds="True"
                     Background="{StaticResource BoxShadowColorBrush}">
@@ -50,7 +48,7 @@
                             CanContentScroll="False">
                             <local:AsyncImage 
                                 Stretch="UniformToFill"
-                                Height="350"
+                                Height="200"
                                 Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
                                 ScrollViewer.CanContentScroll="True">
                                 <local:AsyncImage.OpacityMask>
@@ -65,111 +63,120 @@
                     </Grid>
                 </Border>
                 <Grid
-                    Margin="0 30 0 10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Button
-                        Grid.Row="0"
-                        Command="{Binding OpenProfileShopAvaDialog}"
-                        Padding="20 0"
-                        Width="auto"
-                        Style="{StaticResource WhiteButton}"
-                        HorizontalAlignment="Center"
-                        Height="auto"
-                        materialDesign:ButtonAssist.CornerRadius="10"                        FontFamily="{StaticResource Regular}"
-                        Margin="0 0 0 5"
-                        FontSize="{StaticResource FontSizeDescription}"
-                        Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
-                        Foreground="#1290FF">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <fa:ImageAwesome
-                                    Margin="0 0 5 0"
-                                    Icon="Edit"
-                                    Height="10"
-                                    VerticalAlignment="Center"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
-                                <TextBlock
-                                    FontFamily="{StaticResource Light}"
-                                    Text="Edit Ava"
-                                    VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Border
-                        Grid.Row="1"
-                        BorderBrush="{StaticResource BoxLineColorBrush}"
-                        BorderThickness="1"
-                        Background="White"
-                        CornerRadius="50"
-                        Width="100"
-                        Height="100">
-                        <local:AsyncImage 
-                            Height="98"
-                            Width="98"
-                            Stretch="UniformToFill"
-                            Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
-                            <local:AsyncImage.Clip>
-                                <EllipseGeometry
-                                    Center="49 49"
-                                    RadiusX="49"
-                                    RadiusY="49"/>
-                            </local:AsyncImage.Clip>
-                        </local:AsyncImage>
-                    </Border>
+                    Margin="30 20"
+                    HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid
-                        Grid.Row="2"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        Margin="0 15">
+                        HorizontalAlignment="Left">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Button
+                            Grid.Row="0"
+                            Command="{Binding OpenProfileShopAvaDialog}"
+                            Padding="20 0"
+                            Width="auto"
+                            Style="{StaticResource WhiteButton}"
+                            HorizontalAlignment="Center"
+                            Height="auto"
+                            materialDesign:ButtonAssist.CornerRadius="10"                        FontFamily="{StaticResource Regular}"
+                            Margin="0 0 0 5"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
+                            Foreground="#1290FF">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <fa:ImageAwesome
+                                        Margin="0 0 5 0"
+                                        Icon="Edit"
+                                        Height="10"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                    <TextBlock
+                                        FontFamily="{StaticResource Light}"
+                                        Text="Edit Ava"
+                                        VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Border
+                            Grid.Row="1"
+                            BorderBrush="{StaticResource BoxLineColorBrush}"
+                            BorderThickness="1"
+                            Background="White"
+                            CornerRadius="50"
+                            Width="100"
+                            Height="100">
+                            <local:AsyncImage 
+                                Height="98"
+                                Width="98"
+                                Stretch="UniformToFill"
+                                Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
+                                <local:AsyncImage.Clip>
+                                    <EllipseGeometry
+                                        Center="49 49"
+                                        RadiusX="49"
+                                        RadiusY="49"/>
+                                </local:AsyncImage.Clip>
+                            </local:AsyncImage>
+                        </Border>
+
+
+                        <Button
+                            Grid.Row="3"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding OpenProfileShopBackgroundDialog}"
+                            Style="{StaticResource WhiteButton}"
+                            Height="20"
+                            FontFamily="{StaticResource Regular}"
+                            Padding="20 0"
+                            Width="auto"
+                            HorizontalAlignment="Center"
+                            FontSize="{StaticResource FontSizeDescription}"
+                            Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
+                            Foreground="#1290FF">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <fa:ImageAwesome
+                                        Margin="0 0 5 0"
+                                        Icon="Edit"
+                                        Height="10"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+                                    <TextBlock
+                                        FontFamily="{StaticResource Light}"
+                                        Text="Edit Background"
+                                        VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                    <Grid
+                        Grid.Column="2"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Margin="0 20">
                         <TextBlock
                             x:Name="nameTextBlock"
-                            MaxWidth="180"
+                            MaxHeight="120"
                             Text="{Binding ElementName=nameTextBox, Path=Text}"
                             FontFamily="{StaticResource Bold}"
                             FontSize="{StaticResource FontSizeHeadline2}"
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Left"
                             TextWrapping="Wrap"
                             TextTrimming="WordEllipsis"
                             Foreground="{StaticResource WhiteColorBrush}"/>
                     </Grid>
-
-                    <Button
-                        Grid.Row="3"
-                        VerticalAlignment="Bottom"
-                        Command="{Binding OpenProfileShopBackgroundDialog}"
-                        Style="{StaticResource WhiteButton}"
-                        Height="20"
-                        FontFamily="{StaticResource Regular}"
-                        Padding="20 0"
-                        Width="auto"
-                        HorizontalAlignment="Center"
-                        FontSize="{StaticResource FontSizeDescription}"
-                        Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
-                        Foreground="#1290FF">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <fa:ImageAwesome
-                                    Margin="0 0 5 0"
-                                    Icon="Edit"
-                                    Height="10"
-                                    VerticalAlignment="Center"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
-                                <TextBlock
-                                    FontFamily="{StaticResource Light}"
-                                    Text="Edit Background"
-                                    VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
                 </Grid>
             </Grid>
             <Grid
-                Grid.Column="1"
+                Grid.Row="1"
                 Margin="30">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -187,7 +194,9 @@
                         Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition Height="30"/>
                             <RowDefinition/>
+                            <RowDefinition Height="30"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBox
@@ -216,7 +225,7 @@
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Phone number"
-                            Grid.Row="1"
+                            Grid.Row="2"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
@@ -238,7 +247,7 @@
                             Width="auto"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Email"
-                            Grid.Row="2"
+                            Grid.Row="4"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}">
                             <TextBox.Text>
                                 <Binding
@@ -255,12 +264,13 @@
                     <Grid 
                         Grid.Column="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBox
                             x:Name="addressTextBox"
-                        Style="{StaticResource TextBoxHintWrapText}"
+                            Style="{StaticResource TextBoxHintWrapText}"
                             Width="auto"
                             Height="100"
                             materialDesign:HintAssist.Hint="Address"
@@ -284,7 +294,7 @@
                             Height="100"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Description"
-                            Grid.Row="1"
+                            Grid.Row="2"
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"

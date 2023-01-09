@@ -60,7 +60,7 @@
                                 Height="{Binding ElementName=textBoxSearch, Path=ActualHeight}"
                                 materialDesign:TextFieldAssist.TextFieldCornerRadius="5 0 0 5"
                                 Grid.Column="0"
-                                IsEditable="True"
+                                IsEditable="False"
                                 materialDesign:HintAssist.Hint="Search By"
                                 BorderThickness="1 1 0 1"
                                 SelectedValuePath="Content"

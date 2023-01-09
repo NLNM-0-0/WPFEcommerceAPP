@@ -157,7 +157,7 @@ namespace WPFEcommerceApp
         private void LoadBackground(object sender, DialogClosedEventArgs eventArgs)
         {
             OnPropertyChanged(nameof(Shop));
-            if (eventArgs.Parameter != null && eventArgs.GetType() == typeof(CroppedBitmap))
+            if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
                 ImageBackground = (eventArgs.Parameter as CroppedBitmap);
             }
@@ -166,7 +166,7 @@ namespace WPFEcommerceApp
         private void LoadAva(object sender, DialogClosedEventArgs eventArgs)
         {
             OnPropertyChanged(nameof(Shop));
-            if (eventArgs.Parameter != null && eventArgs.GetType() == typeof(CroppedBitmap))
+            if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
                 ImageAva = (eventArgs.Parameter as CroppedBitmap);
             }

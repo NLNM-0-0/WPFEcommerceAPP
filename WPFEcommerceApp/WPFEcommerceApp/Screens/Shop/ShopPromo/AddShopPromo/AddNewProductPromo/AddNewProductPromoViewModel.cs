@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
@@ -200,19 +201,37 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private Models.Promo selectedPromo;
-        public Models.Promo SelectedPromo
+        private ObservableCollection<PromoProductBlockViewModel> initialList;
+        public ObservableCollection<PromoProductBlockViewModel> InitialList
         {
-            get { return selectedPromo; }
+            get { return initialList; }
             set
             {
-                selectedPromo = value;
+                initialList = value;
                 OnPropertyChanged();
             }
         }
-        public AddNewProductPromoViewModel(Models.Promo promo)
+        private Models.MUser user;
+        public Models.MUser User
         {
-            SelectedPromo = promo;
+            get { return user; }
+            set
+            {
+                user = value;
+                OnPropertyChanged();
+            }
+        }
+        public AddNewProductPromoViewModel(ObservableCollection<PromoProductBlockViewModel> list, Models.MUser user = null)
+        {
+            InitialList = list;
+            if(user != null)
+            {
+                User = user;
+            }
+            else
+            {
+                user = AccountStore.instance.CurrentAccount;
+            }
             SelectedPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>();
             AllPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>();
             CompletedCommand = new RelayCommandWithNoParameter(() =>
@@ -285,15 +304,15 @@ namespace WPFEcommerceApp
         private async Task LoadProducts()
         {
             GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
-            ObservableCollection<Models.Product> allProduct = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => (p.Status == "NotBanned" && p.IdShop == SelectedPromo.IdShop), 
+            ObservableCollection<Models.Product> allProduct = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => (p.Status == "NotBanned" && p.IdShop == User.Id), 
                                                                                                                                             p => p.Brand,
                                                                                                                                             p => p.Category,
                                                                                                                                             p => p.ImageProducts));
-            foreach(Models.Product product in allProduct) 
+            foreach (Models.Product product in allProduct) 
             {
                 PromoProductBlockViewModel promoProductBlockViewModel = new PromoProductBlockViewModel(product);
                 AllPromoProductBlocks.Add(promoProductBlockViewModel);
-                if(SelectedPromo.Products.Any(p=>p.Id == product.Id))
+                if(InitialList.Any(p=>p.SelectedProduct.Id == product.Id))
                 {
                     SelectedPromoProductBlocks.Add(promoProductBlockViewModel);
                     promoProductBlockViewModel.IsChecked = true;

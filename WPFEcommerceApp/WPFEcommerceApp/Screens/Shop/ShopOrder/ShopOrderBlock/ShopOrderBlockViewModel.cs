@@ -49,7 +49,7 @@ namespace WPFEcommerceApp
                 order = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsCanCommandExcute));
-                OnPropertyChanged(nameof(IsCanCancel));
+                OnPropertyChanged(nameof(IsProcessing));
                 OnPropertyChanged(nameof(ForegroundStatus));
             }
         }
@@ -80,6 +80,16 @@ namespace WPFEcommerceApp
             set
             {
                 cancelledOrderBlockCommand = value;
+                OnPropertyChanged();
+            }
+        }
+        private ICommand printCommand;
+        public ICommand PrintCommand
+        {
+            get => printCommand;
+            set
+            {
+                printCommand = value;
                 OnPropertyChanged();
             }
         }
@@ -156,13 +166,20 @@ namespace WPFEcommerceApp
         {
             get => !(Order.Status == "Completed" || Order.Status == "Cancelled");
         }
-        public bool IsCanCancel
+        public bool IsProcessing
         {
             get => Order.Status == "Processing";
         }
         public ShopOrderBlockViewModel()
         {
-            ShopOrderBlockCommand = new RelayCommandWithNoParameter(() => { });
+            PrintCommand = new RelayCommandWithNoParameter(()=>
+            {
+                MainViewModel.IsLoading = true;
+                OrderInfoPdf pdf = new OrderInfoPdf();
+                pdf.DataContext = new OrderInfoPdfViewModel(Order);
+                pdf.Print();
+                MainViewModel.IsLoading = false; 
+            });
         }
     }
 }
