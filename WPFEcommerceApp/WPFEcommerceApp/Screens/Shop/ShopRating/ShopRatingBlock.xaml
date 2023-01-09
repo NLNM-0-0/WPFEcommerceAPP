@@ -52,13 +52,13 @@
                     <Border
                         Margin="0 30 0 0"
                         VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Stretch"
                         Grid.Row="1"
                         Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid},Path=ActualWidth}">
                         <TextBlock 
                             Text="{Binding OrderInfo.MOrder.MUser.Name, UpdateSourceTrigger=PropertyChanged}"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Stretch"
+                            HorizontalAlignment="Center"
                             FontWeight="Medium"
                             MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
                             FontSize="{StaticResource FontSizeHeadline3}"
@@ -250,7 +250,7 @@
                     IsHitTestVisible="True"
                     Grid.Row="6"
                     Margin="0 30 0 0"
-                    Visibility="{c:Binding 'DataContext.DisplayShopRatingBlockModels.Count != 0', UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ShopRatingBlock}, FalseToVisibility=Collapsed}">
+                    Visibility="{c:Binding 'DataContext.DisplayedBlocksViewModels.Count != 0', UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ShopRatingBlock}, FalseToVisibility=Collapsed}">
                     <ItemsControl ItemsSource="{Binding DisplayedBlocksViewModels, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

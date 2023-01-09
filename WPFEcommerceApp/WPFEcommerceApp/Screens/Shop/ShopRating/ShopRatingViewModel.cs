@@ -569,6 +569,7 @@ namespace WPFEcommerceApp
             {
                 ObservableCollection<Models.OrderInfo> orderInfos = new ObservableCollection<OrderInfo>(await orderInfoReposition.GetListAsync(oi => (oi.IdOrder == order.Id && oi.IdRating != null),
                                                                                                                                                oi => oi.Product,
+                                                                                                                                               oi => oi.Product.ImageProducts,
                                                                                                                                                oi => oi.Rating,
                                                                                                                                                oi => oi.Rating.RatingInfoes,
                                                                                                                                                oi => oi.Rating.RatingInfoes.Select(ri => ri.MUser),
