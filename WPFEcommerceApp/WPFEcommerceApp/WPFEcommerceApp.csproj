@@ -81,6 +81,7 @@
     <Compile Include="Components\UserControls\CategoryRequest\DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Api\PromoDetailAPI.cs" />
     <Compile Include="Models\Address.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -112,6 +113,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -145,6 +156,17 @@
     </Compile>
     <Compile Include="Models\UserLogin.cs">
       <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdf.xaml.cs">
+      <DependentUpon>OrderInfoPdf.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdfViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopPromo\PromoInfomation\PromoInformation.xaml.cs">
+      <DependentUpon>PromoInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopPromo\PromoInfomation\PromoInformationViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopPromo\ShopPromoBlock\DropdownPromoItem.xaml.cs">
+      <DependentUpon>DropdownPromoItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Admin\AdminPromo\AdminPromo.xaml.cs">
       <DependentUpon>AdminPromo.xaml</DependentUpon>
@@ -597,6 +619,14 @@
     <Page Include="Screens\General\MyProfile\ProfileControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdf.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\Shop\ShopPromo\PromoInfomation\PromoInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Shop\ShopPromo\ShopPromoBlock\DropdownPromoItem.xaml">
       <SubType>Designer</SubType>
