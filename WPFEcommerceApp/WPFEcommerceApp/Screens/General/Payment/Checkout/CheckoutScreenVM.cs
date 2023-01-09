@@ -28,6 +28,7 @@ namespace WPFEcommerceApp {
         public Dictionary<string, Address> ListAddress { get; set; }
 
         #region props
+        public Promo PromoChoosen { get; set; } = null;
 
         private Address _address;
 
@@ -36,6 +37,8 @@ namespace WPFEcommerceApp {
             set { _address = value; OnPropertyChanged(); }
         }
 
+        public Dictionary<string, Promo> VoucherMap { get; set; }
+        public List<Promo> ListVoucher { get; set; }
         public double SubTotal {
 			get {
 				if(ListOrder == null) return _order.SubTotal;
@@ -99,6 +102,14 @@ namespace WPFEcommerceApp {
 			Order order = null,
 			List<Order> orders = null) {
 
+            VoucherMap = new Dictionary<string, Promo>();
+            ListVoucher = new List<Promo>();
+            for(int i = 0; i < 9; i++) {
+                ListVoucher.Add(new Promo() {
+                    Name = $"Promo {i}",
+                    DateEnd = DateTime.Now,
+                });
+            }
             ListAddress = new Dictionary<string, Address>();
             Task.Run(async () => await Load());
 			_accountStore = AccountStore.instance;

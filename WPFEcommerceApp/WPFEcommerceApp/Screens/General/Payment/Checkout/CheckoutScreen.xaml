@@ -7,6 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:model="clr-namespace:WPFEcommerceApp.Models"
              mc:Ignorable="d"
              x:Name="CheckoutWindow"
              d:DesignHeight="800" d:DesignWidth="1340"
@@ -17,29 +18,55 @@
                 <ResourceDictionary Source="..\components\HiddenTab\Expander.xaml"/>
                 <ResourceDictionary Source="..\components\ProductCard\BProductCard.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Color x:Key="detailMark">#FFA1A9B3</Color>
-            <SolidColorBrush x:Key="detailMarkBrush" Color="{StaticResource ResourceKey=detailMark}" />
-            <Style x:Key="flatTextBox" TargetType="{x:Type TextBox}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TextBox}">
-                            <Grid Width="419" Height="42">
-                                <Rectangle  Stroke="{StaticResource ResourceKey=detailMarkBrush}" StrokeThickness="1"/>
-                                <TextBlock x:Name="placeholder" Text="Enter Voucher code" VerticalAlignment="Center" Margin="12, 0,0,0"
-                                           FontSize="{StaticResource FontSizeText}"
-                                           Foreground="{StaticResource NotAvailableColorBrush}" Visibility="Collapsed"/>
-                                <TextBox x:Name="textbox" Background="Transparent" Text="{TemplateBinding Text}" BorderThickness="0" FontSize="{StaticResource FontSizeText}" VerticalAlignment="Center" Margin="12, 0,0,0"/>
-
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="Text" Value="" SourceName="textbox">
-                                    <Setter Property="Visibility" Value="Visible" TargetName="placeholder"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            <DataTemplate x:Key="VoucherCard" DataType="{x:Type model:Promo}">
+                <RadioButton GroupName="Voucher"
+                        x:Name="VoucherContainer"
+                        Style="{StaticResource RadioButtonOutlineCard}"
+                        Padding="12 15"
+                        IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected, Mode=TwoWay}"
+                        Width="{c:Binding RelativeSource={RelativeSource AncestorType=ListView,Mode=FindAncestor}, 
+                        Path=ActualWidth - 15}"
+                        HorizontalAlignment="Stretch">
+                    <Grid x:Name="cardContainer">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="70"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <RadioButton Style="{StaticResource RadioButton}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="0 0 12 0"
+                                        IsChecked="{Binding ElementName=VoucherContainer, Path=IsChecked, Mode=TwoWay}">
+                                <RadioButton.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                                </RadioButton.LayoutTransform>
+                            </RadioButton>
+                        </Grid>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="{Binding Name}" FontSize="{StaticResource FontSizeHeadline3}"
+                                                           VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                                <TextBlock Text="Expiring: " 
+                                            FontSize="{StaticResource FontSizeDescription}"
+                                            Foreground="{StaticResource NotAvailableColorBrush}"
+                                            TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding DateEnd, StringFormat=d}"
+                                           FontSize="{StaticResource FontSizeDescription}"
+                                            Foreground="{StaticResource NotAvailableColorBrush}"
+                                            TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Style="{StaticResource Pressable}"
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                            <Label Content="Condition"/>
+                        </Button>
+                    </Grid>
+                </RadioButton>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="White" wpf:ScrollBarAssist.ButtonsVisibility="Collapsed">
@@ -161,6 +188,7 @@
                             </StackPanel>
                         </Expander>
                         <!--#endregion-->
+
                         <!--#region Voucher-->
                         <Expander Style="{StaticResource CustomExpander}" Visibility="Visible"
                                   x:Name="VoucherArea"
@@ -175,16 +203,93 @@
                             <Expander.Header>
                                 <Grid Width="698">
                                     <Label Content="Voucher" 
-                   FontSize="{StaticResource FontSizeHeadline2}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"/>
+                                           FontSize="{StaticResource FontSizeHeadline2}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"/>
                                 </Grid>
                             </Expander.Header>
                             <StackPanel>
-                                <Label Content="fuck"/>
-                                <Label Content="fuck"/>
-                                <Label Content="fuck"/>
-                                <Button 
+                                <!--Apply voucher-->
+                                <Grid Background="{DynamicResource BoxShadowColorBrush}"
+                                      x:Name="ApplyVoucherContainer">
+                                    <Border Padding="5 10">
+                                        <DockPanel Background="Transparent">
+                                            <Label Content="Add voucher"
+                                                   FontSize="{StaticResource FontSizeText}"
+                                                   VerticalAlignment="Center"/>
+                                            <TextBox HorizontalAlignment="Center"
+                                                     Style="{StaticResource TextBoxHintBlackBorder}"
+                                                     Width="{c:Binding ElementName=ApplyVoucherContainer, Path=ActualWidth - 269}"
+                                                     wpf:HintAssist.Hint="Enter voucher code"
+                                                     material:HintAssist.IsFloating="False"
+                                                     Height="auto"
+                                                     Margin="25 0"
+                                                     VerticalAlignment="Stretch"/>
+                                            <Button
+                                                Content="Apply"
+                                                FontWeight="Normal"
+                                                Style="{StaticResource ButtonRectangle}"
+                                                HorizontalAlignment="Right"/>
+                                        </DockPanel>
+                                    </Border>
+                                </Grid>
+                                <!--List voucher-->
+                                <Grid>
+                                    <!--#region Test-->
+                                    <!--<RadioButton
+                                        x:Name="addressContainer"
+                                        Style="{StaticResource RadioButtonOutlineCard}"
+                                        Padding="12 15"
+                                        IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected, Mode=TwoWay}"
+                                        HorizontalAlignment="Stretch">
+                                        <Grid x:Name="cardContainer">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid>
+                                                <RadioButton Style="{StaticResource RadioButton}"
+                                                     VerticalAlignment="Center"
+                                                     HorizontalAlignment="Center"
+                                                     Margin="0 0 12 0"
+                                                     IsChecked="{Binding ElementName=addressContainer, Path=IsChecked, Mode=TwoWay}">
+                                                    <RadioButton.LayoutTransform>
+                                                        <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                                                    </RadioButton.LayoutTransform>
+                                                </RadioButton>
+                                            </Grid>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="Name" FontSize="{StaticResource FontSizeHeadline3}"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Text="Expiring: Oct 31, 2022" 
+                                                        FontSize="{StaticResource FontSizeDescription}"
+                                                        Foreground="{StaticResource NotAvailableColorBrush}"
+                                                        TextWrapping="Wrap"
+                                                        LineStackingStrategy="BlockLineHeight"
+                                                        LineHeight="20"/>
+                                            </StackPanel>
+                                            <Button Style="{StaticResource Pressable}"
+                                                    Grid.Column="2"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center">
+                                                <Label Content="Condition"/>
+                                            </Button>
+
+                                        </Grid>
+                                    </RadioButton>-->
+                                    <!--#endregion-->
+                                    <ListView
+                                        SelectedItem="{Binding ElementName=CheckoutWindow, Path=DataContext.PromoChoosen}"
+                                        Margin="0 20"
+                                        MaxHeight="230"
+                                        ItemsSource="{Binding ElementName=CheckoutWindow, Path=DataContext.ListVoucher}"
+                                        ItemTemplate="{StaticResource VoucherCard}"
+                                        ItemContainerStyle="{StaticResource ListItemContainer}"
+                                        ScrollViewer.CanContentScroll="False"
+                                        BorderThickness="0"/>
+                                </Grid>
+                                <Button Margin="0 10"
                                         Content="Continue to Payment" 
                                         HorizontalAlignment="Right" 
                                         Width="202" 
@@ -193,7 +298,8 @@
                             </StackPanel>
                         </Expander>
                         <!--#endregion-->
-                        <!--# region Payment-->
+
+                        <!--#region Payment-->
                         <Expander x:Name="PaymentArea" 
                                   Style="{StaticResource CustomExpander}" 
                                   IsEnabled="{c:Binding ElementName=CheckoutWindow, Path='DataContext.LeftState > 1'}"
@@ -210,7 +316,7 @@
                                            FontSize="{StaticResource FontSizeHeadline2}"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"/>
-                                    
+
                                 </Grid>
                             </Expander.Header>
                             <StackPanel>
@@ -250,7 +356,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
-            <!--Right column-->
+            <!--region Right column-->
             <Grid Grid.Column="1" Margin="67 0 53 73"
                   x:Name="rightColumnContainer">
                 <Grid.RowDefinitions>
@@ -314,6 +420,7 @@
                 </Grid>
 
             </Grid>
+            <!--#endregion-->
         </Grid>
     </Grid>
 </UserControl>

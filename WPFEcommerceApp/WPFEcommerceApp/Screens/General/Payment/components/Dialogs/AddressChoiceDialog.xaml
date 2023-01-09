@@ -25,11 +25,22 @@
                                 Path=ActualWidth - 15}">
                 <Grid x:Name="cardContainer">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <RadioButton Style="{StaticResource RadioButton}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Margin="0 0 12 0"
+                                     IsChecked="{Binding ElementName=addressContainer, Path=IsChecked, Mode=TwoWay}">
+                            <RadioButton.LayoutTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                            </RadioButton.LayoutTransform>
+                        </RadioButton>
+                    </Grid>
+                    <StackPanel Grid.Column="1">
+                        <DockPanel>
                             <TextBlock Text="{Binding Name}" FontSize="{StaticResource FontSizeHeadline3}"
                                                            VerticalAlignment="Center"/>
                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
@@ -40,24 +51,22 @@
                             <TextBlock Text="{Binding PhoneNumber}" 
                                        FontSize="{StaticResource FontSizeHeadline3}"
                                        VerticalAlignment="Center"/>
-                        </StackPanel>
+                            <Button Style="{StaticResource Pressable}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:AddressChoiceDialog}},
+                                Path=DataContext.OnEditAddress}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext}">
+                                <Label Content="Edit"/>
+                            </Button>
+                        </DockPanel>
                         <TextBlock Text="{Binding Address1}" 
                                FontSize="{StaticResource FontSizeDescription}"
                                TextWrapping="Wrap"
                                LineStackingStrategy="BlockLineHeight"
                                LineHeight="20"/>
+                        
                     </StackPanel>
-                    <Grid Grid.Column="1">
-                        <RadioButton Style="{StaticResource RadioButton}"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Center"
-                                     Margin="12 0 0 0"
-                                     IsChecked="{Binding ElementName=addressContainer, Path=IsChecked, Mode=TwoWay}">
-                            <RadioButton.LayoutTransform>
-                                <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
-                            </RadioButton.LayoutTransform>
-                        </RadioButton>
-                    </Grid>
                 </Grid>
             </RadioButton>
         </DataTemplate>
@@ -88,6 +97,58 @@
                             Height="10"/>
                     </Button>
                 </Grid>
+
+                <!--#region Test-->
+                <!--<RadioButton GroupName="Address"
+                        x:Name="addressContainer"
+                        Style="{StaticResource RadioButtonOutlineCard}"
+                        Padding="12 8 12 15"
+                        IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected, Mode=TwoWay}"
+                        HorizontalAlignment="Stretch">
+                    <Grid x:Name="cardContainer">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <RadioButton Style="{StaticResource RadioButton}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Margin="0 0 12 0"
+                                     IsChecked="{Binding ElementName=addressContainer, Path=IsChecked, Mode=TwoWay}">
+                                <RadioButton.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                                </RadioButton.LayoutTransform>
+                            </RadioButton>
+                        </Grid>
+                        <StackPanel Grid.Column="1">
+                            <DockPanel>
+                                <TextBlock Text="Name" FontSize="{StaticResource FontSizeHeadline3}"
+                                                           VerticalAlignment="Center"/>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                                       BorderBrush="{DynamicResource NotAvailableColorBrush}"
+                                       BorderThickness="0.6"
+                                       Height="20"
+                                       HorizontalAlignment="Stretch"/>
+                                <TextBlock Text="Phone" 
+                                       FontSize="{StaticResource FontSizeHeadline3}"
+                                       VerticalAlignment="Center"/>
+                                <Button Style="{StaticResource Pressable}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right">
+                                    <Label Content="Edit"/>
+                                </Button>
+                            </DockPanel>
+                            <TextBlock Text="Address" 
+                               FontSize="{StaticResource FontSizeDescription}"
+                               TextWrapping="Wrap"
+                               LineStackingStrategy="BlockLineHeight"
+                               LineHeight="20"/>
+                        </StackPanel>
+                        
+                    </Grid>
+                </RadioButton>-->
+                <!--#endregion-->
                 <ListView
                 SelectedItem="{Binding ElementName=ChooseAddress, Path=DataContext.SelectedItem}"
                 Margin="0 20"
@@ -108,7 +169,7 @@
                     Command="{Binding ElementName=ChooseAddress, Path=DataContext.OnAddAddress}">
                     </Button>
                     <Button x:Name="Choice" 
-                    Content="OK"
+                    Content="Confirm"
                     Command="{Binding ElementName=ChooseAddress, Path=DataContext.OnChangeAddress}"
                     CommandParameter="{Binding ElementName=ChooseAddress, Path=DataContext.SelectedItem}">
                     </Button>
