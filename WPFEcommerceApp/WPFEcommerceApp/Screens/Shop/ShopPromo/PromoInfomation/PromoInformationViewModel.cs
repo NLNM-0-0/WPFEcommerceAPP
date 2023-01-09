@@ -104,9 +104,9 @@ namespace WPFEcommerceApp
             }
         }
         private Models.Promo initialPromo;
-        public PromoInformationViewModel(Models.Promo promo, bool isAdmin = false)
+        public PromoInformationViewModel(PromoVMConstructor param)
         {
-            initialPromo = promo;
+            initialPromo = param.promo;
             AddNewProductCommand = new RelayCommandWithNoParameter(() =>
             {
                 AddNewProductPromo addNewProductPromo = new AddNewProductPromo();
@@ -142,7 +142,7 @@ namespace WPFEcommerceApp
                 IsMaxSale = true;
             }
             SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
-            foreach (Models.Product product in promo.Products)
+            foreach (Models.Product product in param.promo.Products)
             {
                 PromoProductBlockViewModel promoProductBlockViewModel = new PromoProductBlockViewModel(product);
                 promoProductBlockViewModel.DeleteCommand = DeleteProductCommand;
@@ -212,6 +212,16 @@ namespace WPFEcommerceApp
             {
                 FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Name.Contains(SearchByValue??"")));
             }
+        }
+    }
+
+    //VHCMT => Constructor object
+    public class PromoVMConstructor {
+        public Promo promo { get; set; }
+        public bool isAdmin { get; set; }
+        public PromoVMConstructor(Promo promo, bool isAdmin = false) {
+            this.promo = promo;
+            this.isAdmin = isAdmin;
         }
     }
 }

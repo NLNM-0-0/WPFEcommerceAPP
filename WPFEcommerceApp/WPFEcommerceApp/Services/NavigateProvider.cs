@@ -127,6 +127,11 @@ namespace WPFEcommerceApp {
                 serviceProvider.GetRequiredService<ShopOrderViewModel>);
         }
 
+        static public INavigationService ShopAddPromoScreen() {
+            return new NavigationService<AddShopPromoViewModel>(
+                serviceProvider.GetRequiredService<AddShopPromoViewModel>);
+        }
+
         static public INavigationService ShopProductScreen() {
             return new NavigationService<ShopProductViewModel>(
                 serviceProvider.GetRequiredService<ShopProductViewModel>);
@@ -143,6 +148,10 @@ namespace WPFEcommerceApp {
         static public INavigationService ShopPromoScreen() {
             return new NavigationService<ShopPromoViewModel>(
                 serviceProvider.GetRequiredService<ShopPromoViewModel>);
+        }
+        static public INavigationService PromoInfomationScreen() {
+            return new ParamNavigationService<PromoInformationViewModel>(
+                (p) => new PromoInformationViewModel(p as PromoVMConstructor));
         }
         #endregion
     }

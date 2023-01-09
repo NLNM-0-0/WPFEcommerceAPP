@@ -40,6 +40,7 @@ namespace WPFEcommerceApp {
             services.AddTransient<ShopOrderViewModel>();
             services.AddTransient<ShopStatisticsViewModel>();
             services.AddTransient<ShopPromoViewModel>();
+            services.AddTransient<AddShopPromoViewModel>();
             #endregion
 
             //Admin

@@ -253,9 +253,12 @@ namespace WPFEcommerceApp
             });
             EditPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
-                PromoInformation promoInformation = new PromoInformation();
-                promoInformation.DataContext = new PromoInformationViewModel((p as ShopPromoBlockViewModel).Promo);
+                //VHCMT => Change param in constructor
+                //PromoInformation promoInformation = new PromoInformation();
+                var temp = new PromoVMConstructor((p as ShopPromoBlockViewModel).Promo);
+                //promoInformation.DataContext = new PromoInformationViewModel(temp);
                 /*navigate*/
+                NavigateProvider.PromoInfomationScreen().Navigate(temp);
             });
             CopyPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
@@ -291,9 +294,7 @@ namespace WPFEcommerceApp
             });
             AddPromoCommand = new RelayCommandWithNoParameter(() =>
             {
-                AddShopPromo addShopPromo = new AddShopPromo();
-                addShopPromo.DataContext = new AddShopPromoViewModel();
-                /*Navigate*/
+                NavigateProvider.ShopAddPromoScreen().Navigate();
             });
         }
         public void Search()
