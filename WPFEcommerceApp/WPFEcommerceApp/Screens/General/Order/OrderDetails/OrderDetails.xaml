@@ -110,7 +110,7 @@
                                          Status="{Binding DataContext.OrderStatus[2], ElementName=MyPD}"
                                          Width="{c:Binding ElementName=Header, Path=ActualWidth/4}"
                                          Margin="-41,0,0,0"/>
-                <local:StatusDetailLabel Text="Order Compledted"
+                <local:StatusDetailLabel Text="Order Completed"
                                          Icon="Star"
                                          Status="{Binding DataContext.OrderStatus[3], ElementName=MyPD}"
                                          CanProcess="False"

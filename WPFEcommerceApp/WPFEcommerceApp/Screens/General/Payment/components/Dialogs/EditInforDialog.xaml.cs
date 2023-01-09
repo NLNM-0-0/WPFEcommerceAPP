@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
@@ -20,64 +21,60 @@ namespace WPFEcommerceApp {
     /// Interaction logic for EditInforDialog.xaml
     /// </summary>
     public partial class EditInforDialog : UserControl {
-        private readonly AccountStore accountStore;
-        public EditInforDialog(AccountStore accountStore) {
+        public EditInforDialog() {
             InitializeComponent();
             DataContext = this;
-            this.accountStore = accountStore;
         }
 
 
-        public string Username {
-            get { return (string)GetValue(UsernameProperty); }
-            set { SetValue(UsernameProperty, value); }
+        public string Header {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Username.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty UsernameProperty =
-            DependencyProperty.Register("Username", typeof(string), typeof(EditInforDialog), new PropertyMetadata("Name"));
+        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(string), typeof(EditInforDialog), new PropertyMetadata("Add address"));
 
 
-        public string Phone {
-            get { return (string)GetValue(PhoneProperty); }
-            set { SetValue(PhoneProperty, value); }
+
+        public Address address {
+            get { return (Address)GetValue(addressProperty); }
+            set { SetValue(addressProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Phone.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PhoneProperty =
-            DependencyProperty.Register("Phone", typeof(string), typeof(EditInforDialog), new PropertyMetadata("0123456789"));
+        // Using a DependencyProperty as the backing store for address.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty addressProperty =
+            DependencyProperty.Register("address", typeof(Address), typeof(EditInforDialog), new PropertyMetadata(new Address()));
 
-        public string Address {
-            get { return (string)GetValue(AddressProperty); }
-            set { SetValue(AddressProperty, value); }
+
+
+
+        public ICommand OnOK {
+            get { return (ICommand)GetValue(OnAddAddressProperty); }
+            set { SetValue(OnAddAddressProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Address.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty AddressProperty =
-            DependencyProperty.Register("Address", typeof(string), typeof(EditInforDialog), new PropertyMetadata("Address"));
+        // Using a DependencyProperty as the backing store for command.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OnAddAddressProperty =
+            DependencyProperty.Register("OnAddAddress", typeof(ICommand), typeof(EditInforDialog), new PropertyMetadata(null));
 
 
-
-        public CheckoutScreenVM EditData {
-            get { return (CheckoutScreenVM)GetValue(EditDataProperty); }
-            set { SetValue(EditDataProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for EditData.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty EditDataProperty =
-            DependencyProperty.Register("EditData", typeof(CheckoutScreenVM), typeof(EditInforDialog), new PropertyMetadata(null));
-
-        private async void Button_Click(object sender, RoutedEventArgs e) {
-            MainViewModel.IsLoading = true;
-
-            var t = accountStore.CurrentAccount;
-            t.Name = Username;
-            t.PhoneNumber = Phone;
-            t.Address = Address;
-            await accountStore.Update(t);
-
-            MainViewModel.IsLoading = false;
-
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            if(address.Id != null) {
+                OnOK.Execute(address);
+                return;
+            }
+            var id = GenerateID.DateTimeID();
+            Address add = new Address() {
+                Id = id,
+                IdUser = AccountStore.instance.CurrentAccount.Id,
+                Name = address.Name,
+                PhoneNumber = address.PhoneNumber,
+                Address1 = address.Address1,
+                Status = true
+            };
+            OnOK.Execute(add);
         }
     }
 }

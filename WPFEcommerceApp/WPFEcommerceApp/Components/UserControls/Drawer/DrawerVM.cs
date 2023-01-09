@@ -136,9 +136,12 @@ namespace WPFEcommerceApp {
                         ChangeIndex(NavigateProvider.AdminAdsScreen());
                     }
                     else if(SelectedIndex == 4) {
+                        ChangeIndex(NavigateProvider.AdminPromoScreen());
+                    }
+                    else if(SelectedIndex == 5) {
                         ChangeIndex(NavigateProvider.AdminCategoryScreen());
                     }
-                    else if(SelectedIndex==5) {
+                    else if(SelectedIndex==6) {
                         ChangeIndex(NavigateProvider.AdminBrandScreen());
                     }
                     else {
@@ -262,7 +265,8 @@ namespace WPFEcommerceApp {
                     new ButtonItem("Users", "Users"),
                     new ButtonItem("Archive", "Shops"),
                     new ButtonItem("Dropbox", "Products"),
-                    new ButtonItem("Ticket", "Ads"),
+                    new ButtonItem("ShareAlt", "Ads"),
+                    new ButtonItem("Ticket", "Promo"),
                     new ButtonItem("Tags", "Catergories"),
                     new ButtonItem("AddressCard", "Brands"),
                     new ButtonItem("UserCircleOutline", "My Profile"),

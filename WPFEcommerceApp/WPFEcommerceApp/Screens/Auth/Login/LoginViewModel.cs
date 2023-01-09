@@ -20,6 +20,8 @@ namespace WPFEcommerceApp {
     public class LoginViewModel : BaseViewModel {
         private readonly GenericDataRepository<Models.MUser> userRepo = new GenericDataRepository<MUser>();
         private readonly GenericDataRepository<Models.UserLogin> loginRepo = new GenericDataRepository<UserLogin>();
+        private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
+
 
         private string username;
         private string password;
@@ -62,9 +64,7 @@ namespace WPFEcommerceApp {
             OnGoogleSignIn = new ImmediateCommand<object>(async p => {
                 var auth = new OAuth();
                 (p as Window).Activate();
-                Tuple<string, object> x = null;
-                //var y = await Task.WhenAny(auth.Authentication(), timeout());
-                //x = await y;
+                Tuple<string, object> x = new Tuple<string, object>("timeout", null);
                 var cts = new CancellationTokenSource();
                 cts.CancelAfter(10000);
 
@@ -76,9 +76,13 @@ namespace WPFEcommerceApp {
                 (p as Window).WindowState = WindowState.Normal;
                 IsLoading = false;
 
-                if(x == null) {
-                    MessageBox.Show("yey");
-                    return;
+                if(x == null) return;
+                if(x.Item1 == "timeout") {
+                    var dl = new ConfirmDialog() {
+                        Header = "Oops",
+                        Content = "The process took too long, please try again!"
+                    };
+                    await DialogHost.Show(dl, "Login");
                 }
                 if(x.Item1 == null || x.Item2 == null) {
                     ErrorMessage();
@@ -131,11 +135,7 @@ namespace WPFEcommerceApp {
             });
         }
 
-        public async Task<Tuple<string, object>> timeout(int to = 10000) {
-            await Task.Delay(to);
-            IsLoading = false;
-            return new Tuple<string, object>("timeout", null);
-        }
+        #region Google helper
         public async Task<bool> CreateAccount(Dictionary<string, string> user) {
             try {
                 string phoneNumber = null, gender = null, cover = null, birthday = null;
@@ -154,6 +154,9 @@ namespace WPFEcommerceApp {
                 try {
                     Convert.ToDateTime(birthday);
                 } catch { flag = false; }
+
+                var addressId = GenerateID.DateTimeID();
+                
                 var us = new Models.MUser() {
                     Id = user["sub"],
                     Name = user["name"],
@@ -177,6 +180,18 @@ namespace WPFEcommerceApp {
                     Username = user["email"],
                     Provider = 1
                 });
+
+                Address address = new Address() {
+                    Id = addressId,
+                    IdUser = user["sub"],
+                    Name = user["name"],
+                    PhoneNumber = phoneNumber,
+                    Address1 = "",
+                    Status = true,
+                };
+                await addressRepo.Add(address);
+                us.DefaultAddress = addressId;
+                await userRepo.Update(us);
             } catch(Exception e) {
                 Debug.WriteLine(e.Message);
                 return false;
@@ -197,6 +212,7 @@ namespace WPFEcommerceApp {
             };
             DialogHost.Show(dlg, "Login");
         }
+        #endregion
         private async Task<bool> Login() {
             var encode = new Hashing().Encrypt(Username, Password);
 
@@ -235,7 +251,7 @@ namespace WPFEcommerceApp {
             e.Cancel = true;
             if(App.Current.MainWindow != null)
                 App.Current.MainWindow.Show();
-            else (sender as Window).Close();
+            else return;
             (sender as Window).Hide();
         }
     }
