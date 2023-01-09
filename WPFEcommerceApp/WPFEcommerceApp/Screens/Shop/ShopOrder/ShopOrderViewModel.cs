@@ -693,7 +693,10 @@ namespace WPFEcommerceApp
                                                                                                                                      o => o.OrderInfoes.Select(oi=>oi.Rating),
                                                                                                                                      o => o.MUser,
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Product),
-                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts)));
+                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts),
+                                                                                                                                     o => o.MUser.Addresses,
+                                                                                                                                     o => o.MUser1,
+                                                                                                                                     o => o.MUser1.Addresses));
             orders = new ObservableCollection<Models.MOrder>(orders.OrderByDescending(p => p.DateBegin));
             foreach (var order in orders)
             {
@@ -722,7 +725,10 @@ namespace WPFEcommerceApp
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Rating),
                                                                                                                                      o => o.MUser,
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Product),
-                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts)));
+                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts),
+                                                                                                                                     o => o.MUser.Addresses,
+                                                                                                                                     o => o.MUser1,
+                                                                                                                                     o => o.MUser1.Addresses));
             orders = new ObservableCollection<Models.MOrder>(orders.OrderByDescending(p => p.DateBegin));
             foreach (var order in orders)
             {
@@ -750,7 +756,10 @@ namespace WPFEcommerceApp
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Rating),
                                                                                                                                      o => o.MUser,
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Product),
-                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts)));
+                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts),
+                                                                                                                                     o => o.MUser.Addresses,
+                                                                                                                                     o => o.MUser1,
+                                                                                                                                     o => o.MUser1.Addresses));
             orders = new ObservableCollection<Models.MOrder>(orders.OrderByDescending(p => p.DateBegin));
             foreach (var order in orders)
             {
@@ -778,7 +787,10 @@ namespace WPFEcommerceApp
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Rating),
                                                                                                                                      o => o.MUser,
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Product),
-                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts)));
+                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts),
+                                                                                                                                     o => o.MUser.Addresses,
+                                                                                                                                     o => o.MUser1,
+                                                                                                                                     o => o.MUser1.Addresses));
             orders = new ObservableCollection<Models.MOrder>(orders.OrderByDescending(p => p.DateBegin));
             foreach (var order in orders)
             {
@@ -804,7 +816,10 @@ namespace WPFEcommerceApp
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Rating),
                                                                                                                                      o => o.MUser,
                                                                                                                                      o => o.OrderInfoes.Select(oi => oi.Product),
-                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts)));
+                                                                                                                                     o => o.OrderInfoes.Select(oi => oi.Product).Select(p => p.ImageProducts),
+                                                                                                                                     o => o.MUser.Addresses,
+                                                                                                                                     o => o.MUser1,
+                                                                                                                                     o => o.MUser1.Addresses));
             orders = new ObservableCollection<Models.MOrder>(orders.OrderByDescending(p => p.DateBegin));
             foreach (var order in orders)
             {

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d"
              x:Name="shopRatingBlock"
@@ -253,6 +254,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
@@ -265,7 +267,7 @@
                         FontSize="{StaticResource FontSizeText}"
                         Padding="20 0"
                         Command="{Binding CancelledOrderBlockCommand, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{c:Binding IsCanCancel}"
+                        Visibility="{c:Binding IsProcessing,UpdateSourceTrigger=PropertyChanged}"
                         Margin="0 0 30 0"
                         CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}"/>
                     <Button
@@ -275,13 +277,26 @@
                         HorizontalAlignment="Left"
                         FontSize="{StaticResource FontSizeText}"
                         Padding="20 0"
+                        Margin="0 0 30 0"
                         Command="{Binding ShopOrderBlockCommand,UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{c:Binding IsCanCommandExcute}"
                         CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}"/>
+                    <Button 
+                        Grid.Column="2"
+                        Style="{StaticResource ButtonRectangle}"
+                        HorizontalAlignment="Left" 
+                        Margin="10"
+                        Padding="0"
+                        Width="40"
+                        Command="{Binding PrintCommand,UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{c:Binding IsProcessing, UpdateSourceTrigger=PropertyChanged}">
+                        <materialDesign:PackIcon 
+                            Kind="Printer"/>
+                    </Button>
                     <StackPanel
                         Orientation="Horizontal"
                         VerticalAlignment="Center"
-                        Grid.Column="1"
+                        Grid.Column="3"
                         HorizontalAlignment="Right">
                         <TextBlock
                             VerticalAlignment="Center"
