@@ -15,7 +15,29 @@
     </UserControl.Resources>
     <Border Padding="40">
         <StackPanel>
-            <DockPanel>
+            <Grid>
+                <TextBlock IsHitTestVisible="False" Text="{Binding Header}" 
+                           HorizontalAlignment="Left"
+                               FontSize="{StaticResource FontSizeHeadline2}"/>
+                <Button HorizontalAlignment="Right"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        x:Name="ButtonClose"
+                        Height="30"
+                        Width="30"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
+
+                    <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Opacity="1"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+                </Button>
+            </Grid>
+            <DockPanel LastChildFill="False">
                 <ToggleButton DockPanel.Dock="Right" Visibility="{c:Binding !IsDefault, FalseToVisibility=Collapsed}"
                 Style="{StaticResource SwitchToggleButton}" Margin="15 15 0 15"
                           Background="{StaticResource BlackColorBrush}"
@@ -26,11 +48,6 @@
                                FontSize="{StaticResource FontSizeText}" 
                            Foreground="{StaticResource SuccessColorBrush}"
                              VerticalAlignment="Center"/>
-
-                <TextBlock IsHitTestVisible="False" Text="{Binding Header}" 
-                               DockPanel.Dock="Left"
-                               FontSize="{StaticResource FontSizeHeadline2}"/>
-
             </DockPanel>
 
             <TextBox    Margin="0 15 0 15" x:Name="tb1"
@@ -93,7 +110,7 @@
                         </MultiBinding>
                     </Button.IsEnabled>
                 </Button>
-                <Button Content="Cancel" Margin="10 0 0 0"
+                <Button Content="Reset" Margin="10 0 0 0"
                     Command="{Binding CancelEditCommand}"
                     CommandParameter="{Binding}"
                     DockPanel.Dock="Right"

@@ -17,16 +17,16 @@
         <StackPanel x:Name="stack" Background="{StaticResource WhiteColorBrush}">
             <!-- Banner 1 -->
             <Grid Height="{cal:Binding RelativeSource={RelativeSource Self},
-                Path=ActualWidth*0.35}"
+                Path=ActualWidth*0.33}"
                 Margin="0 0 0 50"
                 Visibility="{c:Binding Path='(Banner1!=null)', FalseToVisibility=Collapsed}">
 
-                <Image 
+                <local:AsyncImage 
                         Stretch="Fill"
                         Source="{Binding Banner1, Converter={StaticResource StringToImageSourceConverter}}"
                         >
 
-                </Image>
+                </local:AsyncImage>
             </Grid>
 
             <!-- Best seller list -->
@@ -90,12 +90,12 @@
                 Margin="0 0 0 50"
                 Visibility="{c:Binding Path='(Banner2!=null)', FalseToVisibility=Collapsed}">
 
-                <Image 
+                <local:AsyncImage 
                         Stretch="Fill"
                         Source="{Binding Banner2, Converter={StaticResource StringToImageSourceConverter}}"
                         >
 
-                </Image>
+                </local:AsyncImage>
             </Grid>
 
             <!-- Just in list-->
@@ -160,12 +160,12 @@
                 Margin="0 0 0 50"
                 Visibility="{c:Binding Path='(Banner3!=null)', FalseToVisibility=Collapsed}">
 
-                <Image 
+                <local:AsyncImage 
                         Stretch="Fill"
                         Source="{Binding Banner3, Converter={StaticResource StringToImageSourceConverter}}"
                         >
 
-                </Image>
+                </local:AsyncImage>
             </Grid>
 
             <!-- More list -->

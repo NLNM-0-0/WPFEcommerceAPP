@@ -24,8 +24,6 @@
             <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <!--CornerRadius="{c:Binding '!(Text == \'\')?\'0\': \'0 20 20 0\'', RelativeSource={RelativeSource TemplatedParent}}"-->
-
                     <ControlTemplate TargetType="{x:Type TextBoxBase}">
                         <Grid>
                             <Grid>

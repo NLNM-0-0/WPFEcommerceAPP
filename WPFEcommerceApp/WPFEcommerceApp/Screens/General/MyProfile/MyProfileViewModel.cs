@@ -91,20 +91,12 @@ namespace WPFEcommerceApp
         #endregion
 
         #region Commands
-
-        public ICommand ChangeAvaShopCommand { get; set; }
-        public ICommand ChangeToDefaultAvaShopCommand { get; set; }
-        public ICommand ChangeBackgroundShopCommand { get; set; }
-        public ICommand ChangeToDefaultBackgroundShopCommand { get; set; }
-        public ICommand SaveBackgroundShopCommand { get; set; }
         public ICommand SaveProfileCommand { get; set; }
         public ICommand SaveAvaShopCommand { get; set; }
         public ICommand CancelProfileCommand { get; set; }
         public ICommand OpenAvaDialog { get; set; }
         public ICommand OpenBackgroundDialog { get; set; }
         public ICommand AddAddressCommand { get; set; }
-
-
         #endregion
 
         #region Constructor

@@ -30,8 +30,8 @@
     
     <Grid Background="{StaticResource WhiteColorBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
@@ -42,7 +42,7 @@
                     ClipToBounds="True"
                     Background="{StaticResource WhiteColorBrush}">
             </Border>
-            <Border>
+            <Border Height="{c:Binding Path=ActualWidth*0.25, RelativeSource={RelativeSource Self}}">
                 <Border.OpacityMask>
                     <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
                 </Border.OpacityMask>
