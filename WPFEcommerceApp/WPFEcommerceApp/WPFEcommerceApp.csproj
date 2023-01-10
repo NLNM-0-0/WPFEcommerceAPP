@@ -172,6 +172,7 @@
       <DependentUpon>AdminPromo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Admin\AdminPromo\AdminPromoViewModel.cs" />
+    <Compile Include="Screens\Admin\AdsManager\AdsDialog\AdsDialogViewModel.cs" />
     <Compile Include="Screens\General\MyProfile\Address\AddressDialog\AddAddressDialog.xaml.cs">
       <DependentUpon>AddAddressDialog.xaml</DependentUpon>
     </Compile>
@@ -392,7 +393,7 @@
     <Compile Include="Screens\General\Order\components\Dialog\ReviewProductDialog.xaml.cs">
       <DependentUpon>ReviewProductDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\UserControls\Dialogs\AddAdsDialog.xaml.cs">
+    <Compile Include="Screens\Admin\AdsManager\AdsDialog\AddAdsDialog.xaml.cs">
       <DependentUpon>AddAdsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\UserControls\Dialogs\AddBrandDialog\AddBrandDialog.xaml.cs">
@@ -987,7 +988,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Components\UserControls\Dialogs\AddAdsDialog.xaml">
+    <Page Include="Screens\Admin\AdsManager\AdsDialog\AddAdsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

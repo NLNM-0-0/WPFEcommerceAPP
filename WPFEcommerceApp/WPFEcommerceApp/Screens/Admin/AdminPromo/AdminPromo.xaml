@@ -45,7 +45,7 @@
                     <ListView ItemsSource="{Binding Items}" x:Name="itemList" 
                           HorizontalContentAlignment="Stretch"
                           BorderThickness="0" MaxHeight="700"
-                          ScrollViewer.CanContentScroll="True"
+                          ScrollViewer.CanContentScroll="False"
                           ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">

@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System;
 using System.Net.Security;
+using System.Windows;
 
 namespace WPFEcommerceApp
 {
@@ -22,13 +23,12 @@ namespace WPFEcommerceApp
 
         private GenericDataRepository<Advertisement> adsRepo;
         private GenericDataRepository<AdInUse> adInUseRepo;
-        public ICommand AddBackgroundImageCommand { get; set; }
-        public ICommand AddAdsCommand { get; set; }
         public ICommand CancelAdsCommand { get; set; }
         public ICommand RemoveAdsCommand { get; set; }
         public ICommand RemoveInUseAdsCommand { get; set; }
         public ICommand ApplyAdsCommand { get; set; }
         public ICommand SelectedCommand { get; set; }
+        public ICommand OpenAdsDialogCommand { get; set; }
         #endregion
 
         #region Properties
@@ -65,12 +65,6 @@ namespace WPFEcommerceApp
             }
         }
 
-        private Advertisement _currentAds;
-        public Advertisement CurrentAds
-        {
-            get => _currentAds;
-            set { _currentAds = value; OnPropertyChanged(); }
-        }
         private string _image;
         public string Image
         {
@@ -81,6 +75,18 @@ namespace WPFEcommerceApp
         public string CurrentPos { get; set; }
         public List<string> ComboBoxSource { get; set; } = new List<string> { "1", "2", "3" };
 
+        private CroppedBitmap _imageAds;
+        public CroppedBitmap ImageAds
+        {
+            get => _imageAds;
+            set
+            {
+                _imageAds = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SourceImageAds { get; set; }
         #endregion
 
         #region Construstor
@@ -89,35 +95,23 @@ namespace WPFEcommerceApp
             MainViewModel.IsLoading = true;
             adsRepo = new GenericDataRepository<Advertisement>();
             adInUseRepo = new GenericDataRepository<AdInUse>();
-            CurrentAds = new Advertisement();
-
-            SelectedCommand = new RelayCommand<object>(p => p != null, Selected);
-            RemoveAdsCommand = new RelayCommand<object>(p => _selectedItem != null, async(p)=>await RemoveAds(p));
-            RemoveInUseAdsCommand = new RelayCommand<object>(p => _inUseSelected != null, async (p) => await RemoveInUseAds(p));
-            ApplyAdsCommand = new RelayCommand<object>(p => p != null && CurrentPos != null, async(p)=>await ApplyAds(p));
-            CancelAdsCommand = new RelayCommandWithNoParameter(CancelAds);
-            AddAdsCommand = new RelayCommand<object>(p=>p!=null, async(p)=>await AddAds(p));
-            AddBackgroundImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                OpenFileDialog op = new OpenFileDialog();
-                op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png; *.webp";
-                op.ShowDialog();
-                if (op.FileName != "")
-                {
-                    Image = op.FileName;
-                    CurrentAds.Image = Image;
-
-                }
-            });
+            SourceImageAds=string.Empty;
 
             Task.Run(async () =>
             {
                 MainViewModel.IsLoading = true;
+
                 await Load();
             }).ContinueWith((first) =>
             {
-                MainViewModel.IsLoading = false;
+                SelectedCommand = new RelayCommand<object>(p => p != null, Selected);
+                RemoveAdsCommand = new RelayCommand<object>(p => _selectedItem != null, async (p) => await RemoveAds(p));
+                RemoveInUseAdsCommand = new RelayCommand<object>(p => _inUseSelected != null, async (p) => await RemoveInUseAds(p));
+                ApplyAdsCommand = new RelayCommand<object>(p => p != null && CurrentPos != null, async (p) => await ApplyAds(p));
+                CancelAdsCommand = new RelayCommandWithNoParameter(CancelAds);
+                OpenAdsDialogCommand = new RelayCommandWithNoParameter(async () => await OpenAdsDialog());
 
+                MainViewModel.IsLoading = false;
             });
 
         }
@@ -127,38 +121,34 @@ namespace WPFEcommerceApp
             Ads = new ObservableCollection<Advertisement>(
                 await adsRepo.GetAllAsync(item=>item.AdInUses));
 
-            InUseAds = new ObservableCollection<AdInUse>
+            var inUseAds = new ObservableCollection<AdInUse>
             {
                 await adInUseRepo.GetSingleAsync(item=>item.Position==1, item=>item.Advertisement),
                 await adInUseRepo.GetSingleAsync(item=>item.Position==2, item=>item.Advertisement),
                 await adInUseRepo.GetSingleAsync(item=>item.Position==3, item=>item.Advertisement),
 
             };
-            var temp = InUseAds[0];
+
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                Ads = new ObservableCollection<Advertisement>(Ads);
+                InUseAds = new ObservableCollection<AdInUse>();
+                foreach(var ad in inUseAds)
+                {
+                    if (ad == null)
+                    {
+                        InUseAds.Add(new AdInUse());
+                        continue;
+                    }
+                    InUseAds.Add(new AdInUse { Id=ad.Id, Advertisement=ad.Advertisement, Position=ad.Position});
+                }
+            }));
         }
 
 
         #endregion
 
         #region Command Methods
-        public async Task AddAds(object obj)
-        {
-            DialogHost.CloseDialogCommand.Execute(null, null);
-
-            MainViewModel.IsLoading = true;
-
-            if (string.IsNullOrEmpty(CurrentAds.Image))
-                return;
-
-            CurrentAds.Id = await GenerateID.Gen(typeof(Advertisement));
-
-            CurrentAds.Image = await FireStorageAPI.Push(CurrentAds.Image, "Default", $"Banner_{CurrentAds.Id}");
-            await adsRepo.Add(CurrentAds);
-            await Load();
-            Image = null;
-            MainViewModel.IsLoading = false;
-
-        }
 
         public void CancelAds()
         {
@@ -202,7 +192,7 @@ namespace WPFEcommerceApp
                 CM = new RelayCommandWithNoParameter(async () =>
                 {
                     MainViewModel.IsLoading = true;
-                    await adInUseRepo.Remove(SelectedItem.AdInUses.ToArray());
+                    //await adInUseRepo.Remove(InUseSelected.AdInUses.ToArray());
                     await RemoveInUseAdsDB();
                 }),
                 Header = "Banner is in use",
@@ -247,6 +237,16 @@ namespace WPFEcommerceApp
             {
                 if(item!= null)
                 {
+                    if(item.Advertisement!=null&&item.Advertisement.Id==ad.Id)
+                    {
+                        var existed = new ConfirmDialog()
+                        {
+                            Header = "Already set",
+                            Content = "The banner has been placed at another position, cannot use it now!"
+                        };
+                        await DialogHost.Show(existed, "adsView");
+                        return;
+                    }
                     if (item.Position.ToString() == CurrentPos)
                     {
                         if(item.Advertisement.Id==ad.Id)
@@ -309,6 +309,32 @@ namespace WPFEcommerceApp
                 if (item != null && item.Id == SelectedItem.Id)
                     InUseSelected = item;
             }
+        }
+
+        public async Task OpenAdsDialog()
+        {
+            var dialog = new AddAdsDialog();
+            ImageAds = new CroppedBitmap(new BitmapImage(new Uri(Properties.Resources.DefaultShopBackgroundImage)), new Int32Rect(0, 0, 0, 0));
+            dialog.DataContext = new AdsDialogViewModel(ImageAds);
+            await DialogHost.Show(dialog, "Main", null, null, SaveAds);
+        }
+
+        private async void SaveAds(object sender, DialogClosedEventArgs eventArgs)
+        {
+            MainViewModel.IsLoading = true;
+            if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
+            {
+                ImageAds = (eventArgs.Parameter as CroppedBitmap);
+                var ads = new Advertisement();
+                ads.Id = await GenerateID.Gen(typeof(Advertisement));
+                string link = await FireStorageAPI.PushFromImage((BitmapSource)ImageAds, "Default", $"Banner_{ads.Id}");
+
+                ads.Image = link;
+                await adsRepo.Add(ads);
+                await Load();
+            }
+
+            MainViewModel.IsLoading = false;
         }
         #endregion
     }

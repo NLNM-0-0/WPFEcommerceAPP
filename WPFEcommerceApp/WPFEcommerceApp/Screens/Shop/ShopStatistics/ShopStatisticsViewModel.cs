@@ -75,12 +75,12 @@ namespace WPFEcommerceApp
             orderinfoRepo = new GenericDataRepository<OrderInfo>();
             LoadCommand = new RelayCommandWithNoParameter(async () => await Load());
 
-            FromSelectedDate = new DateTime(2022, 11, 1);
+            FromSelectedDate = DateTime.Now - new TimeSpan(30, 0, 0, 0);
             ToSelectedDate = DateTime.Now;
 
             Task.Run(async () => await Load()).ContinueWith((p) =>
             {
-                FromSelectedDate = new DateTime(2022, 11, 1);
+                FromSelectedDate = DateTime.Now - new TimeSpan(30, 0, 0, 0);
                 ToSelectedDate = DateTime.Now;
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -92,8 +92,8 @@ namespace WPFEcommerceApp
 
             OrderInfos = new List<OrderInfo>(await orderinfoRepo.GetListAsync(
                 ord => ord.MOrder.IdShop == AccountStore.instance.CurrentAccount.Id,
-                ord => ord.MOrder, ord=>ord.Rating));
-            var id=AccountStore.instance.CurrentAccount.Id;
+                ord => ord.MOrder, ord => ord.Rating));
+            var id = AccountStore.instance.CurrentAccount.Id;
 
             var fromDate = FromSelectedDate.Date;
             var toDate = ToSelectedDate.Date;
@@ -102,7 +102,7 @@ namespace WPFEcommerceApp
             long totalSale = 0;
             foreach (var ord in OrderInfos)
             {
-                if (ord.MOrder.Status == OrderStatus.Completed.ToString()||ord.MOrder.Status==OrderStatus.Delivered.ToString())
+                if (ord.MOrder.Status == OrderStatus.Completed.ToString() || ord.MOrder.Status == OrderStatus.Delivered.ToString())
                 {
                     if (!string.IsNullOrEmpty(ord.MOrder.DateEnd.ToString()))
                     {
@@ -115,10 +115,10 @@ namespace WPFEcommerceApp
             orderRepo = new GenericDataRepository<MOrder>();
             var orders = new List<MOrder>(
                 await orderRepo.GetListAsync(
-                    ord => ord.Status == OrderStatus.Processing.ToString()
-                    && ord.IdShop == AccountStore.instance.CurrentAccount.Id
-                    && ord.DateBegin>=fromDate
-                    && ord.DateBegin<=toDate));
+                    ord => ord.IdShop == AccountStore.instance.CurrentAccount.Id
+                    && ord.DateBegin.Value.Date >= fromDate
+                    && ord.DateBegin.Value.Date <= toDate
+                    || (ord.DateEnd != null && (ord.DateEnd.Value.Date >= fromDate && ord.DateEnd.Value.Date <= toDate))));
 
             TotalSales = totalSale.ToString();
             Orders = orders.Count.ToString();
@@ -128,9 +128,9 @@ namespace WPFEcommerceApp
             #region Revenue
 
             var labels = new List<string>();
-            var dayList=new List<DateTime>();
+            var dayList = new List<DateTime>();
 
-            var revenueList = new List<long> ();
+            var revenueList = new List<long>();
 
 
             for (int i = 0; ; i++)
@@ -142,7 +142,7 @@ namespace WPFEcommerceApp
                     break;
             }
 
-            foreach(var day in dayList)
+            foreach (var day in dayList)
             {
                 long temp = 0;
                 foreach (var ord in OrderInfos)
@@ -150,7 +150,7 @@ namespace WPFEcommerceApp
                     if (ord.MOrder.DateEnd == null)
                         continue;
                     if ((ord.MOrder.Status == OrderStatus.Delivered.ToString() || ord.MOrder.Status == OrderStatus.Completed.ToString())
-                        && ord.MOrder.DateEnd == day)
+                        && ord.MOrder.DateEnd.Value.Date == day)
                         temp += ord.TotalPrice;
                 }
                 revenueList.Add(temp);
@@ -172,22 +172,19 @@ namespace WPFEcommerceApp
             #endregion
 
             #region Order Status
-            var statusList = new List<double> { 0, 0, 0, 0, 0};
-            foreach(var ord in OrderInfos)
+            var statusList = new List<double> { 0, 0, 0, 0, 0 };
+            foreach (var ord in orders)
             {
-                if(ord.MOrder.DateBegin>=fromDate&& ord.MOrder.DateBegin<=toDate|| ord.MOrder.DateEnd >= fromDate && ord.MOrder.DateEnd <= toDate)
-                {
-                    if (ord.MOrder.Status == OrderStatus.Processing.ToString())
-                        statusList[0]++;
-                    else if (ord.MOrder.Status == OrderStatus.Delivering.ToString())
-                        statusList[1]++;
-                    else if (ord.MOrder.Status == OrderStatus.Delivered.ToString())
-                        statusList[2]++;
-                    else if (ord.MOrder.Status == OrderStatus.Cancelled.ToString())
-                        statusList[3]++;
-                    else if (ord.MOrder.Status == OrderStatus.Completed.ToString())
-                        statusList[4]++;
-                }
+                if (ord.Status == OrderStatus.Processing.ToString())
+                    statusList[0]++;
+                else if (ord.Status == OrderStatus.Delivering.ToString())
+                    statusList[1]++;
+                else if (ord.Status == OrderStatus.Delivered.ToString())
+                    statusList[2]++;
+                else if (ord.Status == OrderStatus.Cancelled.ToString())
+                    statusList[3]++;
+                else if (ord.Status == OrderStatus.Completed.ToString())
+                    statusList[4]++;
             }
 
             OrderStatusSeriesCollection = new SeriesCollection
@@ -201,16 +198,17 @@ namespace WPFEcommerceApp
 
 
             OrderStatusLabels = new[] { "Processing", "Delivering", "Delivered", "Cancelled", "Completed" };
-            OrderStatusFormatter = value => value.ToString("N");
+            OrderStatusFormatter = value => value.ToString("g");
 
 
             #endregion
 
             #region Review
-            List<int> starList = new List<int> { 0, 0, 0, 0 ,0};
+            List<int> starList = new List<int> { 0, 0, 0, 0, 0 };
             foreach (var ord in OrderInfos)
             {
-                if (ord.MOrder.DateBegin >= fromDate && ord.MOrder.DateBegin <= toDate || ord.MOrder.DateEnd >= fromDate && ord.MOrder.DateEnd <= toDate)
+                if (ord.MOrder.DateBegin.HasValue && ord.MOrder.DateBegin.Value.Date >= fromDate && ord.MOrder.DateBegin.Value.Date <= toDate
+                    || ord.MOrder.DateEnd.HasValue && ord.MOrder.DateEnd.Value.Date >= fromDate && ord.MOrder.DateEnd.Value.Date <= toDate)
                 {
                     if (ord.Rating == null)
                         continue;
@@ -225,7 +223,7 @@ namespace WPFEcommerceApp
                     else if (ord.Rating.Rating1 == 5)
                         starList[4]++;
                 }
-                    
+
             }
 
             ReviewSeriesCollection = new SeriesCollection

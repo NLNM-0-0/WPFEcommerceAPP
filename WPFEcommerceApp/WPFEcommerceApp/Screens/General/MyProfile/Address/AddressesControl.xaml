@@ -9,6 +9,7 @@
 
     <ListView ItemsSource="{Binding AddressList}"
               BorderThickness="0"
+              ScrollViewer.CanContentScroll="False"
               ScrollViewer.VerticalScrollBarVisibility="Hidden"
               HorizontalContentAlignment="Stretch">
         <ListView.ItemContainerStyle>

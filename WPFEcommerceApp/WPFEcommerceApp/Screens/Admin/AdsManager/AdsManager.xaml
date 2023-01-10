@@ -68,13 +68,10 @@
                     CommandParameter="{Binding SelectedItem}"
                     >
                 </Button>
-                
+
                 <Button DockPanel.Dock="Right" Margin="10 0 10 0"
                                 Content="Add"
-                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
-                    <Button.CommandParameter>
-                        <local:AddAdsDialog/>
-                    </Button.CommandParameter>
+                                Command="{Binding OpenAdsDialogCommand}">
                 </Button>
 
                 <Button DockPanel.Dock="Right"
