@@ -58,6 +58,7 @@ namespace WPFEcommerceApp
         {
             promoRepo = new GenericDataRepository<Models.Promo>();
             noteRepo = new GenericDataRepository<Models.Notification>();
+            SearchBy = "Code";
 
             Task.Run(async () =>
             {
@@ -78,10 +79,10 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             var items = new ObservableCollection<Promo>(
-                await promoRepo.GetListAsync(pro => pro.Status == 1 && pro.DateEnd > DateTime.Now));
+                await promoRepo.GetListAsync(pro => pro.Status == 1 && pro.DateEnd > DateTime.Now, pro=>pro.Products));
 
             var reqItems = new ObservableCollection<Promo>(
-                await promoRepo.GetListAsync(pro => pro.Status == 0 && pro.DateEnd > DateTime.Now));
+                await promoRepo.GetListAsync(pro => pro.Status == 0 && pro.DateEnd > DateTime.Now, pro=>pro.Products));
 
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
@@ -97,7 +98,12 @@ namespace WPFEcommerceApp
 
         public async Task ViewPromo(object obj)
         {
-
+            var promo=obj as ShopPromoBlockViewModel;
+            if(promo!=null)
+            {
+                var temp = new PromoVMConstructor(promo.Promo, true);
+                NavigateProvider.PromoInfomationScreen().Navigate(temp);
+            }
         }
 
         public async Task AcceptPromo(object obj)
