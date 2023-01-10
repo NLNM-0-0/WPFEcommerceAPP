@@ -1,0 +1,153 @@
+﻿<UserControl x:Class="WPFEcommerceApp.AddAdsDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFEcommerceApp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ControlTemplate 
+            x:Key="MoveThumbTemplate"  
+            TargetType="{x:Type local:MoveThumb}">
+            <Rectangle Fill="Transparent"/>
+        </ControlTemplate>
+        <Style x:Key="CropImageTemplate" TargetType="ContentControl">
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="MinWidth" Value="50"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                            <local:AsyncImage  
+                                Source="{TemplateBinding ContentControl.Content}"
+                                Margin="{TemplateBinding Padding}"
+                                Stretch="UniformToFill"/>
+                            <local:MoveThumb 
+                                Cursor="SizeAll" 
+                                Template="{StaticResource MoveThumbTemplate}"
+                                HeightCanvas="210"
+                                WidthCanvas="700"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel
+        Margin="30"
+        Width="600">
+        <Grid
+            Margin="0 0 0 30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.ColumnSpan="2"
+                Text="Add Advertisement"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                FontFamily="{StaticResource Regular}"
+                FontSize="{StaticResource FontSizeHeadline}"/>
+            <Button
+                x:Name="ButtonClose"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Grid.Column="1"
+                Margin="0 0 10 0"
+                Padding="0"
+                Height="30"
+                Width="30"
+                Background="Transparent"
+                BorderBrush="{StaticResource NotAvailableColorBrush}"
+                BorderThickness="3">
+
+                <fa:ImageAwesome
+                    x:Name="IconButtonClose"
+                    Icon="Close"
+                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                    Width="10"
+                    Height="10"/>
+            </Button>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox
+                    x:Name="TextBoxSource"
+                    Style="{StaticResource TextBoxHintBlackBorder}"
+                    Width="{Binding ElementName=CanvasFrame, Path=ActualWidth}"
+                    VerticalAlignment="Top"
+                    materialDesign:HintAssist.Hint="Source"
+                    Text="{Binding SourceImageAds}"
+                    IsReadOnly="True"
+                    materialDesign:TextFieldAssist.TextBoxViewMargin="0 0 55 0">
+                </TextBox>
+                <Button
+                    Style="{StaticResource TransparentButton}"
+                    Command="{Binding ChangeAdsCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                    Width="40" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Padding="0" Margin="0 0 10 0">
+                    <fa:ImageAwesome
+                        Width="30"
+                        Icon="Folder"/>
+                </Button>
+        </Grid>
+        <ScrollViewer
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Hidden"
+            CanContentScroll="False"
+            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+            <Grid
+                Height="210"
+                Width="600"
+                Background="{StaticResource BoxShadowColorBrush}"
+                Margin="0 30 0 0">
+                <Canvas 
+                    ClipToBounds="True"
+                    SnapsToDevicePixels="True">
+                    <ContentControl
+                        x:Name="content"
+                        Canvas.Left="{Binding CanvasLeft, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Canvas.Top="{Binding CanvasTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Style="{StaticResource CropImageTemplate}"
+                        Width="{Binding WidthImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Height="{Binding HeightImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        Content="{Binding ImageAds, UpdateSourceTrigger=PropertyChanged}">
+                    </ContentControl>
+                </Canvas>
+            </Grid>
+        </ScrollViewer>
+        <Slider
+            Margin="0 30 0 0"
+            Minimum="100"
+            Maximum="500"
+            Style="{StaticResource MaterialDesignDiscreteSlider}"
+            ToolTip="MaterialDesignDiscreteSlider"
+            Value="100"
+            Width="500"
+            Foreground="Black"
+            x:Name="slider"
+            ValueChanged="slider_ValueChanged"/>
+
+        <Button
+            Command="{Binding SaveAdsCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"
+            Width="150"
+            Margin="0 30 0 0"
+            HorizontalAlignment="Right"
+            Content="Save"/>
+    </StackPanel>
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter"
+                    Command="{Binding SaveAdsCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=materialDesign:DialogHost}}"/>
+    </UserControl.InputBindings>
+
+</UserControl>

@@ -17,7 +17,7 @@
         <ScrollViewer CanContentScroll="False"
                         HorizontalScrollBarVisibility="Disabled"
                         VerticalScrollBarVisibility="Disabled">
-            <Image 
+            <local:AsyncImage 
                         Stretch="Fill"
                         Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}"
                         >
@@ -30,7 +30,7 @@
                         </i:InvokeCommandAction>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </Image>
+            </local:AsyncImage>
         </ScrollViewer>
     </Grid>
 </UserControl>
