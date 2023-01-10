@@ -34,7 +34,6 @@ namespace WPFEcommerceApp {
 
 		public ICommand OnReOrder { get; }
 		public ICommand OnCancel { get; }
-        public ICommand OnBack { get; }
 		public ICommand OnViewProduct { get; }
 		public ICommand OnReviewProduct { get; }
 		public ICommand OnVisitShop { get; }
@@ -53,7 +52,7 @@ namespace WPFEcommerceApp {
 			}
 			//OnReOrder = new ReOrderCM(navigationStore, successNavService);
 			ICommand ReOrderCM = new ReOrderCM();
-			OnReOrder = new RelayCommand<object>(p => true, async p => {
+			OnReOrder = new ImmediateCommand<object>(async p => {
 				var view = new ConfirmDialog() {
 					CM = ReOrderCM,
 					Param = p,
@@ -62,7 +61,7 @@ namespace WPFEcommerceApp {
 			});
 
 
-            ICommand CanCelCM = new RelayCommand<object>((p) => true, async (p) => {
+            ICommand CanCelCM = new ImmediateCommand<object>(async (p) => {
 				MainViewModel.IsLoading = true;
 
                 (p as Order).Status = "Cancelled";
@@ -72,7 +71,7 @@ namespace WPFEcommerceApp {
 				MainViewModel.IsLoading = false;
 
 			});
-			OnCancel = new RelayCommand<object>(p => true, async p => {
+			OnCancel = new ImmediateCommand<object>(async p => {
 				var view = new ConfirmDialog() {
 					Header = "Are you sure?",
 					Content = "You will not be able to take this action back.",
@@ -81,24 +80,12 @@ namespace WPFEcommerceApp {
 				};
 				await DialogHost.Show(view, "Main");
 			});
-			OnBack = new RelayCommand<object>(p => true, p => {
-                //Actually I need to handle the tab index
-                //But nahh, we'll do it later
-                var param = OrderDetail.Status == "Processing"
-							? 0
-							: OrderDetail.Status == "Delivering"
-							? 1
-							: OrderDetail.Status == "Delivered"
-							? 2
-							: OrderDetail.Status == "Cancelled"
-							? 3 : 2;
-				NavigateProvider.OrderParamScreen().Navigate(param);
-			});
-			OnViewProduct = new RelayCommand<object>(p => true, async p => {
+
+			OnViewProduct = new ImmediateCommand<object>( async p => {
 				var t = await productRepo.GetSingleAsync(d => d.Id == (p as Product).ID, d => d.Category, d => d.ImageProducts, d => d.Brand);
 				NavigateProvider.ProductDetailScreen().Navigate(t);
             });
-			OnReviewProduct = new RelayCommand<object>(p => true, async p => {
+			OnReviewProduct = new ImmediateCommand<object>(async p => {
                 var t = p as Order;
                 List<ReviewProduct> products = new List<ReviewProduct>();
                 for(int i = 0; i < t.ProductList.Count; i++) {
@@ -114,7 +101,7 @@ namespace WPFEcommerceApp {
                 await DialogHost.Show(view, "Main");
             });
 
-			OnVisitShop = new RelayCommand<object>(p => true, async p => {
+			OnVisitShop = new ImmediateCommand<object>(async p => {
 				var u = await userRepo.GetSingleAsync(d => d.Id == OrderDetail.IDShop);
 				NavigateProvider.ShopViewScreen().Navigate(u);
 			});

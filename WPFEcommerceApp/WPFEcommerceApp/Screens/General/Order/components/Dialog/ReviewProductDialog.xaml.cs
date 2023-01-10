@@ -52,7 +52,7 @@ namespace WPFEcommerceApp {
 
 
         readonly GenericDataRepository<Rating> ratingRepo = new GenericDataRepository<Rating>();
-        readonly GenericDataRepository<OrderInfo> oiRepo = new GenericDataRepository<OrderInfo>();
+        readonly GenericDataRepository<OrderInfo> orderInfoRepo = new GenericDataRepository<OrderInfo>();
 
         public ReviewProductDialog() {
             InitializeComponent();
@@ -65,15 +65,16 @@ namespace WPFEcommerceApp {
                     tmp.Id = id;
                     tmp.DateRating = DateTime.Now;
                     tmp.Rating1 = ProductList[i].Rating;
+                    tmp.Comment = ProductList[i].Comment;
                     await ratingRepo.Add(tmp);
 
-                    var oi = await oiRepo.GetSingleAsync(d => {
+                    var oi = await orderInfoRepo.GetSingleAsync(d => {
                         return d.IdOrder == t[i].IdOrder &&
                         d.IdProduct == t[i].Product.ID;
                     });
 
                     oi.IdRating = id;
-                    await oiRepo.Update(oi);
+                    await orderInfoRepo.Update(oi);
                 }
                 var od = OrderStore.instance.GetOrder(t[0].IdOrder);
                 od.Status = "Completed";

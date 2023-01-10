@@ -22,6 +22,8 @@ using WPFEcommerceApp.Models;
 namespace WPFEcommerceApp {
 	public class CheckoutScreenVM : BaseViewModel {
         private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
+        private readonly GenericDataRepository<Promo> promoRepo = new GenericDataRepository<Promo>();
+
 		private readonly AccountStore _accountStore;
 		private readonly Order _order;
 		public List<Order> ListOrder { get; set; }
@@ -38,7 +40,6 @@ namespace WPFEcommerceApp {
             set { _address = value; OnPropertyChanged(); }
         }
 
-        public Dictionary<string, Promo> VoucherMap { get; set; }
         public List<Promo> ListVoucher { get; set; }
         public double SubTotal {
 			get {
@@ -97,25 +98,22 @@ namespace WPFEcommerceApp {
         public ICommand OnLeftChange { get; set; }
         public ICommand TestFeature { get; set; }
         public ICommand OnOpenPayment { get; set; }
+        public ICommand OnViewConditionVoucher { get; }
         #endregion
 
         public CheckoutScreenVM(
 			Order order = null,
 			List<Order> orders = null) {
 
-            VoucherMap = new Dictionary<string, Promo>();
             ListVoucher = new List<Promo>();
-            for(int i = 0; i < 9; i++) {
-                ListVoucher.Add(new Promo() {
-                    Name = $"Promo {i}",
-                    DateEnd = DateTime.Now,
-                });
-            }
             ListAddress = new Dictionary<string, Address>();
+
             Task.Run(async () => await Load());
+
 			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
 			_order = order;
+
 			if(orders != null)
 				ListOrder = orders;
 			else {
@@ -209,8 +207,18 @@ namespace WPFEcommerceApp {
             //});
             #endregion
             OnEditOrder = new ImmediateCommand<object>(p => {
-				NavigateProvider.BagScreen().Navigate();
+                //NavigateProvider.BagScreen().Navigate();
+                var t1 = SubTotal;
+                var t2 = ShipTotal;
+                var t3 = TotalPayment;
+                var t4 = Discount;
 			});
+            OnViewConditionVoucher = new ImmediateCommand<object>(p => {
+                var dl = new VoucherConditionDialog() {
+                    Data = p as Promo
+                };
+                DialogHost.Show(dl, "Main");
+            });
         }
 
 		public void OnAccountChange() {
@@ -223,16 +231,26 @@ namespace WPFEcommerceApp {
 
         public async Task Load() {
             MainViewModel.IsLoading = true;
+
             var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id);
+            var listVoucher = await promoRepo.GetListAsync(d => d.DateEnd > DateTime.Now);
+
+            foreach(var o in listVoucher) {
+                ListVoucher.Add(o);
+            }
+
             foreach(var o in list) {
                 ListAddress.Add(o.Id, o);
             }
+
             App.Current.Dispatcher.Invoke(() => {
+                OnPropertyChanged(nameof(ListVoucher));
                 OnPropertyChanged(nameof(ListAddress));
                 try {
                     address = ListAddress[CurrentUser.DefaultAddress];
                 } catch { address = null; }
             });
+
             MainViewModel.IsLoading = false;
         }
         private async void PaymentAlertDialog(object p) {

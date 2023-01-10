@@ -61,7 +61,9 @@
                         <Button Style="{StaticResource Pressable}"
                                 Grid.Column="2"
                                 VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
+                                HorizontalAlignment="Center"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CheckoutScreen}, Path=DataContext.OnViewConditionVoucher}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext}">
                             <Label Content="Condition"/>
                         </Button>
                     </Grid>
@@ -84,7 +86,7 @@
                 <ColumnDefinition Width="9*"/>
                 <ColumnDefinition Width="7*"/>
             </Grid.ColumnDefinitions>
-            <!--Left column-->
+            <!--region Left column-->
             <Grid Margin="53 0 0 73" x:Name="LeftColumnContainer">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
                     <StackPanel>
@@ -356,6 +358,8 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
+            <!--#endregion-->
+            
             <!--region Right column-->
             <Grid Grid.Column="1" Margin="67 0 53 73"
                   x:Name="rightColumnContainer">
