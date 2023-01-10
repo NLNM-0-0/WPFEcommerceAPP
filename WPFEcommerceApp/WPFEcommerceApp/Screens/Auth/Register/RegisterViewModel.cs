@@ -4,6 +4,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace WPFEcommerceApp {
         private readonly GenericDataRepository<Models.UserLogin> loginRepo = new GenericDataRepository<Models.UserLogin>();
         private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
 
-
+        #region Shitprop
         private string _name;
         private string _email;
         private string _password;
@@ -29,9 +30,10 @@ namespace WPFEcommerceApp {
         private bool _isMen;
         private bool _isWomen;
         private bool _isCheckAgree;
-        public bool Gt;
-
-        #region Props
+        private string _confirmPassword;
+        public bool Gender;
+        #endregion
+        #region Shit Props2
         public bool IsCheckAgree {
             get => _isCheckAgree;
             set {
@@ -70,7 +72,7 @@ namespace WPFEcommerceApp {
             get => _isMen; set {
                 _isMen = value;
                 if(value) {
-                    Gt = false;
+                    Gender = false;
                 }
             }
         }
@@ -78,7 +80,7 @@ namespace WPFEcommerceApp {
             get => _isWomen; set {
                 _isWomen = value;
                 if(value) {
-                    Gt = true;
+                    Gender = true;
                 }
             }
         }
@@ -88,6 +90,19 @@ namespace WPFEcommerceApp {
                     throw new ArgumentException("*Can not empty");
                 }
                 _password = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ConfirmPassword {
+            get => _confirmPassword; set {
+                if(string.IsNullOrEmpty(value)) {
+                    throw new ArgumentException("*Can not empty");
+                }
+                if(value != _password) {
+                    throw new ArgumentException("*Not the same as Password");
+                }
+                _confirmPassword = value;
                 OnPropertyChanged();
             }
         }
@@ -121,81 +136,131 @@ namespace WPFEcommerceApp {
         }
         #endregion
 
+        public bool isCreated { get; set; }
+        public string ID { get; set; }
+
         public ICommand Regist { get; set; }
-        public async Task<bool> CreateAccount() {
+        public ICommand LoginHandle { get; set; }
+        
+        public RegisterViewModel(string email, string password, string id = null) {
+            try { Email = email; } catch { }
+            try { Password = password; } catch { }
+            isCreated = id != null;
+            if(isCreated) ID = id;
+
+            Regist = new RelayCommand<object>((p) => {
+                if(isCreated) {
+                    return (!string.IsNullOrEmpty(Name) &&
+                    !string.IsNullOrEmpty(Phone) &&
+                    !string.IsNullOrEmpty(Address) &&
+                    (IsMen == true || IsWomen == true));
+                }
+                return (
+                    !string.IsNullOrEmpty(Email) &&
+                    !string.IsNullOrEmpty(ConfirmPassword) &&
+                    !string.IsNullOrEmpty(Password) &&
+                    IsCheckAgree == true);
+            }, (p) => {
+                
+                if(!isCreated) {
+                    var flag = false;
+                    Task task = Task.Run(async () => {
+                        flag = await CreateLogin();
+                    })
+                    .ContinueWith((t) => {
+                        ConfirmDialog dl = null;
+                        if(!flag) {
+                            dl = new ConfirmDialog() {
+                                Header = "Whoops",
+                                Content = "Email already exist, back to Login.",
+                            };
+                        }
+                        else {
+                            isCreated = true;
+                            return;
+                        }
+                        DialogHost.Show(dl, "Regist");
+                        return;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+                else {
+                    var flag = false;
+                    Task task = Task.Run(async () => {
+                        flag = await CreateAccount();
+                    })
+                    .ContinueWith((t) => {
+                        var dl = new ConfirmDialog() {
+                            Header = "Success",
+                            Content = "Back to Login.",
+                            CM = new RelayCommand<object>(pr => true, pr => {
+                                DialogHost.Close("Login");
+                                LoginHandle.Execute(new Tuple<string, string>(Email, Password));
+                            }),
+                            Param = ""
+                        };
+                        if(!flag) {
+                            dl.Header = "Whoops";
+                            dl.Content = "Something is wrong, try again!";
+                        }
+                        DialogHost.Show(dl, "Regist");
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+            });
+        }
+
+        private async Task<bool> CreateLogin() {
             var temp = await loginRepo.GetListAsync(d => d.Username == Email);
             if(temp.Count > 0) return false;
-            
-            string idUser = await GenerateID.Gen(typeof(Models.MUser));
 
+            ID = await GenerateID.Gen(typeof(UserLogin), "IdUser");
             var encrypted = new Hashing().Encrypt(Email, Password);
             try {
-                var addressId = GenerateID.DateTimeID();
-
+                await loginRepo.Add(new UserLogin() {
+                    IdUser = ID,
+                    Password = encrypted,
+                    Username = Email,
+                    Provider = 0
+                });
+            } catch (Exception e){
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+            return true;
+        }
+        public async Task<bool> CreateAccount() {
+            try {
                 var user = new Models.MUser() {
-                    Id = idUser,
+                    Id = ID,
                     Name = Name,
                     Email = Email,
                     PhoneNumber = Phone,
-                    Gender = Gt,
+                    Gender = Gender,
                     Description = "",
                     StatusShop = "NotExist",
                     StatusUser = "NotBanned",
                     Role = "User",
                 };
                 await userRepo.Add(user);
-                await loginRepo.Add(new Models.UserLogin() {
-                    IdUser = idUser,
-                    Password = encrypted,
-                    Username = Email,
-                    Provider = 0
-                });
+
+                var addressId = GenerateID.DateTimeID();
                 Address address = new Address() {
                     Id = addressId,
-                    IdUser = idUser,
+                    IdUser = ID,
                     Name = Name,
                     PhoneNumber = Phone,
                     Address1 = Address,
                     Status = true
                 };
                 await addressRepo.Add(address);
+
                 user.DefaultAddress = addressId;
                 await userRepo.Update(user);
+
             } catch(Exception e) {
                 Debug.WriteLine(e.Message);
                 return false;
             }
             return true;
-        }
-        public RegisterViewModel(string em, string pw) {
-            try { Email = em; } catch { }
-            try { Password = pw; } catch { }
-
-            Regist = new RelayCommand<object>((p) => {
-                return (!string.IsNullOrEmpty(Name)&& !string.IsNullOrEmpty(Email)&& !string.IsNullOrEmpty(Phone)&& !string.IsNullOrEmpty(Address)&& !string.IsNullOrEmpty(Password) && (IsMen == true || IsWomen == true) && IsCheckAgree == true);
-            }, (p) => {
-                var flag = false;
-                Task task = Task.Run(async () => { 
-                    flag = await CreateAccount();
-                })
-                .ContinueWith((t) => {
-                    var dl = new ConfirmDialog() {
-                        Header = "Success",
-                        Content = "Back to Login",
-                        CM = new RelayCommand<object>(pr => true, pr => {
-                            DialogHost.Close("Login");
-                            em = Email;
-                            pw = Password;
-                        }),
-                        Param = ""
-                    };
-                    if(!flag) {
-                        dl.Header = "Whoops";
-                        dl.Content = "Email already exist, back to Login.";
-                    }
-                    DialogHost.Show(dl, "Regist");
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-            });
         }
     }
 }

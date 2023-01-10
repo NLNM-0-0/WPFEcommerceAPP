@@ -6,8 +6,11 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
+             x:Name="Regist"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             d:DesignHeight="900" Width="780">
+             d:DesignHeight="800" Width="780">
+    <UserControl.Resources>
+    </UserControl.Resources>
     <materialDesign:DialogHost  
         CloseOnClickAway="True"
         Identifier="Regist">
@@ -68,6 +71,7 @@
                     </Setter>
                 </Style>
             </StackPanel.Resources>
+            <!--#region Header-->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -109,56 +113,85 @@
                    TextWrapping="Wrap">
 
             </TextBlock>
-            <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
-                    materialDesign:HintAssist.Hint="Email Address"
-                    Width="auto"
-                    Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
-                    HorizontalContentAlignment="Stretch"
-                    Margin="30,20,30,5">
+            <!--#endregion-->
 
-            </TextBox>
+            <!--#region Regist field-->
+            <StackPanel Visibility="{Binding ElementName=Regist, Path=DataContext.isCreated, Converter={StaticResource InverseBoolToVisConverter}}">
+                <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Email Address"
+                        Width="auto"
+                        Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                        HorizontalContentAlignment="Stretch"
+                        Margin="30,20,30,5">
 
-            <PasswordBox
-                    x:Name="Password"
-                    materialDesign:PasswordBoxAssist.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                    Style="{StaticResource PasswordOutlinedReveal}"            
-                    materialDesign:HintAssist.Hint="Password"
-                    materialDesign:TextFieldAssist.HasClearButton="True"
-                    Width="auto"
-                    Margin="30,20,30,5"
-                    HorizontalContentAlignment="Stretch"
-                    materialDesign:HintAssist.HelperText=""/>
-            <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
-                    materialDesign:HintAssist.Hint="Phone Number"
-                    Width="auto"
-                    Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                    HorizontalContentAlignment="Stretch"
-                    Margin="30,20,30,5">
+                </TextBox>
 
-            </TextBox>
-            <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                <PasswordBox
+                        x:Name="Password"
+                        materialDesign:PasswordBoxAssist.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                        Style="{StaticResource PasswordOutlinedReveal}"            
+                        materialDesign:HintAssist.Hint="Password"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        Width="auto"
+                        Margin="30,20,30,5"
+                        HorizontalContentAlignment="Stretch"
+                        materialDesign:HintAssist.HelperText=""/>
+
+                <PasswordBox
+                        x:Name="ConfirmPassword"
+                        materialDesign:PasswordBoxAssist.Password="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                        Style="{StaticResource PasswordOutlinedReveal}"            
+                        materialDesign:HintAssist.Hint="Confirm Password"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        Width="auto"
+                        Margin="30,20,30,5"
+                        HorizontalContentAlignment="Stretch"
+                        materialDesign:HintAssist.HelperText=""/>
+
+                <CheckBox
+                    Margin="30 30 0 15"
+                    IsChecked="{Binding IsCheckAgree}"
+                    Content="Agree to WANO's Privacy Policy and Terms of Use"
+                    FontSize="15"
+                    Background="{StaticResource BlackColorBrush}"/>
+            </StackPanel>
+            <!--#endregion-->
+
+            <!--#region Infor field-->
+            <StackPanel Visibility="{Binding ElementName=Regist, Path=DataContext.isCreated, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Your name"
                     Width="auto"
                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,5">
 
-            </TextBox>
-            <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                </TextBox>
+                
+                <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Phone Number"
+                    Width="auto"
+                    Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="30,20,30,5">
+
+                </TextBox>
+                
+                <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Address"
                     Width="auto"
                     Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,10">
 
-            </TextBox>
-            <Grid
+                </TextBox>
+                <Grid
              Margin="30,0,30,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <RadioButton
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton
                 Grid.Column="0"
                 Style="{StaticResource RadioButtonGender}"
                 Margin="30,20,30,0"
@@ -166,20 +199,17 @@
                 Width="auto"
                 IsChecked="{Binding IsMen}"
                 HorizontalAlignment="Stretch"/>
-                <RadioButton
+                    <RadioButton
                 Grid.Column="1"
                 Style="{StaticResource RadioButtonGender}"
                 Margin="30,20,30,0"
                 IsChecked="{Binding IsWomen}"
                 Content="Female" />
-            </Grid>
-            <CheckBox
-            Margin="30 30 0 15"
-            IsChecked="{Binding IsCheckAgree}"
-            Content="Agree to WANO's Privacy Policy and Terms of Use"
-            FontSize="15"
-            Background="{StaticResource BlackColorBrush}"/>
+                </Grid>
                 
+            </StackPanel>
+
+            <!--#endregion-->
             <Button Width="auto"
                 Margin="30"
                 Content="Register"

@@ -207,12 +207,8 @@ namespace WPFEcommerceApp {
             //});
             #endregion
             OnEditOrder = new ImmediateCommand<object>(p => {
-                //NavigateProvider.BagScreen().Navigate();
-                var t1 = SubTotal;
-                var t2 = ShipTotal;
-                var t3 = TotalPayment;
-                var t4 = Discount;
-			});
+                NavigateProvider.BagScreen().Navigate();
+            });
             OnViewConditionVoucher = new ImmediateCommand<object>(p => {
                 var dl = new VoucherConditionDialog() {
                     Data = p as Promo

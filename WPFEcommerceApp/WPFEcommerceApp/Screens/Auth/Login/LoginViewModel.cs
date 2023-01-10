@@ -55,8 +55,16 @@ namespace WPFEcommerceApp {
             });
 
             OnSignUp = new ImmediateCommand<object>(p => {
+                string id = null;
+                if(!string.IsNullOrEmpty(p as string)) id = p as string;
                 Register register = new Register() {
-                    DataContext = new RegisterViewModel(Username, Password)
+                    DataContext = new RegisterViewModel(Username, Password, id) {
+                        LoginHandle = new ImmediateCommand<object>(t => {
+                            var temp = t as Tuple<string, string>;
+                            Username = temp.Item1;
+                            Password = temp.Item2;
+                        }),
+                    }
                 };
                 DialogHost.Show(register, "Login");
             });
@@ -116,9 +124,11 @@ namespace WPFEcommerceApp {
                         //handle here
                     }
                     var check = await loginRepo.GetSingleAsync(d => d.IdUser == ins1["sub"]);
+
                     if(check == null) {
                         await CreateAccount(ins1);
                     }
+
                     var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1);
                     IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
@@ -155,8 +165,13 @@ namespace WPFEcommerceApp {
                     Convert.ToDateTime(birthday);
                 } catch { flag = false; }
 
-                var addressId = GenerateID.DateTimeID();
-                
+                await loginRepo.Add(new Models.UserLogin() {
+                    IdUser = user["sub"],
+                    Password = null,
+                    Username = user["email"],
+                    Provider = 1
+                });
+
                 var us = new Models.MUser() {
                     Id = user["sub"],
                     Name = user["name"],
@@ -171,26 +186,8 @@ namespace WPFEcommerceApp {
                     Role = "User"
                 };
                 if(flag) us.DOB = Convert.ToDateTime(birthday);
-
                 await userRepo.Add(us);
-                await loginRepo.Add(new Models.UserLogin() {
-                    IdUser = user["sub"],
-                    Password = null,
-                    Username = user["email"],
-                    Provider = 1
-                });
 
-                Address address = new Address() {
-                    Id = addressId,
-                    IdUser = user["sub"],
-                    Name = user["name"],
-                    PhoneNumber = phoneNumber,
-                    Address1 = "",
-                    Status = true,
-                };
-                await addressRepo.Add(address);
-                us.DefaultAddress = addressId;
-                await userRepo.Update(us);
             } catch(Exception e) {
                 Debug.WriteLine(e.Message);
                 return false;
@@ -219,7 +216,13 @@ namespace WPFEcommerceApp {
                 x => (x.Username == username
                 && x.Password == encode),
                 x => x.MUser);
-            if(acc != null && acc.MUser.StatusUser != "Banned") {
+
+            if(acc != null && acc.MUser == null) {
+                OnSignUp.Execute(acc.IdUser);
+                return false;
+            }
+
+            if(acc != null && acc.MUser.StatusUser != "Banned" && acc.Provider != 1) {
                 var userRepo = new GenericDataRepository<MUser>();
                 var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1);
                 AccountStore.instance.CurrentAccount = user;
