@@ -122,6 +122,8 @@ namespace WPFEcommerceApp {
             temp.ShipTotal = (int)p.ShipTotal;
             temp.DateBegin = p.DateBegin;
             temp.DateEnd = p.DateEnd;
+			temp.Promo = p.Promo;
+			temp.AddressIndex = p.AddressIndex;
             temp.OrderTotal = (int)p.OrderTotal;
             temp.Status = p.Status;
 			temp.ShippingSpeedMethod = p.ShippingSpeedMethod;

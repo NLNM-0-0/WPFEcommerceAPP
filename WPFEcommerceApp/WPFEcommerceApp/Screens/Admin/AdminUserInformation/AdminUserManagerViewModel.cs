@@ -248,8 +248,9 @@ namespace WPFEcommerceApp
             if (user == null)
                 return false;
 
+            //VHCMT => Bỏ address
             if (string.IsNullOrEmpty(user.Name) || string.IsNullOrEmpty(user.PhoneNumber) ||
-                string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Address) ||
+                string.IsNullOrEmpty(user.Email) ||
                 string.IsNullOrEmpty(Role))
                 return false;
 

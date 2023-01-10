@@ -138,7 +138,6 @@ namespace WPFEcommerceApp {
                     Email = Email,
                     PhoneNumber = Phone,
                     Gender = Gt,
-                    Address = Address,
                     Description = "",
                     StatusShop = "NotExist",
                     StatusUser = "NotBanned",

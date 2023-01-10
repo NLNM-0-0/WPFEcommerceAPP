@@ -43,6 +43,7 @@ namespace WPFEcommerceApp {
                         for(int i = 0; i < ListAddress.Count; i++) {
                             if(ListAddress[i].Id == (o as Address).Id) {
                                 ListAddress[i] = o as Address;
+                                SelectedItem = o as Address;
                                 break;
                             }
                         }
