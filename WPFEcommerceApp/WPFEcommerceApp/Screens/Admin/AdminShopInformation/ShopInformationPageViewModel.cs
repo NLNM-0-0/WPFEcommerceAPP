@@ -232,7 +232,8 @@ namespace WPFEcommerceApp
                     SourceImageAva = item.MUser.SourceImageAva,
                     Email = item.MUser.Email,
                     PhoneNumber = item.MUser.PhoneNumber,
-                    Address = item.MUser.Address
+                    //VHCMT => Bỏ address
+                    //Address = item.MUser.Address
                 }));
         }
 

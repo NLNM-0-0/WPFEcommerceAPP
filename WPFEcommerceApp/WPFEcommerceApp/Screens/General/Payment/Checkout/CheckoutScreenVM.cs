@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -147,6 +148,8 @@ namespace WPFEcommerceApp {
                     order.ShippingSpeedMethod = 0;
                 }
                 else order.ShippingSpeedMethod = 1;
+                order.Promo = PromoChoosen?.Id;
+                order.AddressIndex = address.Id;
                 PaymentAlertDialog(order);
 			});
             OnEditAddress = new ImmediateCommand<object>((p) => {

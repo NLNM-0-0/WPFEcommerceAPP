@@ -57,6 +57,8 @@ namespace WPFEcommerceApp {
             ProductList = o.ProductList;
             DateBegin = o.DateBegin;
             DateEnd = o.DateEnd;
+            Promo = o.Promo;
+            AddressIndex = o.AddressIndex;
             SubTotal = o.SubTotal;
             Discount = o.Discount;
             OrderTotal = o.OrderTotal;
@@ -73,6 +75,8 @@ namespace WPFEcommerceApp {
         public List<Product> ProductList { get; set; }
         public Nullable<DateTime> DateBegin { get; set; }
         public Nullable<DateTime> DateEnd { get; set; }
+        public string Promo { get; set; }
+        public string AddressIndex { get; set; }
         public double SubTotal { get; set; }
         public double Discount { get; set; }
         public double OrderTotal { get; set; }

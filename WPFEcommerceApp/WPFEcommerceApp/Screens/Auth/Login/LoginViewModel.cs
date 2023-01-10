@@ -165,7 +165,6 @@ namespace WPFEcommerceApp {
                     Gender = gender == "Male" ? false : true,
                     SourceImageAva = user["picture"],
                     SourceImageBackground = cover,
-                    Address = "",
                     Description = "",
                     StatusShop = "NotExist",
                     StatusUser = "NotBanned",
