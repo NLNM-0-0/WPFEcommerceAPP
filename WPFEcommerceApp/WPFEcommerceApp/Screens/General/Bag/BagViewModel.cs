@@ -111,7 +111,7 @@ namespace WPFEcommerceApp
                 {
                     if (b.IsChecked == true)
                     {
-                        total += b.Price * b.Amount;
+                        total += b.UnitPrice * b.Amount;
                     }
                 }
                 return total;
