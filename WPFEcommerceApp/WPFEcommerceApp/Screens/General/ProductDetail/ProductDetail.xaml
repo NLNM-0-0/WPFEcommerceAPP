@@ -168,8 +168,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel
                 Background="{StaticResource BackgroundColorBrush}">
-                <Grid
-                        Background="Aqua">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition Width="7*"></ColumnDefinition>
@@ -179,8 +178,8 @@
                         <local:AsyncImage
                                 Source="{Binding SelectedImage}"
                                 Margin="20,30,20,0"
-                                Width="650"
-                                Height="450">
+                                Width="750"
+                                Height="500">
 
                         </local:AsyncImage>
 
@@ -548,7 +547,7 @@
                 </Grid>
                 <Grid Margin="0,0,0,20">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="auto"/>
@@ -556,7 +555,9 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Rating"
                                        FontWeight="Normal"
+                               Margin="0 0 10 0"
                                        VerticalAlignment="Center"
+                                       Visibility="{i:Binding 'RatingTimes > 0'}"
                                        FontSize="{StaticResource FontSizeHeadline3}"
                                        Foreground="{StaticResource BlackColorBrush}">
 
@@ -565,12 +566,13 @@
                             Grid.Column="1"
                             Margin="0,7,0,0">
                             <TextBlock
+                                Margin="0 0 0 6"
                                 Text="No rating yet"
                                 Visibility="{i:Binding 'RatingTimes == 0'}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                FontSize="{StaticResource FontSizeDescription}"
-                                FontFamily="{StaticResource Medium}"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontWeight="Light"
                                 Foreground="{StaticResource NotAvailableColorBrush}"/>
                             <materialDesign:PackIcon
                                 Kind="StarHalfFull"
