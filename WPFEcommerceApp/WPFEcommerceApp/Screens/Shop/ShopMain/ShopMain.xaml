@@ -28,12 +28,12 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Grid
-            Grid.Row="0"
-            Margin="0 0 0 30"
-            Height="160">
+                    Grid.Row="0"
+                    Margin="0 0 0 30"
+                    Height="200">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1100"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Border
                     x:Name="MainBorder"
@@ -47,19 +47,17 @@
                             <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
                         </Border.OpacityMask>
                         <Grid>
-                            <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="False">
-                                <local:AsyncImage
-                                    Stretch="Fill"
+                            <local:AsyncImage
+                                    Stretch="UniformToFill"
                                     Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
                                     Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
                                     ScrollViewer.CanContentScroll="True">
-                                    <local:AsyncImage.OpacityMask>
-                                        <VisualBrush 
+                                <local:AsyncImage.OpacityMask>
+                                    <VisualBrush 
                                             Visual="{Binding ElementName=MainBorder}" 
                                             RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    </local:AsyncImage.OpacityMask>
-                                </local:AsyncImage>
-                            </ScrollViewer>
+                                </local:AsyncImage.OpacityMask>
+                            </local:AsyncImage>
                             <Border
                                 Background="{StaticResource BlackColorBrush}"
                                 Opacity="0.5"/>
@@ -115,6 +113,9 @@
                                 </TextBlock>
                             </Grid>
                             <Grid
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Margin="0 10 0 0"
                                 Grid.Row="1">
                                 <TextBlock
                                     x:Name="descriptionTextBox"
@@ -124,7 +125,7 @@
                                     TextTrimming="WordEllipsis"
                                     FontSize="{StaticResource FontSizeText}"
                                     HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
+                                    VerticalAlignment="Top"
                                     Foreground="{StaticResource WhiteColorBrush}"/>
                             </Grid>
                         </Grid>
@@ -137,7 +138,7 @@
                             VerticalAlignment="Top"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
-                            Foreground="#1290FF"
+                            Foreground="#4B8CDE"
                             FontSize="{StaticResource FontSizeHeadline3}">
                             <StackPanel 
                                 VerticalAlignment="Center"
@@ -156,52 +157,86 @@
                         </Button>
                     </Grid>
 
-
-                    <StackPanel 
+                    
+                    <Grid 
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Margin="30 0">
-                        <StackPanel
-                            Margin="0 0 0 30"
-                            VerticalAlignment="Stretch"
-                            Orientation="Horizontal">
+                        HorizontalAlignment="Stretch"
+                        Margin="50 0"
+                        x:Name="grid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
                             <fa:FontAwesome Icon="ShoppingCart"
                                 Margin="0 0 10 0"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
                                 FontSize="{StaticResource FontSizeHeadline2}"
                                 VerticalAlignment="Center"/>
                             <TextBlock
                                 VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Grid.Column="1"
                                 FontSize="{StaticResource FontSizeHeadline3}"
                                 Text="Product:"/>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="{StaticResource FontSizeHeadline3}"
-                                FontWeight="Bold"
-                                Margin="20 0 0 0"
-                                Text="{c:Binding AllProducts.Count}"/>
-                        </StackPanel>
-                        <StackPanel
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Left"
-                            Orientation="Horizontal">
-                            <fa:FontAwesome
-                                Icon="Star"
+                            <Border
+                                Grid.Column="3"
+                                HorizontalAlignment="Stretch">
+                                <TextBlock
+                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    FontSize="{StaticResource FontSizeHeadline3}"
+                                    FontWeight="Bold"
+                                    Margin="20 0 0 0"
+                                    Text="{c:Binding AllProducts.Count}"/>
+                            </Border>
+                        </Grid>
+                        <Grid
+                            Grid.Row="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <fa:FontAwesome Icon="Star"
                                 Margin="0 0 10 0"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
                                 FontSize="{StaticResource FontSizeHeadline2}"
                                 VerticalAlignment="Center"/>
                             <TextBlock
                                 VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Grid.Column="1"
                                 FontSize="{StaticResource FontSizeHeadline3}"
                                 Text="Rating:"/>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="{StaticResource FontSizeHeadline3}"
-                                FontWeight="Bold"
-                                Margin="20 0 0 0"
-                                Text="{Binding AverageRating}"/>
-                        </StackPanel>
-                    </StackPanel>
+                            <Border
+                                Grid.Column="3"
+                                HorizontalAlignment="Stretch">
+                                <TextBlock
+                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    FontSize="{StaticResource FontSizeHeadline3}"
+                                    FontWeight="Bold"
+                                    Margin="20 0 0 0"
+                                    Text="{c:Binding AverageRating}"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <StackPanel
                     Margin="50 30 50 0"
@@ -275,7 +310,7 @@
             PreviewMouseWheel="Scroll_PreviewMouseWheel">
             <Grid
                 x:Name="categoryGrid"
-                Canvas.Top="190"
+                Canvas.Top="230"
                 ScrollViewer.CanContentScroll="False"
                 Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}">
                 <Grid.ColumnDefinitions>

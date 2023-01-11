@@ -35,34 +35,34 @@ namespace WPFEcommerceApp
                 }
                 (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage *= ratio;
                 (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage *= ratio;
-                if (Canvas.GetLeft(content) * ratio - 260 * (ratio - 1) > 0)
+                if (Canvas.GetLeft(content) * ratio - 425 * (ratio - 1) > 0)
                 {
                     Canvas.SetLeft(content, 0);
                 }
                 else
                 {
-                    if (Canvas.GetLeft(content) * ratio - 260 * (ratio - 1) < 520 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage)
+                    if (Canvas.GetLeft(content) * ratio - 425 * (ratio - 1) < 850 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage)
                     {
-                        Canvas.SetLeft(content, 520 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage);
+                        Canvas.SetLeft(content, 425 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage);
                     }
                     else
                     {
-                        Canvas.SetLeft(content, Canvas.GetLeft(content) * ratio - 260 * (ratio - 1));
+                        Canvas.SetLeft(content, Canvas.GetLeft(content) * ratio - 425 * (ratio - 1));
                     }
                 }
-                if (Canvas.GetTop(content) * ratio - 65 * (ratio - 1) > 0)
+                if (Canvas.GetTop(content) * ratio - 85 * (ratio - 1) > 0)
                 {
                     Canvas.SetTop(content, 0);
                 }
                 else
                 {
-                    if (Canvas.GetTop(content) * ratio - 65 * (ratio - 1) < 130 - (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage)
+                    if (Canvas.GetTop(content) * ratio - 85 * (ratio - 1) < 170 - (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage)
                     {
-                        Canvas.SetTop(content, 130 - (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage);
+                        Canvas.SetTop(content, 170 - (DataContext as ProfileShopBackgroundDialogViewModel).HeightImage);
                     }
                     else
                     {
-                        Canvas.SetTop(content, Canvas.GetTop(content) * ratio - 65 * (ratio - 1));
+                        Canvas.SetTop(content, Canvas.GetTop(content) * ratio - 85 * (ratio - 1));
                     }
                 }
             }

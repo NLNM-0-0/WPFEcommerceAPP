@@ -15,12 +15,12 @@
         CloseOnClickAway="True"
         CloseOnClickAwayParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
         <Grid
-            Width="850">
+            Width="900">
             <Grid.Resources>
                 <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
             </Grid.Resources>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="170"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid
@@ -32,7 +32,7 @@
                 </Grid.ColumnDefinitions>
                 <Border
                     x:Name="MainBorder"
-                    MaxHeight="200"
+                    MaxHeight="170"
                     CornerRadius="0 0 30 0"
                     ClipToBounds="True"
                     Background="{StaticResource BoxShadowColorBrush}">
@@ -48,7 +48,7 @@
                             CanContentScroll="False">
                             <local:AsyncImage 
                                 Stretch="UniformToFill"
-                                Height="200"
+                                Height="170"
                                 Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
                                 ScrollViewer.CanContentScroll="True">
                                 <local:AsyncImage.OpacityMask>
@@ -63,7 +63,7 @@
                     </Grid>
                 </Border>
                 <Grid
-                    Margin="30 20"
+                    Margin="30 15 30 5"
                     HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -89,7 +89,7 @@
                             Margin="0 0 0 5"
                             FontSize="{StaticResource FontSizeDescription}"
                             Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
-                            Foreground="#1290FF">
+                            Foreground="#4B8CDE">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome
@@ -140,7 +140,7 @@
                             HorizontalAlignment="Center"
                             FontSize="{StaticResource FontSizeDescription}"
                             Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
-                            Foreground="#1290FF">
+                            Foreground="#4B8CDE">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome
@@ -160,18 +160,39 @@
                     <Grid
                         Grid.Column="2"
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Stretch"
                         Margin="0 20">
-                        <TextBlock
-                            x:Name="nameTextBlock"
-                            MaxHeight="120"
-                            Text="{Binding ElementName=nameTextBox, Path=Text}"
-                            FontFamily="{StaticResource Bold}"
-                            FontSize="{StaticResource FontSizeHeadline2}"
-                            HorizontalAlignment="Left"
-                            TextWrapping="Wrap"
-                            TextTrimming="WordEllipsis"
-                            Foreground="{StaticResource WhiteColorBrush}"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border
+                            Grid.Row="0"
+                            VerticalAlignment="Stretch">
+                            <TextBlock
+                                x:Name="nameTextBlock"
+                                MaxHeight="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualHeight}"
+                                FontFamily="{StaticResource Bold}"
+                                Text="{Binding ElementName=nameTextBox, Path=Text}"
+                                FontSize="{StaticResource FontSizeHeadline2}"
+                                HorizontalAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                Foreground="{StaticResource WhiteColorBrush}"/>
+                        </Border>
+                        <Border
+                            Grid.Row="2"
+                            VerticalAlignment="Stretch">
+                            <TextBlock
+                                MaxHeight="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualHeight}"
+                                Text="{Binding Shop.Description, UpdateSourceTrigger=PropertyChanged}"
+                                FontFamily="{StaticResource Bold}"
+                                FontSize="{StaticResource FontSizeText}"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                TextTrimming="CharacterEllipsis"
+                                Foreground="{StaticResource WhiteColorBrush}"/>
+                        </Border>
                     </Grid>
                 </Grid>
             </Grid>
@@ -196,8 +217,6 @@
                             <RowDefinition/>
                             <RowDefinition Height="30"/>
                             <RowDefinition/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBox
                             x:Name="nameTextBox"
@@ -208,31 +227,10 @@
                             VerticalAlignment="Center"
                             IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="100">
+                            MaxLength="200">
                             <TextBox.Text>
                                 <Binding
                                     Path="Shop.Name"
-                                    UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <local:NotEmptyValidationRule
-                                            ValidatesOnTargetUpdated="True"/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
-                        <TextBox
-                            x:Name="phoneTextBox"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
-                            materialDesign:HintAssist.Hint="Phone number"
-                            Grid.Row="2"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="11">
-                            <TextBox.Text>
-                                <Binding
-                                    Path="Shop.PhoneNumber"
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NotEmptyValidationRule
@@ -247,8 +245,11 @@
                             Width="auto"
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Email"
-                            Grid.Row="4"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}">
+                            Grid.Row="2"
+                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
+                            MaxLength="200"
+                            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                            IsEnabled="{i:Binding '!IsGGAccount', UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.Text>
                                 <Binding
                                     Path="Shop.Email"
@@ -262,43 +263,18 @@
                         </TextBox>
                     </Grid>
                     <Grid 
-                        Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        Grid.Column="2"
+                        VerticalAlignment="Stretch">
                         <TextBox
                             x:Name="addressTextBox"
                             Style="{StaticResource TextBoxHintWrapText}"
                             Width="auto"
-                            Height="100"
-                            materialDesign:HintAssist.Hint="Address"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}">
-                            <TextBox.Text>
-                                <Binding
-                                    Path="Shop.Address"
-                                    UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <local:NotEmptyValidationRule
-                                            ValidatesOnTargetUpdated="True"/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
-                        <TextBox
-                            x:Name="descriptionTextBox"
-                            Style="{StaticResource TextBoxHintWrapText}"
-                            Height="100"
-                            Width="auto"
                             materialDesign:HintAssist.Hint="Description"
-                            Grid.Row="2"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="200">
+                            Grid.Row="0"
+                            Height="150"
+                            MaxLength="1000"
+                            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}">
                             <TextBox.Text>
                                 <Binding
                                     Path="Shop.Description"
@@ -311,7 +287,6 @@
                             </TextBox.Text>
                         </TextBox>
                     </Grid>
-
                 </Grid>
                 <Grid
                     Grid.Row="1">
@@ -338,9 +313,7 @@
                         <Button.IsEnabled>
                             <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
                                 <Binding ElementName="nameTextBox" Path="(Validation.HasError)"/>
-                                <Binding ElementName="phoneTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="emailTextBox" Path="(Validation.HasError)"/>
-                                <Binding ElementName="addressTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="EditButton" Path="IsEnabled"/>
                             </MultiBinding>

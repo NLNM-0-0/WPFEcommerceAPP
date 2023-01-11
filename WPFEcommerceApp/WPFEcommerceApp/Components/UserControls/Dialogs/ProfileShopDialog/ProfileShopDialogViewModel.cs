@@ -85,12 +85,32 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private bool isGGAccount = false;
+        public bool IsGGAccount
+        {
+            get => isGGAccount;
+            set
+            {
+                isGGAccount = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isChangedAva = false;
+        private bool isChangedBackground = false;
         public ProfileShopDialogViewModel()
         {
             Task.Run(async () =>
             {
                 await LoadTempData();
             }).Wait();
+            if(Shop.UserLogin.Provider == 1)
+            {
+                IsGGAccount = true;
+            }    
+            else
+            {
+                IsGGAccount = false;
+            }
             if (Shop == null || string.IsNullOrEmpty(Shop.SourceImageAva))
             {
                 ImageAva = new CroppedBitmap(new BitmapImage(new Uri(Properties.Resources.DefaultShopAvaImage)), new Int32Rect(0, 0, 0, 0));
@@ -130,6 +150,9 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = true;
                 IsEditing = false;
                 await SaveImage();
+                Shop.Email = Shop.Email.Trim();
+                Shop.Name = Shop.Name.Trim();
+                Shop.Description = Shop.Description.Trim();
                 await AccountStore.instance.Update(Shop);
                 await LoadTempData();
                 MainViewModel.IsLoading = false;
@@ -160,46 +183,59 @@ namespace WPFEcommerceApp
             if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
                 ImageBackground = (eventArgs.Parameter as CroppedBitmap);
+                isChangedBackground = true;
             }
             
         }
+
         private void LoadAva(object sender, DialogClosedEventArgs eventArgs)
         {
             OnPropertyChanged(nameof(Shop));
             if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
                 ImageAva = (eventArgs.Parameter as CroppedBitmap);
+                isChangedAva = true;
             }
         }
 
         public async Task LoadTempData()
         {
-            Shop = await userRepository.GetSingleAsync(u => u.Id == AccountStore.instance.CurrentAccount.Id);
+            Shop = await userRepository.GetSingleAsync(u => u.Id == AccountStore.instance.CurrentAccount.Id, 
+                                                        u => u.UserLogin);
         }
         public async Task SaveImage()
         {
-            Models.MUser mUser = await userRepository.GetSingleAsync(p => p.Id == Shop.Id);
-            string link;
+            if (isChangedAva || isChangedBackground)
+            {
+                Models.MUser mUser = await userRepository.GetSingleAsync(p => p.Id == Shop.Id);
+                string link;
 
-            if (String.IsNullOrEmpty(mUser.SourceImageBackground) || mUser.SourceImageBackground.Contains("https://firebasestorage.googleapis.com"))
-            {
-                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}", mUser.SourceImageBackground);
-            }
-            else
-            {
-                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}");
-            }    
-            Shop.SourceImageBackground = link;
+                if (isChangedBackground)
+                {
+                    if (String.IsNullOrEmpty(mUser.SourceImageBackground) || mUser.SourceImageBackground.Contains("https://firebasestorage.googleapis.com"))
+                    {
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}", mUser.SourceImageBackground);
+                    }
+                    else
+                    {
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}");
+                    }
+                    Shop.SourceImageBackground = link;
+                }
 
-            if (String.IsNullOrEmpty(mUser.SourceImageAva) || mUser.SourceImageAva.Contains("https://firebasestorage.googleapis.com"))
-            {
-                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}", mUser.SourceImageAva);
+                if (isChangedAva)
+                {
+                    if (String.IsNullOrEmpty(mUser.SourceImageAva) || mUser.SourceImageAva.Contains("https://firebasestorage.googleapis.com"))
+                    {
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}", mUser.SourceImageAva);
+                    }
+                    else
+                    {
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}");
+                    }
+                    Shop.SourceImageAva = link;
+                }   
             }
-            else
-            {
-                link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}");
-            }
-            Shop.SourceImageAva = link;
         }
     }
 }

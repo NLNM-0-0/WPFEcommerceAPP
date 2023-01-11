@@ -255,7 +255,15 @@ namespace WPFEcommerceApp
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
                     double offset = (double)scrollViewer.VerticalOffset;
-                    if (offset < heightNewProducts + 190)
+                    if(offset + scrollViewer.ViewportHeight == scrollViewer.ExtentHeight)
+                    {
+                        IsAllProductsCheck = true;
+                        if (AllProductBlock == null || AllProductBlock.FullProducts.Count == 0)
+                        {
+                            IsAllProductsCheck = false;
+                        }
+                    }    
+                    else if (offset < heightNewProducts + 230)
                     {
                         IsNewProductsCheck = true;
                         if (NewProductBlock == null || NewProductBlock.FullProducts.Count == 0)
@@ -263,7 +271,7 @@ namespace WPFEcommerceApp
                             IsNewProductsCheck = false;
                         }
                     }
-                    else if (offset < heightNewProducts + heightBestSellerProducts + 190)
+                    else if (offset < heightNewProducts + heightBestSellerProducts + 230)
                     {
                         IsBestSellerProductsCheck = true;
                         if (BestSellerProductBlock == null || BestSellerProductBlock.FullProducts.Count == 0)
@@ -271,7 +279,7 @@ namespace WPFEcommerceApp
                             IsBestSellerProductsCheck = false;
                         }
                     }
-                    else if (offset < heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 190)
+                    else if (offset < heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 230)
                     {
                         IsFavoriteProductsCheck = true;
                         if (FavoriteProductBlock == null || FavoriteProductBlock.FullProducts.Count == 0)
@@ -291,22 +299,22 @@ namespace WPFEcommerceApp
                 MoveToNewProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
-                    scrollViewer.ScrollToVerticalOffset(190);
+                    scrollViewer.ScrollToVerticalOffset(230);
                 });
                 MoveToBestSellerProducts = new RelayCommand<object>((p) => { return true; }, p =>
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
-                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + 190 );
+                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + 230);
                 });
                 MoveToFavoriteProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
-                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + 190);
+                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + 230);
                 });
                 MoveToAllProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
-                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 190);
+                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 230);
                 });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {

@@ -39,18 +39,18 @@ namespace WPFEcommerceApp
             set
             {
                 imageBackground = value;
-                if (imageBackground.Height * 4 >= imageBackground.Width)
+                if (imageBackground.Height * 5 >= imageBackground.Width)
                 {
-                    WidthImage = 520;
-                    HeightImage = imageBackground.Height * 520 / imageBackground.Width;
+                    WidthImage = 850;
+                    HeightImage = imageBackground.Height * 850 / imageBackground.Width;
                     CanvasLeft = 0;
-                    CanvasTop = - (HeightImage - 130) / 2;
+                    CanvasTop = - (HeightImage - 170) / 2;
                 }
                 else
                 {
-                    HeightImage = 130;
-                    WidthImage = imageBackground.Width * 130 / imageBackground.Height;
-                    CanvasLeft = -(WidthImage - 520) / 2;
+                    HeightImage = 170;
+                    WidthImage = imageBackground.Width * 170 / imageBackground.Height;
+                    CanvasLeft = -(WidthImage - 850) / 2;
                     CanvasTop = 0;
                 }
                 OnPropertyChanged();
@@ -120,8 +120,8 @@ namespace WPFEcommerceApp
                 CroppedBitmap temp = new CroppedBitmap(ImageBackground, new System.Windows.Int32Rect(
                     (int)Math.Round((Math.Abs(CanvasLeft)) * ratio),
                     (int)Math.Round((Math.Abs(canvasTop)) * ratio),
-                    (int)Math.Round(520 * ratio),
-                    (int)Math.Round(130 * ratio)));
+                    (int)Math.Round(850 * ratio),
+                    (int)Math.Round(170 * ratio)));
 
                 ImageBackground = temp;
                 croppedBitmap = temp;
