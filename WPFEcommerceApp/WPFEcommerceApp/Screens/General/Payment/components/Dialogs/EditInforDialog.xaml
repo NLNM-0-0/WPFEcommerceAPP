@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:WPFEcommerceApp"
+             x:Name="EditDialog"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
@@ -40,7 +41,10 @@
                          Width="auto"
                          materialDesign:HintAssist.Hint="Name"
                          materialDesign:HintAssist.IsFloating="False"
-                         Text="{Binding address.Name}">
+                         Text="{Binding ElementName=EditDialog, Path=DataContext.Name,
+                                UpdateSourceTrigger=PropertyChanged,
+                                Mode=TwoWay, 
+                                ValidatesOnExceptions=True}">
                 </TextBox>
 
                 <Label Content="Phone" FontSize="{StaticResource FontSizeHeadline3}" Margin="0, 19, 0, 10"/>
@@ -51,14 +55,11 @@
                          Height="55"
                          Width="auto"
                          materialDesign:HintAssist.Hint="Phone"
-                         materialDesign:HintAssist.IsFloating="False">
-                    <TextBox.Text>
-                        <Binding Path="address.PhoneNumber" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <local:PhoneValidateRule ValidatesOnTargetUpdated="True"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
+                         materialDesign:HintAssist.IsFloating="False"
+                    Text="{Binding ElementName=EditDialog, Path=DataContext.Phone, 
+                            UpdateSourceTrigger=PropertyChanged,
+                            Mode=TwoWay, 
+                            ValidatesOnExceptions=True}">
                     <i:Interaction.Triggers>
                         <i:DataTrigger Binding="{Binding ElementName=phoneBox, Path=(Validation.HasError)}" Value="True">
                             <i:ChangePropertyAction TargetName="lel" PropertyName="IsEnabled" Value="False"/>
@@ -78,9 +79,19 @@
                          materialDesign:HintAssist.IsFloating="False"
                          materialDesign:HintAssist.Hint="Address"
                          TextWrapping="Wrap"
-                         Text="{Binding address.Address1}"/>
+                         Text="{Binding ElementName=EditDialog, Path=DataContext.Address, 
+                                UpdateSourceTrigger=PropertyChanged,
+                                Mode=TwoWay, 
+                                ValidatesOnExceptions=True}"/>
             </StackPanel>
-            <Button x:Name="lel" Content="OK" HorizontalAlignment="Right" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Click="Button_Click">
+            <Button x:Name="lel" Content="OK" HorizontalAlignment="Right" 
+                    Command="{Binding ElementName=EditDialog, Path=DataContext.ConfirmCM}"
+                    CommandParameter="">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click" SourceName="lel">
+                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
         </StackPanel>
     </Border>

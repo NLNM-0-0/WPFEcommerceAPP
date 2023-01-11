@@ -185,7 +185,8 @@
                                         HorizontalAlignment="Right" 
                                         Height="46" 
                                         Margin="0,0,0,16"
-                                        Command="{Binding OnChooseVoucher}">
+                                        Command="{Binding OnChooseVoucher}"
+                                        CommandParameter="">
                                 </Button>
                             </StackPanel>
                         </Expander>
@@ -220,6 +221,9 @@
                                                    FontSize="{StaticResource FontSizeText}"
                                                    VerticalAlignment="Center"/>
                                             <TextBox HorizontalAlignment="Center"
+                                                     x:Name="VoucherCodeField"
+                                                     Text="{Binding ElementName=CheckoutWindow, 
+                                                            Path=DataContext.VoucherCode, UpdateSourceTrigger=PropertyChanged}"
                                                      Style="{StaticResource TextBoxHintBlackBorder}"
                                                      Width="{c:Binding ElementName=ApplyVoucherContainer, Path=ActualWidth - 269}"
                                                      wpf:HintAssist.Hint="Enter voucher code"
@@ -231,14 +235,17 @@
                                                 Content="Apply"
                                                 FontWeight="Normal"
                                                 Style="{StaticResource ButtonRectangle}"
-                                                HorizontalAlignment="Right"/>
+                                                HorizontalAlignment="Right"
+                                                Command="{Binding ElementName=CheckoutWindow, Path=DataContext.OnApplyVoucher}"
+                                                CommandParameter="{Binding ElementName=VoucherCodeField, Path=Text}"/>
                                         </DockPanel>
                                     </Border>
                                 </Grid>
-                                <!--List voucher-->
                                 <Grid>
-                                    <!--#region Test-->
-                                    <!--<RadioButton
+                                    <!--List voucher-->
+                                    <Grid>
+                                        <!--#region Test-->
+                                        <!--<RadioButton
                                         x:Name="addressContainer"
                                         Style="{StaticResource RadioButtonOutlineCard}"
                                         Padding="12 15"
@@ -280,8 +287,8 @@
 
                                         </Grid>
                                     </RadioButton>-->
-                                    <!--#endregion-->
-                                    <ListView
+                                        <!--#endregion-->
+                                        <ListView
                                         SelectedItem="{Binding ElementName=CheckoutWindow, Path=DataContext.PromoChoosen}"
                                         Margin="0 20"
                                         MaxHeight="230"
@@ -290,6 +297,40 @@
                                         ItemContainerStyle="{StaticResource ListItemContainer}"
                                         ScrollViewer.CanContentScroll="False"
                                         BorderThickness="0"/>
+
+                                    </Grid>
+                                    <!--Error message-->
+                                    <Border BorderBrush="{StaticResource ErrorColorBrush}" BorderThickness="1"
+                                            Margin="0 10"
+                                            Height="39"
+                                            VerticalAlignment="Top"
+                                            Visibility="{Binding ElementName=CheckoutWindow, Path=DataContext.IsVoucherError, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Grid>
+                                            <Grid Background="{StaticResource BoxShadowColorBrush}"/>
+                                            <Grid Background="{StaticResource ErrorColorBrush}" Opacity="0.1"/>
+                                            <DockPanel
+                                                        VerticalAlignment="Center"
+                                                        Margin="30 0">
+                                                <material:PackIcon Kind="AlertCircleOutline"
+                                                                   Foreground="{StaticResource ErrorColorBrush}"
+                                                                   VerticalAlignment="Center"/>
+                                                <TextBlock Text="No voucher found"
+                                                           Margin="15 0"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="{StaticResource ErrorColorBrush}"
+                                                           FontSize="{StaticResource FontSizeDescription}"/>
+                                                <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                        Width="25" Height="25"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Right"
+                                                        Command="{Binding ElementName=CheckoutWindow, Path=DataContext.OnCloseErrorAlert}">
+                                                    <material:PackIcon Kind="CloseCircleOutline" 
+                                                                       Width="18" Height="18"
+                                                                       Foreground="{StaticResource ErrorColorBrush}"/>
+                                                </Button>
+                                            </DockPanel>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
                                 <Button Margin="0 10"
                                         Content="Continue to Payment" 
@@ -359,7 +400,7 @@
                 </ScrollViewer>
             </Grid>
             <!--#endregion-->
-            
+
             <!--region Right column-->
             <Grid Grid.Column="1" Margin="67 0 53 73"
                   x:Name="rightColumnContainer">

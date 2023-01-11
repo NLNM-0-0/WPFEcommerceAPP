@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
@@ -82,23 +83,34 @@ namespace WPFEcommerceApp {
             }
         }
 
+        public string _vouchercode;
+        public string VoucherCode {
+            get => _vouchercode; set {
+                _vouchercode = value;
+                if(IsVoucherError)
+                    IsVoucherError = false;
+            }
+        }
+        public bool IsVoucherError { get; set; }
         public int LeftColumnChoice { get; set; }
 
         public int LeftState { get; set; }
 
         #endregion
         #region command
-        public ICommand OnChooseVoucher { get; set; }
-		public ICommand PaymentAlertDialogCM { get; set; }
-		public ICommand OnEditAddress { get; set; }
-		public ICommand OnSuccessPayment { get; set; }
-		public ICommand OnPaymentFieldChoice { get; set; }
-        public ICommand OnDeliFieldChoice { get; set; }
-		public ICommand OnEditOrder { get; set; }
-        public ICommand OnLeftChange { get; set; }
-        public ICommand TestFeature { get; set; }
-        public ICommand OnOpenPayment { get; set; }
+        public ICommand OnChooseVoucher { get; }
+		public ICommand PaymentAlertDialogCM { get; }
+		public ICommand OnEditAddress { get; }
+		public ICommand OnSuccessPayment { get; }
+		public ICommand OnPaymentFieldChoice { get; }
+        public ICommand OnDeliFieldChoice { get; }
+		public ICommand OnEditOrder { get; }
+        public ICommand OnLeftChange { get; }
+        public ICommand TestFeature { get; }
+        public ICommand OnOpenPayment { get; }
         public ICommand OnViewConditionVoucher { get; }
+        public ICommand OnApplyVoucher { get; }
+        public ICommand OnCloseErrorAlert { get; }
         #endregion
 
         public CheckoutScreenVM(
@@ -133,7 +145,9 @@ namespace WPFEcommerceApp {
                 OnPropertyChanged(nameof(LeftColumnChoice));
             });
 
-            OnChooseVoucher = new ImmediateCommand<object>((p) => {
+            OnChooseVoucher = new RelayCommand<object>(p => {
+                return address != null;
+            },(p) => {
 				LeftColumnChoice = 2;
                 LeftState = 1;
             });
@@ -157,6 +171,7 @@ namespace WPFEcommerceApp {
                         ListAddress = new ObservableCollection<Address>(ListAddress.Values.ToList()),
                         ChangeAddressHandle = new ImmediateCommand<object>(async o => {
                             address = o as Address;
+                            OnPropertyChanged(nameof(address));
                             try {
                                 var t = ListAddress[address.Id];
                             } catch {
@@ -214,6 +229,20 @@ namespace WPFEcommerceApp {
                     Data = p as Promo
                 };
                 DialogHost.Show(dl, "Main");
+            });
+            OnApplyVoucher = new RelayCommand<object>(p => !string.IsNullOrEmpty(p as string), p => {
+                bool flag = false;
+                foreach(var o in ListVoucher) {
+                    if(o.Code == (p as string).ToUpper()) {
+                        PromoChoosen = o;
+                        flag = true;
+                        break;
+                    }
+                }
+                if(!flag) IsVoucherError = true;
+            });
+            OnCloseErrorAlert = new ImmediateCommand<object>(p => {
+                IsVoucherError = false;
             });
         }
 

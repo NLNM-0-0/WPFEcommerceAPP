@@ -21,35 +21,40 @@ namespace WPFEcommerceApp {
         public ICommand OnEditAddress { get; set; }
         public Address SelectedItem { get; set; }
         public AddressChoiceDialogVM() {
-            OnChangeAddress = new ImmediateCommand<object>(p => {
+            OnChangeAddress = new RelayCommand<object>(p => SelectedItem != null, p => {
                 ChangeAddressHandle.Execute(p);
                 DialogHost.Close("Main");
             });
             OnAddAddress = new ImmediateCommand<object>(p => {
                 var dl = new EditInforDialog() {
-                    OnOK = new ImmediateCommand<object>(async o => {
-                        await addressRepo.Add(o as Address);
-                        ListAddress.Add(o as Address);
-                        SelectedItem = o as Address;
-                        AddAddressHandle.Execute(o);
-                    })
+                    DataContext = new EditInforDialogVM() {
+                        OnOK = new ImmediateCommand<object>(async o => {
+                            await addressRepo.Add(o as Address);
+                            ListAddress.Add(o as Address);
+                            SelectedItem = o as Address;
+                            AddAddressHandle.Execute(o);
+                            CommandManager.InvalidateRequerySuggested();
+                        })
+                    }
                 };
                 DialogHost.Show(dl, "AddressCheckout");
             });
             OnEditAddress = new ImmediateCommand<object>(p => {
                 var dl = new EditInforDialog() {
-                    OnOK = new ImmediateCommand<object>(async o => {
-                        await addressRepo.Update(o as Address);
-                        for(int i = 0; i < ListAddress.Count; i++) {
-                            if(ListAddress[i].Id == (o as Address).Id) {
-                                ListAddress[i] = o as Address;
-                                SelectedItem = o as Address;
-                                break;
+                    DataContext = new EditInforDialogVM(p as Address) {
+                        OnOK = new ImmediateCommand<object>(async o => {
+                            await addressRepo.Update(o as Address);
+                            for(int i = 0; i < ListAddress.Count; i++) {
+                                if(ListAddress[i].Id == (o as Address).Id) {
+                                    ListAddress.RemoveAt(i);
+                                    ListAddress.Insert(i, o as Address);
+                                    SelectedItem = o as Address;
+                                    break;
+                                }
                             }
-                        }
-                        AddAddressHandle.Execute(o);
-                    }),
-                    address = p as Address,
+                            AddAddressHandle.Execute(o);
+                        })
+                    },
                     Header = "Edit address"
                 };
                 DialogHost.Show(dl, "AddressCheckout");

@@ -147,6 +147,7 @@
     <Compile Include="Models\UserLogin.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Screens\General\Payment\components\Dialogs\EditInforDialogVM.cs" />
     <Compile Include="Screens\General\Payment\components\Dialogs\VoucherConditionDialog.xaml.cs">
       <DependentUpon>VoucherConditionDialog.xaml</DependentUpon>
     </Compile>
@@ -586,6 +587,7 @@
     <Compile Include="Utils\ValidationRule\NotEmptyValidationRule.cs" />
     <Compile Include="Utils\ValidationRule\NumberTextBoxValidation.cs" />
     <Compile Include="Utils\ValidationRule\PromoCodeValidation.cs" />
+    <Compile Include="Utils\ValidationRule\ValidateRegex.cs" />
     <Page Include="Components\UserControls\CategoryRequest\DropDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -24,6 +24,7 @@ namespace WPFEcommerceApp {
         public MainWindow() {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 5;
+            this.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth - 8;
             Closing += MainViewModel.OnClosing;
         }
     }
