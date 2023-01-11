@@ -1,5 +1,4 @@
-﻿using DataAccessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,20 +16,13 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for ProductDetail.xaml
+    /// Interaction logic for ProductDetailMini.xaml
     /// </summary>
-    public partial class ProductDetail : UserControl
+    public partial class ProductDetailMini : UserControl
     {
-        public ProductDetail()
+        public ProductDetailMini()
         {
             InitializeComponent();
         }
-
-        private void ScrollViewer_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta);
-            e.Handled = true;
-        }
     }
 }
-

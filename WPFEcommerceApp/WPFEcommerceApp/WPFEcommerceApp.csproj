@@ -151,6 +151,9 @@
     <Compile Include="Screens\General\Payment\components\Dialogs\VoucherConditionDialog.xaml.cs">
       <DependentUpon>VoucherConditionDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\General\ProductDetailMini\ProductDetailMini.xaml.cs">
+      <DependentUpon>ProductDetailMini.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdf.xaml.cs">
       <DependentUpon>OrderInfoPdf.xaml</DependentUpon>
     </Compile>
@@ -617,6 +620,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\General\Payment\components\Dialogs\VoucherConditionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\General\ProductDetailMini\ProductDetailMini.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
