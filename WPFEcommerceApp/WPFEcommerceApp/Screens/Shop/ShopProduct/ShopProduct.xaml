@@ -186,7 +186,8 @@
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
                             <StackPanel
-                                Margin="0 0 10 0">
+                                Margin="0 0 25  0"
+                                HorizontalAlignment="Stretch">
                                 <Button
                                     Style="{StaticResource RoundButton}"
                                     Command="{Binding OpenAddProductDialogCommand}"
@@ -198,11 +199,14 @@
                                         Width="30" />
                                 </Button>
                                 <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
                                     Text="Product"
                                     FontSize="{StaticResource FontSizeDescription}"/>
                             </StackPanel>
                                 <StackPanel
-                                    Margin="0 0 10 0">
+                                    Margin="0 0 25 0"
+                                    HorizontalAlignment="Stretch">
                                     <Button
                                         Style="{StaticResource RoundButton}"
                                         Command="{Binding OpenAddCategoryDialogCommand}"
@@ -214,11 +218,14 @@
                                             Width="30"/>
                                     </Button>
                                     <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
                                         Text="Category"
                                         FontSize="{StaticResource FontSizeDescription}"/>
                                 </StackPanel>
                                 <StackPanel
-                                    Margin="0 0 10 0">
+                                    Margin="0 0 25 0"
+                                    HorizontalAlignment="Stretch">
                                     <Button
                                         Style="{StaticResource RoundButton}"
                                         Command="{Binding OpenAddBrandDialogCommand}"
@@ -230,8 +237,10 @@
                                             Width="30"/>
                                     </Button>
                                     <TextBlock
-                                    Text="Category"
-                                    FontSize="{StaticResource FontSizeDescription}"/>
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="Brand"
+                                        FontSize="{StaticResource FontSizeDescription}"/>
                                 </StackPanel>
                             </StackPanel>
                             <ToggleButton 
@@ -480,32 +489,32 @@
             <Grid
                 Grid.Row="3"
                 Background="Transparent">
-                <DataGrid
-                            x:Name="dataGrid"
-                            Padding="50 0" 
-                            ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                            SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                            AutoGenerateColumns="False"
-                            IsSynchronizedWithCurrentItem ="True"
-                            ScrollViewer.CanContentScroll="True" 
-                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Width="2*" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Name" Width="4*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Category" Width="3*" Binding="{Binding Category.Name, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Brand" Width="3*" Binding="{Binding Brand.Name, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Price" Width="3*" Binding="{i:Binding 'Price * (100 - Sale) / 100', UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="InStock" Width="3*" Binding="{Binding InStock, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Sold" Width="3*" Binding="{Binding Sold, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Status" Width="3*" ElementStyle="{StaticResource statusDataRow}">
-                            <DataGridTextColumn.Binding>
-                                <MultiBinding Converter="{StaticResource ShopProductStatusConverter}" >
-                                    <Binding Path="Status"/>
-                                    <Binding Path="InStock"/>
-                                </MultiBinding>
-                            </DataGridTextColumn.Binding>
-                        </DataGridTextColumn>
+                    <DataGrid
+                        x:Name="dataGrid"
+                        Padding="50 0" 
+                        ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                        AutoGenerateColumns="False"
+                        IsSynchronizedWithCurrentItem ="True"
+                        ScrollViewer.CanContentScroll="True" 
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Width="2*" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Name" Width="4*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Category" Width="3*" Binding="{Binding Category.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Brand" Width="3*" Binding="{Binding Brand.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Price" Width="3*" Binding="{i:Binding 'Price * (100 - Sale) / 100', UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="InStock" Width="3*" Binding="{Binding InStock, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Sold" Width="3*" Binding="{Binding Sold, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Status" Width="3*" ElementStyle="{StaticResource statusDataRow}">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource ShopProductStatusConverter}" >
+                                        <Binding Path="Status"/>
+                                        <Binding Path="InStock"/>
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
