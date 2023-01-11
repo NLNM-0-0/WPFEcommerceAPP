@@ -40,11 +40,27 @@ namespace WPFEcommerceApp
                 isMaxSale = value;
                 if(!value)
                 {
-                    MaxSale = 0;
+                    MaxSale = "";
                 }    
                 OnPropertyChanged();
             }
-            
+        }
+        private bool isLimitedAmount;
+        public bool IsLimitedAmount
+        {
+            get
+            {
+                return isLimitedAmount;
+            }
+            set
+            {
+                isLimitedAmount = value;
+                if (!value)
+                {
+                    Amount = "1";
+                }
+                OnPropertyChanged();
+            }
         }
         private ObservableCollection<PromoProductBlockViewModel> selectedProductPromos;
         public ObservableCollection<PromoProductBlockViewModel> SelectedProductPromos
@@ -147,8 +163,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private int amount;
-        public int Amount
+        private string amount;
+        public string Amount
         {
             get => amount;
             set
@@ -157,8 +173,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private int sale;
-        public int Sale
+        private string sale;
+        public string Sale
         {
             get => sale;
             set
@@ -167,8 +183,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private double minCost;
-        public double MinCost
+        private string minCost;
+        public string MinCost
         {
             get => minCost;
             set
@@ -177,8 +193,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private double maxSale;
-        public double MaxSale
+        private string maxSale;
+        public string MaxSale
         {
             get => maxSale;
             set
@@ -189,46 +205,73 @@ namespace WPFEcommerceApp
         }
         public AddShopPromoViewModel()
         {
-            IsAdmin = isAdmin;
-            IsMaxSale = false;
-            SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
-            FilterProductPromos = SelectedProductPromos;
-            SearchBy = "Id";
-            AddNewProductCommand = new RelayCommandWithNoParameter(() =>
+            Task.Run(() =>
             {
-                AddNewProductPromo addNewProductPromo = new AddNewProductPromo();
-                addNewProductPromo.DataContext = new AddNewProductPromoViewModel(SelectedProductPromos);
-                DialogHost.Show(addNewProductPromo, "Main", null, null, LoadList);
-            });
-            SaveCommand = new RelayCommand<object>((p) =>
+            }).ContinueWith((first) =>
             {
-                return !String.IsNullOrEmpty(Code) &&
-                        !String.IsNullOrEmpty(Name) &&
-                        DateBegin != null &&
-                        DateEnd != null &&
-                        !String.IsNullOrEmpty(Description) &&
-                        Amount > 0 &&
-                        Sale > 0 &&
-                        MinCost >= 0 &&
-                        MaxSale >= 0 ;
-            },async (p) =>
-            {
-                await SaveProduct();
-            });
-            DeleteProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
-            {
-                PromoProductBlockViewModel promoProductBlockViewModel = p as PromoProductBlockViewModel;
-                SelectedProductPromos.Remove(promoProductBlockViewModel);
-                FilterProductPromos.Remove(promoProductBlockViewModel);
-            });
-            SearchCommand = new RelayCommandWithNoParameter(() =>
-            {
-                Search();
-            });
+                MainViewModel.IsLoading = true;
+                IsAdmin = isAdmin;
+                IsMaxSale = false;
+                SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
+                FilterProductPromos = SelectedProductPromos;
+                SearchBy = "Id";
+                AddNewProductCommand = new RelayCommandWithNoParameter( async() =>
+                {
+                    MainViewModel.IsLoading = true;
+                    AddNewProductPromo addNewProductPromo = new AddNewProductPromo();
+                    addNewProductPromo.DataContext = new AddNewProductPromoViewModel(SelectedProductPromos);
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(addNewProductPromo, "Main", null, null, LoadList);
+                });
+                SaveCommand = new RelayCommand<object>((p) =>
+                {
+                    return !String.IsNullOrEmpty(Code) &&
+                            !String.IsNullOrEmpty(Name) &&
+                            DateBegin != null &&
+                            DateEnd != null &&
+                            !String.IsNullOrEmpty(Description) &&
+                            (String.IsNullOrEmpty(Amount)?1:int.Parse(Amount)) > 0 &&
+                            (String.IsNullOrEmpty(Sale)?0:int.Parse(Sale)) > 0 &&
+                            (String.IsNullOrEmpty(MinCost) ? 0 : double.Parse(MinCost)) >= 0 &&
+                            (String.IsNullOrEmpty(MaxSale) ? 0 : double.Parse(MaxSale)) >= 0 &&
+                            (DateBegin <= DateEnd);
+                },async (p) =>
+                {
+                    await SaveProduct();
+                });
+                DeleteProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
+                {
+                    PromoProductBlockViewModel promoProductBlockViewModel = p as PromoProductBlockViewModel;
+                    SelectedProductPromos.Remove(promoProductBlockViewModel);
+                    FilterProductPromos.Remove(promoProductBlockViewModel);
+                });
+                SearchCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    Search();
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+                MainViewModel.IsLoading = false;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
         private async Task SaveProduct()
         {
             GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Promo>();
+            IList<Models.Promo> promos = await promoRepository.GetAllAsync();
+            NotificationDialog notification = new NotificationDialog();
+            if (promos.Any(p => p.Code == Code && p.Status != 2 && (p.DateEnd < DateTime.Now)))
+            {
+                notification = new NotificationDialog();
+                notification.Header = "Oops";
+                notification.ContentDialog = "This promo is already in process or in our promo request list. Please check again.";
+                await DialogHost.Show(notification, "Main");
+                return;
+            }
             string id = await GenerateID.Gen(typeof(Models.Promo));
             await promoRepository.Add(new Models.Promo()
             {
@@ -236,20 +279,25 @@ namespace WPFEcommerceApp
                 IdShop = AccountStore.instance.CurrentAccount.Id,
                 Code = this.Code,
                 Description = this.Description,
-                DateBegin = this.DateBegin,
-                DateEnd = this.DateEnd,
-                Amount = this.Amount,
+                DateBegin = this.DateBegin.Value.Subtract(new TimeSpan(12, 0, 0)),
+                DateEnd = this.DateEnd.Value.Add(new TimeSpan(12, 0, 0)),
+                Amount = (IsLimitedAmount? int.Parse(this.Amount) : -1),
                 AmountUsed = 0,
-                MaxSale = (IsMaxSale?this.MaxSale:double.MaxValue),
-                MinCost = this.MinCost,
-                Sale = this.Sale,
+                MaxSale = (IsMaxSale?double.Parse(this.MaxSale) :double.MaxValue),
+                MinCost = double.Parse(this.MinCost),
+                Sale = double.Parse(this.Sale),
                 CustomerType = this.TargetCustomer,
+                Status = 0,
                 Name = this.Name
             }) ;
             foreach (PromoProductBlockViewModel promoProductBlock in SelectedProductPromos)
             {
                 await PromoDetailAPI.Add(id, promoProductBlock.SelectedProduct.Id);   
-            }    
+            }
+            notification.Header = "Notification";
+            notification.ContentDialog = "This promo is requested successfully. Please wait for us to accept.";
+            await DialogHost.Show(notification, "Main");
+            NavigateProvider.ShopPromoScreen().Navigate();
         }
         private void LoadList(object sender, DialogClosedEventArgs eventArgs)
         {
@@ -272,11 +320,11 @@ namespace WPFEcommerceApp
         {
             if(SearchBy == "Id")
             {
-                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Id.Contains(SearchByValue??"")));
+                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Id.ToLower().Trim().Contains(SearchByValue==null?"":SearchByValue.ToLower().Trim())));
             }    
-            else if(SearchBy == "Name")
+            else if(SearchBy == "Product Name")
             {
-                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Name.Contains(SearchByValue??"")));
+                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Name.ToLower().Trim().Contains(SearchByValue==null?"": SearchByValue.ToLower().Trim())));
             }    
         }
     }

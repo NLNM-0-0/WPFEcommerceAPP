@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
@@ -35,7 +36,7 @@ namespace WPFEcommerceApp
         {
             get
             {
-                return AccountStore.instance.CurrentAccount.StatusShop == "NotBanned";
+                return AccountStore.instance.CurrentAccount.Role=="Shop" && AccountStore.instance.CurrentAccount.StatusShop == "NotBanned";
             }
         }
         public bool IsRequest
@@ -154,7 +155,14 @@ namespace WPFEcommerceApp
         {
             get 
             {
-                return $"{Promo.AmountUsed} / {Promo.Amount}";
+                if (Promo.Amount != -1)
+                {
+                    return $"{Promo.AmountUsed} / {Promo.Amount}";
+                }
+                else
+                {
+                    return $"{Promo.AmountUsed} / +inf";
+                }    
             }
         }
         public void ChangeStatus()

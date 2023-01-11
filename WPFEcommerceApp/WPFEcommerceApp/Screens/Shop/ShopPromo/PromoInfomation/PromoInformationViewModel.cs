@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Linq;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
@@ -18,10 +19,8 @@ namespace WPFEcommerceApp
         public ICommand DeleteProductCommand { get; set; }
         public ICommand SearchCommand { get; set; }
 
-        #region Thu
         public ICommand AcceptCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        #endregion
 
         private string searchByValue;
         public string SearchByValue
@@ -43,14 +42,31 @@ namespace WPFEcommerceApp
             set
             {
                 isMaxSale = value;
-                if (SelectedPromo != null && isMaxSale && (SelectedPromo.MaxSale == null || SelectedPromo.MaxSale == double.MaxValue))
+                if (!isMaxSale)
                 {
                     SelectedPromo.MaxSale = 0;
                     OnPropertyChanged(nameof(SelectedPromo));
                 }
                 OnPropertyChanged();
             }
-
+        }
+        private bool isLimitedAmount;
+        public bool IsLimitedAmount
+        {
+            get
+            {
+                return isLimitedAmount;
+            }
+            set
+            {
+                isLimitedAmount = value;
+                if (!isLimitedAmount)
+                {
+                    SelectedPromo.Amount = null;
+                    OnPropertyChanged(nameof(SelectedPromo));
+                }
+                OnPropertyChanged();
+            }
         }
         private ObservableCollection<PromoProductBlockViewModel> selectedProductPromos;
         public ObservableCollection<PromoProductBlockViewModel> SelectedProductPromos
@@ -106,50 +122,129 @@ namespace WPFEcommerceApp
         private Models.Promo initialPromo;
         public PromoInformationViewModel(PromoVMConstructor param)
         {
+            IsLoadingCheck.IsLoading = 2;
             initialPromo = param.promo;
-            AddNewProductCommand = new RelayCommandWithNoParameter(() =>
+            Task.Run(async () =>
             {
-                AddNewProductPromo addNewProductPromo = new AddNewProductPromo();
-                addNewProductPromo.DataContext = new AddNewProductPromoViewModel(SelectedProductPromos, SelectedPromo.MUser);
-                DialogHost.Show(addNewProductPromo, "Main", null, null, LoadList);
-            });
-            SaveCommand = new RelayCommandWithNoParameter(() =>
+                await Load();
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+                MainViewModel.IsLoading = false;
+            }).ContinueWith((first) =>
             {
-                Task.Run(async () => await SaveProduct());
-            });
-            DeleteProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
-            {
-                PromoProductBlockViewModel promoProductBlockViewModel = p as PromoProductBlockViewModel;
-                SelectedProductPromos.Remove(promoProductBlockViewModel);
-                FilterProductPromos.Remove(promoProductBlockViewModel);
-            });
-            SearchCommand = new RelayCommandWithNoParameter(() =>
-            {
-                Search();
-            });
-            #region Thu
-            AcceptCommand = new RelayCommandWithNoParameter(() => { });
-            DeleteCommand = new RelayCommandWithNoParameter(() => { });
-            #endregion
-            IsAdmin = isAdmin;
-            Task.Run(async () => await Load()).Wait();
-            if (SelectedPromo.MaxSale == null || SelectedPromo.MaxSale == double.MaxValue)
-            {
-                IsMaxSale = false;
-            }
-            else
-            {
-                IsMaxSale = true;
-            }
-            SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
-            foreach (Models.Product product in param.promo.Products)
-            {
-                PromoProductBlockViewModel promoProductBlockViewModel = new PromoProductBlockViewModel(product);
-                promoProductBlockViewModel.DeleteCommand = DeleteProductCommand;
-                SelectedProductPromos.Add(promoProductBlockViewModel);
-            }
-            FilterProductPromos = SelectedProductPromos;
-            SearchBy = "Id";
+                AddNewProductCommand = new RelayCommandWithNoParameter(async() =>
+                {
+                    MainViewModel.IsLoading = true;
+                    AddNewProductPromo addNewProductPromo = new AddNewProductPromo();
+                    addNewProductPromo.DataContext = new AddNewProductPromoViewModel(SelectedProductPromos, SelectedPromo.MUser);
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(addNewProductPromo, "Main", null, null, LoadList);
+                });
+                SaveCommand = new RelayCommand<object>((p) =>
+                {
+                    return !String.IsNullOrEmpty(SelectedPromo.Code) &&
+                            !String.IsNullOrEmpty(SelectedPromo.Name) &&
+                            SelectedPromo.DateBegin != null &&
+                            SelectedPromo.DateEnd != null &&
+                            !String.IsNullOrEmpty(SelectedPromo.Description) &&
+                            (SelectedPromo.Amount == null || SelectedPromo.Amount == -1 || SelectedPromo.Amount > 0) &&
+                            SelectedPromo.Sale > 0 &&
+                            SelectedPromo.MinCost >= 0 &&
+                            SelectedPromo.MaxSale >= 0 &&
+                            (SelectedPromo.DateBegin <= SelectedPromo.DateEnd);
+                }, async (p) =>
+                {
+                    MainViewModel.IsLoading = true;
+                    await SaveProduct();
+                    MainViewModel.IsLoading = false;
+                });
+                DeleteProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
+                {
+                    PromoProductBlockViewModel promoProductBlockViewModel = p as PromoProductBlockViewModel;
+                    SelectedProductPromos.Remove(promoProductBlockViewModel);
+                    FilterProductPromos.Remove(promoProductBlockViewModel);
+                });
+                SearchCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    Search();
+                });
+                AcceptCommand = new RelayCommandWithNoParameter(async() => 
+                {
+                    MainViewModel.IsLoading = true;
+                    await AcceptPromo();
+                    MainViewModel.IsLoading = false;
+                });
+                DeleteCommand = new RelayCommandWithNoParameter(async() => 
+                {
+                    MainViewModel.IsLoading = true;
+                    await DeletePromo();
+                    MainViewModel.IsLoading = false;
+                });
+                IsAdmin = param.isAdmin;
+                if (SelectedPromo.MaxSale == null || SelectedPromo.MaxSale == double.MaxValue)
+                {
+                    IsMaxSale = false;
+                }
+                else
+                {
+                    IsMaxSale = true;
+                }
+                if (SelectedPromo.Amount == -1)
+                {
+                    IsLimitedAmount = false;
+                }
+                else
+                {
+                    IsLimitedAmount = true;
+                }
+                SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
+                foreach (Models.Product product in param.promo.Products)
+                {
+                    PromoProductBlockViewModel promoProductBlockViewModel = new PromoProductBlockViewModel(product);
+                    promoProductBlockViewModel.DeleteCommand = DeleteProductCommand; 
+                    promoProductBlockViewModel.IsAdmin = IsAdmin;
+                    SelectedProductPromos.Add(promoProductBlockViewModel);
+                }
+                FilterProductPromos = SelectedProductPromos;
+                SearchBy = "Id";
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+                MainViewModel.IsLoading = false;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+        private async Task AcceptPromo()
+        {
+            GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Promo>();
+            Models.Promo promo = await promoRepository.GetSingleAsync(p => p.Id == SelectedPromo.Id);
+            promo.Status = 1;
+            await promoRepository.Update(promo);
+            NotificationDialog notification = new NotificationDialog();
+            notification.Header = "Notification";
+            notification.ContentDialog = "This promo has been accepted successfully.";
+            await DialogHost.Show(notification, "Main");
+            NavigateProvider.AdminPromoScreen().Navigate();
+        }
+        private async Task DeletePromo()
+        {
+            GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Promo>();
+            Models.Promo promo = await promoRepository.GetSingleAsync(p => p.Id == SelectedPromo.Id);
+            promo.Status = 2;
+            await promoRepository.Update(promo);
+            NotificationDialog notification = new NotificationDialog();
+            notification.Header = "Notification";
+            notification.ContentDialog = "This promo has been removed successfully.";
+            await DialogHost.Show(notification, "Main");
+            NavigateProvider.AdminPromoScreen().Navigate();
         }
         private async Task SaveProduct()
         {
@@ -159,7 +254,7 @@ namespace WPFEcommerceApp
             promo.Description = SelectedPromo.Description;
             promo.DateBegin = SelectedPromo.DateBegin;
             promo.DateEnd = SelectedPromo.DateEnd;
-            promo.Amount = SelectedPromo.Amount;
+            promo.Amount = SelectedPromo.Amount??-1;
             promo.AmountUsed = 0;
             promo.MaxSale = (IsMaxSale ? SelectedPromo.MaxSale : double.MaxValue);
             promo.MinCost = SelectedPromo.MinCost;
@@ -177,6 +272,11 @@ namespace WPFEcommerceApp
                 await PromoDetailAPI.Add(promo.Id, promoProductBlock.SelectedProduct.Id);
                 SelectedPromo.Products.Add(promoProductBlock.SelectedProduct);
             }
+            NotificationDialog notification = new NotificationDialog();
+            notification.Header = "Notification";
+            notification.ContentDialog = "This promo has been updated successfully. Please wait for us to accept.";
+            await DialogHost.Show(notification, "Main");
+            NavigateProvider.ShopPromoScreen().Navigate();
         }
         private void LoadList(object sender, DialogClosedEventArgs eventArgs)
         {
@@ -200,22 +300,21 @@ namespace WPFEcommerceApp
             GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Models.Promo>();
             SelectedPromo = await promoRepository.GetSingleAsync(p => p.Id == initialPromo.Id,
                                                                 p => p.MUser,
-                                                                p => p.Products);
+                                                                p => p.Products, 
+                                                                p => p.Products.Select(pr => pr.ImageProducts));
         }
         private void Search()
         {
             if (SearchBy == "Id")
             {
-                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Id.Contains(SearchByValue??"")));
+                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Id.ToLower().Trim().Contains(SearchByValue == null ? "" : SearchByValue.ToLower().Trim())));
             }
-            else if (SearchBy == "Name")
+            else if (SearchBy == "Product Name")
             {
-                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Name.Contains(SearchByValue??"")));
+                FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(SelectedProductPromos.Where(p => p.SelectedProduct.Name.ToLower().Trim().Contains(SearchByValue == null ? "" : SearchByValue.ToLower().Trim())));
             }
         }
     }
-
-    //VHCMT => Constructor object
     public class PromoVMConstructor {
         public Promo promo { get; set; }
         public bool isAdmin { get; set; }

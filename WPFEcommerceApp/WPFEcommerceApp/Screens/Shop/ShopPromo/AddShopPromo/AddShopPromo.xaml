@@ -113,6 +113,8 @@
                         materialDesign:HintAssist.Hint="Name"
                         Width="auto"
                         VerticalAlignment="Center"
+                        MaxLength="150"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
@@ -159,9 +161,9 @@
                     </Grid.ColumnDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding ElementName=amountTextBox,Path=ActualWidth}"/>
+                            <ColumnDefinition Width="{Binding ElementName=saleTextBox,Path=ActualWidth}"/>
                             <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="{Binding ElementName=amountTextBox,Path=ActualWidth}"/>
+                            <ColumnDefinition Width="{Binding ElementName=saleTextBox,Path=ActualWidth}"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <DatePicker
@@ -197,6 +199,8 @@
                     Margin="30 30 30 0"
                     Height="200"
                     VerticalAlignment="Center"
+                    MaxLength="200"
+                    materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
                     IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.Text>
                         <Binding
@@ -236,20 +240,23 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
                     <TextBox
-                        x:Name="amountTextBox"
+                        x:Name="minCostTextBox"
                         Grid.Column="0"
                         Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Amount"
-                        Width="auto"
+                        materialDesign:HintAssist.Hint="Min Cost"
+                        Width="{Binding ElementName=saleTextBox, Path=ActualWidth}"
                         VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        materialDesign:TextFieldAssist.SuffixText="VND"
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
-                                Path="Amount"
+                                Path="MinCost"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <local:NumberTextBoxValidation 
-                                        Min="1"
+                                    <local:NumberTextBoxValidation
+                                        Type="DoubleType"
+                                        Min="0"
                                         ValidatesOnTargetUpdated="True"
                                         IsNotCheckFirstTime="False"/>
                                 </Binding.ValidationRules>
@@ -280,37 +287,13 @@
                         </TextBox.Text>
                     </TextBox>
                 </Grid>
-                <TextBox
-                    x:Name="minCostTextBox"
-                    Grid.Row="8"
-                    Style="{StaticResource TextBoxHintBlackBorder}"
-                    materialDesign:HintAssist.Hint="Min Cost"
-                    Width="{Binding ElementName=amountTextBox, Path=ActualWidth}"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left"
-                    Margin="30 30 30 0"
-                    materialDesign:TextFieldAssist.SuffixText="VND"
-                    IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.Text>
-                        <Binding
-                            Path="MinCost"
-                            UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <local:NumberTextBoxValidation
-                                    Type="DoubleType"
-                                    Min="0"
-                                    ValidatesOnTargetUpdated="True"
-                                    IsNotCheckFirstTime="False"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                
                 <Grid
-                    Grid.Row="9"
+                    Grid.Row="8"
                     Margin="30 30 30 0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="15"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Grid
@@ -350,11 +333,12 @@
                         Grid.Row="2"
                         Style="{StaticResource TextBoxHintBlackBorder}"
                         materialDesign:HintAssist.Hint="Max Sale"
-                        Width="{Binding ElementName=amountTextBox, Path=ActualWidth}"
+                        Width="{Binding ElementName=saleTextBox, Path=ActualWidth}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
                         Visibility="{c:Binding IsMaxSale, UpdateSourceTrigger=PropertyChanged}"
                         materialDesign:TextFieldAssist.SuffixText="VND"
+                        materialDesign:HintAssist.IsFloating="False"
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
@@ -363,6 +347,71 @@
                                 <Binding.ValidationRules>
                                     <local:NumberTextBoxValidation
                                         Min="0"
+                                        ValidatesOnTargetUpdated="True"
+                                        IsNotCheckFirstTime="False"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+                <Grid
+                    Grid.Row="9"
+                    Margin="30 30 30 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="Amount"
+                            FontWeight="SemiBold"
+                            FontSize="{StaticResource FontSizeText}"
+                            VerticalAlignment="Center"/>
+                        <RadioButton
+                            x:Name="isLimitedAmountRadioButton"
+                            Grid.Column="2"
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Content="Limited"
+                            FontSize="{StaticResource FontSizeText}"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsLimitedAmount, UpdateSourceTrigger=PropertyChanged}"
+                            IsHitTestVisible="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}"/>
+                        <RadioButton
+                            Grid.Column="4"
+                            Style="{StaticResource MaterialDesignRadioButton}"
+                            Content="Unlimited"
+                            FontSize="{StaticResource FontSizeText}"
+                            VerticalAlignment="Center"
+                            IsChecked="{c:Binding '!IsChecked', ElementName=isLimitedAmountRadioButton}"
+                            IsHitTestVisible="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                    <TextBox
+                        x:Name="amountTextBox"
+                        Grid.Row="2"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Amount"
+                        Width="{Binding ElementName=saleTextBox, Path=ActualWidth}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        materialDesign:HintAssist.IsFloating="False"
+                        Visibility="{c:Binding IsLimitedAmount, UpdateSourceTrigger=PropertyChanged}"
+                        IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.Text>
+                            <Binding
+                                Path="Amount"
+                                UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NumberTextBoxValidation 
+                                        Min="1"
                                         ValidatesOnTargetUpdated="True"
                                         IsNotCheckFirstTime="False"/>
                                 </Binding.ValidationRules>
@@ -483,7 +532,7 @@
                                     <Binding ElementName="nameTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="codeTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
-                                    <Binding ElementName="amountTextBox" Path="(Validation.HasError)"/>
+                                    <Binding ElementName="minCostTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="saleTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="dateFromTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="dateToTextBox" Path="(Validation.HasError)"/>
