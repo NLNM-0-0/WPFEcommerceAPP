@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using WPFEcommerceApp.Models;
@@ -24,6 +25,8 @@ namespace WPFEcommerceApp
         public ICommand ChangeToDeliveredCommand { get; set; }
         public ICommand ChangeToCompletedCommand { get; set; }
         public ICommand ChangeToCancelledCommand { get; set; }
+        public ICommand ScrollToHome { get; set; }
+        public ICommand ScrollToCategory { get; set; }
         private DateTime? dateFrom;
         public DateTime? DateFrom
         {
@@ -467,6 +470,7 @@ namespace WPFEcommerceApp
                         await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Completed");
                         DeliveredShopOrderBlockModels.Remove(shopOrderBlockViewModel);
                         shopOrderBlockViewModel.Order.Status = "Completed";
+                        shopOrderBlockViewModel.Order.DateEnd = DateTime.Now;
                         shopOrderBlockViewModel.NextStatusContent = "";
                         shopOrderBlockViewModel.ShopOrderBlockCommand = null;
                         CompletedShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);
@@ -534,6 +538,16 @@ namespace WPFEcommerceApp
                     DateTo = null;
                     SearchByValue = "";
                     SearchBy = "Id";
+                });
+                ScrollToHome = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToHome();
+                });
+                ScrollToCategory = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToVerticalOffset(250);
                 });
                 await LoadDataProcessingIntoCollection();
                 await LoadDataDeliveringIntoCollection();
@@ -668,21 +682,21 @@ namespace WPFEcommerceApp
         {
             if (SearchBy == "Id")
             {
-                SearchedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>(collection.Where(p => (String.IsNullOrEmpty(SearchByValue) ? true : p.Order.Id.Contains(SearchByValue)) &&
-                                                                                                                  ((DateFrom == null) ? true : (p.Order.DateBegin >= DateFrom)) &&
-                                                                                                                  ((p.Order.DateEnd == null)? ((DateTo == null) ? true : (DateTime.Now <= DateTo)) : ((DateTo == null) ? true : (p.Order.DateEnd <= DateTo)))).ToList());
+                SearchedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>(collection.Where(p => (String.IsNullOrEmpty(SearchByValue) ? true : p.Order.Id.Contains(SearchByValue.ToLower().Trim())) &&
+                                                                                                                  ((DateFrom == null) ? true : (p.Order.DateBegin >= DateFrom.Value.Subtract(new TimeSpan(12, 0, 0)))) &&
+                                                                                                                  ((p.Order.DateEnd == null)? ((DateTo == null) ? true : (DateTime.Now <= DateTo.Value.Add(new TimeSpan(12, 0, 0)))) : ((DateTo == null) ? true : (p.Order.DateEnd <= DateTo)))).ToList());
             }
             else if (SearchBy == "Product Name")
             {
-                SearchedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>(collection.Where(p => (String.IsNullOrEmpty(SearchByValue) ? true : (p.OrderDetails.Where(od=>od.OrderInfo.Product.Name.Contains(SearchByValue)).Count() != 0))&&
-                                                                                                                  ((DateFrom == null) ? true : (p.Order.DateBegin >= DateFrom)) &&
-                                                                                                                  ((p.Order.DateEnd == null) ? ((DateTo == null) ? true : (DateTime.Now <= DateTo)) : ((DateTo == null) ? true : (p.Order.DateEnd <= DateTo)))).ToList());
+                SearchedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>(collection.Where(p => (String.IsNullOrEmpty(SearchByValue) ? true : (p.OrderDetails.Where(od=>od.OrderInfo.Product.Name.ToLower().Trim().Contains(SearchByValue.ToLower().Trim())).Count() != 0))&&
+                                                                                                                  ((DateFrom == null) ? true : (p.Order.DateBegin >= DateFrom.Value.Subtract(new TimeSpan(12, 0, 0)))) &&
+                                                                                                                  ((p.Order.DateEnd == null) ? ((DateTo == null) ? true : (DateTime.Now <= DateTo.Value.Add(new TimeSpan(12, 0, 0)))) : ((DateTo == null) ? true : (p.Order.DateEnd <= DateTo)))).ToList());
             }
             else if (SearchBy == "Customer Name")
             {
-                SearchedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>(collection.Where(p => (String.IsNullOrEmpty(SearchByValue) ? true : p.Customer.Name.Contains(SearchByValue)) &&
-                                                                                                                  ((DateFrom == null) ? true : (p.Order.DateBegin >= DateFrom)) &&
-                                                                                                                  ((p.Order.DateEnd == null) ? ((DateTo == null) ? true : (DateTime.Now <= DateTo)) : ((DateTo == null) ? true : (p.Order.DateEnd <= DateTo)))).ToList());
+                SearchedShopOrderBlockModels = new ObservableCollection<ShopOrderBlockViewModel>(collection.Where(p => (String.IsNullOrEmpty(SearchByValue) ? true : p.Customer.Name.ToLower().Trim().Contains(SearchByValue.ToLower().Trim())) &&
+                                                                                                                  ((DateFrom == null) ? true : (p.Order.DateBegin >= DateFrom.Value.Subtract(new TimeSpan(12, 0, 0)))) &&
+                                                                                                                  ((p.Order.DateEnd == null) ? ((DateTo == null) ? true : (DateTime.Now <= DateTo.Value.Add(new TimeSpan(12, 0, 0)))) : ((DateTo == null) ? true : (p.Order.DateEnd <= DateTo)))).ToList());
             }
         }
         private async Task LoadDataProcessingIntoCollection()

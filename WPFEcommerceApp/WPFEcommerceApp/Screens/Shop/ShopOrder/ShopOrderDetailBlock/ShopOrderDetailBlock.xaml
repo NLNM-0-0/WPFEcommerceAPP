@@ -25,88 +25,100 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0"
-                  HorizontalAlignment="Left">
+                  HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <local:AsyncImage
+                    Grid.Column="0"
                     Height="100"
                     Width="100"
                     Stretch="UniformToFill"
-                    Margin="0 0 10 0"
-                    Source="{Binding ProductImage}">
-                </local:AsyncImage>
-                <StackPanel
-                    Grid.Column="1"
-                    VerticalAlignment="Center">
-                    <TextBlock 
+                    Source="{Binding ProductImage, UpdateSourceTrigger=PropertyChanged}"/>
+                <Border
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch">
+                    <StackPanel
                         VerticalAlignment="Center"
-                        Text="{Binding OrderInfo.Product.Name}" 
-                        FontFamily="{StaticResource Bold}"
-                        FontSize="{StaticResource FontSizeText}"
-                        FontWeight="DemiBold"
-                        Margin="0 10 0 10"
-                        Grid.Column="1"/>
-                    <StackPanel
-                        Margin="0 10 0 10"
-                        Grid.Column="1"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center">
-                        <TextBlock 
-                            VerticalAlignment="Center"
-                            Text="Size: " 
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            FontFamily="{StaticResource Bold}"
-                            FontSize="{StaticResource FontSizeText}"/>
-                        <TextBlock 
-                            VerticalAlignment="Center"
-                            Text="{Binding OrderInfo.Size}" 
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            FontFamily="{StaticResource Bold}"
-                            FontSize="{StaticResource FontSizeText}"/>
+                        HorizontalAlignment="Left">
+                        <Border
+                            Margin="0 10 0 10"
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch">
+                            <TextBlock 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Text="{Binding OrderInfo.Product.Name, UpdateSourceTrigger=PropertyChanged}" 
+                                FontFamily="{StaticResource Bold}"
+                                FontSize="{StaticResource FontSizeText}"
+                                FontWeight="DemiBold"
+                                TextTrimming="CharacterEllipsis"
+                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border, AncestorLevel=2},Path=ActualWidth}"/>
+                        </Border>
+
+                        <StackPanel
+                            Margin="0 10 0 10"
+                            Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                            <TextBlock 
+                                VerticalAlignment="Center"
+                                Text="Size: " 
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                FontFamily="{StaticResource Bold}"
+                                FontSize="{StaticResource FontSizeText}"/>
+                            <TextBlock 
+                                VerticalAlignment="Center"
+                                Text="{Binding OrderInfo.Size, UpdateSourceTrigger=PropertyChanged}" 
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                FontFamily="{StaticResource Bold}"
+                                FontSize="{StaticResource FontSizeText}"/>
+                        </StackPanel>
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Text="Rating: "
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                FontFamily="{StaticResource Bold}"
+                                FontSize="{StaticResource FontSizeText}"
+                                Visibility="{c:Binding 'Rating > 0'}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="15"
+                                Icon="Star"
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Visibility="{c:Binding 'Rating >= 1'}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="15"
+                                Icon="Star"
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Visibility="{c:Binding 'Rating >= 2'}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="15"
+                                Icon="Star"
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Visibility="{c:Binding 'Rating >= 3'}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="15"
+                                Icon="Star"
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Visibility="{c:Binding 'Rating >= 4'}"/>
+                            <fa:ImageAwesome
+                                Margin="0 0 5 0"
+                                Height="15"
+                                Icon="Star"
+                                Foreground="{StaticResource NotAvailableColorBrush}"
+                                Visibility="{c:Binding 'Rating >= 5'}"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Text="Rating: "
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            FontFamily="{StaticResource Bold}"
-                            FontSize="{StaticResource FontSizeText}"
-                            Visibility="{c:Binding 'Rating > 0'}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="15"
-                            Icon="Star"
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            Visibility="{c:Binding 'Rating >= 1'}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="15"
-                            Icon="Star"
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            Visibility="{c:Binding 'Rating >= 2'}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="15"
-                            Icon="Star"
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            Visibility="{c:Binding 'Rating >= 3'}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="15"
-                            Icon="Star"
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            Visibility="{c:Binding 'Rating >= 4'}"/>
-                        <fa:ImageAwesome
-                            Margin="0 0 5 0"
-                            Height="15"
-                            Icon="Star"
-                            Foreground="{StaticResource NotAvailableColorBrush}"
-                            Visibility="{c:Binding 'Rating >= 5'}"/>
-                    </StackPanel>
-                </StackPanel>
+                </Border>
+                
                 
             </Grid>
             <StackPanel

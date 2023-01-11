@@ -20,6 +20,9 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid
@@ -49,18 +52,18 @@
                                 Width="30"
                                 Height="30">
                                 <ScrollViewer>
-                                    <Image
+                                    <local:AsyncImage
                                         Height="30"
                                         Width="30"
                                         Stretch="UniformToFill"
                                         Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
-                                        <Image.Clip>
+                                        <local:AsyncImage.Clip>
                                             <EllipseGeometry
                                                 Center="15 15"
                                                 RadiusX="15"
                                                 RadiusY="15"/>
-                                        </Image.Clip>
-                                    </Image>
+                                        </local:AsyncImage.Clip>
+                                    </local:AsyncImage>
                                 </ScrollViewer>
                             </Border>
                             <TextBlock 
@@ -217,7 +220,7 @@
                             Grid.Column="4"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            Text="SubTotal Price"
+                            Text="SubTotal"
                             FontFamily="{StaticResource Medium}"
                             FontSize="{StaticResource FontSizeText}"
                             FontWeight="SemiBold">
@@ -250,12 +253,97 @@
                 BorderBrush="{StaticResource NotAvailableColorBrush}"
                 BorderThickness="0 1 0 0"
                 Background="Transparent"
+                Padding="0 20 0 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Text="SubTotal: "
+                        FontFamily="{StaticResource Medium}"
+                        FontSize="{StaticResource FontSizeHeadline3}"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                    <StackPanel
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right">
+                        <TextBlock
+                            Text="{Binding SubTotal, UpdateSourceTrigger=PropertyChanged}"
+                            FontFamily="{StaticResource Medium}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontWeight="SemiBold"/>
+                        <TextBlock
+                            Text="đ"
+                            FontFamily="{StaticResource Medium}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border
+                Visibility="{c:Binding 'Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}"
+                Grid.Row="4"
+                Margin="20 0"
+                Background="Transparent"
+                Padding="0 20 0 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Text="Discount: "
+                        FontFamily="{StaticResource Medium}"
+                        FontSize="{StaticResource FontSizeHeadline3}"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                    <StackPanel
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right">
+                        <TextBlock
+                            Text="-"
+                            FontFamily="{StaticResource Medium}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontWeight="SemiBold"/>
+                        <TextBlock
+                            Text="{Binding Order.Discounted, UpdateSourceTrigger=PropertyChanged}"
+                            FontFamily="{StaticResource Medium}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontWeight="SemiBold"/>
+                        <TextBlock
+                            Text="đ"
+                            FontFamily="{StaticResource Medium}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontWeight="SemiBold"/>
+                    </StackPanel>
+                    
+                </Grid>
+            </Border>
+            <Grid
+                Grid.Row="5"
+                Height="20"/>
+            <Border
+                Grid.Row="6"
+                Margin="20 0"
+                BorderBrush="{StaticResource NotAvailableColorBrush}"
+                BorderThickness="0 1 0 0"
+                Background="Transparent"
                 Padding="0 20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Button
@@ -268,35 +356,33 @@
                         Padding="20 0"
                         Command="{Binding CancelledOrderBlockCommand, UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{c:Binding IsProcessing,UpdateSourceTrigger=PropertyChanged}"
-                        Margin="0 0 30 0"
                         CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}"/>
                     <Button
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Width="auto"
                         Content="{Binding NextStatusContent}"
                         HorizontalAlignment="Left"
                         FontSize="{StaticResource FontSizeText}"
                         Padding="20 0"
-                        Margin="0 0 30 0"
                         Command="{Binding ShopOrderBlockCommand,UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{c:Binding IsCanCommandExcute}"
                         CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}"/>
                     <Button 
-                        Grid.Column="2"
-                        Style="{StaticResource ButtonRectangle}"
+                        Grid.Column="4"
+                        Style="{StaticResource OutLineBlackButtonRectangle}"
                         HorizontalAlignment="Left" 
-                        Margin="10"
-                        Padding="0"
-                        Width="40"
-                        Command="{Binding PrintCommand,UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{c:Binding IsProcessing, UpdateSourceTrigger=PropertyChanged}">
+                        Width="auto"
+                        Padding="5"
+                        Command="{Binding PrintCommand,UpdateSourceTrigger=PropertyChanged}">
                         <materialDesign:PackIcon 
-                            Kind="Printer"/>
+                            Kind="Printer"
+                            Width="30"
+                            Height="30"/>
                     </Button>
                     <StackPanel
                         Orientation="Horizontal"
                         VerticalAlignment="Center"
-                        Grid.Column="3"
+                        Grid.Column="6"
                         HorizontalAlignment="Right">
                         <TextBlock
                             VerticalAlignment="Center"

@@ -6,9 +6,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d"
-             Width="600">
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             x:Name="grid">
     <Grid
-        x:Name="grid"
         Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -16,9 +16,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="auto"/>
@@ -257,8 +255,6 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="5"/>
                     <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock 
                     Text="PRODUCT" 
@@ -266,20 +262,14 @@
                     FontSize="{StaticResource FontSizeDescription}" 
                     FontWeight="Light"/>
                 <TextBlock 
-                    Text="PRICE" 
+                    Text="AMOUNT" 
                     Grid.Column="2" 
                     FontSize="{StaticResource FontSizeDescription}" 
                     FontWeight="Light" 
                     HorizontalAlignment="Center"/>
                 <TextBlock 
-                    Text="AMOUNT" 
-                    Grid.Column="4" 
-                    FontSize="{StaticResource FontSizeDescription}" 
-                    FontWeight="Light" 
-                    HorizontalAlignment="Center"/>
-                <TextBlock 
                     Text="SUBTOTAL" 
-                    Grid.Column="6" 
+                    Grid.Column="4" 
                     FontSize="{StaticResource FontSizeDescription}" 
                     FontWeight="Light" 
                     HorizontalAlignment="Right"/>
@@ -289,15 +279,22 @@
             Grid.Row="6"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
-            ItemsSource="{Binding Order.OrderInfoes, UpdateSourceTrigger=PropertyChanged}">
+            ItemsSource="{Binding Order.OrderInfoes, UpdateSourceTrigger=PropertyChanged}"
+            BorderBrush="Transparent"
+            BorderThickness="0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource BaseStyle}">
+                    <Setter Property="Padding" Value="0 5"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource NotAvailableColorBrush}"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid
                         HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="5"/>
-                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="5"/>
@@ -311,46 +308,24 @@
                                 MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
                                 Text="{Binding Product.Name, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Left"
+                                Foreground="{StaticResource BlackColorBrush}"
                                 FontSize="{StaticResource FontSizeDescription}"
                                 TextWrapping="Wrap"/>
                         </Border>
                         <Border
-                            Grid.Column="2"
-                            HorizontalAlignment="Stretch">
-                            <DockPanel
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Center"
-                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualWidth}">
-                                <TextBlock
-                                    Text=" đ"
-                                    DockPanel.Dock="Right"
-                                    FontSize="{StaticResource FontSizeDescription}"
-                                    Foreground="{StaticResource NotAvailableColorBrush}"/>
-                                <Border
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Stretch">
-                                    <TextBlock
-                                        MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=MaxWidth}"
-                                        Text="{Binding Product.Price, UpdateSourceTrigger=PropertyChanged}"
-                                        FontSize="{StaticResource FontSizeDescription}"
-                                        TextTrimming="CharacterEllipsis"/>
-                                </Border>
-
-                            </DockPanel>
-                        </Border>
-                        <Border
                             VerticalAlignment="Top"
                             HorizontalAlignment="Stretch"
-                            Grid.Column="4">
+                            Grid.Column="2">
                             <TextBlock
                                 MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
                                 Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}"
                                 HorizontalAlignment="Center"
+                                Foreground="{StaticResource BlackColorBrush}"
                                 FontSize="{StaticResource FontSizeDescription}"
                                 TextTrimming="CharacterEllipsis"/>
                         </Border>
                         <Border
-                            Grid.Column="6"
+                            Grid.Column="4"
                             HorizontalAlignment="Stretch">
                             <DockPanel
                                 VerticalAlignment="Top"
@@ -365,6 +340,7 @@
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Stretch">
                                     <TextBlock
+                                        Foreground="{StaticResource BlackColorBrush}"
                                         MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=MaxWidth}"
                                         Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged}"
                                         FontSize="{StaticResource FontSizeDescription}"
@@ -376,58 +352,165 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Border
-            BorderThickness="0 0 0 1"
-            BorderBrush="{StaticResource BlackColorBrush}"
-            Grid.Row="8">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock 
-                    Text="ORDER DATE" 
-                    Grid.Column="0" 
-                    FontSize="{StaticResource FontSizeDescription}" 
-                    FontWeight="Light"
-                    HorizontalAlignment="Left"/>
-                <TextBlock 
-                    Text="TOTAL" 
-                    Grid.Column="6" 
-                    FontSize="{StaticResource FontSizeDescription}" 
-                    FontWeight="Light" 
-                    HorizontalAlignment="Right"/>
-            </Grid>
-        </Border>
-        <Grid
-            Grid.Row="10">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock 
-                Text="{Binding Order.DateBegin, UpdateSourceTrigger=PropertyChanged}" 
-                Grid.Column="0" 
-                FontSize="{StaticResource FontSizeHeadline3}" 
-                FontWeight="Medium"
-                HorizontalAlignment="Left"/>
-            <StackPanel
-                Grid.Column="1"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
-                <TextBlock 
-                    Text="{Binding Order.OrderTotal, UpdateSourceTrigger=PropertyChanged}" 
-                    FontSize="{StaticResource FontSizeHeadline3}" 
-                    FontWeight="Medium"/>
-                <TextBlock
-                    Text=" đ"
-                    DockPanel.Dock="Right"
-                    FontSize="{StaticResource FontSizeHeadline3}"
-                    Foreground="{StaticResource NotAvailableColorBrush}"/>
-            </StackPanel>
-            
         </Grid>
-        <StackPanel Grid.Row="12">
+        <Border
+            BorderThickness="0 1 0 0"
+            BorderBrush="{StaticResource BlackColorBrush}"
+            Grid.Row="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid
+                    VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel
+                        Margin="0 5 0 0"
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal">
+                        <TextBlock 
+                            Text="FROM:   " 
+                            VerticalAlignment="Center"
+                            FontSize="{StaticResource FontSizeDescription}" 
+                            FontWeight="Light"/>
+                        <TextBlock 
+                            Text="{Binding Order.DateBegin, UpdateSourceTrigger=PropertyChanged}" 
+                            VerticalAlignment="Center"
+                            FontSize="{StaticResource FontSizeDescription}" 
+                            FontWeight="Light"/>
+                    </StackPanel>
+                    <StackPanel
+                        Margin="0 5 0 0"
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal"
+                        Visibility="{c:Binding 'Order.DateEnd != null', UpdateSourceTrigger=PropertyChanged}">
+                        <TextBlock 
+                            Text="TO:        " 
+                            VerticalAlignment="Center"
+                            FontSize="{StaticResource FontSizeDescription}" 
+                            FontWeight="Light"/>
+                        <TextBlock 
+                            Text="{Binding Order.DateEnd, UpdateSourceTrigger=PropertyChanged}" 
+                            VerticalAlignment="Center"
+                            FontSize="{StaticResource FontSizeDescription}" 
+                            FontWeight="Light"/>
+                    </StackPanel>
+                </Grid>
+                <Grid
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock 
+                        Margin="0 5 0 0"
+                        Text="SUBTOTAl" 
+                        Grid.Column="0" 
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        FontSize="{StaticResource FontSizeDescription}" 
+                        FontWeight="Light"
+                        HorizontalAlignment="Right"/>
+                    <StackPanel
+                        Margin="0 5 0 0"
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <TextBlock 
+                            Text="{Binding SubTotal, UpdateSourceTrigger=PropertyChanged}" 
+                            FontSize="{StaticResource FontSizeHeadline3}" 
+                            FontWeight="Medium"/>
+                        <TextBlock
+                            Text=" đ"
+                            DockPanel.Dock="Right"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    </StackPanel>
+                    <TextBlock 
+                        Visibility="{c:Binding 'Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0 5 0 0"
+                        Text="DISCOUNT" 
+                        Grid.Column="0" 
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        FontSize="{StaticResource FontSizeDescription}" 
+                        FontWeight="Light"
+                        HorizontalAlignment="Right"/>
+                    <StackPanel
+                        Margin="0 5 0 0"
+                        Grid.Column="2"
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Visibility="{c:Binding 'Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}">
+                        <TextBlock 
+                            Text="-" 
+                            FontSize="{StaticResource FontSizeHeadline3}" 
+                            FontWeight="Medium"/>
+                        <TextBlock 
+                            Text="{Binding Order.Discounted, UpdateSourceTrigger=PropertyChanged}" 
+                            FontSize="{StaticResource FontSizeHeadline3}" 
+                            FontWeight="Medium"/>
+                        <TextBlock
+                            Text=" đ"
+                            DockPanel.Dock="Right"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    </StackPanel>
+                    <TextBlock 
+                        Margin="0 5 0 0"
+                        Text="TOTAL" 
+                        Grid.Column="0"
+                        Grid.Row="2"
+                        VerticalAlignment="Center"
+                        FontSize="{StaticResource FontSizeDescription}" 
+                        FontWeight="Light" 
+                        HorizontalAlignment="Right"/>
+                    <StackPanel
+                        Margin="0 5 0 0"
+                        Grid.Column="2"
+                        Grid.Row="2"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <TextBlock 
+                            Text="{Binding Order.OrderTotal, UpdateSourceTrigger=PropertyChanged}" 
+                            FontSize="{StaticResource FontSizeHeadline3}" 
+                            FontWeight="Medium"/>
+                        <TextBlock
+                            Text=" đ"
+                            DockPanel.Dock="Right"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+        <StackPanel Grid.Row="10">
             <Grid 
                 HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
