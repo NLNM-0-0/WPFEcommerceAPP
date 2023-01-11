@@ -25,6 +25,12 @@ namespace WPFEcommerceApp
         {
             InitializeComponent();
         }
+
+        private void ScrollViewer_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 }
 

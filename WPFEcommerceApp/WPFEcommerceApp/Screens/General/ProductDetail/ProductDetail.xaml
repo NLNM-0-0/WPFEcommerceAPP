@@ -8,113 +8,366 @@
              xmlns:it="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
-             mc:Ignorable="d"
-             Width="1330">
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2.75*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="CheckBoxRatingStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="{StaticResource BoxShadowColorBrush}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10 0"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSizeHeadline3}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="Click">
+                                <DoubleAnimationUsingKeyFrames 
+                                        Storyboard.TargetProperty="ScaleX" 
+                                        Storyboard.TargetName="scaleTransform">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1.05"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1.1"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames 
+                                        Storyboard.TargetProperty="ScaleY" 
+                                        Storyboard.TargetName="scaleTransform">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1.3"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1.5"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames 
+                                        Storyboard.TargetProperty="(UIElement.Opacity)" 
+                                        Storyboard.TargetName="InteractionEllipse">
+                                    <EasingDoubleKeyFrame KeyTime="0" Value="0.2"/>
+                                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+                        <Border
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="20"
+                            Padding="{TemplateBinding Padding}">
+                            <Grid 
+                                x:Name="templateRoot"
+                                SnapsToDevicePixels="True"
+                                Width="{TemplateBinding Width}">
+                                <Rectangle 
+                                        x:Name="InteractionEllipse" 
+                                        Fill="{TemplateBinding BorderBrush}" 
+                                        Opacity="0" 
+                                        Width="{TemplateBinding Width}"
+                                        Height="{TemplateBinding Height}"
+                                        RenderTransformOrigin="0.5,0.5" >
+                                    <Rectangle.RenderTransform>
+                                        <ScaleTransform
+                                                x:Name="scaleTransform"
+                                                ScaleX="1"
+                                                ScaleY="1"/>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                                <Grid
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        VerticalAlignment="Stretch">
+                                        <materialDesign:PackIcon
+                                            x:Name="checkGraphic"
+                                            Kind="Check"
+                                            Foreground="#4B8CDE"
+                                            VerticalAlignment="Center"
+                                            Visibility="Visible"
+                                            Margin="0 0 10 0"/>
+                                    </Border>
+                                    <TextBlock
+                                        x:Name="contentPresenter" 
+                                        Grid.Column="1" 
+                                        Focusable="False" 
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                        Text="{TemplateBinding Content}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    <Border
+                                        VerticalAlignment="Stretch"
+                                        Grid.Column="2">
+                                        <materialDesign:PackIcon
+                                            x:Name="starOutlineGraphic"
+                                            Kind="StarOutline"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            VerticalAlignment="Center"
+                                            Visibility="Visible"
+                                            Margin="5 0 0 0"/>
+                                    </Border>
+                                    <Border
+                                        VerticalAlignment="Stretch"
+                                        Grid.Column="2">
+                                        <materialDesign:PackIcon
+                                            x:Name="starFullGraphic"
+                                            Kind="Star"
+                                            Foreground="#4B8CDE"
+                                            VerticalAlignment="Center"
+                                            Visibility="Collapsed"
+                                            Margin="5 0 0 0"/>
+                                    </Border>
+                                </Grid>
+
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="ButtonBase.Click">
+                                <BeginStoryboard Storyboard="{StaticResource Click}"/>
+                            </EventTrigger>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" Value="0.25"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true"/>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Visibility" TargetName="checkGraphic" Value="Visible"/>
+                                <Setter Property="Visibility" TargetName="starOutlineGraphic" Value="Collapsed"/>
+                                <Setter Property="Visibility" TargetName="starFullGraphic" Value="Visible"/>
+                                <Setter Property="Foreground" Value="#4B8CDE"/>
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="#4B8CDE"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Visibility" TargetName="checkGraphic" Value="Collapsed"/>
+                                <Setter Property="Visibility" TargetName="starOutlineGraphic" Value="Visible"/>
+                                <Setter Property="Visibility" TargetName="starFullGraphic" Value="Collapsed"/>
+                                <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+                                <Setter Property="Background" Value="{StaticResource BoxShadowColorBrush}"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <ScrollViewer
+        x:Name="scroll"
+        PreviewMouseWheel="ScrollViewer_MouseWheel">
         <Grid
-            x:Name="grid"
-            HorizontalAlignment="Center"
-            Grid.Column="0"
-            Background="{StaticResource BoxShadowColorBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
+            x:Name="grid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="10*"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="385"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1">
-                <Image Source="{Binding SelectedImage}"
-                        Margin="0,30,0,0"
-                        Width="650"
-                        Height="450">
+            <StackPanel
+                Background="{StaticResource BackgroundColorBrush}">
+                <Grid
+                        Background="Aqua">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="7*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1">
+                        <local:AsyncImage
+                                Source="{Binding SelectedImage}"
+                                Margin="20,30,20,0"
+                                Width="650"
+                                Height="450">
 
-                </Image>
-                <TextBox
-                    Style="{StaticResource TextBoxHintWrapText}"
-                    Width="600"
-                    Height="100"
-                    Margin="20"
-                    IsReadOnly="True"
-                    Background="{StaticResource BackgroundColorBrush}"
-                    materialDesign:HintAssist.Hint="Description"
-                    Text="{Binding SelectedProduct.Description}"/>
-            </StackPanel>
-            <Button Grid.Column="0"
-                    Width="30"
-                    Height="30"
-                    Style="{StaticResource TransparentButton}"
-                    Padding="0"
-                    Command="{Binding PreviousImageCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                    Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
-                    Opacity="0.5"
-                    Margin="30 0 0 0">
-                <fa:ImageAwesome
-                    Icon="ChevronCircleLeft"
-                    Foreground="{StaticResource BlackColorBrush}"/>
-            </Button>
-            <Button Grid.Column="2"
-                    VerticalAlignment="Center"
-                    Width="30"
-                    Height="30"
-                    Style="{StaticResource TransparentButton}"
-                    Padding="0"
-                    Command="{Binding NextImageCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                    Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
-                    Opacity="0.5"
-                    Margin="0 0 30 0">
-                <fa:ImageAwesome
-                    Icon="ChevronCircleRight"
-                    Foreground="{StaticResource BlackColorBrush}"/>
+                        </local:AsyncImage>
+
+                    </StackPanel>
+                    <Button Grid.Column="0"
+                                Width="30"
+                                Height="30"
+                                Style="{StaticResource TransparentButton}"
+                                Padding="0"
+                                Command="{Binding PreviousImageCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
+                                Opacity="0.5"
+                                Margin="30 0 0 0">
+                        <fa:ImageAwesome
+                                Icon="ChevronCircleLeft"
+                                Foreground="{StaticResource BlackColorBrush}"/>
+                    </Button>
+                    <Button Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Width="30"
+                                Height="30"
+                                Style="{StaticResource TransparentButton}"
+                                Padding="0"
+                                Command="{Binding NextImageCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                                Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
+                                Opacity="0.5"
+                                Margin="0 0 30 0">
+                        <fa:ImageAwesome
+                                Icon="ChevronCircleRight"
+                                Foreground="{StaticResource BlackColorBrush}"/>
 
 
-            </Button>
-        </Grid>
-        <Grid
-            Grid.Column="1"
-                    HorizontalAlignment="Stretch">
-            <StackPanel>
-                <TextBlock Text="{Binding SelectedProduct.Name}"
-                       FontSize="30"
-                       FontWeight="SemiBold"
-                       Margin="40">
-
-                </TextBlock>
-                <TextBlock Text="{Binding SelectedProduct.Brand.Name}"
-                       Margin="40,0,0,20"
-                       FontSize="12"
-                       Foreground="{StaticResource NotAvailableColorBrush}">
-
-                </TextBlock>
-                <TextBlock Text="{Binding SelectedProduct.Category.Name}"
-                       Margin="40,0,0,0"
-                       FontSize="12"
-                       Foreground="{StaticResource NotAvailableColorBrush}">
-
-                </TextBlock>
-                <TextBlock Text="{i:Binding '(100 -SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
-                       Margin="40,20,0,0"
+                    </Button>
+                </Grid>
+                <TextBlock Text="DESCRIPTION"
                        FontWeight="Bold"
-                       FontSize="12"
-                       Foreground="{StaticResource NotAvailableColorBrush}">
+                       Margin="20"
+                       Foreground="{StaticResource BlackColorBrush}"
+                       FontSize="{StaticResource FontSizeHeadline3}">
 
                 </TextBlock>
-                <TextBlock Text="Size"
-                       Margin="40,40,0,0"
+                <TextBlock Text="{Binding SelectedProduct.Description}"
+                       FontSize="{StaticResource FontSizeDescription}"
+                       MaxWidth="900"/>
+                <TextBlock Text="SHOP INFORMATION"
                        FontWeight="Bold"
-                       FontSize="12"
-                       Foreground="{StaticResource BlackColorBrush}">
+                       Margin="20,20,20,0"
+                       Foreground="{StaticResource BlackColorBrush}"
+                       FontSize="{StaticResource FontSizeHeadline3}">
 
                 </TextBlock>
-                <Grid Margin="25,20,25,10">
+                    <Border Margin="20"
+                            BorderBrush="{StaticResource BoxLineColorBrush}"
+                            BorderThickness="1">
+                        <Grid
+                            Background="{StaticResource WhiteColorBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="7*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border
+                            Margin="5"
+                            BorderBrush="{StaticResource BoxLineColorBrush}"
+                            BorderThickness="1"
+                            ClipToBounds="True"
+                            Width="80"
+                            Height="80"
+                            CornerRadius="40"
+                            Background="{StaticResource WhiteColorBrush}">
+                                <Image
+                                Stretch="Fill"
+                                Height="78"
+                                Width="78"
+                                Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
+                                    <Image.Clip>
+                                        <EllipseGeometry
+                                Center="39 39"
+                                RadiusX="39"
+                                RadiusY="39"/>
+                                    </Image.Clip>
+                                </Image>
+                            </Border>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                Text="{Binding SelectedProduct.MUser.Name, UpdateSourceTrigger=PropertyChanged}"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                FontWeight="Normal"
+                                Margin="10">
+
+                                </TextBlock>
+                                <Button Grid.Row="1"
+                                    Margin="10"
+                                    FontSize="{StaticResource FontSizeDescription}"
+                                    Foreground="{StaticResource BlackColorBrush}"
+                                    Background="{StaticResource WhiteColorBrush}"
+                                    HorizontalAlignment="Left"
+                                    materialDesign:ButtonAssist.CornerRadius="5"
+                                    Width="auto">
+                                    <Button.Content>
+                                        <StackPanel
+                                         Orientation="Horizontal">
+                                            <TextBlock
+                                            Text="View shop"
+                                            Margin="10,3,0,0"
+                                            FontSize="{StaticResource FontSizeHeadline3}"/>
+                                            <materialDesign:PackIcon
+                                            Kind="Shop"
+                                            Width="25"
+                                            Height="25"
+                                            Margin="20,2,5,0"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="12*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="OTHERS OF SHOP"
+                       FontWeight="Bold"
+                       Margin="20,20,20,0"
+                       Foreground="{StaticResource BlackColorBrush}"
+                       FontSize="{StaticResource FontSizeHeadline3}">
+
+                        </TextBlock>
+                        <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Grid.Column="2"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding RightCommand}"
+                        CommandParameter="{Binding ElementName=ProductList}">
+                            <Button.Content>
+                                <fa:FontAwesome Icon="AngleRight" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                            </Button.Content>
+                        </Button>
+                        <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Grid.Column="1"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding LeftCommand}"
+                        CommandParameter="{Binding ElementName=ProductList}">
+                            <Button.Content>
+                                <fa:FontAwesome Icon="AngleLeft" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                
+                <ScrollViewer>
+                    <ListView ItemsSource="{Binding ProductViewModels}" Margin="20"
+                          x:Name="ProductList"
+                          BorderThickness="0"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                                <Setter Property="Margin" Value="5 20"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <local:ProductBlock 
+                                Height="500" 
+                                Width="350"
+                                DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+                <Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -124,77 +377,427 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <RadioButton Content="S"
+                        <TextBlock Text="PRODUCT REVIEWS"
+                               FontWeight="Bold"
+                               Margin="20"
+                               Foreground="{StaticResource BlackColorBrush}"
+                               FontSize="{StaticResource FontSizeHeadline3}">
+
+                        </TextBlock>
+                        <CheckBox Content="1"
+                                 Style="{StaticResource CheckBoxRatingStyle}"
+                                 Grid.Column="1"
+                                 IsChecked="{Binding IsHad1S}"
+                                  Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="2">
+                        </CheckBox>
+                        <CheckBox Content="2"
+                                 Style="{StaticResource CheckBoxRatingStyle}"
+                                 Grid.Column="2"
+                                 IsChecked="{Binding IsHad2S}"
+                                     Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="2">
+                        </CheckBox>
+                        <CheckBox Content="3"
+                                 Style="{StaticResource CheckBoxRatingStyle}"
+                                 Grid.Column="3"
+                                 IsChecked="{Binding IsHad3S}"
+                                     Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="2">
+                        </CheckBox>
+                        <CheckBox Content="4"
+                                 Style="{StaticResource CheckBoxRatingStyle}"
+                                 Grid.Column="4"
+                                 IsChecked="{Binding IsHad4S}"
+                                     Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="2">
+                        </CheckBox>
+                        <CheckBox Content="5"
+                                 Style="{StaticResource CheckBoxRatingStyle}"
+                                 Grid.Column="5"
+                                 IsChecked="{Binding IsHad5S}"
+                                     Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="2">
+                        </CheckBox>
+                    </Grid>
+                </Grid>
+                <Grid 
+                Background="Transparent"
+                Margin="50 0"
+                ScrollViewer.CanContentScroll="True">
+                    <StackPanel 
+                        IsHitTestVisible="True">
+                        <ItemsControl ItemsSource="{Binding DisplayShopRatingBlockModels, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:ShopRatingBlock
+                                    Margin="0 0 0 20"
+                                    DataContext="{Binding}"
+                                    Grid.Column="0"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="12*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="YOU MAY ALSO LIKE"
+                       FontWeight="Bold"
+                       Margin="20,20,20,0"
+                       Foreground="{StaticResource BlackColorBrush}"
+                       FontSize="{StaticResource FontSizeHeadline3}">
+
+                        </TextBlock>
+                        <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Grid.Column="2"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding RightCommand}"
+                        CommandParameter="{Binding ElementName=ProductListAlso}">
+                            <Button.Content>
+                                <fa:FontAwesome Icon="AngleRight" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                            </Button.Content>
+                        </Button>
+                        <Button Style="{StaticResource TransparentButton}" Height="50"
+                        Background="{StaticResource BoxShadowColorBrush}"
+                        Grid.Column="1"
+                        Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                        Command="{Binding LeftCommand}"
+                        CommandParameter="{Binding ElementName=ProductListAlso}">
+                            <Button.Content>
+                                <fa:FontAwesome Icon="AngleLeft" 
+                                        FontSize="{StaticResource FontSizeHeadline2}"
+                                        />
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+
+                    <ScrollViewer>
+                    <ListView ItemsSource="{Binding ProductAlsoViewModels}" Margin="20"
+                          x:Name="ProductListAlso"
+                          BorderThickness="0"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                                <Setter Property="Margin" Value="5 20"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <local:ProductBlock 
+                                Height="500" 
+                                Width="350"
+                                DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+    <Canvas
+        HorizontalAlignment="Stretch">
+        <Grid
+            Grid.Column="1"
+            Background="{StaticResource WhiteColorBrush}"
+            Canvas.Right="10"
+            Margin="20 0 0 0"
+            Width="350"
+            ScrollViewer.CanContentScroll="False"
+            PreviewMouseWheel="ScrollViewer_MouseWheel">
+            <StackPanel>
+                <Grid Margin="0,20,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding SelectedProduct.Name}"
+                                 FontSize="{StaticResource FontSizeHeadline}"
+                                 FontWeight="Normal">
+
+                    </TextBlock>
+                    <Button Grid.Column="1"
+                                    Style="{StaticResource TransparentButton}"
+                                    Command="{Binding FavouriteCommand}"
+                                    CommandParameter="{Binding SelectedProduct}"
+                                    Visibility="{i:Binding '!IsFavorite', UpdateSourceTrigger=PropertyChanged}">
+                        <fa:ImageAwesome
+                                    Icon="HeartOutline"/>
+
+                    </Button>
+                    <Button Grid.Column="1"
+                                    Style="{StaticResource TransparentButton}"
+                                    Command="{Binding UnFavouriteCommand}"
+                                    CommandParameter="{Binding SelectedProduct}"
+                                    Visibility="{i:Binding 'IsFavorite', UpdateSourceTrigger=PropertyChanged}">
+                        <fa:ImageAwesome
+                                    Icon="Heart"/>
+
+                    </Button>
+                </Grid>
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="2.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Rating"
+                                       FontWeight="Normal"
+                                       VerticalAlignment="Center"
+                                       FontSize="{StaticResource FontSizeHeadline3}"
+                                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+                        <DockPanel
+                            Grid.Column="1"
+                            Margin="0,7,0,0">
+                            <TextBlock
+                                Text="No rating yet"
+                                Visibility="{i:Binding 'RatingTimes == 0'}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeDescription}"
+                                FontFamily="{StaticResource Medium}"
+                                Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            <materialDesign:PackIcon
+                                Kind="StarHalfFull"
+                                Height="25"
+                                Visibility="{i:Binding '(Rating >= 0.5) and (Rating less 1)'}"/>
+                            <materialDesign:PackIcon
+                                Kind="Star"
+                                Height="25"
+                                Visibility="{i:Binding 'Rating >= 1'}"/>
+                            <materialDesign:PackIcon
+                                Kind="StarHalfFull"
+                                Height="25"
+                                Visibility="{i:Binding '(Rating >= 1.5) and (Rating less 2)'}"/>
+                            <materialDesign:PackIcon
+                                Kind="Star"
+                                Height="25"
+                                Visibility="{i:Binding 'Rating >= 2'}"/>
+                            <materialDesign:PackIcon
+                                Kind="StarHalfFull"
+                                Height="25"
+                                Visibility="{i:Binding '(Rating >= 2.5) and (Rating less 3)'}"/>
+                            <materialDesign:PackIcon
+                                Kind="Star"
+                                Height="25"
+                                Visibility="{i:Binding 'Rating >= 3'}"/>
+                            <materialDesign:PackIcon
+                                Kind="StarHalfFull"
+                                Height="25"
+                                Visibility="{i:Binding '(Rating >= 3.5) and (Rating less 4)'}"/>
+                            <materialDesign:PackIcon
+                                Kind="Star"
+                                Height="25"
+                                Visibility="{i:Binding 'Rating >= 4'}"/>
+                            <materialDesign:PackIcon
+                                Kind="StarHalfFull"
+                                Height="25"
+                                Visibility="{i:Binding '(Rating >= 4.5) and (Rating less 5)'}"/>
+                            <materialDesign:PackIcon
+                                Kind="Star"
+                                Height="25"
+                                Visibility="{i:Binding 'Rating >= 5'}"/>
+                            <!--<TextBlock
+                                Visibility="{i:Binding 'RatingTimes != 0'}"
+                                Text="{Binding Rating}"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource Bold}"
+                                FontSize="{StaticResource FontSizeText}"/>-->
+                        </DockPanel>
+                        <TextBlock Text=" / "
+                                       Grid.Column="2"
+                                       FontWeight="Light"
+                                       FontSize="{StaticResource FontSizeHeadline}"
+                                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+                    <TextBlock Text="{Binding SelectedProduct.Sold}"
+                                       FontWeight="Normal"
+                                       HorizontalAlignment="Right"
+                                       Grid.Column="3"
+                                       Margin="0,10,0,0"
+                                       FontSize="{StaticResource FontSizeHeadline3}"
+                                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+                    <TextBlock Text="sold"
+                                       Grid.Column="4"
+                                       Margin="5,10,0,0"
+                                       FontWeight="Light"
+                                       FontSize="{StaticResource FontSizeHeadline3}"
+                                       Foreground="{StaticResource NotAvailableColorBrush}">
+
+                    </TextBlock>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding SelectedProduct.Brand.Name}"
+                                       Grid.Column="0"
+                                       FontWeight="Light"
+                                       FontSize="{StaticResource FontSizeHeadline3}"
+                                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+                    <TextBlock Text=" / "
+                                       Grid.Column="1"
+                                       FontWeight="Light"
+                                       FontSize="{StaticResource FontSizeHeadline3}"
+                                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+                    <TextBlock Text="{Binding SelectedProduct.Category.Name}"
+                                       Grid.Column="2"
+                                       FontWeight="Light"
+                                       FontSize="{StaticResource FontSizeHeadline3}"
+                                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{i:Binding 'SelectedProduct.Price*Amount'}"
+                                       Grid.Column="0"
+                                       Margin="0,20,0,0"
+                                       FontWeight="Normal"
+                                       FontSize="{StaticResource FontSizeHeadline2}"
+                                       Foreground="{StaticResource NotAvailableColorBrush}"
+                                       TextDecorations="Strikethrough"
+                                       Visibility="{i:Binding 'SelectedProduct.Sale != 0', UpdateSourceTrigger=PropertyChanged}">
+
+                    </TextBlock>
+                    <TextBlock Text="{i:Binding '((100 -SelectedProduct.Sale) * SelectedProduct.Price / 100)*Amount'}"
+                                       Margin="20,20,0,0"
+                                       Grid.Column="1"
+                                       FontWeight="Normal"
+                                       FontSize="{StaticResource FontSizeHeadline2}"
+                                       Foreground="{StaticResource BlackColorBrush}">
+
+                    </TextBlock>
+                </Grid>
+
+                <TextBlock Text="Size"
+                       Margin="0,30,0,20"
+                       FontWeight="Normal"
+                       FontSize="{StaticResource FontSizeHeadline3}"
+                       Foreground="{StaticResource BlackColorBrush}">
+
+                </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Content="S"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="0"
+                                 GroupName="Size"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
                                  IsChecked="{Binding IsHadSizeS}"
                                  Visibility="{i:Binding 'SelectedProduct.IsHadSizeS'}">
-                        </RadioButton>
-                        <RadioButton Content="M"
+                    </RadioButton>
+                    <RadioButton Content="M"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="1"
+                                 GroupName="Size"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
                                  IsChecked="{Binding IsHadSizeM}"
                                  Visibility="{i:Binding 'SelectedProduct.IsHadSizeM'}">
-                        </RadioButton>
-                        <RadioButton Content="L"
+                    </RadioButton>
+                    <RadioButton Content="L"
                                  Style="{StaticResource RadioButtonFill}"
                                  Grid.Column="2"
+                                 GroupName="Size"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
                                  IsChecked="{Binding IsHadSizeL}"
                                  Visibility="{i:Binding 'SelectedProduct.IsHadSizeL'}">
-                        </RadioButton>
-                        <RadioButton Content="XL"
+                    </RadioButton>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Content="XL"
                                  Style="{StaticResource RadioButtonFill}"
-                                 Grid.Column="3"
+                                 Grid.Column="0"
+                                 GroupName="Size"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
                                  IsChecked="{Binding IsHadSizeXL}"
                                  Visibility="{i:Binding 'SelectedProduct.IsHadSizeXL'}">
-                        </RadioButton>
-                        <RadioButton Content="XXL"
+                    </RadioButton>
+                    <RadioButton Content="XXL"
                                  Style="{StaticResource RadioButtonFill}"
-                                 Grid.Column="4"
+                                 Grid.Column="1"
+                                 GroupName="Size"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
                                  IsChecked="{Binding IsHadSizeXXL}"
                                  Visibility="{i:Binding 'SelectedProduct.IsHadSizeXXL'}">
-                        </RadioButton>
-                        <RadioButton Content="OneSize"
+                    </RadioButton>
+                    <RadioButton Content="OneSize"
                                  Style="{StaticResource RadioButtonFill}"
-                                 Grid.Column="5"
+                                 Grid.Column="2"
+                                 GroupName="Size"
                                  materialDesign:ButtonAssist.CornerRadius="5"
                                  Margin="2"
                                  IsChecked="{Binding IsHadOneSize}"
                                  Visibility="{i:Binding 'SelectedProduct.IsOneSize'}">
-                        </RadioButton>
-                    </Grid>
+                    </RadioButton>
                 </Grid>
-                <Grid>
+                <Grid Margin="0 10 0 0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.25*"/>
-                        <ColumnDefinition Width="0.5*"/>
-                        <ColumnDefinition Width="0.5*"/>
-                        <ColumnDefinition Width="0.5*"/>
-                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="2.5*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Amount"
                            Grid.Column="0"
-                       Margin="40,20,0,10"
-                       FontWeight="Bold"
-                       FontSize="12"
+                       Margin="0,20,0,10"
+                       FontWeight="Normal"
+                       FontSize="{StaticResource FontSizeHeadline3}"
                        Foreground="{StaticResource BlackColorBrush}">
 
                     </TextBlock>
 
                     <Button Grid.Column="1"
                     Content="-"
-                        Margin="0,0,0,2"
+                    Margin="15,0,5,6"
+                    FontWeight="Light"
                     VerticalAlignment="Bottom"
+                    FontSize="{StaticResource FontSizeHeadline3}"
                     Command="{Binding Tamount, UpdateSourceTrigger=PropertyChanged}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"
                     Style="{StaticResource TransparentButton}">
@@ -202,15 +805,19 @@
                     </Button>
                     <TextBlock Width="20"
                          Height="20"
+                         FontWeight="Light"
+                         FontSize="{StaticResource FontSizeHeadline3}"
                          Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Column="2"
-                         Margin="0,0,0,5"
+                         Margin="5,0,5,10"
                          VerticalAlignment="Bottom">
 
                     </TextBlock>
                     <Button Grid.Column="3"
                     Content="+"
-                    Margin="0,0,0,2"
+                    FontSize="{StaticResource FontSizeHeadline3}"
+                    Margin="5,0,0,6"
+                    FontWeight="Light"
                     VerticalAlignment="Bottom"
                     Command="{Binding Plusamount, UpdateSourceTrigger=PropertyChanged}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=DataContext}"
@@ -218,78 +825,58 @@
 
                     </Button>
                 </Grid>
+                <Grid Margin="0 20 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button
+                                Width="200"
+                                Height="50"
+                                Command="{Binding AddToBagCommand}"
+                                Style="{StaticResource ButtonRectangle}"
+                                CommandParameter="{Binding SelectedProduct}">
+                        <Button.Content>
+                            <StackPanel
+                                         Orientation="Horizontal">
+                                <TextBlock
+                                            Text="Add to bag"
+                                            Margin="0,3,0,0"
+                                            FontSize="{StaticResource FontSizeHeadline3}"/>
+                                <materialDesign:PackIcon
+                                            Kind="Cart"
+                                            Width="25"
+                                            Height="25"
+                                            Margin="40,2,0,0"/>
+                            </StackPanel>
+                        </Button.Content>
+                        <it:Interaction.Triggers>
+                            <it:EventTrigger EventName="Click">
+                                <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                            </it:EventTrigger>
+                        </it:Interaction.Triggers>
+                    </Button>
 
-                <Button Content="Add to bag"
-                    Width="auto"
-                    Command="{Binding AddToBagCommand}"
-                    CommandParameter="{Binding SelectedProduct}"
-                    Margin="50,50,50,0">
-                    <it:Interaction.Triggers>
-                        <it:EventTrigger EventName="Click">
-                            <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                        </it:EventTrigger>
-                    </it:Interaction.Triggers>
-                </Button>
-                <Button
-                Style="{StaticResource WhiteButton}"
-                Command="{Binding FavouriteCommand}"
-                CommandParameter="{Binding SelectedProduct}"
-                Width="auto"
-                Margin="50,20,50,0"
-                Visibility="{i:Binding '!IsFavorite', UpdateSourceTrigger=PropertyChanged}">
-                    <StackPanel
-                    Orientation="Horizontal">
-                        <TextBlock
-                        Text="Favorite"
-                        FontSize="{StaticResource FontSizeText}"
-                        Margin="0 0 10 0"/>
-                        <materialDesign:PackIcon
-                        Kind="HeartOutline"/>
-                    </StackPanel>
-                    <!--<it:Interaction.Triggers>
-                    <it:EventTrigger EventName="Click">
-                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                    </it:EventTrigger>
-                </it:Interaction.Triggers>-->
-                </Button>
-                <Button
-                Style="{StaticResource WhiteButton}"
-                Command="{Binding UnFavouriteCommand}"
-                CommandParameter="{Binding SelectedProduct}"
-                Width="auto"
-                Margin="50,20,50,0"
-                Visibility="{i:Binding 'IsFavorite', UpdateSourceTrigger=PropertyChanged}">
-                    <Button.Content>
-                        <StackPanel
-                        Orientation="Horizontal">
-                            <TextBlock
-                            Text="Un Favorite"
-                            FontSize="{StaticResource FontSizeText}"
-                            Margin="0 0 10 0"/>
-                            <materialDesign:PackIcon
-                            Kind="Heart"/>
-                        </StackPanel>
-                    </Button.Content>
-                    <!--<it:Interaction.Triggers>
-                    <it:EventTrigger EventName="Click">
-                        <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                    </it:EventTrigger>
-                </it:Interaction.Triggers>-->
-                </Button>
-                <Button Content="Buy now"
-                    Width="auto"
-                    Command="{Binding BuyNowCommand}"
-                    CommandParameter="{Binding SelectedProduct}"
-                    Margin="50,50,50,0">
-                    <it:Interaction.Triggers>
-                        <it:EventTrigger EventName="Click">
-                            <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                        </it:EventTrigger>
-                    </it:Interaction.Triggers>
-                </Button>
-
+                    <Button Content="Buy now"
+                                Width="120"
+                                Grid.Column="1"
+                                Margin="10,0,0,0"
+                                Height="50"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                HorizontalAlignment="Left"
+                                Command="{Binding BuyNowCommand}"
+                                Style="{StaticResource ButtonRectangle}"
+                                CommandParameter="{Binding SelectedProduct}">
+                        <it:Interaction.Triggers>
+                            <it:EventTrigger EventName="Click">
+                                <it:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                            </it:EventTrigger>
+                        </it:Interaction.Triggers>
+                    </Button>
+                </Grid>
             </StackPanel>
         </Grid>
+    </Canvas>
     </Grid>
 </UserControl>
 
