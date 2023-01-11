@@ -110,6 +110,8 @@ namespace WPFEcommerceApp
                         })
                     };
                     await DialogHost.Show(dialog, "App");
+                    WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
+                    WPFEcommerceApp.Properties.Settings.Default.Save();
                     return;
                 }
                 Login login = App.serviceProvider.GetRequiredService<Login>();
@@ -121,7 +123,12 @@ namespace WPFEcommerceApp
             {
                 NavigateProvider.Back();
             });
-            ToNoteCommand = new RelayCommandWithNoParameter(ToNote);
+            ToNoteCommand = new RelayCommand<object>(p => {
+                var temp = AccountStore.instance.CurrentAccount;
+                return temp != null && temp.Role != "Admin";
+            }, p => {
+                NavigateProvider.NotificationScreen().Navigate();
+            });
             var task=Task.Run(async () =>
             {
                 MainViewModel.IsLoading = true;
@@ -226,11 +233,6 @@ namespace WPFEcommerceApp
 
             else
                 ItemsSource = new ObservableCollection<SearchItemViewModel>(AllItems.Where(item => (item.Name.ToLower()).Contains(SearchText.ToLower())));
-        }
-
-        public void ToNote()
-        {
-            NavigateProvider.NotificationScreen().Navigate();
         }
         #endregion
 

@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              x:Name="myDrawer"
              mc:Ignorable="d">
@@ -36,7 +37,7 @@
             </Setter>
         </Style>
 
-        <Style x:Key="iconItem" TargetType="fa:FontAwesome">
+        <Style x:Key="iconItem" TargetType="material:PackIcon">
             <Setter Property="Foreground" Value="{StaticResource BackgroundColorBrush}"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" Value="True">
@@ -137,8 +138,8 @@
                                Background="Transparent"
                                BorderBrush="Transparent"
                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                       ItemsSource="{Binding ButtonItems}"
-                       SelectedIndex="{Binding SelectedIndex}">
+                               ItemsSource="{Binding ButtonItems}"
+                               SelectedIndex="{Binding SelectedIndex}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged" >
                                 <i:InvokeCommandAction Command="{Binding OnChangeScreen}" CommandParameter="{Binding ElementName=LV}"/>
@@ -152,7 +153,7 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type ListViewItem}">
                                             <Border x:Name="Bd"
-                                                    Height="50"
+                                                    Height="55"
                                             Width="220"
                                                     BorderBrush="{TemplateBinding BorderBrush}"
                                                     BorderThickness="{TemplateBinding BorderThickness}"
@@ -225,9 +226,9 @@
                                             </i:InvokeCommandAction>
                                         </i:DataTrigger>
                                     </i:Interaction.Triggers>
-                                    <fa:FontAwesome Icon="{Binding Icon}"
-                                        FontSize="{StaticResource FontSizeHeadline2}"
-                                        Margin="11, 0, 0, 0"
+                                    <material:PackIcon Kind="{Binding Icon}"
+                                        Width="29" Height="29"
+                                        Margin="8, 0, 0, 0"
                                         VerticalAlignment="Center" Style="{StaticResource iconItem}"/>
                                     <Label x:Name="text" Content="{Binding Text}"
                                            Margin="25,0,0,0"
