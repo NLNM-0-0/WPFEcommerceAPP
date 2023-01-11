@@ -192,19 +192,21 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <RadioButton
-                Grid.Column="0"
-                Style="{StaticResource RadioButtonGender}"
-                Margin="30,20,30,0"
-                Content="Male"
-                Width="auto"
-                IsChecked="{Binding IsMen}"
-                HorizontalAlignment="Stretch"/>
+                        GroupName="Gender"
+                        Grid.Column="0"
+                        Style="{StaticResource RadioButtonGender}"
+                        Margin="30,20,30,0"
+                        Content="Male"
+                        Width="auto"
+                        IsChecked="{Binding Gender, Converter={StaticResource InvertBooleanConverter}}"
+                        HorizontalAlignment="Stretch"/>
                     <RadioButton
-                Grid.Column="1"
-                Style="{StaticResource RadioButtonGender}"
-                Margin="30,20,30,0"
-                IsChecked="{Binding IsWomen}"
-                Content="Female" />
+                        GroupName="Gender"
+                        Grid.Column="1"
+                        Style="{StaticResource RadioButtonGender}"
+                        Margin="30,20,30,0"
+                        IsChecked="{Binding Gender}"
+                        Content="Female" />
                 </Grid>
                 
             </StackPanel>

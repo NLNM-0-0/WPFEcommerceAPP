@@ -27,11 +27,8 @@ namespace WPFEcommerceApp {
         private string _password;
         private string _phone;
         private string _address;
-        private bool _isMen;
-        private bool _isWomen;
         private bool _isCheckAgree;
         private string _confirmPassword;
-        public bool Gender;
         #endregion
         #region Shit Props2
         public bool IsCheckAgree {
@@ -44,50 +41,34 @@ namespace WPFEcommerceApp {
         public string Name {
             get => _name;
             set {
+                _name = null;
                 if(string.IsNullOrEmpty(value)) {
-                    throw new ArgumentException("*Can not empty");
+                    return;
                 }
                 _name = value;
-                OnPropertyChanged();
             }
         }
         public string Email {
             get => _email;
             set {
+                _email = null;
                 if(string.IsNullOrEmpty(value)) {
-                    throw new ArgumentException("*Can not empty");
+                    return;
                 }
-                string rgStr = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
-                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
-                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
-                Regex regex = new Regex(rgStr);
-                if(!regex.IsMatch(value)) {
+                if(!ValidateRegex.Email.IsMatch(value)) {
                     throw new ArgumentException("*Wrong type");
                 }
                 _email = value;
-                OnPropertyChanged();
             }
         }
-        public bool IsMen {
-            get => _isMen; set {
-                _isMen = value;
-                if(value) {
-                    Gender = false;
-                }
-            }
-        }
-        public bool IsWomen {
-            get => _isWomen; set {
-                _isWomen = value;
-                if(value) {
-                    Gender = true;
-                }
-            }
-        }
+        
         public string Password {
             get => _password; set {
                 if(string.IsNullOrEmpty(value)) {
-                    throw new ArgumentException("*Can not empty");
+                    return;
+                }
+                if(value.Length < 6) {
+                    throw new ArgumentException("*Password length needs to be more than 6 characters.");
                 }
                 _password = value;
                 OnPropertyChanged();
@@ -96,8 +77,9 @@ namespace WPFEcommerceApp {
 
         public string ConfirmPassword {
             get => _confirmPassword; set {
+                _confirmPassword = null;
                 if(string.IsNullOrEmpty(value)) {
-                    throw new ArgumentException("*Can not empty");
+                    return;
                 }
                 if(value != _password) {
                     throw new ArgumentException("*Not the same as Password");
@@ -109,15 +91,14 @@ namespace WPFEcommerceApp {
         public string Phone {
             get => _phone;
             set {
+                _phone = null;
                 if(string.IsNullOrEmpty(value)) {
-                    throw new ArgumentException("*Can not empty");
+                    return;
                 }
                 if(value.Length <= 6 || value.Length >= 12) {
                     throw new ArgumentException("*Wrong type");
                 }
-                string rgStr = @"^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$";
-                Regex regex = new Regex(rgStr);
-                if(!regex.IsMatch(value)) {
+                if(!ValidateRegex.Phone.IsMatch(value)) {
                     throw new ArgumentException("*Wrong type");
                 }
                 _phone = value;
@@ -127,13 +108,16 @@ namespace WPFEcommerceApp {
         public string Address {
             get => _address;
             set {
+                _address = null;
                 if(string.IsNullOrEmpty(value)) {
-                    throw new ArgumentException("*Can not empty");
+                    return;
                 }
                 _address = value;
                 OnPropertyChanged();
             }
         }
+        public bool Gender { get; set; }
+
         #endregion
 
         public bool isCreated { get; set; }
@@ -143,17 +127,18 @@ namespace WPFEcommerceApp {
         public ICommand LoginHandle { get; set; }
         
         public RegisterViewModel(string email, string password, string id = null) {
+
             try { Email = email; } catch { }
             try { Password = password; } catch { }
             isCreated = id != null;
             if(isCreated) ID = id;
+            
 
             Regist = new RelayCommand<object>((p) => {
                 if(isCreated) {
                     return (!string.IsNullOrEmpty(Name) &&
                     !string.IsNullOrEmpty(Phone) &&
-                    !string.IsNullOrEmpty(Address) &&
-                    (IsMen == true || IsWomen == true));
+                    !string.IsNullOrEmpty(Address));
                 }
                 return (
                     !string.IsNullOrEmpty(Email) &&
@@ -177,6 +162,7 @@ namespace WPFEcommerceApp {
                         }
                         else {
                             isCreated = true;
+                            CommandManager.InvalidateRequerySuggested();
                             return;
                         }
                         DialogHost.Show(dl, "Regist");
