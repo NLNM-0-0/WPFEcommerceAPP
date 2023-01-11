@@ -214,7 +214,7 @@ namespace WPFEcommerceApp
             OpenDialogCommand = new RelayCommandWithNoParameter(async () =>
             {
                 MainViewModel.IsLoading = true;
-                ProductDetail productDetail = new ProductDetail();
+                ProductDetailMini productDetail = new ProductDetailMini();
                 productDetail.DataContext = new ProductDetailViewModel(SelectedProduct);
                 MainViewModel.IsLoading = false;
                 await DialogHost.Show(productDetail, "App");
