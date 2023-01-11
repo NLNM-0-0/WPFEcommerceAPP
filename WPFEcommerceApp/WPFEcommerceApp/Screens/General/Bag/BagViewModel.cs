@@ -61,24 +61,23 @@ namespace WPFEcommerceApp
             set
             {
                 isCheckedAll = value;
-                OnPropertyChanged();
                 if (isCheckedAll)
                 {
-                    NumberOfCheck = bags.Count;
                     foreach (BagBlock b in bags)
                     {
                         b.IsChecked = true;
                     }
+                    NumberOfCheck = bags.Count;
                 }
                 else
                 {
                     if (NumberOfCheck == bags.Count)
                     {
-                        NumberOfCheck = 0;
                         foreach (BagBlock b in bags)
                         {
                             b.IsChecked = false;
                         }
+                        NumberOfCheck = 0;
                     }
                 }
             }
