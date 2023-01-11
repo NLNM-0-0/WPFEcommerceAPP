@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,14 +23,33 @@ namespace WPFEcommerceApp {
         private readonly GenericDataRepository<Models.UserLogin> loginRepo = new GenericDataRepository<UserLogin>();
         private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
 
-
-        private string username;
+        private string email;
         private string password;
-        public string Username {
-            get => username; set { username = value; OnPropertyChanged(); }
+        public string Email {
+            get => email; set {
+                if(string.IsNullOrEmpty(value)) {
+                    email = null;
+                    return;
+                }
+                if(!ValidateRegex.Email.IsMatch(value)) {
+                    email = null;
+                    throw new ArgumentException("*Wrong type");
+                }
+                email = value;
+            }
         }
         public string Password {
-            get => password; set { password = value; OnPropertyChanged(); }
+            get => password; set {
+                if(value.Length == 0) {
+                    password = null;
+                    return;
+                }
+                if(value.Length < 6) {
+                    password = null;
+                    throw new ArgumentException("*Password length needs to be more than 6 characters.");
+                }
+                password = value;
+            }
         }
 
         public bool KeepSignIn { get; set; }
@@ -40,9 +60,11 @@ namespace WPFEcommerceApp {
         public ICommand OnGoogleSignIn { get; set; }
         public ICommand OnForgotPassword { get; set; }
         public LoginViewModel() {
-
             //_accountStore.CurrentAccount = ;
-            OnLogin = new RelayCommand<object>(p => true, async p => {
+            OnLogin = new RelayCommand<object>(p => {
+                return !string.IsNullOrEmpty(Email) &&
+                        !string.IsNullOrEmpty(Password);
+            }, async p => {
                 if(await Login()) {
                     (p as Window).Hide();
                     App.Current.MainWindow.Show();
@@ -50,13 +72,20 @@ namespace WPFEcommerceApp {
             });
 
             CloseCM = new RelayCommand<object>(p => true, p => {
-                (p as Window).Hide();
-                App.Current.MainWindow.Show();
+                (p as Window).Close();
             });
 
             OnSignUp = new ImmediateCommand<object>(p => {
+                string id = null;
+                if(!string.IsNullOrEmpty(p as string)) id = p as string;
                 Register register = new Register() {
-                    DataContext = new RegisterViewModel(Username, Password)
+                    DataContext = new RegisterViewModel(Email, Password, id) {
+                        LoginHandle = new ImmediateCommand<object>(t => {
+                            var temp = t as Tuple<string, string>;
+                            Email = temp.Item1;
+                            Password = temp.Item2;
+                        }),
+                    }
                 };
                 DialogHost.Show(register, "Login");
             });
@@ -66,23 +95,26 @@ namespace WPFEcommerceApp {
                 (p as Window).Activate();
                 Tuple<string, object> x = new Tuple<string, object>("timeout", null);
                 var cts = new CancellationTokenSource();
-                cts.CancelAfter(10000);
+                cts.CancelAfter(9229);
 
                 try {
                     x = await auth.Authentication().AsCancellable(cts.Token);
-                } catch(TaskCanceledException) { }
+                } catch { }
 
                 (p as Window).WindowState = WindowState.Minimized;
                 (p as Window).WindowState = WindowState.Normal;
                 IsLoading = false;
 
-                if(x == null) return;
+                if(x == null) {
+                    return;
+                }
                 if(x.Item1 == "timeout") {
                     var dl = new ConfirmDialog() {
                         Header = "Oops",
                         Content = "The process took too long, please try again!"
                     };
                     await DialogHost.Show(dl, "Login");
+                    return;
                 }
                 if(x.Item1 == null || x.Item2 == null) {
                     ErrorMessage();
@@ -116,9 +148,11 @@ namespace WPFEcommerceApp {
                         //handle here
                     }
                     var check = await loginRepo.GetSingleAsync(d => d.IdUser == ins1["sub"]);
+
                     if(check == null) {
                         await CreateAccount(ins1);
                     }
+
                     var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1);
                     IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
@@ -155,8 +189,13 @@ namespace WPFEcommerceApp {
                     Convert.ToDateTime(birthday);
                 } catch { flag = false; }
 
-                var addressId = GenerateID.DateTimeID();
-                
+                await loginRepo.Add(new Models.UserLogin() {
+                    IdUser = user["sub"],
+                    Password = null,
+                    Username = user["email"],
+                    Provider = 1
+                });
+
                 var us = new Models.MUser() {
                     Id = user["sub"],
                     Name = user["name"],
@@ -171,26 +210,8 @@ namespace WPFEcommerceApp {
                     Role = "User"
                 };
                 if(flag) us.DOB = Convert.ToDateTime(birthday);
-
                 await userRepo.Add(us);
-                await loginRepo.Add(new Models.UserLogin() {
-                    IdUser = user["sub"],
-                    Password = null,
-                    Username = user["email"],
-                    Provider = 1
-                });
 
-                Address address = new Address() {
-                    Id = addressId,
-                    IdUser = user["sub"],
-                    Name = user["name"],
-                    PhoneNumber = phoneNumber,
-                    Address1 = "",
-                    Status = true,
-                };
-                await addressRepo.Add(address);
-                us.DefaultAddress = addressId;
-                await userRepo.Update(us);
             } catch(Exception e) {
                 Debug.WriteLine(e.Message);
                 return false;
@@ -207,19 +228,25 @@ namespace WPFEcommerceApp {
         void ErrorMessage() {
             var dlg = new ConfirmDialog() {
                 Header = "Whoops",
-                Content = "Something is wrong, please try again!"
+                Content = "Unable to authenticate your account, please try again!"
             };
             DialogHost.Show(dlg, "Login");
         }
         #endregion
         private async Task<bool> Login() {
-            var encode = new Hashing().Encrypt(Username, Password);
+            var encode = new Hashing().Encrypt(Email, Password);
 
             UserLogin acc = await loginRepo.GetSingleAsync(
-                x => (x.Username == username
+                x => (x.Username == Email
                 && x.Password == encode),
                 x => x.MUser);
-            if(acc != null && acc.MUser.StatusUser != "Banned") {
+
+            if(acc != null && acc.MUser == null) {
+                OnSignUp.Execute(acc.IdUser);
+                return false;
+            }
+
+            if(acc != null && acc.MUser.StatusUser != "Banned" && acc.Provider != 1) {
                 var userRepo = new GenericDataRepository<MUser>();
                 var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1);
                 AccountStore.instance.CurrentAccount = user;
@@ -232,7 +259,7 @@ namespace WPFEcommerceApp {
                     WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
                     WPFEcommerceApp.Properties.Settings.Default.Save();
                 }
-                Username = "";
+                Email = "";
                 Password = "";
                 return true;
             }
@@ -247,6 +274,9 @@ namespace WPFEcommerceApp {
             return false;
         }
         static public void OnClosing(object sender, CancelEventArgs e) {
+            if(DialogHost.IsDialogOpen("Login"))
+                DialogHost.Close("Login");
+
             e.Cancel = true;
             if(App.Current.MainWindow != null)
                 App.Current.MainWindow.Show();

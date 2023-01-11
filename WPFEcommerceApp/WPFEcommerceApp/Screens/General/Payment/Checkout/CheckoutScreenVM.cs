@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
@@ -22,6 +23,8 @@ using WPFEcommerceApp.Models;
 namespace WPFEcommerceApp {
 	public class CheckoutScreenVM : BaseViewModel {
         private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
+        private readonly GenericDataRepository<Promo> promoRepo = new GenericDataRepository<Promo>();
+
 		private readonly AccountStore _accountStore;
 		private readonly Order _order;
 		public List<Order> ListOrder { get; set; }
@@ -38,7 +41,6 @@ namespace WPFEcommerceApp {
             set { _address = value; OnPropertyChanged(); }
         }
 
-        public Dictionary<string, Promo> VoucherMap { get; set; }
         public List<Promo> ListVoucher { get; set; }
         public double SubTotal {
 			get {
@@ -81,41 +83,49 @@ namespace WPFEcommerceApp {
             }
         }
 
+        public string _vouchercode;
+        public string VoucherCode {
+            get => _vouchercode; set {
+                _vouchercode = value;
+                if(IsVoucherError)
+                    IsVoucherError = false;
+            }
+        }
+        public bool IsVoucherError { get; set; }
         public int LeftColumnChoice { get; set; }
 
         public int LeftState { get; set; }
 
         #endregion
         #region command
-        public ICommand OnChooseVoucher { get; set; }
-		public ICommand PaymentAlertDialogCM { get; set; }
-		public ICommand OnEditAddress { get; set; }
-		public ICommand OnSuccessPayment { get; set; }
-		public ICommand OnPaymentFieldChoice { get; set; }
-        public ICommand OnDeliFieldChoice { get; set; }
-		public ICommand OnEditOrder { get; set; }
-        public ICommand OnLeftChange { get; set; }
-        public ICommand TestFeature { get; set; }
-        public ICommand OnOpenPayment { get; set; }
+        public ICommand OnChooseVoucher { get; }
+		public ICommand PaymentAlertDialogCM { get; }
+		public ICommand OnEditAddress { get; }
+		public ICommand OnSuccessPayment { get; }
+		public ICommand OnPaymentFieldChoice { get; }
+        public ICommand OnDeliFieldChoice { get; }
+		public ICommand OnEditOrder { get; }
+        public ICommand OnLeftChange { get; }
+        public ICommand TestFeature { get; }
+        public ICommand OnOpenPayment { get; }
+        public ICommand OnViewConditionVoucher { get; }
+        public ICommand OnApplyVoucher { get; }
+        public ICommand OnCloseErrorAlert { get; }
         #endregion
 
         public CheckoutScreenVM(
 			Order order = null,
 			List<Order> orders = null) {
 
-            VoucherMap = new Dictionary<string, Promo>();
             ListVoucher = new List<Promo>();
-            for(int i = 0; i < 9; i++) {
-                ListVoucher.Add(new Promo() {
-                    Name = $"Promo {i}",
-                    DateEnd = DateTime.Now,
-                });
-            }
             ListAddress = new Dictionary<string, Address>();
+
             Task.Run(async () => await Load());
+
 			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
 			_order = order;
+
 			if(orders != null)
 				ListOrder = orders;
 			else {
@@ -135,7 +145,9 @@ namespace WPFEcommerceApp {
                 OnPropertyChanged(nameof(LeftColumnChoice));
             });
 
-            OnChooseVoucher = new ImmediateCommand<object>((p) => {
+            OnChooseVoucher = new RelayCommand<object>(p => {
+                return address != null;
+            },(p) => {
 				LeftColumnChoice = 2;
                 LeftState = 1;
             });
@@ -159,6 +171,7 @@ namespace WPFEcommerceApp {
                         ListAddress = new ObservableCollection<Address>(ListAddress.Values.ToList()),
                         ChangeAddressHandle = new ImmediateCommand<object>(async o => {
                             address = o as Address;
+                            OnPropertyChanged(nameof(address));
                             try {
                                 var t = ListAddress[address.Id];
                             } catch {
@@ -209,8 +222,28 @@ namespace WPFEcommerceApp {
             //});
             #endregion
             OnEditOrder = new ImmediateCommand<object>(p => {
-				NavigateProvider.BagScreen().Navigate();
-			});
+                NavigateProvider.BagScreen().Navigate();
+            });
+            OnViewConditionVoucher = new ImmediateCommand<object>(p => {
+                var dl = new VoucherConditionDialog() {
+                    Data = p as Promo
+                };
+                DialogHost.Show(dl, "Main");
+            });
+            OnApplyVoucher = new RelayCommand<object>(p => !string.IsNullOrEmpty(p as string), p => {
+                bool flag = false;
+                foreach(var o in ListVoucher) {
+                    if(o.Code == (p as string).ToUpper()) {
+                        PromoChoosen = o;
+                        flag = true;
+                        break;
+                    }
+                }
+                if(!flag) IsVoucherError = true;
+            });
+            OnCloseErrorAlert = new ImmediateCommand<object>(p => {
+                IsVoucherError = false;
+            });
         }
 
 		public void OnAccountChange() {
@@ -223,16 +256,26 @@ namespace WPFEcommerceApp {
 
         public async Task Load() {
             MainViewModel.IsLoading = true;
+
             var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id);
+            var listVoucher = await promoRepo.GetListAsync(d => d.DateEnd > DateTime.Now);
+
+            foreach(var o in listVoucher) {
+                ListVoucher.Add(o);
+            }
+
             foreach(var o in list) {
                 ListAddress.Add(o.Id, o);
             }
+
             App.Current.Dispatcher.Invoke(() => {
+                OnPropertyChanged(nameof(ListVoucher));
                 OnPropertyChanged(nameof(ListAddress));
                 try {
                     address = ListAddress[CurrentUser.DefaultAddress];
                 } catch { address = null; }
             });
+
             MainViewModel.IsLoading = false;
         }
         private async void PaymentAlertDialog(object p) {

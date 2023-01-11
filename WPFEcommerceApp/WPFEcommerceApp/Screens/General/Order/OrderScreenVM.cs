@@ -84,6 +84,8 @@ namespace WPFEcommerceApp {
             });
 
             OnDetailView = new ImmediateCommand<object>(p => {
+                var t = NavigationStore.instance.stackScreen;
+                t[t.Count - 1] = new Tuple<INavigationService, object>(NavigateProvider.OrderParamScreen(), CurrentPage);
                 NavigateProvider.OrderDetailScreen().Navigate(p);
             });
 
@@ -163,13 +165,7 @@ namespace WPFEcommerceApp {
         public string IdOrder { get; set; }
         public Product Product { get; set; }
         public int Rating { get; set; }
-        //public ReviewProduct(Product product, string IdOrder, int rating = 5) {
-        //    this.IdOrder = IdOrder;
-        //    this.Product = product;
-        //    this.Rating = rating;
-        //}
-        //public ReviewProduct() {
-
+        public string Comment { get; set; }
         //}
     }
 }

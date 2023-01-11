@@ -40,7 +40,7 @@ namespace WPFEcommerceApp {
             }
             return res;
         }
-        static public async Task<string> Gen(Type type) {
+        static public async Task<string> Gen(Type type, string checkProperty = "Id") {
             long res = 0;
             await Task.Run(() => {
                 using(var context = new EcommerceAppEntities()) {
@@ -64,7 +64,7 @@ namespace WPFEcommerceApp {
                 await Task.Run(() => {
                     using(var context = new EcommerceAppEntities()) {
                         string t = type.Name;
-                        var sql = $"SELECT COUNT(1) FROM dbo.{t} WHERE Id = '{id}'";
+                        var sql = $"SELECT COUNT(1) FROM dbo.{t} WHERE {checkProperty} = '{id}'";
                         check = context.Database.SqlQuery<int>(sql).Single() == 0 ? true : false;
                     }
                 });

@@ -63,11 +63,14 @@
                 <TextBox Visibility="Visible"
                     x:Name="commentBox"
                     Style="{StaticResource TextBoxHintWrapText}"
-                         Height="129"
-                         Width="auto"
-                         materialDesign:HintAssist.IsFloating="False"
-                         materialDesign:HintAssist.Hint="Write your review"
-                         TextWrapping="Wrap"/>
+                    Text="{Binding Comment}"
+                    Height="129"
+                    Width="auto"
+                    materialDesign:HintAssist.IsFloating="False"
+                    materialDesign:HintAssist.Hint="Write your review"
+                    TextWrapping="Wrap"
+                    materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
+                    MaxLength="500"/>
             </StackPanel>
         </DataTemplate>
         <Style x:Key="ListItemContainer" TargetType="ListViewItem">

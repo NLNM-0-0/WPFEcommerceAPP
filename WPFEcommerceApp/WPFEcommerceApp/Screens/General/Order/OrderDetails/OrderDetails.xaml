@@ -28,7 +28,7 @@
         </ResourceDictionary>
 
     </UserControl.Resources>
-    <Border Padding="30" Background="{StaticResource BackgroundColorBrush}" x:Name="Header">
+    <Border Padding="30" Background="{StaticResource WhiteColorBrush}" x:Name="Header">
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -43,39 +43,52 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Style="{StaticResource TransparentButton}" 
-                        HorizontalAlignment="Left" 
-                        Height="50" Width="150" Command="{Binding OnBack}"
-                        CommandParameter="nah">
-                        <StackPanel Orientation="Horizontal"  VerticalAlignment="Center">
-                            <fa:FontAwesome Icon="AngleLeft" FontSize="{StaticResource FontSizeHeadline}" Foreground="{StaticResource NotAvailableColorBrush}"
-                                        VerticalAlignment="Center"
-                                        FontWeight="Regular"/>
-                            <TextBlock Text="BACK"
-                                   VerticalAlignment="Center"
-                                   Margin="20, 0"
-                                   FontSize="{StaticResource FontSizeHeadline2}"
-                                   Foreground="{StaticResource NotAvailableColorBrush}"
-                                   FontWeight="Regular"/>
-                        </StackPanel>
-                    </Button>
+                    <TextBlock Text="{c:Binding \'Order ID: \' + OrderDetail.ID, FallbackValue=\'ORDER ID: Something\'}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               FontSize="{StaticResource FontSizeHeadline2}"
+                               FontWeight="Light"
+                               Margin="20 0"/>
+
                     <StackPanel Grid.Column="1" VerticalAlignment="Center"
                             Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                        <TextBlock Text="ORDER ID:  "
+                            HorizontalAlignment="Left"
+                                Margin="20 0">
+                        <TextBlock Text="Date:  "
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
-                               FontSize="{StaticResource FontSizeHeadline2}"/>
-                        <TextBlock Text="{Binding OrderDetail.ID}"
+                               FontSize="{StaticResource FontSizeHeadline2}"
+                                FontWeight="Light"/>
+                        <TextBlock Text="{Binding OrderDetail.DateBegin, StringFormat=d, FallbackValue=11/11/1111}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
-                               FontSize="{StaticResource FontSizeHeadline2}"/>
+                               FontSize="{StaticResource FontSizeHeadline2}"
+                                FontWeight="Light"/>
                     </StackPanel>
-                    <TextBlock Grid.Column="2"
+
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                                Margin="20 0">
+                        <TextBlock Text="Shipping speed:  "
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               FontSize="{StaticResource FontSizeHeadline2}"
+                                FontWeight="Light"/>
+                        <!--Error because of c:Binding-->
+                        <TextBlock Text="{c:Binding '(OrderDetail.ShippingSpeedMethod == 0 ? \'Fast\' : \'Regular\')', FallbackValue=111}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               FontSize="{StaticResource FontSizeHeadline2}"
+                                FontWeight="Light"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="3"
                            x:Name="status"
-                           Text="{Binding OrderDetail.Status}"
+                           Text="{Binding OrderDetail.Status, FallbackValue=Processing}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right"
                            Margin="20, 0"
@@ -128,8 +141,8 @@
                       ItemTemplate="{StaticResource ProductCard}"
                       ItemsSource="{Binding ProductList}"
                       ScrollViewer.CanContentScroll="False"
-                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
 
             </ListView>
             <!--Footer-->
@@ -193,11 +206,17 @@
                         </i:DataTrigger>
                     </i:Interaction.Triggers>
                 </Button>
-
-                <TextBlock Text="{c:Binding \'Order Total: \' + OrderDetail.OrderTotal}" 
+                <StackPanel HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{c:Binding \'Discounted: \' + OrderDetail.Discount}" 
                            DockPanel.Dock="Right"
-                               FontSize="{StaticResource FontSizeHeadline3}"
-                               HorizontalAlignment="Right" Margin="25,0" VerticalAlignment="Center"/>
+                           FontSize="{StaticResource FontSizeHeadline3}"
+                           Margin="25,5" VerticalAlignment="Center"/>
+                    <TextBlock Text="{c:Binding \'Order Total: \' + OrderDetail.OrderTotal}" 
+                           DockPanel.Dock="Right"
+                           FontSize="{StaticResource FontSizeHeadline3}"
+                           Margin="25,5" VerticalAlignment="Center"/>
+                </StackPanel>
             </DockPanel>
         </Grid>
     </Border>

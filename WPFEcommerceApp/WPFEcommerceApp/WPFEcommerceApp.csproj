@@ -114,16 +114,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\MOrder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -156,6 +146,10 @@
     </Compile>
     <Compile Include="Models\UserLogin.cs">
       <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\General\Payment\components\Dialogs\EditInforDialogVM.cs" />
+    <Compile Include="Screens\General\Payment\components\Dialogs\VoucherConditionDialog.xaml.cs">
+      <DependentUpon>VoucherConditionDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdf.xaml.cs">
       <DependentUpon>OrderInfoPdf.xaml</DependentUpon>
@@ -593,6 +587,7 @@
     <Compile Include="Utils\ValidationRule\NotEmptyValidationRule.cs" />
     <Compile Include="Utils\ValidationRule\NumberTextBoxValidation.cs" />
     <Compile Include="Utils\ValidationRule\PromoCodeValidation.cs" />
+    <Compile Include="Utils\ValidationRule\ValidateRegex.cs" />
     <Page Include="Components\UserControls\CategoryRequest\DropDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -620,6 +615,10 @@
     <Page Include="Screens\General\MyProfile\ProfileControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\General\Payment\components\Dialogs\VoucherConditionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdf.xaml">
       <SubType>Designer</SubType>

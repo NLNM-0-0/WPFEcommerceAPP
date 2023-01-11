@@ -14,15 +14,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFEcommerceApp
-{
+namespace WPFEcommerceApp {
     /// <summary>
     /// Interaction logic for Register.xaml
     /// </summary>
-    public partial class Register : UserControl
-    {
-        public Register()
-        {
+    public partial class Register : UserControl {
+        public Register() {
             InitializeComponent();
         }
     }

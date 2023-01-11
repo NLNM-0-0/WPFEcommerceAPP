@@ -59,7 +59,7 @@
                             x:Name="Email"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             materialDesign:HintAssist.Hint="Email"
-                            Text="{Binding Username}"
+                            Text="{Binding Email, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
                             Width="auto"
                             HorizontalContentAlignment="Stretch"
                             Margin="0 30"
@@ -67,7 +67,7 @@
                         </TextBox>
                         <PasswordBox
                             x:Name="Password"
-                            materialDesign:PasswordBoxAssist.Password="{Binding Password}"
+                            materialDesign:PasswordBoxAssist.Password="{Binding Password, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource PasswordOutlinedReveal}"            
                             materialDesign:HintAssist.Hint="Password"
                             materialDesign:TextFieldAssist.HasClearButton="True"

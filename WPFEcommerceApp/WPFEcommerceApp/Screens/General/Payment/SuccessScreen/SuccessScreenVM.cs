@@ -11,6 +11,7 @@ namespace WPFEcommerceApp {
         public SuccessScreenVM() {
             OnBackHome = new RelayCommand<object>(p => true, p => {
                 NavigateProvider.HomeScreen().Navigate();
+                NavigationStore.instance.stackScreen.RemoveAt(NavigationStore.instance.stackScreen.Count - 1);
             });
         }
     }

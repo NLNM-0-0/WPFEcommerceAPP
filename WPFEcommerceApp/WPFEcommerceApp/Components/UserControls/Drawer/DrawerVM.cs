@@ -265,26 +265,26 @@ namespace WPFEcommerceApp {
 
         private ObservableCollection<ButtonItem> AdminButtonCreate() {
             return new ObservableCollection<ButtonItem> {
-                    new ButtonItem("Users", "Users"),
-                    new ButtonItem("Archive", "Shops"),
+                    new ButtonItem("AccountGroup", "Users"),
+                    new ButtonItem("Store", "Shops"),
                     new ButtonItem("Dropbox", "Products"),
-                    new ButtonItem("ShareAlt", "Ads"),
-                    new ButtonItem("Ticket", "Promo"),
-                    new ButtonItem("Tags", "Catergories"),
-                    new ButtonItem("AddressCard", "Brands"),
-                    new ButtonItem("UserCircleOutline", "My Profile"),
+                    new ButtonItem("Advertisements", "Ads"),
+                    new ButtonItem("TicketConfirmation", "Promo"),
+                    new ButtonItem("TagMultiple", "Catergories"),
+                    new ButtonItem("AlphaBBox", "Brands"),
+                    new ButtonItem("AccountCircle", "My Profile"),
                 };
         }
 
         private ObservableCollection<ButtonItem> NormalButtonCreate() {
             return new ObservableCollection<ButtonItem> {
-                    new ButtonItem(),
-                    new ButtonItem("ShoppingBag", "Bag"),
-                    new ButtonItem("ShoppingCart", "Order"),
+                    new ButtonItem("Home", "Home"),
+                    new ButtonItem("Shopping", "Bag"),
+                    new ButtonItem("Cart", "Order"),
                     new ButtonItem("Heart", "Favourite"),
-                    new ButtonItem("Archive", "Shop"),
-                    new ButtonItem("UserCircleOutline", "My profile"),
-                    new ButtonItem("Gear", "Settings"),
+                    new ButtonItem("Store", "Shop"),
+                    new ButtonItem("AccountCircle", "My profile"),
+                    new ButtonItem("Cog", "Settings"),
                 };
         }
     }
@@ -293,10 +293,6 @@ namespace WPFEcommerceApp {
 public class ButtonItem {
     public string Icon { get; set; }
     public string Text { get; set; }
-    public ButtonItem() {
-        Icon = "Home";
-        Text = "Home";
-    }
     public ButtonItem(string icon, string text) {
         Icon=icon;
         Text=text;

@@ -55,8 +55,9 @@ namespace WPFEcommerceApp {
 
             // Waits for the OAuth authorization response.
             HttpListenerContext context = null;
+
             var token = new CancellationTokenSource();
-            token.CancelAfter(10000);
+            token.CancelAfter(8228);
             try {
                 context = await http.GetContextAsync().AsCancellable(token.Token);
             } catch {
