@@ -76,8 +76,8 @@ namespace WPFEcommerceApp
                 {
                     Id = await GenerateID.Gen(typeof(Brand)),
                     IdShop = AccountStore.instance.CurrentAccount.Id,
-                    Name = BrandName,
-                    Reason = this.Reason
+                    Name = BrandName.Trim(),
+                    Reason = this.Reason.Trim()
                 });
                 stringCloseDialog = "Update sucessfully. Please wait for us to apply.";
             }

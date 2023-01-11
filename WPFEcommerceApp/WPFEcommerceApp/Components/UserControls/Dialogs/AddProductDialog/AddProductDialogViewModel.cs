@@ -340,7 +340,7 @@ namespace WPFEcommerceApp
                 await productRepository.Add(new Models.Product()
                 {
                     Id = id,
-                    Name = ProductName,
+                    Name = ProductName.Trim(),
                     IdShop = AccountStore.instance.CurrentAccount.Id,
                     IdCategory = SelectedCategory.Id,
                     IdBrand = SelectedBrand.Id,
@@ -354,8 +354,8 @@ namespace WPFEcommerceApp
                     IsHadSizeL = this.IsHadSizeL,
                     IsHadSizeXL = this.IsHadSizeXL,
                     IsHadSizeXXL = this.IsHadSizeXXL,
-                    Color = this.Color,
-                    Description = this.Description,
+                    Color = this.Color.Trim(),
+                    Description = this.Description.Trim(),
                     DateOfSale = DateTime.Now,
                     Status = "NotBanned"
                 });

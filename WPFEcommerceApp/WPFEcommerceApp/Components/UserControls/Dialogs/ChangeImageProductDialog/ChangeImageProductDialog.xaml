@@ -47,9 +47,6 @@
         </Grid>
         <Grid
             Margin="0 30 0 0">
-            <Canvas
-                x:Name="CanvasFrame"
-                Height="{Binding ElementName=TextBoxSource, Path=ActualHeight}">
                 <TextBox
                     x:Name="TextBoxSource"
                     Style="{StaticResource TextBoxHintBlackBorder}"
@@ -58,27 +55,24 @@
                     materialDesign:HintAssist.Hint="Source"
                     Text="{Binding SelectedImageSource}"
                     IsReadOnly="True"
-                    materialDesign:TextFieldAssist.HasTrailingIcon="True"
-                    materialDesign:TextFieldAssist.TrailingIcon="PlusBold"
-                    materialDesign:TextFieldAssist.TrailingIconSize="30">
+                    materialDesign:TextFieldAssist.SuffixText="         ">
                 </TextBox>
                 <Button
                     VerticalAlignment="Center"
                     Style="{StaticResource TransparentButton}"
-                    HorizontalAlignment="Center"
+                    HorizontalAlignment="Right"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     Padding="0"
-                    Canvas.Left="455"
-                    Canvas.Top="12"
+                    Margin="10"
                     Command="{Binding AddImageCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
                     <fa:ImageAwesome
                         Icon="Plus"
-                        Margin="5">
+                        Height="30"
+                        Width="30">
                     </fa:ImageAwesome>
                 </Button>
-            </Canvas>
         </Grid>
         <TextBlock
             Text="*Please just add maximum 10 images!"
@@ -108,13 +102,14 @@
                                         Width="70"
                                         Margin="0 0 0 10"
                                         IsHitTestVisible="True">
-                                        <Image>
-                                            <Image.Source>
+                                        <local:AsyncImage
+                                            Stretch="Fill"
+                                            x:Name="ImageProduct">
+                                            <local:AsyncImage.Source>
                                                 <BitmapImage 
-                                                    x:Name="ImageProduct"
-                                                    UriSource="{Binding}" />
-                                            </Image.Source>
-                                        </Image>
+                                                    UriSource="{Binding}"/>
+                                            </local:AsyncImage.Source>
+                                        </local:AsyncImage>
                                         <behavior:Interaction.Triggers>
                                             <behavior:EventTrigger EventName="MouseEnter">
                                                 <behavior:InvokeCommandAction
@@ -137,7 +132,8 @@
                 Height="300"
                 Margin="0 0 30 0"
                 Background="{StaticResource BoxShadowColorBrush}">
-                <Image x:Name="ImageMainProduct"
+                <local:AsyncImage x:Name="ImageMainProduct"
+                                  Stretch="Fill"
                     Source="{Binding SelectedImageSource, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 

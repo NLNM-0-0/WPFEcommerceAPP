@@ -85,13 +85,12 @@ namespace WPFEcommerceApp
             }
             ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                BitmapImage image = p as BitmapImage;
-                //VHCMT => Null error
-                if(image == null || image.UriSource == null) 
+                AsyncImage image = p as AsyncImage;
+                if(image == null || image.Source == null) 
                 {
                     return;
                 }
-                SelectedImageSource = image.UriSource.ToString();
+                SelectedImageSource = image.Source.ToString();
             });
             AddImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {

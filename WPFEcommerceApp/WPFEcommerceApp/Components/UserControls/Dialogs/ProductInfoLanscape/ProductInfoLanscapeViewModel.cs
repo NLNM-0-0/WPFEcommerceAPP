@@ -355,7 +355,7 @@ namespace WPFEcommerceApp
                     closeDialog.Execute(null, null);
                     MainViewModel.IsLoading = true;
                     WPFEcommerceApp.Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
-                    SelectedProduct.Name = productTemp.Name;
+                    SelectedProduct.Name = productTemp.Name.Trim();
                     SelectedProduct.Price = productTemp.Price;
                     SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
                     SelectedProduct.IsHadSizeM = productTemp.IsHadSizeM;
@@ -369,8 +369,8 @@ namespace WPFEcommerceApp
                     selectedProduct.InStock = productTemp.InStock;
                     selectedProduct.Sold = productTemp.Sold;
                     SelectedProduct.Sale = productTemp.Sale;
-                    SelectedProduct.Description = productTemp.Description;
-                    SelectedProduct.Color = productTemp.Description;
+                    SelectedProduct.Description = productTemp.Description.Trim();
+                    SelectedProduct.Color = productTemp.Color.Trim();
                     IsEditting = false;
                     product = SelectedProduct;
                     await UpdateImageProduct();

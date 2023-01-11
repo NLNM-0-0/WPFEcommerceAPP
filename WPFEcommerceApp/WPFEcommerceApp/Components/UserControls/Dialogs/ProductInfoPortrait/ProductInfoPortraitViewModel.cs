@@ -363,7 +363,7 @@ namespace WPFEcommerceApp
         {
             var repository = new GenericDataRepository<Models.Product>();
             Models.Product product = await repository.GetSingleAsync(p => p.Id == SelectedProduct.Id);
-            product.Name = SelectedProduct.Name;
+            product.Name = SelectedProduct.Name.Trim();
             product.Price = SelectedProduct.Price;
             product.IsHadSizeS = SelectedProduct.IsHadSizeS;
             product.IsHadSizeM = SelectedProduct.IsHadSizeM;
@@ -375,8 +375,8 @@ namespace WPFEcommerceApp
             product.InStock = SelectedProduct.InStock;
             product.Sold = SelectedProduct.Sold;
             product.Sale = SelectedProduct.Sale;
-            product.Description = SelectedProduct.Description;
-            product.Color = SelectedProduct.Color;
+            product.Description = SelectedProduct.Description.Trim();
+            product.Color = SelectedProduct.Color.Trim();
             await repository.Update(product);
         }
         private async Task UpdateImageProduct()
