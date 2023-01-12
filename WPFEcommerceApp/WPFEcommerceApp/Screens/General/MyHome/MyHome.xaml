@@ -10,9 +10,6 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <local:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
-    </UserControl.Resources>
     <ScrollViewer PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
         <StackPanel x:Name="stack" Background="{StaticResource WhiteColorBrush}">
             <!-- Banner 1 -->
@@ -23,7 +20,7 @@
 
                 <local:AsyncImage 
                         Stretch="Fill"
-                        Source="{Binding Banner1, Converter={StaticResource StringToImageSourceConverter}}"
+                        Source="{Binding Banner1}"
                         >
 
                 </local:AsyncImage>
@@ -92,7 +89,7 @@
 
                 <local:AsyncImage 
                         Stretch="Fill"
-                        Source="{Binding Banner2, Converter={StaticResource StringToImageSourceConverter}}"
+                        Source="{Binding Banner2}"
                         >
 
                 </local:AsyncImage>
@@ -162,7 +159,7 @@
 
                 <local:AsyncImage 
                         Stretch="Fill"
-                        Source="{Binding Banner3, Converter={StaticResource StringToImageSourceConverter}}"
+                        Source="{Binding Banner3}"
                         >
 
                 </local:AsyncImage>

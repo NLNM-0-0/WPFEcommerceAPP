@@ -84,6 +84,9 @@
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Api\PromoDetailAPI.cs" />
+    <Compile Include="Components\UserControls\Header\SearchBar\HeaderSearch.xaml.cs">
+      <DependentUpon>HeaderSearch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Address.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -594,6 +597,10 @@
     <Compile Include="Utils\ValidationRule\PromoCodeValidation.cs" />
     <Compile Include="Utils\ValidationRule\ValidateRegex.cs" />
     <Page Include="Components\UserControls\CategoryRequest\DropDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Components\UserControls\Header\SearchBar\HeaderSearch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

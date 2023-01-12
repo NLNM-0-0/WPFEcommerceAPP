@@ -86,8 +86,11 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-
+        public bool IsGoogle { get; set; }
         public List<string> GenderOptions => new List<string> { "Female", "Male" };
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
+        public string ConfirmNewPassword { get; set; }
         #endregion
 
         #region Commands
@@ -97,6 +100,7 @@ namespace WPFEcommerceApp
         public ICommand OpenAvaDialog { get; set; }
         public ICommand OpenBackgroundDialog { get; set; }
         public ICommand AddAddressCommand { get; set; }
+        public ICommand SavePasswordCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -105,6 +109,10 @@ namespace WPFEcommerceApp
         {
             userRepo = new GenericDataRepository<MUser>();
             addressRepo = new GenericDataRepository<Address>();
+            if (AccountStore.instance.CurrentAccount.UserLogin.Provider == 1)
+            {
+                IsGoogle = true;
+            }
 
             OpenAvaDialog = new RelayCommandWithNoParameter(async () =>
             {
@@ -129,15 +137,16 @@ namespace WPFEcommerceApp
                 await Load();
             }).ContinueWith((task) =>
             {
+                SaveProfileCommand = new RelayCommand<object>(p => p != null, async (p) => await SaveProfile(p));
+                CancelProfileCommand = new RelayCommand<object>(p => p != null, async (p) => await CancelProfile(p));
+                AddAddressCommand = new RelayCommandWithNoParameter(async () => await OpenAddAddressDialog());
+                AddressDialogViewModel.AddressCommand = new RelayCommand<object>(p => p != null, async (p) => await AddNewAddress(p));
+                AddressItemViewModel.EditAddressCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenEditAddress(p));
+                AddressDialogViewModel.RemoveAddressCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveAddress(p));
+                SavePasswordCommand = new RelayCommandWithNoParameter(SavePassword);
                 MainViewModel.IsLoading = false;
             });
-
-            SaveProfileCommand = new RelayCommand<object>(p => p != null, async (p) => await SaveProfile(p));
-            CancelProfileCommand = new RelayCommand<object>(p => p != null, async (p) => await CancelProfile(p));
-            AddAddressCommand = new RelayCommandWithNoParameter(async () => await OpenAddAddressDialog());
-            AddressDialogViewModel.AddressCommand = new RelayCommand<object>(p => p != null, async (p) => await AddNewAddress(p));
-            AddressItemViewModel.EditAddressCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenEditAddress(p));
-            AddressDialogViewModel.RemoveAddressCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveAddress(p));
+            
         }
         #endregion
 
@@ -145,7 +154,7 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             EditUser = await userRepo.GetSingleAsync(usr => usr.Id == AccountStore.instance.CurrentAccount.Id,
-                usr => usr.Addresses
+                usr => usr.Addresses, usr=>usr.UserLogin
                 );
 
             if (AccountStore.instance != null)
@@ -172,12 +181,10 @@ namespace WPFEcommerceApp
                 }
             }));
         }
-
         private void OnAccountChange()
         {
             OnPropertyChanged(nameof(IsAdmin));
         }
-
         private async void SaveAva(object sender, DialogClosedEventArgs eventArgs)
         {
             MainViewModel.IsLoading = true;
@@ -203,7 +210,6 @@ namespace WPFEcommerceApp
 
             MainViewModel.IsLoading = false;
         }
-
         private async void SaveBackground(object sender, DialogClosedEventArgs eventArgs)
         {
             MainViewModel.IsLoading = true;
@@ -229,7 +235,6 @@ namespace WPFEcommerceApp
 
             MainViewModel.IsLoading = false;
         }
-
         public async Task SaveProfile(object obj)
         {
             MainViewModel.IsLoading = true;
@@ -241,7 +246,6 @@ namespace WPFEcommerceApp
             MainViewModel.IsLoading = false;
 
         }
-
         public async Task CancelProfile(object obj)
         {
             MainViewModel.IsLoading = true;
@@ -254,7 +258,6 @@ namespace WPFEcommerceApp
             MainViewModel.IsLoading = false;
 
         }
-
         public async Task OpenAddAddressDialog()
         {
             var dialog = new AddAddressDialog();
@@ -270,7 +273,6 @@ namespace WPFEcommerceApp
 
             await DialogHost.Show(dialog, "Main", null, null, null);
         }
-
         public async Task OpenEditAddress(object obj)
         {
             var dialog = new AddAddressDialog();
@@ -290,12 +292,10 @@ namespace WPFEcommerceApp
 
             await DialogHost.Show(dialog, "Main", null, null, Reload);
         }
-
         private async void Reload(object sender, DialogClosedEventArgs eventArgs)
         {
             await Load();
         }
-
         public async Task AddNewAddress(object obj)
         {
             DialogHost.CloseDialogCommand.Execute(null, null);
@@ -317,7 +317,7 @@ namespace WPFEcommerceApp
             {
                 address.IdUser = AccountStore.instance.CurrentAccount.Id;
                 address.Status = true;
-                address.Id = GetAddressId();
+                address.Id = GenerateID.DateTimeID();
                 await addressRepo.Add(address);
             }
             else
@@ -358,8 +358,10 @@ namespace WPFEcommerceApp
             MainViewModel.IsLoading = false;
 
         }
-
-
+        public void SavePassword()
+        {
+            
+        }
         #endregion
 
         public override void Dispose()
@@ -368,13 +370,5 @@ namespace WPFEcommerceApp
             base.Dispose();
         }
 
-        public static string GetAddressId()
-        {
-            var now = DateTime.Now;
-            var temp = now.Year + now.Month + now.Day + now.Hour + now.Minute + now.Second;
-            return temp.ToString();
-        }
     }
-
-
 }

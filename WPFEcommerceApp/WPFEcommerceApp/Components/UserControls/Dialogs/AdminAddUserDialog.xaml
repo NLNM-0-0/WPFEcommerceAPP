@@ -106,7 +106,7 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                       
+
                         <TextBox DockPanel.Dock="Left"
                                  x:Name="phonenumber"
                         Width="300" Margin="15"
@@ -119,22 +119,6 @@
                                     UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <local:PhoneValidateRule
-                                            ValidatesOnTargetUpdated="True"/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox>
-                        <TextBox DockPanel.Dock="Left"
-                                 x:Name="address"
-                        Width="300" Margin="15"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Address"
-                        MaxLength="200"
-                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
-                            <Binding
-                                    Path="NewUser.Address"
-                                    UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <local:NotEmptyValidationRule
                                             ValidatesOnTargetUpdated="True"/>
                                 </Binding.ValidationRules>
                             </Binding>

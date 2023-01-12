@@ -71,9 +71,9 @@
                 <!-- Total sale -->
                 <materialDesign:Card Grid.Row="2" Padding="20" Margin="0 10">
                     <materialDesign:Card.Background>
-                        <LinearGradientBrush EndPoint="0.5, 1" StartPoint="0.5, 0">
-                            <GradientStop Offset="1" Color="{StaticResource BoxLine}"/>
-                            <GradientStop Offset="0" Color="{StaticResource Blur}"/>
+                        <LinearGradientBrush EndPoint="0.6, 1" StartPoint="0.6, 0">
+                            <GradientStop Offset="1" Color="#93F9B9"/>
+                            <GradientStop Offset="0" Color="{StaticResource Success}"/>
                         </LinearGradientBrush>
                     </materialDesign:Card.Background>
                     <Grid>
@@ -95,9 +95,9 @@
                 <!-- Orders -->
                 <materialDesign:Card Grid.Row="3" Padding="20" Margin="0 10">
                     <materialDesign:Card.Background>
-                        <LinearGradientBrush EndPoint="0.5, 1" StartPoint="0.5, 0">
-                            <GradientStop Offset="1" Color="{StaticResource BoxLine}"/>
-                            <GradientStop Offset="0" Color="{StaticResource Blur}"/>
+                        <LinearGradientBrush EndPoint="0.6, 1" StartPoint="0.6, 0">
+                            <GradientStop Offset="1" Color="#93F9B9"/>
+                            <GradientStop Offset="0" Color="{StaticResource Success}"/>
                         </LinearGradientBrush>
                     </materialDesign:Card.Background>
 
@@ -132,7 +132,8 @@
                                     <lvc:Axis Labels="{Binding RevenueLabels}"/>
                                 </lvc:CartesianChart.AxisX>
                                 <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis LabelFormatter="{Binding yRevenueFormatter}"/>
+                                    <lvc:Axis LabelFormatter="{Binding yRevenueFormatter}"
+                                              MinValue="0"/>
                                 </lvc:CartesianChart.AxisY>
                             </lvc:CartesianChart>
                         </Grid>
