@@ -34,7 +34,7 @@ namespace WPFEcommerceApp
                 Models.ShopRequest shopRequest = new Models.ShopRequest();
                 shopRequest.Id = await GenerateID.Gen(typeof(Models.ShopRequest));
                 shopRequest.IdUser = AccountStore.instance.CurrentAccount.Id;
-                shopRequest.Description = Description;
+                shopRequest.Description = Description.Trim();
                 await shopRequestRepository.Add(shopRequest);
                 MainViewModel.IsLoading = false;
             });

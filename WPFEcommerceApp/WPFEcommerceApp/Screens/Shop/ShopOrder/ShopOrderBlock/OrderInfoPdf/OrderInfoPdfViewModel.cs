@@ -24,41 +24,42 @@ namespace WPFEcommerceApp
                 OnPropertyChanged(nameof(Email));
                 OnPropertyChanged(nameof(PhoneNumber));
                 OnPropertyChanged(nameof(UserName));
+                OnPropertyChanged(nameof(SubTotal));
             }
         }
         public string UserAdress
         {
             get
             {
-                return Order.MUser.Addresses.Where(a => a.Id == Order.AddressIndex).ElementAt(0).Address1;
+                return Order.MUser.Addresses.Where(a => a.Id == Order.AddressIndex).ElementAt(0).Address1??"";
             }
         }
         public string UserName
         {
             get
             {
-                return Order.MUser.Addresses.Where(a => a.Id == Order.AddressIndex).ElementAt(0).Name;
+                return Order.MUser.Addresses.Where(a => a.Id == Order.AddressIndex).ElementAt(0).Name??"";
             }
         }
         public string UserPhoneNumber
         {
             get
             {
-                return Order.MUser.Addresses.Where(a => a.Id == Order.AddressIndex).ElementAt(0).PhoneNumber;
+                return Order.MUser.Addresses.Where(a => a.Id == Order.AddressIndex).ElementAt(0).PhoneNumber??"";
             }
         }
         public string ShopAdress
         {
             get
             {
-                return Order.MUser1.Addresses.Where(a => a.Id == Order.MUser1.DefaultAddress).ElementAt(0).Address1;
+                return Order.MUser1.Addresses.Where(a => a.Id == Order.MUser1.DefaultAddress).ElementAt(0).Address1??"";
             }
         }
         public string ShopPhoneNumber
         {
             get
             {
-                return Order.MUser1.Addresses.Where(a => a.Id == Order.MUser1.DefaultAddress).ElementAt(0).PhoneNumber;
+                return Order.MUser1.Addresses.Where(a => a.Id == Order.MUser1.DefaultAddress).ElementAt(0).PhoneNumber??"";
             }
         }
         public string PhoneNumber
@@ -74,7 +75,19 @@ namespace WPFEcommerceApp
             {
                 return Properties.Resources.Email;
             }
-        }    
+        }
+        public double SubTotal
+        {
+            get
+            {
+                double sum = 0;
+                foreach(Models.OrderInfo orderInfo in Order.OrderInfoes)
+                {
+                    sum += orderInfo.TotalPrice;
+                }    
+                return sum;
+            }
+        }
         public OrderInfoPdfViewModel(Models.MOrder order)
         {
             Order = order;

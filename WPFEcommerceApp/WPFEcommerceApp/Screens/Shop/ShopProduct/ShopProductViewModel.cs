@@ -289,12 +289,12 @@ namespace WPFEcommerceApp
                 });
                 OpenAddProductDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
-                    IsLoadingCheck.IsLoading = 3;
+                    MainViewModel.IsLoading = true;
                     AddProductDialog addProductDialog = new AddProductDialog();
                     AddProductDialogViewModel addProductDialogViewModel = new AddProductDialogViewModel();
                     addProductDialogViewModel.ClosedDialog += AddProductDialogViewModel_ClosedDialog;
                     addProductDialog.DataContext = addProductDialogViewModel;
-                    IsLoadingCheck.IsLoading--;
+                    MainViewModel.IsLoading = false;
                     await DialogHost.Show(addProductDialog, "Main");
                 });
                 SearchProductCommand = new RelayCommandWithNoParameter(async () =>
@@ -403,7 +403,6 @@ namespace WPFEcommerceApp
         }
         private async void LoadDataFromModel()
         {
-            string productId = SelectedProduct.Id;
             await LoadListProducts();
             LoadFilterProducts();
             LoadProducts();
@@ -477,7 +476,7 @@ namespace WPFEcommerceApp
             {
                 int.TryParse(MinInStockSearch, out minInStock);
             }
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.Contains(ProductNameSearch ?? "") &&
+            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
                                                                                                         ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
                                                                                                         ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
                                                                                                         p.Price <= maxPrice && p.Price >= minPrice &&
@@ -508,8 +507,8 @@ namespace WPFEcommerceApp
             if (!String.IsNullOrEmpty(MinInStockSearch))
             {
                 int.TryParse(MinInStockSearch, out minInStock);
-            }
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.Contains(ProductNameSearch ?? "") &&
+            }   
+            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
                                                                                                         ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
                                                                                                         ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
                                                                                                         p.Price <= maxPrice && p.Price >= minPrice &&
@@ -541,7 +540,7 @@ namespace WPFEcommerceApp
             {
                 int.TryParse(MinInStockSearch, out minInStock);
             }
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => (p.Name.Contains(ProductNameSearch ?? "") &&
+            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => (p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
                                                                                                     ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
                                                                                                     ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
                                                                                                     p.Price <= maxPrice && p.Price >= minPrice &&
@@ -573,7 +572,7 @@ namespace WPFEcommerceApp
             {
                 int.TryParse(MinInStockSearch, out minInStock);
             }
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.Contains(ProductNameSearch ?? "")) &&
+            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim())) &&
                                                                                                         ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
                                                                                                         ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
                                                                                                         p.Price <= maxPrice && p.Price >= minPrice &&

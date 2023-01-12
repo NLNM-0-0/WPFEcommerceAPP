@@ -223,73 +223,90 @@ namespace WPFEcommerceApp
         }
         public AddNewProductPromoViewModel(ObservableCollection<PromoProductBlockViewModel> list, Models.MUser user = null)
         {
+            IsLoadingCheck.IsLoading = 2;
             InitialList = list;
-            if(user != null)
+            if (user != null)
             {
                 User = user;
             }
             else
             {
-                user = AccountStore.instance.CurrentAccount;
+                User = AccountStore.instance.CurrentAccount;
             }
-            SelectedPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>();
-            AllPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>();
-            CompletedCommand = new RelayCommandWithNoParameter(() =>
+            Task.Run(async () =>
             {
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(SelectedPromoProductBlocks, null);
-            });
-            CancelCommand = new RelayCommandWithNoParameter(() =>
-            {
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(null, null);
-            });
-            ClickProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
-            {
-                PromoProductBlockViewModel promoProductBlockViewModel = p as PromoProductBlockViewModel;
-                if (promoProductBlockViewModel != null)
-                {
-                    promoProductBlockViewModel.IsChecked = !promoProductBlockViewModel.IsChecked;
-                    if (promoProductBlockViewModel.IsChecked)
-                    {
-                        SelectedPromoProductBlocks.Insert(0, promoProductBlockViewModel);
-                        NumberOfCheck++;
-                        TotalProducts++;
-                    }
-                    else
-                    {
-                        SelectedPromoProductBlocks.Remove(promoProductBlockViewModel);
-                        NumberOfCheck--;
-                        TotalProducts--;
-                    }
-                }
-            });
-            ResetCommand = new RelayCommandWithNoParameter(() =>
-            {
-                SearchBy = "Id";
-                SearchByValue = "";
-                SelectedBrand = null;
-                SelectedCategory = null;
-                IsShowSelectedProductOnly = true;
-            });
-            SearchCommand = new RelayCommandWithNoParameter(() =>
-            {
-                Search();
-            });
-            Task t = Task.Run(async () =>
-            {
+                SelectedPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>();
+                AllPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>();
                 await LoadBrands();
                 await LoadCategories();
-                await LoadProducts();
-            });
-            while (!t.IsCompleted) ;
-            FilterPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>(AllPromoProductBlocks);
-            TotalProducts = SelectedPromoProductBlocks.Count();
-            IsShowSelectedProductOnly = false;
-            if (string.IsNullOrEmpty(SearchBy))
+                await LoadProducts(); 
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }).ContinueWith((first) =>
             {
-                SearchBy = "Id";
-            }
+                CompletedCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    var closeDialog = DialogHost.CloseDialogCommand;
+                    closeDialog.Execute(SelectedPromoProductBlocks, null);
+                });
+                CancelCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    var closeDialog = DialogHost.CloseDialogCommand;
+                    closeDialog.Execute(null, null);
+                });
+                ClickProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
+                {
+                    PromoProductBlockViewModel promoProductBlockViewModel = p as PromoProductBlockViewModel;
+                    if (promoProductBlockViewModel != null)
+                    {
+                        promoProductBlockViewModel.IsChecked = !promoProductBlockViewModel.IsChecked;
+                        if (promoProductBlockViewModel.IsChecked)
+                        {
+                            SelectedPromoProductBlocks.Insert(0, promoProductBlockViewModel);
+                            NumberOfCheck++;
+                            TotalProducts++;
+                        }
+                        else
+                        {
+                            SelectedPromoProductBlocks.Remove(promoProductBlockViewModel);
+                            NumberOfCheck--;
+                            TotalProducts--;
+                        }
+                    }
+                });
+                ResetCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    SearchBy = "Id";
+                    SearchByValue = "";
+                    SelectedBrand = null;
+                    SelectedCategory = null;
+                    IsShowSelectedProductOnly = true;
+                    Search();
+                });
+                SearchCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    Search();
+                });
+                FilterPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>(AllPromoProductBlocks);
+                TotalProducts = SelectedPromoProductBlocks.Count();
+                IsShowSelectedProductOnly = false;
+                if (string.IsNullOrEmpty(SearchBy))
+                {
+                    SearchBy = "Id";
+                }
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
         private async Task LoadBrands()
         {

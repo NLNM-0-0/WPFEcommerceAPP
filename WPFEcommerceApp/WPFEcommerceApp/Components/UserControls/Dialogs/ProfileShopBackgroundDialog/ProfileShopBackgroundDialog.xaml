@@ -29,8 +29,8 @@
                             <local:MoveThumb 
                                 Cursor="SizeAll" 
                                 Template="{StaticResource MoveThumbTemplate}"
-                                HeightCanvas="130"
-                                WidthCanvas="520"/>
+                                HeightCanvas="170"
+                                WidthCanvas="850"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -39,7 +39,7 @@
     </UserControl.Resources>
     <StackPanel
         Margin="30"
-        Width="600">
+        Width="900">
         <Grid
             Margin="0 0 0 30">
             <Grid.ColumnDefinitions>
@@ -78,35 +78,28 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Canvas
-                x:Name="CanvasFrame"
-                Height="{Binding ElementName=TextBoxSource, Path=ActualHeight}"
-                Grid.Column="0">
-                <TextBox
+            <TextBox
                     x:Name="TextBoxSource"
                     Style="{StaticResource TextBoxHintBlackBorder}"
-                    Width="{Binding ElementName=CanvasFrame, Path=ActualWidth}"
+                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="Source"
                     Text="{Binding SourceImageBackground}"
                     IsReadOnly="True"
-                    materialDesign:TextFieldAssist.HasTrailingIcon="True"
-                    materialDesign:TextFieldAssist.TrailingIcon="Folder"
-                    materialDesign:TextFieldAssist.TrailingIconSize="30">
+                    materialDesign:TextFieldAssist.SuffixText="          ">
                 </TextBox>
-                <Button
-                    Style="{StaticResource TransparentButton}"
-                    Command="{Binding ChangeBackgroundShopCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
-                    Canvas.Left="375"
-                    Canvas.Top="12"
-                    Width="40"
-                    Padding="0">
-                    <fa:ImageAwesome
+            <Button
+                Style="{StaticResource TransparentButton}"
+                Command="{Binding ChangeBackgroundShopCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                HorizontalAlignment="Right"
+                Margin="0 0 10 0"
+                Width="40"
+                Padding="0">
+                <fa:ImageAwesome
                         Width="30"
                         Icon="Folder"/>
-                </Button>
-            </Canvas>
+            </Button>
 
             <Button
                 Grid.Column="1"
@@ -124,8 +117,8 @@
             CanContentScroll="False"
             PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
             <Grid
-                Height="130"
-                Width="520"
+                Height="170"
+                Width="850"
                 Background="{StaticResource BoxShadowColorBrush}"
                 Margin="0 30 0 0">
                 <Canvas 
@@ -225,7 +218,7 @@
             Style="{StaticResource MaterialDesignDiscreteSlider}"
             ToolTip="MaterialDesignDiscreteSlider"
             Value="100"
-            Width="520"
+            Width="850"
             Foreground="Black"
             x:Name="slider"
             ValueChanged="slider_ValueChanged"/>

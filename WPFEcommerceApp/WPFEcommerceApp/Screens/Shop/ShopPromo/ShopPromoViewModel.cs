@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
@@ -226,98 +227,172 @@ namespace WPFEcommerceApp
         }
         public ShopPromoViewModel()
         {
-            AllPromos = new ObservableCollection<ShopPromoBlockViewModel>();
-            InProcessPromos = new ObservableCollection<ShopPromoBlockViewModel>();
-            UpcommingPromos = new ObservableCollection<ShopPromoBlockViewModel>();
-            ExpiredPromos = new ObservableCollection<ShopPromoBlockViewModel>();
-            RequestingPromos = new ObservableCollection<ShopPromoBlockViewModel>();
-            DeletedPromos = new ObservableCollection<ShopPromoBlockViewModel>();
-            Task t = Task.Run(async () => await LoadPromos());
-            while (!t.IsCompleted) ;
-            DateFrom = null;
-            DateTo = null;
-            SearchBy = "Promo Code";
-            SearchByValue = "";
-            StatusAll = true;
-            SearchCommand = new RelayCommandWithNoParameter(() =>
+            IsLoadingCheck.IsLoading = 2;
+            Task.Run(async () =>
             {
-                Search();
-            });
-            ResetCommand = new RelayCommandWithNoParameter(() =>
+                AllPromos = new ObservableCollection<ShopPromoBlockViewModel>();
+                InProcessPromos = new ObservableCollection<ShopPromoBlockViewModel>();
+                UpcommingPromos = new ObservableCollection<ShopPromoBlockViewModel>();
+                ExpiredPromos = new ObservableCollection<ShopPromoBlockViewModel>();
+                RequestingPromos = new ObservableCollection<ShopPromoBlockViewModel>();
+                DeletedPromos = new ObservableCollection<ShopPromoBlockViewModel>();
+                await LoadPromos();
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }).ContinueWith((first) =>
             {
                 DateFrom = null;
                 DateTo = null;
                 SearchBy = "Promo Code";
                 SearchByValue = "";
                 StatusAll = true;
-            });
-            EditPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
-            {
-                //VHCMT => Change param in constructor
-                //PromoInformation promoInformation = new PromoInformation();
-                var temp = new PromoVMConstructor((p as ShopPromoBlockViewModel).Promo);
-                //promoInformation.DataContext = new PromoInformationViewModel(temp);
-                /*navigate*/
-                NavigateProvider.PromoInfomationScreen().Navigate(temp);
-            });
-            CopyPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
-            {
-                Clipboard.SetText((p as ShopPromoBlockViewModel).Promo.Code);
-            });
-            RemovePromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
-            {
-                ShopPromoBlockViewModel shopPromoBlockViewModel = p as ShopPromoBlockViewModel;
-                Task.Run(async () => await DeletePromo(shopPromoBlockViewModel.Promo));
-                shopPromoBlockViewModel.Promo.Status = 2;
-                shopPromoBlockViewModel.ChangeStatus();
-                if (StatusInProcess)
+                SearchCommand = new RelayCommand<object>((p) =>
                 {
-                    InProcessPromos.Remove(shopPromoBlockViewModel);
-                    FilterPromos.Remove(shopPromoBlockViewModel);
-                }    
-                else if(StatusUpcoming)
+                    return (DateFrom != null && DateTo != null && DateFrom < DateTo) || (DateFrom == null) || (DateTo == null);
+                }, ((p) =>
                 {
-                    UpcommingPromos.Remove(shopPromoBlockViewModel);
-                    FilterPromos.Remove(shopPromoBlockViewModel);
-                }    
-                else if(StatusExpired) 
+                    if (StatusAll)
+                    {
+                        FilterPromos = AllPromos;
+                    }
+                    else if (StatusInProcess)
+                    {
+                        FilterPromos = InProcessPromos;
+                    }
+                    else if (statusUpcoming)
+                    {
+                        FilterPromos = UpcommingPromos;
+                    }
+                    else if (StatusExpired)
+                    {
+                        FilterPromos = ExpiredPromos;
+                    }
+                    else if (StatusRequesting)
+                    {
+                        FilterPromos = RequestingPromos;
+                    }
+                    else if (StatusDeleted)
+                    {
+                        FilterPromos = DeletedPromos;
+                    }
+                    Search();
+                }));
+                ResetCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    ExpiredPromos.Remove(shopPromoBlockViewModel);
-                    FilterPromos.Remove(shopPromoBlockViewModel);
-                }
-                else if(StatusRequesting)
+                    DateFrom = null;
+                    DateTo = null;
+                    SearchBy = "Promo Code";
+                    SearchByValue = "";
+                    StatusAll = true;
+                    Search();
+                });
+                EditPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
                 {
-                    RequestingPromos.Remove(shopPromoBlockViewModel);
-                    FilterPromos.Remove(shopPromoBlockViewModel);
-                }    
-                DeletedPromos.Insert(0, shopPromoBlockViewModel);
-            });
-            AddPromoCommand = new RelayCommandWithNoParameter(() =>
-            {
-                NavigateProvider.ShopAddPromoScreen().Navigate();
-            });
+                    var temp = new PromoVMConstructor((p as ShopPromoBlockViewModel).Promo);
+                    NavigateProvider.PromoInfomationScreen().Navigate(temp);
+                });
+                CopyPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
+                {
+                    Clipboard.SetText((p as ShopPromoBlockViewModel).Promo.Code);
+                });
+                RemovePromoCommand = new RelayCommand<object>((p) => p != null,async (p) =>
+                {
+                    MainViewModel.IsLoading = true;
+                    ShopPromoBlockViewModel shopPromoBlockViewModel = p as ShopPromoBlockViewModel;
+                    await DeletePromo(shopPromoBlockViewModel.Promo);
+                    if (StatusInProcess)
+                    {
+                        InProcessPromos.Remove(shopPromoBlockViewModel);
+                        FilterPromos.Remove(shopPromoBlockViewModel);
+                    }
+                    else if (StatusUpcoming)
+                    {
+                        UpcommingPromos.Remove(shopPromoBlockViewModel);
+                        FilterPromos.Remove(shopPromoBlockViewModel);
+                    }
+                    else if (StatusExpired)
+                    {
+                        ExpiredPromos.Remove(shopPromoBlockViewModel);
+                        FilterPromos.Remove(shopPromoBlockViewModel);
+                    }
+                    else if (StatusRequesting)
+                    {
+                        RequestingPromos.Remove(shopPromoBlockViewModel);
+                        FilterPromos.Remove(shopPromoBlockViewModel);
+                    }
+                    else if (StatusAll)
+                    {
+                        if (shopPromoBlockViewModel.Promo.Status == 1)
+                        {
+                            if (shopPromoBlockViewModel.Promo.DateBegin > DateTime.Now)
+                            {
+                                UpcommingPromos.Remove(shopPromoBlockViewModel);
+                            }
+                            else if (shopPromoBlockViewModel.Promo.DateBegin <= DateTime.Now && shopPromoBlockViewModel.Promo.DateEnd > DateTime.Now)
+                            {
+                                InProcessPromos.Remove(shopPromoBlockViewModel);
+                            }
+                        }
+                        else if (shopPromoBlockViewModel.Promo.Status == 0 && shopPromoBlockViewModel.Promo.DateEnd > DateTime.Now)
+                        {
+                            RequestingPromos.Remove(shopPromoBlockViewModel);
+                        }
+                        else
+                        {
+                            ExpiredPromos.Remove(shopPromoBlockViewModel);
+                        }
+                    }
+                    DeletedPromos.Insert(0, shopPromoBlockViewModel);
+                    shopPromoBlockViewModel.Promo.Status = 2;
+                    shopPromoBlockViewModel.ChangeStatus();
+                    MainViewModel.IsLoading = false;
+                });
+                AddPromoCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    NavigateProvider.ShopAddPromoScreen().Navigate();
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
         public void Search()
         {
             if (SearchBy == "Promo Code")
             {
-                FilterPromos = new ObservableCollection<ShopPromoBlockViewModel>(FilterPromos.Where(p => p.Promo.Code.Contains(SearchByValue ?? "") &&
-                                                                                                    ((DateFrom == null) ? true : (p.Promo.DateBegin >= DateFrom)) &&
-                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo))));
+                FilterPromos = new ObservableCollection<ShopPromoBlockViewModel>(FilterPromos.Where(p => p.Promo.Code.ToLower().Trim().Contains(SearchByValue==null?"":SearchByValue.ToLower().Trim()) &&
+                                                                                                    ((DateFrom == null) ? true : (p.Promo.DateBegin >= DateFrom.Value.Subtract(new TimeSpan(12,0,0)))) &&
+                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo.Value.Subtract(new TimeSpan(12, 0, 0))))));
             }
             else
             {
-                FilterPromos = new ObservableCollection<ShopPromoBlockViewModel>(FilterPromos.Where(p => p.Promo.Name.Contains(SearchByValue ?? "") &&
-                                                                                                    ((DateFrom == null) ? true : (p.Promo.DateBegin >= DateFrom)) &&
-                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo))));
+                FilterPromos = new ObservableCollection<ShopPromoBlockViewModel>(FilterPromos.Where(p => p.Promo.Name.ToLower().Trim().Contains(SearchByValue == null ? "" : SearchByValue.ToLower().Trim())&&
+                                                                                                    ((DateFrom == null) ? true : (p.Promo.DateBegin >= DateFrom.Value.Subtract(new TimeSpan(12, 0, 0)))) &&
+                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo.Value.Subtract(new TimeSpan(12, 0, 0))))));
             }    
         }
         public async Task LoadPromos()
         {
             GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Models.Promo>();
-            ObservableCollection<Models.Promo>  allPromos = new ObservableCollection<Models.Promo>(await promoRepository.GetListAsync(p => p.IdShop == AccountStore.instance.CurrentAccount.Id,
+            ObservableCollection<Models.Promo>  allPromos = new ObservableCollection<Models.Promo>((await promoRepository.GetListAsync(p => p.IdShop == AccountStore.instance.CurrentAccount.Id,
                                                                                                                                         p=> p.MUser, 
-                                                                                                                                        p => p.Products));
+                                                                                                                                        p => p.Products,
+                                                                                                                                        p => p.Products.Select(pr => pr.Brand),
+                                                                                                                                        p => p.Products.Select(pr => pr.Category),
+                                                                                                                                        p => p.Products.Select(pr => pr.ImageProducts))).OrderByDescending(p => (p.Status == 1 && p.DateBegin < DateTime.Now)).
+                                                                                                                                                                                        ThenByDescending(p=>(p.Status == 1 && p.DateBegin >= DateTime.Now && p.DateEnd < DateTime.Now)).
+                                                                                                                                                                                        ThenByDescending(p => (p.Status == 1 && p.DateEnd >= DateTime.Now)).
+                                                                                                                                                                                        ThenByDescending(p => (p.Status == 0 && p.DateEnd < DateTime.Now)).
+                                                                                                                                                                                        ThenByDescending(p => (p.Status == 0 && p.DateEnd >= DateTime.Now)));
             foreach(var promo in allPromos) 
             {
                 ShopPromoBlockViewModel shopPromoBlockViewModel = new ShopPromoBlockViewModel(promo);

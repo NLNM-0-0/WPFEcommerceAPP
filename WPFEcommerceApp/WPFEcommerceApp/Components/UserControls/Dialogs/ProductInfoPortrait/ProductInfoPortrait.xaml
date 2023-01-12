@@ -32,7 +32,9 @@
             FontFamily="{StaticResource Bold}"
             FontSize="{StaticResource FontSizeHeadline}"
             IsReadOnly="{i:Binding !IsEditting}"
-            TextChanged="textBox_TextChanged">
+            TextChanged="textBox_TextChanged"
+            MaxLength="200"
+            materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed">
             <TextBox.Text>
                 <Binding
                    Path="SelectedProduct.Name"
@@ -400,11 +402,13 @@
         <TextBox
             x:Name="colorTextBox"
             Margin="0 30 0 0"
-            Style="{StaticResource TextBoxHintWrapText}"
+            Style="{StaticResource TextBoxHintBlackBorder}"
             materialDesign:HintAssist.Hint="Color"
             Width="auto"
             IsReadOnly="{i:Binding !IsEditting}"
-            TextChanged="textBox_TextChanged">
+            TextChanged="textBox_TextChanged"
+            MaxLength="200"
+            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
             <TextBox.Text>
                 <Binding
                     Path="SelectedProduct.Color"
@@ -424,7 +428,9 @@
             Width="auto"
             Height="200"
             IsReadOnly="{i:Binding !IsEditting}"
-            TextChanged="textBox_TextChanged">
+            TextChanged="textBox_TextChanged"
+            MaxLength="1000"
+            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
             <TextBox.Text>
                 <Binding
                     Path="SelectedProduct.Description"

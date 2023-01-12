@@ -64,7 +64,9 @@
                             materialDesign:HintAssist.Hint="Product Name"
                             Width="500"
                             Margin="0 0 30 0"
-                            VerticalAlignment="Center">
+                            MaxLength="200"
+                            VerticalAlignment="Center"
+                            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <TextBox.Text>
                                 <Binding
                                     Path="ProductName"
@@ -154,11 +156,12 @@
                                                     Margin="0 0 10 0"
                                                     Height="70"
                                                     MaxWidth="70">
-                                                    <Image
+                                                    <local:AsyncImage
+                                                        Stretch="Fill"
                                                         Source="{Binding}"
                                                         Height="70"
                                                         Width="70">
-                                                    </Image>
+                                                    </local:AsyncImage>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -326,7 +329,7 @@
                                     Margin="0 10 0 0"
                                     Text="*If you can't find the category, press button add new and we will update"
                                     FontFamily="{StaticResource Medium}"
-                                    Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
+                                    Foreground="{StaticResource SuccessColorBrush}"/>
                         </StackPanel>
 
                         <TextBox
@@ -389,7 +392,7 @@
                                 Margin="0 10 0 0"
                                 Text="*If you can't find the brand, press button add new and we will update"
                                 FontFamily="{StaticResource Medium}"
-                                Foreground="{StaticResource MaterialDesignValidationErrorBrush}"/>
+                                Foreground="{StaticResource SuccessColorBrush}"/>
                         </StackPanel>
 
                         <TextBox
@@ -417,9 +420,11 @@
                     <TextBox
                         x:Name="colorTextBox"
                         Margin="0 30 0 0"
-                        Style="{StaticResource TextBoxHintWrapText}"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
                         materialDesign:HintAssist.Hint="Color"
-                        Width="auto">
+                        Width="auto"
+                        MaxLength="200"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                         <TextBox.Text>
                             <Binding
                                 Path="Color"
@@ -438,7 +443,9 @@
                         Style="{StaticResource TextBoxHintWrapText}"
                         materialDesign:HintAssist.Hint="Description"
                         Width="auto"
-                        Height="140">
+                        Height="140"
+                        MaxLength="1000"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                         <TextBox.Text>
                             <Binding
                                 Path="Description"

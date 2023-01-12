@@ -49,8 +49,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<string> imageProducts;
-        public ObservableCollection<string> ImageProducts
+        private ObservableCollection<BitmapImage> imageProducts;
+        public ObservableCollection<BitmapImage> ImageProducts
         {
             get
             {
@@ -59,16 +59,6 @@ namespace WPFEcommerceApp
             set
             {
                 imageProducts = value;
-                OnPropertyChanged();
-            }
-        }
-        private ChangeImageProductDialogViewModel changeImageProductDialogViewModel;
-        public ChangeImageProductDialogViewModel ChangeImageProductDialogViewModel
-        {
-            get => new ChangeImageProductDialogViewModel(ImageProducts);
-            set
-            {
-                changeImageProductDialogViewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -219,6 +209,20 @@ namespace WPFEcommerceApp
         public ProductInfoLandscapeViewModel(Models.Product product)
         {
             SelectedProduct = product;
+            ImageProducts = new ObservableCollection<BitmapImage>();
+            if (SelectedProduct.ImageProducts.Count != 0)
+            {
+                foreach (var item in SelectedProduct.ImageProducts)
+                {
+                    var bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri(item.Source);
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.EndInit();
+                    ImageProducts.Add(bitmapImage);
+                }
+            }
+            ImageProducts.CollectionChanged += ImageProducts_CollectionChanged;
             Task.Run(async () =>
             {
                 await LoadBrands();
@@ -232,8 +236,6 @@ namespace WPFEcommerceApp
                 }));
             }).ContinueWith((third) =>
             {
-                ImageProducts = new ObservableCollection<string>();
-                ImageProducts.CollectionChanged += ImageProducts_CollectionChanged;
                 if (SelectedProduct.IsOneSize)
                 {
                     IsHadOneSize = true;
@@ -243,11 +245,6 @@ namespace WPFEcommerceApp
                     IsHadOneSize = false;
                 }
                 IsEditting = false;
-                ImageProducts = new ObservableCollection<string>();
-                foreach (var item in SelectedProduct.ImageProducts)
-                {
-                    ImageProducts.Add(item.Source);
-                }
                 if (SelectedProduct.Status == "Banned")
                 {
                     IsBanned = true;
@@ -355,7 +352,7 @@ namespace WPFEcommerceApp
                     closeDialog.Execute(null, null);
                     MainViewModel.IsLoading = true;
                     WPFEcommerceApp.Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
-                    SelectedProduct.Name = productTemp.Name;
+                    SelectedProduct.Name = productTemp.Name.Trim();
                     SelectedProduct.Price = productTemp.Price;
                     SelectedProduct.IsHadSizeS = productTemp.IsHadSizeS;
                     SelectedProduct.IsHadSizeM = productTemp.IsHadSizeM;
@@ -363,14 +360,14 @@ namespace WPFEcommerceApp
                     SelectedProduct.IsHadSizeXL = productTemp.IsHadSizeXL;
                     SelectedProduct.IsHadSizeXXL = productTemp.IsHadSizeXXL;
                     SelectedProduct.Category = productTemp.Category;
-                    SelectedProduct.IdCategory = productTemp.IdCategory;
+                    SelectedProduct.IdCategory = productTemp.Category.Id;
                     selectedProduct.Brand = productTemp.Brand;
-                    SelectedProduct.IdBrand = productTemp.IdBrand;
+                    SelectedProduct.IdBrand = productTemp.Brand.Id;
                     selectedProduct.InStock = productTemp.InStock;
                     selectedProduct.Sold = productTemp.Sold;
                     SelectedProduct.Sale = productTemp.Sale;
-                    SelectedProduct.Description = productTemp.Description;
-                    SelectedProduct.Color = productTemp.Description;
+                    SelectedProduct.Description = productTemp.Description.Trim();
+                    SelectedProduct.Color = productTemp.Color.Trim();
                     IsEditting = false;
                     product = SelectedProduct;
                     await UpdateImageProduct();
@@ -483,8 +480,6 @@ namespace WPFEcommerceApp
             product.IsHadSizeXXL = SelectedProduct.IsHadSizeXXL;
             product.IdCategory = SelectedProduct.Category.Id;
             product.IdBrand = SelectedProduct.Brand.Id;
-            product.Category = SelectedProduct.Category;
-            product.Brand = SelectedProduct.Brand;
             product.InStock = SelectedProduct.InStock;
             product.Sold = SelectedProduct.Sold;
             product.Sale = SelectedProduct.Sale;
@@ -494,34 +489,33 @@ namespace WPFEcommerceApp
         }
         private async Task UpdateImageProduct()
         {
+            SelectedProduct.ImageProducts.Clear();
             var repository = new GenericDataRepository<Models.ImageProduct>();
             ICollection<Models.ImageProduct> imageproducts = await repository.GetListAsync(p => p.IdProduct == SelectedProduct.Id);
             if (imageproducts != null)
             {
                 foreach (var imageproduct in imageproducts)
                 {
-                    if (imageproduct.Source.Contains("https://firebasestorage.googleapis.com") && !ImageProducts.Any(p => p == imageproduct.Source))
+                    if (imageproduct.Source.Contains("https://firebasestorage.googleapis.com") && !ImageProducts.Any(p => (p.UriSource != null  && p.UriSource.ToString() == imageproduct.Source)))
                     {
                         await FireStorageAPI.Delete(imageproduct.Source);
+                        await repository.Remove(imageproduct);
                     }
-                    await repository.Remove(imageproduct);
                 }
             }
-            SelectedProduct.ImageProducts.Clear();
-            foreach (string imageProductSource in ImageProducts)
+            foreach (BitmapImage imageProductSource in ImageProducts)
             {
-                Tuple<bool, string> link;
-                link = await FireStorageAPI.PushFromFile(imageProductSource, "Product", $"{SelectedProduct.Id}");
-                Models.ImageProduct imageProduct;
-                if (link.Item1)
+                if (imageProductSource.UriSource != null && imageProductSource.UriSource.ToString().Contains("https://firebasestorage.googleapis.com"))
                 {
-                    imageProduct = new Models.ImageProduct() { Source = link.Item2, IdProduct = SelectedProduct.Id };
+                    continue;
                 }
                 else
-                {
-                    imageProduct = new Models.ImageProduct() { Source = imageProductSource, IdProduct = SelectedProduct.Id };
+                {     
+                    string link = await FireStorageAPI.PushFromImage(imageProductSource, "Product", $"{SelectedProduct.Id}");
+                    Models.ImageProduct imageProduct;
+                    imageProduct = new Models.ImageProduct() { Source = link, IdProduct = SelectedProduct.Id };
+                    SelectedProduct.ImageProducts.Add(imageProduct);
                 }
-                SelectedProduct.ImageProducts.Add(imageProduct);
             }
             if (SelectedProduct.ImageProducts != null)
             {

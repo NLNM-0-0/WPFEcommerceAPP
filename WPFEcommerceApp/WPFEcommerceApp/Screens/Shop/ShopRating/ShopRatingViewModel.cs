@@ -26,6 +26,8 @@ namespace WPFEcommerceApp
         public ICommand ChangeRatingStatusCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand ResetCommand { get; set; }
+        public ICommand ScrollToHome { get; set; }
+        public ICommand ScrollToCategory { get; set; }
         private string productName;
         public string ProductName
         {
@@ -525,6 +527,16 @@ namespace WPFEcommerceApp
                     StatusSearch1Star = false;
                     MainViewModel.IsLoading = false;
                 });
+                ScrollToHome = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToHome();
+                });
+                ScrollToCategory = new RelayCommand<object>((p) => { return p != null; }, p =>
+                {
+                    ScrollViewer scrollViewer = p as ScrollViewer;
+                    scrollViewer.ScrollToVerticalOffset(330);
+                });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
                     DisplayShopRatingBlockModels = ShopRatingBlockModelsAll;
@@ -542,12 +554,12 @@ namespace WPFEcommerceApp
                 MessageBox.Show("Date Wrong");
                 return;
             }
-            DisplayShopRatingBlockModels = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelFilter.Where(x => x.OrderInfo.Product.Name.Contains(ProductName ?? "") &&
-                                                                                                                 x.OrderInfo.MOrder.MUser.Name.Contains(UserName ?? "") &&
+            DisplayShopRatingBlockModels = new ObservableCollection<ShopRatingBlockModel>(ShopRatingBlockModelFilter.Where(x => x.OrderInfo.Product.Name.ToLower().Trim().Contains(ProductName == null? "": ProductName.ToLower().Trim()) &&
+                                                                                                                 x.OrderInfo.MOrder.MUser.Name.ToLower().Trim().Contains(UserName == null? "": UserName.ToLower().Trim()) &&
                                                                                                                 ((SelectedCategory == null) ? true : (x.OrderInfo.Product.IdCategory == SelectedCategory.Id)) &&
                                                                                                                 ((SelectedBrand == null) ? true : (x.OrderInfo.Product.IdBrand == SelectedBrand.Id)) &&
-                                                                                                                ((DateFrom == null) ? true : (x.OrderInfo.Rating.DateRating >= DateFrom)) &&
-                                                                                                                ((DateTo == null) ? true : (x.OrderInfo.Rating.DateRating <= DateTo))));
+                                                                                                                ((DateFrom == null) ? true : (x.OrderInfo.Rating.DateRating >= DateFrom.Value.Subtract(new TimeSpan(12, 0, 0)))) &&
+                                                                                                                ((DateTo == null) ? true : (x.OrderInfo.Rating.DateRating <= DateTo.Value.Add(new TimeSpan(12, 0, 0))))));
         }
         public void Load()
         {

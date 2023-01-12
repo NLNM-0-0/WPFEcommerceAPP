@@ -118,13 +118,13 @@ namespace WPFEcommerceApp
         {
             get
             {
-                if(AccountStore.instance.CurrentAccount== null) 
+                if (AccountStore.instance.CurrentAccount == null || AccountStore.instance.CurrentAccount.Id == SelectedProduct.IdShop)
                 {
                     return false;
                 }
                 return true;
             }
-           
+
         }
         #endregion
 
@@ -172,7 +172,7 @@ namespace WPFEcommerceApp
                 }
             }
             NumberProductRemainder = "+ " + (Images.Count - MiniImagesProduct.Count).ToString();
-            #endregion
+            
 
             ShowMiniPictureCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -224,7 +224,7 @@ namespace WPFEcommerceApp
                 NavigateProvider.ProductDetailScreen().Navigate(SelectedProduct);
             });
         }
-
+        #endregion
         private void Instance_FavoriteListChanged()
         {
             OnPropertyChanged(nameof(HeartVisibility));

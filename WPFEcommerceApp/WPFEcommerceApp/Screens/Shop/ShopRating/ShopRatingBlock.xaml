@@ -59,9 +59,9 @@
                             Text="{Binding OrderInfo.MOrder.MUser.Name, UpdateSourceTrigger=PropertyChanged}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            FontWeight="Medium"
+                            FontWeight="Light"
                             MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
-                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontSize="{StaticResource FontSizeHeadline2}"
                             TextTrimming="CharacterEllipsis"/>
                     </Border>
                 </Grid>
@@ -85,7 +85,7 @@
                     <TextBlock 
                         Text="{Binding OrderInfo.Product.Name, UpdateSourceTrigger=PropertyChanged}"
                         VerticalAlignment="Center"
-                        FontWeight="Medium"
+                        FontWeight="Light"
                         MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
                         FontSize="{StaticResource FontSizeHeadline2}"
                         TextTrimming="CharacterEllipsis"/>

@@ -49,12 +49,14 @@
                     </Button>
                 </Grid>
                 <TextBox
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Category Name"
-                        x:Name="categoryTextBox"
-                        Width="auto"
-                        Margin="0 30 0 0"
-                        VerticalAlignment="Center">
+                    Style="{StaticResource TextBoxHintBlackBorder}"
+                    materialDesign:HintAssist.Hint="Category Name"
+                    x:Name="categoryTextBox"
+                    Width="auto"
+                    Margin="0 30 0 0"
+                    VerticalAlignment="Center"
+                    MaxLength="200"
+                    materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                     <TextBox.Text>
                         <Binding
                                 Path="CategoryName"
@@ -68,13 +70,15 @@
                     </TextBox.Text>
                 </TextBox>
                 <TextBox
-                        Style="{StaticResource TextBoxHintWrapText}"
-                        materialDesign:HintAssist.Hint="Reason"
-                        x:Name="reasonTextBox"
-                        Width="auto"
-                        Margin="0 40 0 0"
-                        Height="200"
-                        VerticalAlignment="Center">
+                    Style="{StaticResource TextBoxHintWrapText}"
+                    materialDesign:HintAssist.Hint="Reason"
+                    x:Name="reasonTextBox"
+                    Width="auto"
+                    Margin="0 40 0 0"
+                    Height="200"
+                    VerticalAlignment="Center"
+                    MaxLength="1000"
+                    materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                     <TextBox.Text>
                         <Binding
                                 Path="Reason"

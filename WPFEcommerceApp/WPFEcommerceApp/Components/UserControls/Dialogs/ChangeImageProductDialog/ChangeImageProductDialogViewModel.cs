@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
@@ -19,8 +23,8 @@ namespace WPFEcommerceApp
         public ICommand AddImageCommand { get; set; }
         public ICommand DeleteImageCommand { get; set; }
 
-        private ObservableCollection<string> imageProducts;
-        public ObservableCollection<string> ImageProducts
+        private ObservableCollection<BitmapImage> imageProducts;
+        public ObservableCollection<BitmapImage> ImageProducts
         {
             get => imageProducts;
             set
@@ -29,8 +33,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private string selectedImageSource;
-        public string SelectedImageSource
+        private BitmapImage selectedImageSource;
+        public BitmapImage SelectedImageSource
         {
             get => selectedImageSource;
             set
@@ -59,14 +63,12 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ChangeImageProductDialogViewModel(ObservableCollection<string> imageProducts)
+        public ChangeImageProductDialogViewModel(ObservableCollection<BitmapImage> imageProducts)
         {
             ImageProducts = imageProducts;
-            SelectedImageSource = "";
-
             if (ImageProducts.Count == 0)
             {
-                SelectedImageSource = Properties.Resources.DefaultProductImage;
+                SelectedImageSource = new BitmapImage(new Uri(Properties.Resources.DefaultProductImage));
                 isCanDeleteImage = false;
                 IsCanAddImage = true;
             }
@@ -85,13 +87,12 @@ namespace WPFEcommerceApp
             }
             ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                BitmapImage image = p as BitmapImage;
-                //VHCMT => Null error
-                if(image == null || image.UriSource == null) 
+                AsyncImage image = p as AsyncImage;
+                if (image == null || image.Source == null)
                 {
                     return;
                 }
-                SelectedImageSource = image.UriSource.ToString();
+                SelectedImageSource = (BitmapImage)image.Source;
             });
             AddImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -100,7 +101,28 @@ namespace WPFEcommerceApp
                 op.ShowDialog();
                 if (op.FileName != "")
                 {
-                    ImageProducts.Add(op.FileName);
+                    var stream = File.Open(op.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    System.Drawing.Image img = new Bitmap(stream);
+                    Bitmap copy = new Bitmap(img.Width, img.Height);
+                    copy.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+                    using (var graphic = Graphics.FromImage(copy))
+                    {
+                        graphic.Clear(System.Drawing.Color.White);
+                        graphic.DrawImageUnscaled(img, 0, 0);
+                    }
+                    using (var memory = new MemoryStream()) 
+                    {
+                        copy.Save(memory, ImageFormat.Jpeg);
+                        memory.Position = 0;
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = memory;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+                        bitmapImage.Freeze();
+
+                        ImageProducts.Add(bitmapImage);
+                    }
                 }
                 if (ImageProducts.Count == 1)
                 {
@@ -114,7 +136,7 @@ namespace WPFEcommerceApp
             });
             DeleteImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                foreach (string imageSource in ImageProducts)
+                foreach (BitmapImage imageSource in ImageProducts)
                 {
                     if (imageSource == SelectedImageSource)
                     {
@@ -122,7 +144,7 @@ namespace WPFEcommerceApp
                         if (ImageProducts.Count == 0)
                         {
                             IsCanDeleteImage = false;
-                            SelectedImageSource = Properties.Resources.DefaultProductImage;
+                            SelectedImageSource = new BitmapImage(new Uri(Properties.Resources.DefaultProductImage));
                         }
                         else
                         {

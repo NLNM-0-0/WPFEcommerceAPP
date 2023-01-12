@@ -265,27 +265,49 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" x:Name="ProductMainInfo">
+                <Grid 
+                    Grid.Row="0" 
+                    x:Name="ProductMainInfo"
+                    HorizontalAlignment="Stretch">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock 
-                    Grid.Row="0"
-                    Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
-                    FontSize="18"
-                    FontWeight="DemiBold"/>
-                    <TextBlock
-                    Grid.Row="1"
-                    Text="{Binding SelectedProduct.Category.Name, UpdateSourceTrigger=PropertyChanged}"
-                    FontSize="16"
-                    Foreground="{StaticResource NotAvailableColorBrush}"/>
-                    <TextBlock
-                    Grid.Row="2"
-                    Text="{Binding SelectedProduct.Brand.Name, UpdateSourceTrigger=PropertyChanged}"
-                    FontSize="16"
-                    Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    <Border
+                        Grid.Row="0"
+                        HorizontalAlignment="Stretch">
+                        <TextBlock 
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualWidth}"
+                            Text="{Binding SelectedProduct.Name, UpdateSourceTrigger=PropertyChanged}"
+                            FontSize="18"
+                            FontWeight="DemiBold"
+                            TextTrimming="CharacterEllipsis"
+                            HorizontalAlignment="Left"/>
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        HorizontalAlignment="Stretch">
+                        <TextBlock 
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualWidth}"
+                            Text="{Binding SelectedProduct.Category.Name, UpdateSourceTrigger=PropertyChanged}"
+                            FontSize="16"
+                            TextTrimming="CharacterEllipsis"
+                            HorizontalAlignment="Left"
+                            Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    </Border>
+                    <Border
+                        Grid.Row="2"
+                        HorizontalAlignment="Stretch">
+                        <TextBlock 
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualWidth}"
+                            Text="{Binding SelectedProduct.Brand.Name, UpdateSourceTrigger=PropertyChanged}"
+                            FontSize="16"
+                            TextTrimming="CharacterEllipsis"
+                            HorizontalAlignment="Left"
+                            Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    </Border>
                 </Grid>
                 <StackPanel Grid.Row="3" Orientation="Horizontal">
                     <StackPanel.Resources>
@@ -294,12 +316,12 @@
                         </Style>
                     </StackPanel.Resources>
                     <TextBlock 
-                    Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
-                    TextDecorations="Strikethrough"
-                    FontSize="16"
-                    FontWeight="DemiBold"
-                    Foreground="{StaticResource NotAvailableColorBrush}"
-                    Visibility="{c:Binding 'SelectedProduct.Sale != 100'}"/>
+                        Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
+                        TextDecorations="Strikethrough"
+                        FontSize="16"
+                        FontWeight="DemiBold"
+                        Foreground="{StaticResource NotAvailableColorBrush}"
+                        Visibility="{c:Binding 'SelectedProduct.Sale != 100'}"/>
                     <TextBlock 
                     Text="{c:Binding '(100 - SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
                     FontSize="18"

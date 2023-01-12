@@ -22,11 +22,50 @@ namespace WPFEcommerceApp
     /// </summary>
     public partial class ShopRating : UserControl
     {
-        //VHCMT: Don't need this shit
-        //private AccountStore accountStore;
         public ShopRating()
         {
             InitializeComponent();
+        }
+        private void Scroll_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
+
+        private void scroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (-e.VerticalChange > 0)
+            {
+                if (scroll.VerticalOffset < 400)
+                {
+                    Canvas.SetTop(buttonScroll, 400 - scroll.VerticalOffset);
+                    buttonScroll.Visibility = Visibility.Collapsed;
+                }
+                if (scroll.VerticalOffset < 330)
+                {
+                    Canvas.SetTop(status, 330 - scroll.VerticalOffset);
+                }
+            }
+            else
+            {
+                if (Canvas.GetTop(buttonScroll) - e.VerticalChange >= 0)
+                {
+                    Canvas.SetTop(buttonScroll, Canvas.GetTop(buttonScroll) - e.VerticalChange);
+                }
+                else
+                {
+                    Canvas.SetTop(buttonScroll, 70);
+                    buttonScroll.Visibility = Visibility.Visible;
+                }
+                if(Canvas.GetTop(status) - e.VerticalChange >= 0)
+                {
+                    Canvas.SetTop(status, Canvas.GetTop(status) - e.VerticalChange);
+                } 
+                else
+                {
+                    Canvas.SetTop(status, 0);
+                }
+            }
         }
     }
 }

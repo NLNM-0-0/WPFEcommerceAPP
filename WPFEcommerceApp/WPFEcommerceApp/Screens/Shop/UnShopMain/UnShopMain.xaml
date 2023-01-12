@@ -38,7 +38,7 @@
                     FontSize="{StaticResource FontSizeText}"
                     FontFamily="{StaticResource Medium}">
                     <Hyperlink
-                        Foreground="#1290FF"
+                        Foreground="#4B8CDE"
                         Command="{Binding UnShopCommand,UpdateSourceTrigger=PropertyChanged}"
                         CommandParameter="{Binding ElementName=linkLabel, Path=IsEnabled}">
                         <TextBlock

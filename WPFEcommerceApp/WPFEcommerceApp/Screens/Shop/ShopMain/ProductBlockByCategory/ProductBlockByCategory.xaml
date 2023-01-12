@@ -38,7 +38,7 @@
                 FontWeight="DemiBold"
                 Visibility="{c:Binding '(DataContext.ProductBlockViewModels.Count / (Math.Floor(ActualWidth / 360))) > 2 and DataContext.MaxHeightListProducts == 1100', ElementName=productBlockByCategory}">
                 <Hyperlink
-                    Foreground="#1290FF"
+                    Foreground="#4B8CDE"
                     Command="{Binding ChangeToFilterCommand}">
                     More
                 </Hyperlink>

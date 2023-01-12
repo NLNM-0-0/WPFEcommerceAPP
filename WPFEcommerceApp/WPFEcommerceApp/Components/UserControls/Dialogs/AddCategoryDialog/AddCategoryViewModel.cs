@@ -73,9 +73,9 @@ namespace WPFEcommerceApp
                 {
                     Id = await GenerateID.Gen(typeof(Category)),
                     IdShop = AccountStore.instance.CurrentAccount.Id,
-                    Name = CategoryName,
-                    Reason = this.Reason
-                });
+                    Name = CategoryName.Trim(),
+                    Reason = this.Reason.Trim()
+                }) ;
                 stringCloseDialog = "Update sucessfully. Please wait for us to apply.";
             }
             catch

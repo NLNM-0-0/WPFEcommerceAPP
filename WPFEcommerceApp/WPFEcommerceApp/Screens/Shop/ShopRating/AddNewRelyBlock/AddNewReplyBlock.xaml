@@ -49,7 +49,14 @@
                 materialDesign:HintAssist.IsFloating="False"
                 FontSize="{StaticResource FontSizeText}"
                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
-                MaxLength="500"/>
+                MaxLength="500">
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Key="Enter"
+                        Command="{Binding ReplyComment, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="{RelativeSource Mode=Self}"/>
+                </TextBox.InputBindings>
+            </TextBox>
             <Button
                 Style="{StaticResource TransparentButton}"
                 VerticalAlignment="Stretch"

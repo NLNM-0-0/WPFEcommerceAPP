@@ -43,9 +43,9 @@ namespace WPFEcommerceApp
         {
             if (- e.VerticalChange > 0)
             {
-                if (scroll.VerticalOffset < 190)
+                if (scroll.VerticalOffset < 230)
                 {
-                     Canvas.SetTop(categoryGrid, 190 - scroll.VerticalOffset);
+                     Canvas.SetTop(categoryGrid, 230 - scroll.VerticalOffset);
                 }
             }
             else

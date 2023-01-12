@@ -35,8 +35,8 @@ namespace WPFEcommerceApp
         public ICommand OpenChangeImageDialogCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
-        private ObservableCollection<string> imageProducts;
-        public ObservableCollection<string> ImageProducts
+        private ObservableCollection<BitmapImage> imageProducts;
+        public ObservableCollection<BitmapImage> ImageProducts
         {
             get => imageProducts;
             set
@@ -299,10 +299,10 @@ namespace WPFEcommerceApp
             OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
                 MainViewModel.IsLoading = true;
-                ChangeImageProductDialog addBrandDialog = new ChangeImageProductDialog();
-                addBrandDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
+                ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
+                changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(addBrandDialog, "SecondDialog");
+                await DialogHost.Show(changeImageProductDialog, "SecondDialog");
             });
             OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
@@ -340,7 +340,7 @@ namespace WPFEcommerceApp
                 await productRepository.Add(new Models.Product()
                 {
                     Id = id,
-                    Name = ProductName,
+                    Name = ProductName.Trim(),
                     IdShop = AccountStore.instance.CurrentAccount.Id,
                     IdCategory = SelectedCategory.Id,
                     IdBrand = SelectedBrand.Id,
@@ -354,15 +354,15 @@ namespace WPFEcommerceApp
                     IsHadSizeL = this.IsHadSizeL,
                     IsHadSizeXL = this.IsHadSizeXL,
                     IsHadSizeXXL = this.IsHadSizeXXL,
-                    Color = this.Color,
-                    Description = this.Description,
+                    Color = this.Color.Trim(),
+                    Description = this.Description.Trim(),
                     DateOfSale = DateTime.Now,
                     Status = "NotBanned"
                 });
-                foreach (string source in ImageProducts)
+                foreach (BitmapImage source in ImageProducts)
                 {
-
-                    await imageProductRepository.Add(new Models.ImageProduct() { IdProduct = id, Source = source });
+                    string link = await FireStorageAPI.PushFromImage(source, "Product", $"{id}");
+                    await imageProductRepository.Add(new Models.ImageProduct() { IdProduct = id, Source = link });
                 }
                 MainViewModel.IsLoading = false;
                 OnClosedDialog();
@@ -386,7 +386,7 @@ namespace WPFEcommerceApp
         }
         public async void LoadData()
         {
-            ImageProducts = new ObservableCollection<string>();
+            ImageProducts = new ObservableCollection<BitmapImage>();
             IsHadSizeS = false;
             IsHadSizeM = false;
             IsHadSizeL = false;

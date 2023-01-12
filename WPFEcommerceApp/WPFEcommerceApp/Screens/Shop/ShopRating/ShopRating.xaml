@@ -276,205 +276,342 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Grid Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock
-            Grid.Row="0"
-           Text="Rating"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            FontSize="{StaticResource FontSizeHeadline}"
-            Margin="0 30"/>
-        <Border Background="{StaticResource BackgroundColorBrush}"
+    <Grid>
+        <ScrollViewer
+            PreviewMouseWheel="Scroll_PreviewMouseWheel"
+            ScrollChanged="scroll_ScrollChanged"
+            x:Name="scroll">
+            <Grid Background="Transparent"
+                  x:Name="contentGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                Grid.Row="0"
+                Text="Rating"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                FontSize="{StaticResource FontSizeHeadline}"
+                Margin="0 30"/>
+                <Border Background="{StaticResource BackgroundColorBrush}"
                 Padding="50 30"
                 Margin="0 0 0 30"
                 Grid.Row="1">
-            <Grid>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <!-- SearchFilter1-->
-                    <Grid 
-                        Grid.Column="0"
-                        Grid.Row="0" 
-                        Margin="0 0 0 30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox
-                            Width="auto"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
+                    <Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- SearchFilter1-->
+                            <Grid 
                             Grid.Column="0"
-                            materialDesign:HintAssist.Hint="Product Name"
-                            Text="{Binding ProductName,UpdateSourceTrigger=PropertyChanged}">
-                        </TextBox>
-                        <TextBox
-                            Width="auto"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Grid.Column="2"
-                            materialDesign:HintAssist.Hint="UserName"
-                            Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
-                    </Grid>
-                    <Grid 
-                        Grid.Column="0"
-                        Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <ComboBox
-                            ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource OurComboBox}"
-                            materialDesign:HintAssist.Hint="Category"
-                            DisplayMemberPath="Name"
+                            Grid.Row="0" 
+                            Margin="0 0 0 30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                Width="auto"
+                                Style="{StaticResource TextBoxHintBlackBorder}"
+                                Grid.Column="0"
+                                materialDesign:HintAssist.Hint="Product Name"
+                                Text="{Binding ProductName,UpdateSourceTrigger=PropertyChanged}">
+                                </TextBox>
+                                <TextBox
+                                Width="auto"
+                                Style="{StaticResource TextBoxHintBlackBorder}"
+                                Grid.Column="2"
+                                materialDesign:HintAssist.Hint="UserName"
+                                Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                            <Grid 
                             Grid.Column="0"
-                            Text="{Binding SelectedCategory.Name, UpdateSourceTrigger=PropertyChanged}">
-                            <ComboBox.SelectedItem>
-                                <Binding Path="SelectedCategory" UpdateSourceTrigger="PropertyChanged"/>
-                            </ComboBox.SelectedItem>
-                        </ComboBox>
-                        <ComboBox
-                            ItemsSource="{Binding Brands, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource OurComboBox}"
-                            DisplayMemberPath="Name"
-                            materialDesign:HintAssist.Hint="Brand"
-                            Grid.Column="2"
-                            Text="{Binding SelectedBrand.Name, UpdateSourceTrigger=PropertyChanged}">
-                            <ComboBox.SelectedItem>
-                                <Binding Path="SelectedBrand" UpdateSourceTrigger="PropertyChanged"/>
-                            </ComboBox.SelectedItem>
-                        </ComboBox>
-                        <DatePicker
-                            x:Name="datePickerStart"
-                            Height="55"
-                            Width="auto"
-                            Style="{StaticResource OurDatePicker}"
-                            materialDesign:HintAssist.Hint="From"
-                            Grid.Column="4"
-                            SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDateEnd="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DatePicker
-                            Height="55"
-                            Width="auto"
-                            Style="{StaticResource OurDatePicker}"
-                            materialDesign:HintAssist.Hint="To"
-                            Grid.Column="6"
-                            SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayDateStart="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
-                    </Grid>
-                    <Grid 
-                        Grid.Column="1"
-                        Grid.Row="0"
-                        Margin="20 0 0 30">
-                        <Button Content="Search"
+                            Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                ItemsSource="{Binding Categories, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource OurComboBox}"
+                                materialDesign:HintAssist.Hint="Category"
+                                DisplayMemberPath="Name"
+                                Grid.Column="0"
+                                Text="{Binding SelectedCategory.Name, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="SelectedCategory" UpdateSourceTrigger="PropertyChanged"/>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
+                                <ComboBox
+                                ItemsSource="{Binding Brands, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource OurComboBox}"
+                                DisplayMemberPath="Name"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Grid.Column="2"
+                                Text="{Binding SelectedBrand.Name, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.SelectedItem>
+                                        <Binding Path="SelectedBrand" UpdateSourceTrigger="PropertyChanged"/>
+                                    </ComboBox.SelectedItem>
+                                </ComboBox>
+                                <DatePicker
+                                x:Name="datePickerStart"
+                                Height="55"
+                                Width="auto"
+                                Style="{StaticResource OurDatePicker}"
+                                materialDesign:HintAssist.Hint="From"
+                                Grid.Column="4"
+                                SelectedDate="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"
+                                DisplayDateEnd="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DatePicker
+                                Height="55"
+                                Width="auto"
+                                Style="{StaticResource OurDatePicker}"
+                                materialDesign:HintAssist.Hint="To"
+                                Grid.Column="6"
+                                SelectedDate="{Binding DateTo, UpdateSourceTrigger=PropertyChanged}"
+                                DisplayDateStart="{Binding DateFrom, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                            <Grid 
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Margin="20 0 0 30">
+                                <Button Content="Search"
                                 Height="40"
                                 Command="{Binding SearchCommand}"/>
+                            </Grid>
+                            <Grid 
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="20 0 0 0">
+                                <Button 
+                                Content="Reset"
+                                Command="{Binding ResetCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid 
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        Margin="20 0 0 0">
-                        <Button 
-                            Content="Reset"
-                            Command="{Binding ResetCommand}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Border>
-        <Border
-            Margin="0 0 0 20"
-            Padding="50 0"
-            Grid.Row="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <RadioButton 
-                    Content="All" 
-                    Grid.Column="0"
-                    Style="{StaticResource RadioTabButton}"
-                    IsChecked="{Binding StatusSearchAll}"/>
-                <RadioButton 
-                    Style="{StaticResource RadioTabButton}"
-                    Content="5 Star" 
-                    Grid.Column="1"
-                    IsChecked="{Binding StatusSearch5Star}">
-                </RadioButton>
-                <RadioButton 
-                    Style="{StaticResource RadioTabButton}"
-                    Content="4 Star" 
-                    Grid.Column="2"
-                    IsChecked="{Binding StatusSearch4Star}">
-                </RadioButton>
-                <RadioButton 
-                    Style="{StaticResource RadioTabButton}"
-                    Content="3 Star" 
-                    Grid.Column="3"
-                    IsChecked="{Binding StatusSearch3Star}">
-                </RadioButton>
-                <RadioButton 
-                    Style="{StaticResource RadioTabButton}"
-                    Content="2 Star"
-                    Grid.Column="4"
-                    IsChecked="{Binding StatusSearch2Star}">
-                </RadioButton>
-                <RadioButton 
-                    Style="{StaticResource RadioTabButton}"
-                    Content="1 Star" 
-                    Grid.Column="5"
-                    IsChecked="{Binding StatusSearch1Star}">
-                </RadioButton>
-            </Grid>
-        </Border>
-        <ScrollViewer
-            Grid.Row="3">
-            <Grid 
-                Background="Transparent"
-                Margin="50 0"
-                ScrollViewer.CanContentScroll="True">
-                <StackPanel 
-                        IsHitTestVisible="True">
-                    <ItemsControl ItemsSource="{Binding DisplayShopRatingBlockModels, UpdateSourceTrigger=PropertyChanged}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <local:ShopRatingBlock
+                </Border>
+                <Grid 
+                    Background="Transparent"
+                    Margin="50 0"
+                    ScrollViewer.CanContentScroll="False"
+                    Grid.Row="3">
+                    <StackPanel 
+                    IsHitTestVisible="True">
+                        <ItemsControl 
+                        ItemsSource="{Binding DisplayShopRatingBlockModels, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:ShopRatingBlock
                                     Margin="0 0 0 20"
                                     DataContext="{Binding}"
                                     Grid.Column="0"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+                <Grid
+                Grid.Row="4"
+                Height="20"/>
             </Grid>
         </ScrollViewer>
-        <Grid
-            Grid.Row="4"
-            Height="20"/>
+        <Canvas
+            ScrollViewer.CanContentScroll="False"
+            VerticalAlignment="Stretch"
+            Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}">
+            <Border
+                Margin="0 0 0 20"
+                Padding="50 0"
+                Grid.Row="2"
+                Canvas.Top="330"
+                x:Name="status"
+                Background="{StaticResource WhiteColorBrush}"
+                Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}"
+                VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton 
+                        Content="All" 
+                        Grid.Column="0"
+                        Style="{StaticResource RadioTabButton}"
+                        IsChecked="{Binding StatusSearchAll}"
+                        Command="{Binding ScrollToCategory, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="{Binding ElementName=scroll}"/>
+                    <RadioButton 
+                        Style="{StaticResource RadioTabButton}"
+                        Content="5 Star" 
+                        Grid.Column="1"
+                        IsChecked="{Binding StatusSearch5Star}"
+                        Command="{Binding ScrollToCategory, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="{Binding ElementName=scroll}">
+                    </RadioButton>
+                    <RadioButton 
+                        Style="{StaticResource RadioTabButton}"
+                        Content="4 Star" 
+                        Grid.Column="2"
+                        IsChecked="{Binding StatusSearch4Star}"
+                        Command="{Binding ScrollToCategory, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="{Binding ElementName=scroll}">
+                    </RadioButton>
+                    <RadioButton 
+                        Style="{StaticResource RadioTabButton}"
+                        Content="3 Star" 
+                        Grid.Column="3"
+                        IsChecked="{Binding StatusSearch3Star}"
+                        Command="{Binding ScrollToCategory, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="{Binding ElementName=scroll}">
+                    </RadioButton>
+                    <RadioButton 
+                        Style="{StaticResource RadioTabButton}"
+                        Content="2 Star"
+                        Grid.Column="4"
+                        IsChecked="{Binding StatusSearch2Star}"
+                        Command="{Binding ScrollToCategory, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="{Binding ElementName=scroll}">
+                    </RadioButton>
+                    <RadioButton 
+                        Style="{StaticResource RadioTabButton}"
+                        Content="1 Star" 
+                        Grid.Column="5"
+                        IsChecked="{Binding StatusSearch1Star}"
+                        Command="{Binding ScrollToCategory, UpdateSourceTrigger=PropertyChanged}"
+                        CommandParameter="{Binding ElementName=scroll}">
+                    </RadioButton>
+                </Grid>
+            </Border>
+            <Button
+                x:Name="buttonScroll"
+                Canvas.Top="400"
+                Canvas.Left="50"
+                Width="auto"
+                Height="auto"
+                Padding="5"
+                Style="{StaticResource WhiteButton}"
+                Visibility="Collapsed"
+                materialDesign:ButtonAssist.CornerRadius="20"
+                Command="{Binding ScrollToHome, UpdateSourceTrigger=PropertyChanged}"
+                CommandParameter="{Binding ElementName=scroll}">
+                <StackPanel>
+                    <materialDesign:PackIcon
+                        x:Name="a1"
+                        Height="30"
+                        Width="30"
+                        Kind="ChevronUp"
+                        Foreground="{StaticResource BlackColorBrush}"/>
+                    <materialDesign:PackIcon
+                        x:Name="a2"
+                        Margin="0 -15"
+                        Height="30"
+                        Width="30"
+                        Kind="ChevronUp"
+                        Foreground="{StaticResource BlackColorBrush}"
+                        Opacity="0.5"/>
+                    <materialDesign:PackIcon
+                        x:Name="a3"
+                        Height="30"
+                        Width="30"
+                        Kind="ChevronUp"
+                        Margin="0 0 0 10"
+                        Opacity="0.2"
+                        Foreground="{StaticResource BlackColorBrush}"/>
+                </StackPanel>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a1"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0"
+                                    Duration="0:0:0.2"
+                                    From="1"
+                                    To="0.5"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0"
+                                    Duration="0:0:0.2"
+                                    From="0.5"
+                                    To="0.2"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a3"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0"
+                                    Duration="0:0:0.2"
+                                    From="0.2"
+                                    To="1"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a1"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.2"
+                                    Duration="0:0:0.4"
+                                    From="0.5"
+                                    To="0.2"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.2"
+                                    Duration="0:0:0.4"
+                                    From="0.2"
+                                    To="1"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a3"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.2"
+                                    Duration="0:0:0.4"
+                                    From="1"
+                                    To="0.5"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a1"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.4"
+                                    Duration="0:0:0.6"
+                                    From="0.2"
+                                    To="1"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.4"
+                                    Duration="0:0:0.6"
+                                    From="1"
+                                    To="0.5"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a3"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.4"
+                                    Duration="0:0:0.6"
+                                    From="0.5"
+                                    To="0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+        </Canvas>
     </Grid>
     <UserControl.InputBindings>
         <KeyBinding
