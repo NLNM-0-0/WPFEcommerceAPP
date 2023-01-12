@@ -31,7 +31,7 @@ namespace WPFEcommerceApp {
                     email = null;
                     return;
                 }
-                if(!ValidateRegex.Email.IsMatch(value)) {
+                if(!ValidateRegex.Email.IsMatch(value) && !AdminAccess) {
                     email = null;
                     throw new ArgumentException("*Wrong type");
                 }
@@ -44,7 +44,7 @@ namespace WPFEcommerceApp {
                     password = null;
                     return;
                 }
-                if(value.Length < 6) {
+                if(value.Length < 6 && !AdminAccess) {
                     password = null;
                     throw new ArgumentException("*Password length needs to be more than 6 characters.");
                 }
@@ -53,6 +53,7 @@ namespace WPFEcommerceApp {
         }
 
         public bool KeepSignIn { get; set; }
+        public bool AdminAccess { get; set; }
         public static bool IsLoading { get; set; } = false;
         public ICommand OnLogin { get; set; }
         public ICommand CloseCM { get; set; }
@@ -61,6 +62,7 @@ namespace WPFEcommerceApp {
         public ICommand OnForgotPassword { get; set; }
         #region Keyhandle
         public ICommand KeyHandle_EnterKeepSignIn { get; }
+        public ICommand KeyHandle_AdminAccess { get; }
         #endregion
         public LoginViewModel() {
             //_accountStore.CurrentAccount = ;
@@ -69,6 +71,7 @@ namespace WPFEcommerceApp {
                         !string.IsNullOrEmpty(Password);
             }, async p => {
                 if(await Login()) {
+                    AdminAccess = false;
                     (p as Window).Hide();
                     App.Current.MainWindow.Show();
                 }
@@ -180,6 +183,11 @@ namespace WPFEcommerceApp {
             });
             KeyHandle_EnterKeepSignIn = new ImmediateCommand<object>(p => {
                 KeepSignIn = !KeepSignIn;
+            });
+            KeyHandle_AdminAccess = new ImmediateCommand<object>(p => {
+                AdminAccess = !AdminAccess;
+                OnPropertyChanged(nameof(Email));
+                OnPropertyChanged(nameof(Password));
             });
         }
 

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:WPFEcommerceApp"
@@ -38,7 +39,24 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
+            <Button HorizontalAlignment="Right"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        x:Name="ButtonClose"
+                        Height="30"
+                        Width="30"
+                    Margin="0 0 30 5"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource NotAvailableColorBrush}"
+                        BorderThickness="3">
 
+                <fa:ImageAwesome
+                            x:Name="IconButtonClose"
+                            Icon="Close"
+                            Opacity="1"
+                            Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                            Width="10"
+                            Height="10"/>
+            </Button>
             <TextBlock
                     Grid.Row="0"
                     Text="Promo Information"

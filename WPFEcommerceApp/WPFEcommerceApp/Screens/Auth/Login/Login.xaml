@@ -57,7 +57,11 @@
                     <StackPanel 
                             x:Name="RightColumnContainer">
 
-                        <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="0,220,0,20"/>
+                        <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="0,220,0,20">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="RightDoubleClick" Command="{Binding KeyHandle_AdminAccess}"/>
+                            </Label.InputBindings>
+                        </Label>
                         <TextBox
                             x:Name="Email"
                             Style="{StaticResource TextBoxHintBlackBorder}"

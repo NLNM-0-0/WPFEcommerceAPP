@@ -426,14 +426,14 @@ namespace WPFEcommerceApp
             RightCommand = new RelayCommand<object>(p => true, Right);
             LeftCommand = new RelayCommand<object>(p => true, Left);
             Amount = 1;
-            if(String.IsNullOrEmpty(SelectedProduct.MUser.SourceImageAva))
-            {
-                SourceImageAva = Properties.Resources.DefaultShopAvaImage;
-            }    
-            else
-            {
-                SourceImageAva = SelectedProduct.MUser.SourceImageAva;
-            }
+            //if(String.IsNullOrEmpty(SelectedProduct.MUser.SourceImageAva))
+            //{
+            //    SourceImageAva = Properties.Resources.DefaultShopAvaImage;
+            //}    
+            //else
+            //{
+            //    SourceImageAva = SelectedProduct.MUser.SourceImageAva;
+            //}
             if (SelectedProduct.IsOneSize)
             {
                 IsHadOneSize = true;
