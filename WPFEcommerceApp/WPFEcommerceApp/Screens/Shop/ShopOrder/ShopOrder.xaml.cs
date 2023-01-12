@@ -36,9 +36,9 @@ namespace WPFEcommerceApp
         {
             if (-e.VerticalChange > 0)
             {
-                if (scroll.VerticalOffset < 350)
+                if (scroll.VerticalOffset < 320)
                 {
-                    Canvas.SetTop(buttonScroll, 350 - scroll.VerticalOffset);
+                    Canvas.SetTop(buttonScroll, 320 - scroll.VerticalOffset);
                     buttonScroll.Visibility = Visibility.Collapsed;
                 }
                 if (scroll.VerticalOffset < 250)
@@ -54,7 +54,7 @@ namespace WPFEcommerceApp
                 }
                 else
                 {
-                    Canvas.SetTop(buttonScroll, 100);
+                    Canvas.SetTop(buttonScroll, 70);
                     buttonScroll.Visibility = Visibility.Visible;
                 }
                 if (Canvas.GetTop(status) - e.VerticalChange >= 0)

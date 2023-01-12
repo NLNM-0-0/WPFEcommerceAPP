@@ -505,19 +505,111 @@
             </Border>
             <Button
                 x:Name="buttonScroll"
-                Canvas.Top="380"
-                Canvas.Left="40"
+                Canvas.Top="400"
+                Canvas.Left="50"
                 Width="auto"
+                Height="auto"
                 Padding="5"
                 Style="{StaticResource WhiteButton}"
                 Visibility="Collapsed"
+                materialDesign:ButtonAssist.CornerRadius="20"
                 Command="{Binding ScrollToHome, UpdateSourceTrigger=PropertyChanged}"
                 CommandParameter="{Binding ElementName=scroll}">
-                <materialDesign:PackIcon
-                    Height="30"
-                    Width="30"
-                    Kind="ArrowUp"
-                    Foreground="#4B8CDE"/>
+                <StackPanel>
+                    <materialDesign:PackIcon
+                        x:Name="a1"
+                        Height="30"
+                        Width="30"
+                        Kind="ChevronUp"
+                        Foreground="{StaticResource BlackColorBrush}"/>
+                    <materialDesign:PackIcon
+                        x:Name="a2"
+                        Margin="0 -15"
+                        Height="30"
+                        Width="30"
+                        Kind="ChevronUp"
+                        Foreground="{StaticResource BlackColorBrush}"
+                        Opacity="0.5"/>
+                    <materialDesign:PackIcon
+                        x:Name="a3"
+                        Height="30"
+                        Width="30"
+                        Kind="ChevronUp"
+                        Margin="0 0 0 10"
+                        Opacity="0.2"
+                        Foreground="{StaticResource BlackColorBrush}"/>
+                </StackPanel>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a1"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0"
+                                    Duration="0:0:0.2"
+                                    From="1"
+                                    To="0.5"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0"
+                                    Duration="0:0:0.2"
+                                    From="0.5"
+                                    To="0.2"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a3"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0"
+                                    Duration="0:0:0.2"
+                                    From="0.2"
+                                    To="1"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a1"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.2"
+                                    Duration="0:0:0.4"
+                                    From="0.5"
+                                    To="0.2"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.2"
+                                    Duration="0:0:0.4"
+                                    From="0.2"
+                                    To="1"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a3"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.2"
+                                    Duration="0:0:0.4"
+                                    From="1"
+                                    To="0.5"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a1"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.4"
+                                    Duration="0:0:0.6"
+                                    From="0.2"
+                                    To="1"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a2"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.4"
+                                    Duration="0:0:0.6"
+                                    From="1"
+                                    To="0.5"/>
+                                <DoubleAnimation
+                                    Storyboard.TargetName="a3"
+                                    Storyboard.TargetProperty="Opacity"
+                                    BeginTime="0:0:0.4"
+                                    Duration="0:0:0.6"
+                                    From="0.5"
+                                    To="0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
             </Button>
         </Canvas>
     </Grid>

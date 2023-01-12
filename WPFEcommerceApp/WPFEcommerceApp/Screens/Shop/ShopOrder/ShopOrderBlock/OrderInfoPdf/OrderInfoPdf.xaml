@@ -135,7 +135,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock
                         Grid.Column="0"
-                        Text="Phone:     "
+                        Text="Phone:      "
                         FontSize="{StaticResource FontSizeText}"
                         FontWeight="Light"/>
                     <Border
