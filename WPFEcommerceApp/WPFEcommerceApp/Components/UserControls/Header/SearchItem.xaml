@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="{Binding SourceImage, Converter={StaticResource StringToImageSourceConverter}}" Grid.Column="0"/>
+        <local:AsyncImage Source="{Binding SourceImage}" Grid.Column="0"/>
 
         <Grid Grid.Column="1">
             <TextBlock Text="{Binding Name}" FontSize="{StaticResource FontSizeDescription}"

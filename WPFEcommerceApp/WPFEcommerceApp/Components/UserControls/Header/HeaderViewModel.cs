@@ -20,7 +20,6 @@ namespace WPFEcommerceApp
     {
         #region Commands
         public ICommand OpenSearchCommand { get; set; }
-        public ICommand AdminOpenSearchCommand { get; set; }
         public ICommand CloseSearchCommand { get; set; }
         public ICommand ClosePopupCommand { get; set; }
         public ICommand SearchCommand { get; set; }
@@ -34,8 +33,6 @@ namespace WPFEcommerceApp
         private GenericDataRepository<MUser> userRepo;
         private GenericDataRepository<Models.Product> productRepo;
         private bool _isSearchOpen = false;
-        private bool _isFirstLoad = false;
-        public bool IsFirstLoad { get => _isFirstLoad; set { _isFirstLoad = value; OnPropertyChanged(); } }
         public bool IsSearchOpen
         {
             get { return _isSearchOpen; }
@@ -93,7 +90,6 @@ namespace WPFEcommerceApp
             userRepo = new GenericDataRepository<MUser>();
             productRepo = new GenericDataRepository<Models.Product>();
 
-            AdminOpenSearchCommand = new RelayCommandWithNoParameter(() => { IsSearchOpen = true; });
             OpenSearchCommand = new RelayCommandWithNoParameter(OpenSearch);
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearchText);
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
@@ -138,7 +134,6 @@ namespace WPFEcommerceApp
             while (!task.IsCompleted) ;
 
             SearchText = string.Empty;
-            _isFirstLoad = true;
 
             MainViewModel.IsLoading = false;
         }
@@ -162,7 +157,7 @@ namespace WPFEcommerceApp
                 users.Select(user => new SearchItemViewModel
                 {
                     Name = user.Name,
-                    SourceImage = ReturnDefault(user.SourceImageAva),
+                    SourceImage = user.SourceImageAva,
                     IsProduct = false,
                     Model = user,
                 }));
@@ -171,9 +166,8 @@ namespace WPFEcommerceApp
             var productsSearchItems = new ObservableCollection<SearchItemViewModel>(
                 products.Select(prd => new SearchItemViewModel
                 {
-
                     Name = prd.Name,
-                    SourceImage = ReturnDefault(prd.ImageProducts.Count() != 0 ? prd.ImageProducts.FirstOrDefault().Source : null),
+                    SourceImage = prd.ImageProducts.Count() != 0 ? prd.ImageProducts.FirstOrDefault().Source : null,
                     IsProduct = true,
                     Model = prd
                 }));
@@ -198,20 +192,9 @@ namespace WPFEcommerceApp
 
         }
 
-        private string ReturnDefault(string s)
-        {
-            return string.IsNullOrEmpty(s) ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZyOpzMZDaV-Cs1E-hjOJ-Dr2m4UIqc6j7w&usqp=CAU" : s;
-        }
-
         #region Command Methods
         public void OpenSearch()
         {
-            if (_isFirstLoad)
-            {
-                _isFirstLoad = false;
-                Keyboard.ClearFocus();
-                return;
-            }
             IsSearchOpen = true;
         }
 
