@@ -7,12 +7,13 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="1500" d:DesignWidth="1440"
             >
-    <Grid Margin="50 0 50 50">
+    <Grid Margin="50 0 50 20">
 
-        <ScrollViewer VerticalScrollBarVisibility="Hidden" 
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" x:Name="scroll"
                       CanContentScroll="True" 
                       Background="{StaticResource WhiteColorBrush}"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
@@ -45,22 +46,29 @@
                             Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                             materialDesign:HintAssist.Hint="Search by"
                             materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
-                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"
+                            >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </StackPanel>
                 </DockPanel>
 
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
+                    <TextBlock Text="{Binding StatusText}" Margin="5 15 5 0"
                            FontSize="{StaticResource FontSizeText}"/>
 
-                    <ToggleButton Margin="5 20 5 0"
+                    <ToggleButton Margin="5 15 5 0"
                 Style="{StaticResource SwitchToggleButton}"
                           Background="{StaticResource BlackColorBrush}"
                           materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
                           IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
-                <DataGrid DockPanel.Dock="Top" Margin="0 20"
+                <DataGrid DockPanel.Dock="Top" Margin="0 10 0 0"
                               ItemsSource="{Binding FilteredBrands}" x:Name="datagrid"
                                IsReadOnly="True" CanUserAddRows="False"
                               Height="650"
@@ -75,18 +83,16 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-
-
                 <TextBlock DockPanel.Dock="Top" Text="Brand Requests"
-                               Margin="0 20"
-                                FontFamily="{StaticResource Bold}"
-                                FontSize="{StaticResource FontSizeHeadline}"
+                        Margin="0 20 0 20"
+                        FontFamily="{StaticResource Bold}"
+                        FontSize="{StaticResource FontSizeHeadline}"
                                    />
                 <Grid DockPanel.Dock="Top">
-                    <local:BrandRequestList Margin="0 20"/>
+                    <local:BrandRequestList Margin="0 10"/>
 
                     <TextBlock Text="No request"
-                                   Margin="20 40 40 40"
+                                   Margin="10"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"
                                    FontSize="{StaticResource FontSizeHeadline2}"
