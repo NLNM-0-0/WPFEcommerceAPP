@@ -23,7 +23,6 @@ namespace WPFEcommerceApp
         public ShopInformationPage()
         {
             InitializeComponent();
-            this.DataContext = new ShopInformationPageViewModel();
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
