@@ -27,7 +27,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid Background="{StaticResource WhiteColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -42,23 +42,21 @@
                     ClipToBounds="True"
                     Background="{StaticResource WhiteColorBrush}">
             </Border>
-            <Border Height="{c:Binding Path=ActualWidth*0.25, RelativeSource={RelativeSource Self}}">
+            <Border Height="{c:Binding Path=ActualWidth*0.2, RelativeSource={RelativeSource Self}}">
                 <Border.OpacityMask>
                     <VisualBrush Visual="{Binding ElementName=MainBorder}"/>
                 </Border.OpacityMask>
-                <ScrollViewer VerticalScrollBarVisibility="Hidden" CanContentScroll="False">
-                    <local:AsyncImage
-                                    Stretch="Fill"
-                                    Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
-                                    Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
-                                    ScrollViewer.CanContentScroll="True">
-                        <local:AsyncImage.OpacityMask>
-                            <VisualBrush 
-                                            Visual="{Binding ElementName=MainBorder}" 
-                                            RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </local:AsyncImage.OpacityMask>
-                    </local:AsyncImage>
-                </ScrollViewer>
+                <local:AsyncImage
+                        Stretch="Fill"
+                        Width="{Binding ElementName=MainBorder, Path=ActualWidth}"
+                        Source="{Binding SourceImageBackground, UpdateSourceTrigger=PropertyChanged}"
+                        ScrollViewer.CanContentScroll="True">
+                    <local:AsyncImage.OpacityMask>
+                        <VisualBrush 
+                            Visual="{Binding ElementName=MainBorder}" 
+                            RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </local:AsyncImage.OpacityMask>
+                </local:AsyncImage>
             </Border>
             <DockPanel HorizontalAlignment="Left"
                     Margin="100 10">
@@ -84,7 +82,7 @@
                                     VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button.Content>
-                  
+
                 </Button>
                 <Border DockPanel.Dock="Top"
                         Grid.Row="1"
@@ -134,10 +132,10 @@
             </DockPanel>
         </Grid>
 
-        <TabControl Grid.Row="1" Margin="100 20 50 20" x:Name="tabcontrol">
+        <TabControl Grid.Row="1" Margin="50 20 50 20" x:Name="tabcontrol">
             <TabItem Style="{StaticResource RadioTabItem}"
                      Header="My Profile" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}">
-                <local:ProfileControl Margin="0 -100 0 0"/>
+                <local:ProfileControl Margin="0 -50 0 0"/>
             </TabItem>
 
             <TabItem Header="My Address" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}"

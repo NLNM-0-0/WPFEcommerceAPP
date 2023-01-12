@@ -23,7 +23,6 @@ namespace WPFEcommerceApp
         public AdminUserInformation()
         {
             InitializeComponent();
-            this.DataContext = new AdminUserManagerViewModel();
         }
 
     }

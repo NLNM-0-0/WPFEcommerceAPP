@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440">
     <Grid>
@@ -43,7 +44,13 @@
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                 materialDesign:HintAssist.Hint="Search by"
                                 materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
-                                materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+                                materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>
                 </StackPanel>
             </DockPanel>
         </Grid>
@@ -70,12 +77,11 @@
                       CanUserDeleteRows="False" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" MinWidth="100" MaxWidth="200" Width="auto" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="User Name" Width="250" MinWidth="200" MaxWidth="700" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Email" Width="300" MinWidth="200" MaxWidth="700" Binding="{Binding Email}"/>
+                    <DataGridTextColumn Header="User Name" Width="400" MinWidth="200" MaxWidth="700" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Email" Width="400" MinWidth="200" MaxWidth="700" Binding="{Binding Email}"/>
                     <DataGridTextColumn Header="Phone" Width="auto" MinWidth="100" MaxWidth="200" Binding="{Binding PhoneNumber}"/>
                     <DataGridTextColumn Header="Birth" Width="auto" MinWidth="80" MaxWidth="200" Binding="{Binding DOB, Converter={x:Static local:DateTimeToShortConverter.Instance}}"/>
-                    <DataGridTextColumn Header="Gender" Width="auto" MinWidth="100" MaxWidth="200" Binding="{Binding Gender, Converter={x:Static local:BooleanToGenderConverter.Instance}}"/>
-                    <DataGridTextColumn Header="Address" Width="700" MinWidth="200" MaxWidth="700" Binding="{Binding Address}"/>
+                    <DataGridTextColumn Header="Gender" Width="*" MinWidth="100" MaxWidth="200" Binding="{Binding Gender, Converter={x:Static local:BooleanToGenderConverter.Instance}}"/>
                 </DataGrid.Columns>
 
             </DataGrid>

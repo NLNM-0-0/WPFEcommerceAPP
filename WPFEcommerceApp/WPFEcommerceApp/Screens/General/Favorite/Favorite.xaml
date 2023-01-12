@@ -9,8 +9,9 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="uc">
     <Grid>
-        <TextBlock Text="My Favorite" Margin="150 15 0 0"
-                   FontSize="{StaticResource FontSizeHeadline2}"/>
+        <TextBlock Text="My Favorite" Margin="110 15 0 0"
+                   FontSize="{StaticResource FontSizeHeadline2}"
+                   FontWeight="SemiBold"/>
         <TextBlock Text="No favorite product" 
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
@@ -30,13 +31,13 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Width="{cal:Binding 'Math.Floor(ActualWidth / 360) * 360',  ElementName=uc}"/>
+                    <WrapPanel Width="{cal:Binding 'Math.Floor(ActualWidth / 290) * 290',  ElementName=uc}"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <local:ProductBlock Height="500" Width="350"
+                    <local:ProductBlock Height="400" Width="280"
                                    />
                 </DataTemplate>
             </ListView.ItemTemplate>

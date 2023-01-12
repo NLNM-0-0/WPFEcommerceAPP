@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
@@ -27,7 +29,7 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; Search(); OnPropertyChanged(); }
+            set { _searchBy = value; OnPropertyChanged(); }
         }
 
         private string _searchText;
@@ -35,11 +37,12 @@ namespace WPFEcommerceApp
         public string SearchText
         {
             get { return _searchText; }
-            set { _searchText = value; Search(); OnPropertyChanged(); }
+            set { _searchText = value; OnPropertyChanged(); }
         }
 
         private string _lastSearchText;
         private string _lastSearchOption;
+        private DispatcherTimer timer;
         #endregion
 
         #region Commands
@@ -49,6 +52,7 @@ namespace WPFEcommerceApp
         public ICommand RemovePromoCommand { get; set; }
         public ICommand BanPromoCommand { get; set; }
         public ICommand CloseSearchCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
 
         #endregion
 
@@ -59,6 +63,9 @@ namespace WPFEcommerceApp
             promoRepo = new GenericDataRepository<Models.Promo>();
             noteRepo = new GenericDataRepository<Models.Notification>();
             SearchBy = "Code";
+            timer=new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(600);
+            timer.Tick += async delegate { await Search(); };
 
             Task.Run(async () =>
             {
@@ -71,6 +78,27 @@ namespace WPFEcommerceApp
                 AcceptPromoCommand = new RelayCommand<object>(p => p != null, async (p) => await AcceptPromo(p));
                 RemovePromoCommand = new RelayCommand<object>(p => p != null, async (p) => await RemovePromo(p));
                 BanPromoCommand = new RelayCommand<object>(p => p != null, async (p) => await BanPromo(p));
+                SearchCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    if (!string.IsNullOrEmpty(SearchText))
+                    {
+                        if(!string.Equals(SearchText, _lastSearchText)||!string.Equals(_lastSearchOption, SearchBy))
+                        {
+                            if (!timer.IsEnabled)
+                                timer.Start();
+                        }
+                    }
+                    else
+                    {
+                        if (timer.IsEnabled)
+                            timer.Stop();
+                        if (string.IsNullOrEmpty(SearchText) || _allItems.Count <= 0 || _allItems == null)
+                        {
+                            Items = _allItems;
+                        }
+                    }
+                    
+                });
                 CloseSearchCommand = new RelayCommandWithNoParameter(() => { SearchText = ""; });
                 MainViewModel.IsLoading = false;
             });
@@ -79,10 +107,10 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             var items = new ObservableCollection<Promo>(
-                await promoRepo.GetListAsync(pro => pro.Status == 1 && pro.DateEnd > DateTime.Now, pro=>pro.Products));
+                await promoRepo.GetListAsync(pro => pro.Status == 1 && pro.DateEnd > DateTime.Now, pro=>pro.Products, pro => pro.Products.Select(p => p.ImageProducts)));
 
             var reqItems = new ObservableCollection<Promo>(
-                await promoRepo.GetListAsync(pro => pro.Status == 0 && pro.DateEnd > DateTime.Now, pro=>pro.Products));
+                await promoRepo.GetListAsync(pro => pro.Status == 0 && pro.DateEnd > DateTime.Now, pro=>pro.Products, pro => pro.Products.Select(p => p.ImageProducts)));
 
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
@@ -199,43 +227,56 @@ namespace WPFEcommerceApp
 
 
         }
-        public void Search()
+        public async Task Search()
         {
-            if (string.IsNullOrEmpty(SearchBy))
-                Items = _allItems;
+            MainViewModel.IsLoading = true;
+            await Task.Run(() =>
+            {
+                if (string.IsNullOrEmpty(SearchBy))
+                {
+                    Items = _allItems;
+                }
 
-            if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
-                (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
-            {
-                Items = _allItems;
-            }
+                if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
+                    (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+                {
+                    Items = _allItems;
+                }
 
-            if (string.IsNullOrEmpty(SearchText) || _allItems.Count <= 0 || _allItems == null)
-            {
-                Items = _allItems;
-                return;
-            }
+                if (string.IsNullOrEmpty(SearchText) || _allItems.Count <= 0 || _allItems == null)
+                {
+                    Items = _allItems;
+                }
 
-            if (SearchBy == "Name")
-            {
-                _lastSearchOption = "Name";
-                Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.Name.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "Id")
-            {
-                _lastSearchOption = "Id";
-                Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.Id.ToString().ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "IdShop")
-            {
-                _lastSearchOption = "IdShop";
-                Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.IdShop.ToString().ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "Code")
-            {
-                _lastSearchOption = "Code";
-                Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.Code.ToString().ToLower().Contains(SearchText.ToLower())));
-            }
+                if (SearchBy == "Name")
+                {
+                    _lastSearchOption = "Name";
+                    Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "Id")
+                {
+                    _lastSearchOption = "Id";
+                    Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.Id.ToString().ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "IdShop")
+                {
+                    _lastSearchOption = "IdShop";
+                    Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.IdShop.ToString().ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "Code")
+                {
+                    _lastSearchOption = "Code";
+                    Items = new ObservableCollection<ShopPromoBlockViewModel>(_allItems.Where(br => br.Promo.Code.ToString().ToLower().Contains(SearchText.ToLower())));
+                }
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    Items = new ObservableCollection<ShopPromoBlockViewModel>(Items);
+                }));
+                if (timer.IsEnabled)
+                    timer.Stop();
+            });
+            MainViewModel.IsLoading = false;
+
         }
 
         #endregion

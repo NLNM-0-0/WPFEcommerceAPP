@@ -3,6 +3,7 @@
 using DataAccessLayer;
 using LiveCharts;
 using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace WPFEcommerceApp
         public string SearchText
         {
             get { return _searchText; }
-            set { _searchText = value; Search(); OnPropertyChanged(); }
+            set { _searchText = value; OnPropertyChanged(); }
         }
 
         private string _searchBy;
@@ -43,7 +44,7 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; Search(); OnPropertyChanged(); }
+            set { _searchBy = value; OnPropertyChanged(); }
         }
 
         private string _lastSearchText;
@@ -131,7 +132,7 @@ namespace WPFEcommerceApp
             GenderOptions = new List<string> { "Male", "Female" };
 
             RemoveUserCommand = new RelayCommand<object>(p => p != null, async(p)=>await RemoveUser(p));
-            SearchCommand = new RelayCommandWithNoParameter(Search);
+            SearchCommand = new RelayCommandWithNoParameter(async()=>await Search());
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
             AddUserCommand = new RelayCommand<object>((p)=>CheckNewUser(p), async(p)=>await AddUser(p));
 
@@ -157,6 +158,12 @@ namespace WPFEcommerceApp
             notBannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser != Status.Banned.ToString()));
             bannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser == Status.Banned.ToString()));
             FilteredUsers = usersToSearch = notBannedUsers;
+
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                FilteredUsers = new ObservableCollection<MUser>(FilteredUsers);
+                
+            }));
         }
         #endregion
 
@@ -182,33 +189,38 @@ namespace WPFEcommerceApp
 
         }
 
-        public void Search()
+        public async Task Search()
         {
-            if (string.IsNullOrEmpty(SearchBy))
-                FilteredUsers = usersToSearch;
+            MainViewModel.IsLoading = true;
+            await Task.Run(() =>
+            {
+                if (string.IsNullOrEmpty(SearchBy))
+                    FilteredUsers = usersToSearch;
 
-            if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
-                (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
-            {
-                FilteredUsers = usersToSearch;
-            }
+                if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
+                    (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+                {
+                    FilteredUsers = usersToSearch;
+                }
 
-            if (string.IsNullOrEmpty(SearchText) || usersToSearch.Count <= 0 || usersToSearch == null)
-            {
-                FilteredUsers = usersToSearch;
-                return;
-            }
+                if (string.IsNullOrEmpty(SearchText) || usersToSearch.Count <= 0 || usersToSearch == null)
+                {
+                    FilteredUsers = usersToSearch;
+                    return;
+                }
 
-            if (SearchBy == "Name")
-            {
-                _lastSearchOption = "Name";
-                FilteredUsers = new ObservableCollection<MUser>(usersToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "ID")
-            {
-                _lastSearchOption = "ID";
-                FilteredUsers = new ObservableCollection<MUser>(usersToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
-            }
+                if (SearchBy == "Name")
+                {
+                    _lastSearchOption = "Name";
+                    FilteredUsers = new ObservableCollection<MUser>(usersToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "ID")
+                {
+                    _lastSearchOption = "ID";
+                    FilteredUsers = new ObservableCollection<MUser>(usersToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
+                }
+            });
+            MainViewModel.IsLoading = false;
         }
 
         public void CloseSearch()

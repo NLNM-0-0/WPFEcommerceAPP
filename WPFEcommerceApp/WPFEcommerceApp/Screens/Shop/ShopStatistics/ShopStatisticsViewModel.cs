@@ -99,27 +99,27 @@ namespace WPFEcommerceApp
             var toDate = ToSelectedDate.Date;
 
             #region 4 number on the left
-            long totalSale = 0;
-            foreach (var ord in OrderInfos)
-            {
-                if (ord.MOrder.Status == OrderStatus.Completed.ToString() || ord.MOrder.Status == OrderStatus.Delivered.ToString())
-                {
-                    if (!string.IsNullOrEmpty(ord.MOrder.DateEnd.ToString()))
-                    {
-                        var ordDate = ord.MOrder.DateEnd;
-                        if (ordDate.Value.Date >= fromDate && ordDate.Value.Date <= toDate)
-                            totalSale += ord.TotalPrice;
-                    }
-                }
-            }
             orderRepo = new GenericDataRepository<MOrder>();
             var orders = new List<MOrder>(
                 await orderRepo.GetListAsync(
                     ord => ord.IdShop == AccountStore.instance.CurrentAccount.Id
-                    && ord.DateBegin.Value.Date >= fromDate
+                    && (ord.DateBegin.Value.Date >= fromDate
                     && ord.DateBegin.Value.Date <= toDate
-                    || (ord.DateEnd != null && (ord.DateEnd.Value.Date >= fromDate && ord.DateEnd.Value.Date <= toDate))));
+                    || (ord.DateEnd != null && (ord.DateEnd.Value.Date >= fromDate && ord.DateEnd.Value.Date <= toDate)))));
 
+            long totalSale = 0;
+            foreach (var ord in orders)
+            {
+                if (ord.Status == OrderStatus.Completed.ToString() || ord.Status == OrderStatus.Delivered.ToString())
+                {
+                    if (!string.IsNullOrEmpty(ord.DateEnd.ToString()))
+                    {
+                        var ordDate = ord.DateEnd;
+                        if (ordDate.Value.Date >= fromDate && ordDate.Value.Date <= toDate)
+                            totalSale += ord.OrderTotal;
+                    }
+                }
+            }
             TotalSales = totalSale.ToString();
             Orders = orders.Count.ToString();
 
@@ -145,20 +145,20 @@ namespace WPFEcommerceApp
             foreach (var day in dayList)
             {
                 long temp = 0;
-                foreach (var ord in OrderInfos)
+                foreach (var ord in orders)
                 {
-                    if (ord.MOrder.DateEnd == null)
+                    if (ord.DateEnd == null)
                         continue;
-                    if ((ord.MOrder.Status == OrderStatus.Delivered.ToString() || ord.MOrder.Status == OrderStatus.Completed.ToString())
-                        && ord.MOrder.DateEnd.Value.Date == day)
-                        temp += ord.TotalPrice;
+                    if ((ord.Status == OrderStatus.Delivered.ToString() || ord.Status == OrderStatus.Completed.ToString())
+                        && ord.DateEnd.Value.Date == day)
+                        temp += ord.OrderTotal;
                 }
                 revenueList.Add(temp);
             }
 
             RevenueLabels = labels.ToArray();
 
-            yRevenueFormatter = (value) => value.ToString("C");
+            yRevenueFormatter = (value) => value.ToString("#,##0.00 VNĐ");
 
             RevenueSeriesCollection = new SeriesCollection
             {

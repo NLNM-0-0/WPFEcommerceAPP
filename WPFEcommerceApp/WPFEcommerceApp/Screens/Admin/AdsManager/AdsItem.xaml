@@ -19,7 +19,7 @@
                         VerticalScrollBarVisibility="Disabled">
             <local:AsyncImage 
                         Stretch="Fill"
-                        Source="{Binding Image, Converter={StaticResource StringToImageSourceConverter}}"
+                        Source="{Binding Image}"
                         >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDown" >

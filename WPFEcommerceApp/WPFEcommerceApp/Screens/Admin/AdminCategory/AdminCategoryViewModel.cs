@@ -1,10 +1,12 @@
 ﻿using DataAccessLayer;
+using LiveCharts;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -60,14 +62,14 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; Search(); OnPropertyChanged(); }
+            set { _searchBy = value; OnPropertyChanged(); }
         }
         private string _searchText;
 
         public string SearchText
         {
             get { return _searchText; }
-            set { _searchText = value; Search(); OnPropertyChanged(); }
+            set { _searchText = value; OnPropertyChanged(); }
         }
 
         private string _lastSearchText;
@@ -149,7 +151,7 @@ namespace WPFEcommerceApp
             RemoveCategoryCommand = new RelayCommand<object>(p => p != null, async(p)=>await RemoveCategory(p));
             RemoveRequestCommand = new RelayCommand<object>(p => p != null,async(p)=>await RemoveRequest(p));
             AddRequestCommand = new RelayCommand<object>(p => p != null, async(p)=>await AddRequest(p));
-            SearchCommand = new RelayCommandWithNoParameter(Search);
+            SearchCommand = new RelayCommandWithNoParameter(async()=>await Search());
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
 
             Task.Run(async () =>
@@ -180,7 +182,11 @@ namespace WPFEcommerceApp
             _lastSearchText = string.Empty;
 
             var query = await cateRequestRepo.GetAllAsync(item => item.MUser);
-            RequestList.Items = new ObservableCollection<CategoryRequestItemViewModel>(
+            
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                FilteredCategories = new ObservableCollection<Category>(FilteredCategories);
+                RequestList.Items = new ObservableCollection<CategoryRequestItemViewModel>(
                 query.Select(item => new CategoryRequestItemViewModel
                 {
                     RequestId = item.Id,
@@ -190,7 +196,7 @@ namespace WPFEcommerceApp
                     SourceImageAva = item.MUser.SourceImageAva,
                     Reason = item.Reason,
                 }));
-
+            }));
         }
 
         #endregion
@@ -306,33 +312,44 @@ namespace WPFEcommerceApp
 
         }
 
-        public void Search()
+        public async Task Search()
         {
-            if (string.IsNullOrEmpty(SearchBy))
-                FilteredCategories = categoriesToSearch;
+            await Task.Run(() =>
+            {
+                MainViewModel.IsLoading = true;
+                if (string.IsNullOrEmpty(SearchBy))
+                    FilteredCategories = categoriesToSearch;
 
-            if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
-                (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
-            {
-                FilteredCategories = categoriesToSearch;
-            }
+                if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
+                    (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+                {
+                    FilteredCategories = categoriesToSearch;
+                }
 
-            if (string.IsNullOrEmpty(SearchText) || categoriesToSearch.Count <= 0 || categoriesToSearch == null)
-            {
-                FilteredCategories = categoriesToSearch;
-                return;
-            }
+                if (string.IsNullOrEmpty(SearchText) || categoriesToSearch.Count <= 0 || categoriesToSearch == null)
+                {
+                    FilteredCategories = categoriesToSearch;
+                    return;
+                }
 
-            if (SearchBy == "Name")
-            {
-                _lastSearchOption = "Name";
-                FilteredCategories = new ObservableCollection<Category>(categoriesToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "ID")
-            {
-                _lastSearchOption = "ID";
-                FilteredCategories = new ObservableCollection<Category>(categoriesToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
-            }
+                if (SearchBy == "Name")
+                {
+                    _lastSearchOption = "Name";
+                    FilteredCategories = new ObservableCollection<Category>(categoriesToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "ID")
+                {
+                    _lastSearchOption = "ID";
+                    FilteredCategories = new ObservableCollection<Category>(categoriesToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
+                }
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    FilteredCategories = new ObservableCollection<Category>(FilteredCategories);
+                }));
+
+            });
+            MainViewModel.IsLoading = false;
+
         }
 
         public void CloseSearch()

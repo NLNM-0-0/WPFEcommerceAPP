@@ -98,7 +98,7 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; Search(); OnPropertyChanged(); }
+            set { _searchBy = value; OnPropertyChanged(); }
         }
 
         public List<string> SearchByOptions { get; set; }
@@ -108,7 +108,7 @@ namespace WPFEcommerceApp
         public string SearchText
         {
             get { return searchText; }
-            set { searchText = value; Search(); OnPropertyChanged(); }
+            set { searchText = value; OnPropertyChanged(); }
         }
 
         private bool _isChecked;
@@ -177,7 +177,7 @@ namespace WPFEcommerceApp
             ShopRequestItemViewModel.RemoveRequestCommand = new RelayCommandWithNoParameter(async () => await RemoveRequest());
             ShopRequestItemViewModel.AddRequestCommand = new RelayCommandWithNoParameter(async () => await AddRequest());
             RemoveShopCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveShop(p));
-            SearchCommand = new RelayCommandWithNoParameter(Search);
+            SearchCommand = new RelayCommandWithNoParameter(async()=>await Search());
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
             OpenRequestCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenDialog(p));
 
@@ -222,7 +222,10 @@ namespace WPFEcommerceApp
                 GetListAsync(item => item.Role.Equals("Shop") && item.StatusShop.Equals(Status.Banned.ToString())));
             var query = await requestRepo.GetAllAsync(s => s.MUser);
 
-            RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                FilteredShops = new ObservableCollection<MUser>(FilteredShops);
+                RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
                 query.Select(item => new ShopRequestItemViewModel
                 {
                     RequestId = item.Id,
@@ -232,48 +235,51 @@ namespace WPFEcommerceApp
                     SourceImageAva = item.MUser.SourceImageAva,
                     Email = item.MUser.Email,
                     PhoneNumber = item.MUser.PhoneNumber,
-                    //VHCMT => Bỏ address
-                    //Address = item.MUser.Address
                 }));
+            }));
         }
 
         #endregion
 
         #region Command Methods
 
-        public void Search()
+        public async Task Search()
         {
-            if (string.IsNullOrEmpty(SearchBy))
-                FilteredShops = shopsToSearch;
+            MainViewModel.IsLoading = true;
+            await Task.Run(() =>
+            {
+                if (string.IsNullOrEmpty(SearchBy))
+                    FilteredShops = shopsToSearch;
 
-            if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
-                (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
-            {
-                FilteredShops = shopsToSearch;
-            }
+                if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
+                    (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+                {
+                    FilteredShops = shopsToSearch;
+                }
 
-            if (string.IsNullOrEmpty(SearchText) || shopsToSearch.Count <= 0 || shopsToSearch == null)
-            {
-                FilteredShops = shopsToSearch;
-                return;
-            }
+                if (string.IsNullOrEmpty(SearchText) || shopsToSearch.Count <= 0 || shopsToSearch == null)
+                {
+                    FilteredShops = shopsToSearch;
+                    return;
+                }
 
-            if (SearchBy == "Name")
-            {
-                _lastSearchOption = "Name";
-                FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "ID")
-            {
-                _lastSearchOption = "ID";
-                FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if(SearchBy=="Des")
-            {
-                _lastSearchOption = "Des";
-                FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Description.ToLower().Contains(SearchText.ToLower())));
-
-            }
+                if (SearchBy == "Name")
+                {
+                    _lastSearchOption = "Name";
+                    FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "ID")
+                {
+                    _lastSearchOption = "ID";
+                    FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "Des")
+                {
+                    _lastSearchOption = "Des";
+                    FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Description.ToLower().Contains(SearchText.ToLower())));
+                }
+            });
+            MainViewModel.IsLoading = false;
         }
 
         public void CloseSearch()

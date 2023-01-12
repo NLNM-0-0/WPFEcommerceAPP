@@ -37,14 +37,20 @@
                             Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                             materialDesign:HintAssist.Hint="Search by"
                             materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
-                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+                            materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </StackPanel>
                 </DockPanel>
 
                 <Grid DockPanel.Dock="Top" Margin="0 20">
                     <ListView ItemsSource="{Binding Items}" x:Name="itemList" 
                           HorizontalContentAlignment="Stretch"
-                          BorderThickness="0" MaxHeight="700"
+                          BorderThickness="0" MaxHeight="650"
                           ScrollViewer.CanContentScroll="False"
                           ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <ListView.ItemContainerStyle>
@@ -70,7 +76,7 @@
                 </Grid>
 
 
-                <TextBlock Text="Promo Request" DockPanel.Dock="Top" Margin="0 40 0 0"
+                <TextBlock Text="Promo Request" DockPanel.Dock="Top" Margin="0 20 0 0"
                         FontFamily="{StaticResource Bold}"
                         FontSize="{StaticResource FontSizeHeadline}"
                         />

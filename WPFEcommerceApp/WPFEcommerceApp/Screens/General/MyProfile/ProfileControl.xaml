@@ -19,16 +19,15 @@
         </Grid.ColumnDefinitions>
 
         <!-- Profile -->
-        <StackPanel Width="490" HorizontalAlignment="Center" Margin="0 0 20 0">
+        <StackPanel Width="480" HorizontalAlignment="Center" Margin="0 0 20 0">
 
             <TextBox    Margin="0 15 0 15" x:Name="UserNametb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
-                            materialDesign:HintAssist.Hint="User Name"
+                            materialDesign:HintAssist.Hint="Name"
                             Text="{Binding EditUser.Name, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="0"
                             Width="auto"
                             VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
                             MaxLength="200"/>
             <TextBox    Margin="0 15 0 15" x:Name="Emailtb"
@@ -37,7 +36,7 @@
                             materialDesign:HintAssist.Hint="Email"
                             Grid.Row="0"
                             VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
+                            IsEnabled="{i:Binding Path=!IsGoogle}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
                             MaxLength="200">
                 <Binding Path="EditUser.Email"
@@ -48,30 +47,15 @@
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
-            <TextBox    Margin="0 15 0 15" x:Name="Phonetb"
-                            Style="{StaticResource TextBoxHintBlackBorder}"
-                            Width="auto"
-                            materialDesign:HintAssist.Hint="Phone Number"
-                            Grid.Row="0"
-                            VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="10">
-                <Binding Path="EditUser.PhoneNumber"
-                             UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <local:PhoneValidateRule
-                               ValidatesOnTargetUpdated="True"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox>
+            
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="0 0 20 0" Width="490"
+        <StackPanel Grid.Column="1" Margin="0 0 20 0" Width="480"
                         HorizontalAlignment="Center">
             <ComboBox Margin="0 15 0 15" ItemsSource="{Binding GenderOptions}"
                                     materialDesign:HintAssist.Hint="Gender"
-                                    VerticalAlignment="Center">
+                                    VerticalAlignment="Center"
+                      >
                 <ComboBox.SelectedItem>
                     <Binding Path="EditUser.Gender" Converter="{x:Static local:BooleanToGenderConverter.Instance}"
                                  UpdateSourceTrigger="PropertyChanged">
@@ -82,21 +66,28 @@
             <DatePicker Grid.Row="0" SelectedDate="{Binding EditUser.DOB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Width="auto" Margin="0 15 0 15" Padding="15 0 -50 0"
                             Height="55"
-                            DisplayDateEnd="{Binding FromSelectedDateMax, Mode=OneWay}"
                             Style="{StaticResource MaterialDesignOutlinedDatePicker}"
                             materialDesign:HintAssist.Hint="Date of Birth"
                             FontSize="{StaticResource FontSizeText}"
                             >
             </DatePicker>
-            <TextBox    Margin="0 15 0 15" x:Name="Addresstb"
+            <TextBox    Margin="0 15 0 15" x:Name="Phonetb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
-                            materialDesign:HintAssist.Hint="Address"
-                            Text="{Binding EditUser.Address, UpdateSourceTrigger=PropertyChanged}"
+                            Width="auto"
+                            materialDesign:HintAssist.Hint="Phone Number"
                             Grid.Row="0"
-                        Width="auto"
                             VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
-                            MaxLength="200"/>
+                            materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
+                            MaxLength="10">
+                <Binding Path="EditUser.PhoneNumber"
+                             UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:PhoneValidateRule
+                               ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
+            
             <DockPanel>
                 <Button DockPanel.Dock="Right"
                     x:Name="SaveButton"
@@ -105,7 +96,7 @@
                     Width="100"
                     Content="Save"
                     HorizontalAlignment="Right"
-                    Margin="5 0 0 0"
+                    Margin="5 10 0 0"
                     >
                     <Button.CommandParameter>
                         <Binding Path="EditUser"/>

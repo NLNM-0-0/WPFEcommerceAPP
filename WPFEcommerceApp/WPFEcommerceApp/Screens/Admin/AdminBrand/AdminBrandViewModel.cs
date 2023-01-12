@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -68,7 +69,7 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; Search(); OnPropertyChanged(); }
+            set { _searchBy = value; OnPropertyChanged(); }
         }
 
         private string _searchText;
@@ -76,7 +77,7 @@ namespace WPFEcommerceApp
         public string SearchText
         {
             get { return _searchText; }
-            set { _searchText = value; Search(); OnPropertyChanged(); }
+            set { _searchText = value; OnPropertyChanged(); }
         }
 
         private string _lastSearchText;
@@ -135,7 +136,6 @@ namespace WPFEcommerceApp
         #region Commands
         public ICommand AddNewBrandCommand { get; set; }
         public ICommand RemoveBrandCommand { get; set; }
-
         public ICommand RemoveRequestCommand { get; set; }
         public ICommand AddRequestCommand { get; set; }
         public ICommand SearchCommand { get; set; }
@@ -159,7 +159,7 @@ namespace WPFEcommerceApp
             RemoveBrandCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveBrand(p));
             RemoveRequestCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveRequest(p));
             AddRequestCommand = new RelayCommand<object>(p => p != null, async (p) => await AddRequest(p));
-            SearchCommand = new RelayCommandWithNoParameter(Search);
+            SearchCommand = new RelayCommandWithNoParameter(async()=>await Search());
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
 
             _lastSearchText = string.Empty;
@@ -181,7 +181,6 @@ namespace WPFEcommerceApp
 
         #endregion
 
-
         #region Command Methods
         public async Task Load()
         {
@@ -199,17 +198,21 @@ namespace WPFEcommerceApp
 
             var query = await RequestRepo.GetAllAsync(item => item.MUser);
 
-            RequestList.Items = new ObservableCollection<BrandRequestItemViewModel>(
+            
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                FilteredBrands = new ObservableCollection<Brand>(FilteredBrands);
+                RequestList.Items = new ObservableCollection<BrandRequestItemViewModel>(
                         query.Select(item => new BrandRequestItemViewModel
                         {
-                            RequestId =item.Id,
-                            Id =  item.MUser.Id,
+                            RequestId = item.Id,
+                            Id = item.MUser.Id,
                             Name = item.MUser.Name,
                             BrandName = item.Name,
                             SourceImageAva = item.MUser.SourceImageAva,
                             Reason = item.Reason,
                         }));
-
+            }));
         }
         public async Task AddNewBrand(string brandName)
         {
@@ -330,36 +333,43 @@ namespace WPFEcommerceApp
 
         }
 
-        public void Search()
-
+        public async Task Search()
         {
-            if (string.IsNullOrEmpty(SearchBy))
-                FilteredBrands = _brandToSearch;
+            MainViewModel.IsLoading = true;
 
-            if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
-                (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+            await Task.Run(async () =>
             {
-                FilteredBrands = _brandToSearch;
-            }
+                if (string.IsNullOrEmpty(SearchBy))
+                    FilteredBrands = _brandToSearch;
 
-            if (string.IsNullOrEmpty(SearchText) || _brandToSearch.Count <= 0 || _brandToSearch == null)
-            {
-                FilteredBrands = _brandToSearch;
-                return;
-            }
+                if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
+                    (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+                {
+                    FilteredBrands = _brandToSearch;
+                }
 
-            if (SearchBy == "Name")
-            {
-                _lastSearchOption = "Name";
-                FilteredBrands = new ObservableCollection<Brand>(_brandToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "ID")
-            {
-                _lastSearchOption = "ID";
-                FilteredBrands = new ObservableCollection<Brand>(_brandToSearch.Where(br => br.Id.ToString().ToLower().Contains(SearchText.ToLower())));
-            }
+                if (string.IsNullOrEmpty(SearchText) || _brandToSearch.Count <= 0 || _brandToSearch == null)
+                {
+                    FilteredBrands = _brandToSearch;
+                    return;
+                }
 
-
+                if (SearchBy == "Name")
+                {
+                    _lastSearchOption = "Name";
+                    FilteredBrands = new ObservableCollection<Brand>(_brandToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "ID")
+                {
+                    _lastSearchOption = "ID";
+                    FilteredBrands = new ObservableCollection<Brand>(_brandToSearch.Where(br => br.Id.ToString().ToLower().Contains(SearchText.ToLower())));
+                }
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    FilteredBrands = new ObservableCollection<Brand>(FilteredBrands);
+                }));
+            });
+            MainViewModel.IsLoading = false;
 
         }
 

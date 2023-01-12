@@ -16,21 +16,13 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for UserInformationPage.xaml
+    /// Interaction logic for HeaderSearch.xaml
     /// </summary>
-    public partial class ShopInformationPage : UserControl
+    public partial class HeaderSearch : UserControl
     {
-        public ShopInformationPage()
+        public HeaderSearch()
         {
             InitializeComponent();
-        }
-
-        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var scv = sender as ScrollViewer;
-            if (scv == null) return;
-            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
-            e.Handled = true;
         }
     }
 }

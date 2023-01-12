@@ -6,10 +6,11 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440"
             >
-    <Grid Margin="0 0 0 50">
+    <Grid Margin="0 0 0 20">
 
         <ScrollViewer VerticalScrollBarVisibility="Hidden" 
                       CanContentScroll="True"
@@ -43,29 +44,32 @@
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                         materialDesign:HintAssist.Hint="Search by"
                         materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
-                        materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+                        materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
 
 
                     </StackPanel>
                 </DockPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
-                    <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
+                    <TextBlock Text="{Binding StatusText}" Margin="5 15 5 0"
                            FontSize="{StaticResource FontSizeText}"/>
 
-                    <ToggleButton Margin="5 20 5 0"
+                    <ToggleButton Margin="5 15 5 0"
                 Style="{StaticResource SwitchToggleButton}"
                           Background="{StaticResource BlackColorBrush}"
                           materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
                           IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
 
-
-
-
                 <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredCategories}" x:Name="datagrid" ScrollViewer.CanContentScroll="True"
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      Margin="0 20" Height="650" CanUserReorderColumns="False" IsReadOnly="True"
+                      Margin="0 10 0 0" Height="650" CanUserReorderColumns="False" IsReadOnly="True"
                       AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Width="200" MinWidth="100" MaxWidth="200" Binding="{Binding Id}" SortDirection="Ascending"/>
@@ -73,25 +77,23 @@
                     </DataGrid.Columns>
 
                 </DataGrid>
-
-                <StackPanel DockPanel.Dock="Top">
-                    <TextBlock Text="Category Requests"
-                               Margin="0 20"
-                                FontFamily="{StaticResource Bold}"
-                                FontSize="{StaticResource FontSizeHeadline}"
+                
+                <TextBlock Text="Category Requests" DockPanel.Dock="Top"
+                            Margin="0 20"
+                            FontFamily="{StaticResource Bold}"
+                            FontSize="{StaticResource FontSizeHeadline}"
                                    />
-                    <Grid Margin="0 0 0 50">
-                        <local:CategoryRequestList />
-                        <TextBlock Text="No request"
-                                   Margin="20"
+                <Grid DockPanel.Dock="Top">
+                    <local:CategoryRequestList />
+                    <TextBlock Text="No request"
+                                   Margin="0 10"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"
                                    FontSize="{StaticResource FontSizeHeadline2}"
                                    Visibility="{c:Binding '(RequestList.Items.Count==0)', FalseToVisibility=Collapsed}"/>
 
-                    </Grid>
+                </Grid>
 
-                </StackPanel>
 
                 <DockPanel.InputBindings>
                     <KeyBinding Key="Enter"

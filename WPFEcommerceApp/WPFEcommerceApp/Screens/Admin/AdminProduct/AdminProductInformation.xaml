@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440">
-    <Grid Margin="0 0 0 20">
+    <Grid Margin="0 0 0 50">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -33,7 +34,13 @@
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                 materialDesign:HintAssist.Hint="Search by"
                                 materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource BlackColorBrush}"
-                                materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}"/>
+                                materialDesign:HintAssist.Foreground="{StaticResource BlackColorBrush}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>
                 </StackPanel>
 
 
@@ -46,7 +53,7 @@
             <TextBlock Text="{Binding StatusText}" Margin="5 20 5 0"
                            FontSize="{StaticResource FontSizeText}"/>
 
-            <ToggleButton Margin="5 20 5 5"
+            <ToggleButton Margin="5 15 5 5"
                 Style="{StaticResource SwitchToggleButton}"
                           Background="{StaticResource BlackColorBrush}"
                           materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{StaticResource BlackColorBrush}"
@@ -72,7 +79,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Header="Category" Binding="{Binding Category.Name}" MinWidth="100" MaxWidth="400" Width="Auto"/>
-                    <DataGridTextColumn Header="Brand" Binding="{Binding Brand.Name}" Width="Auto" MinWidth="100" MaxWidth="400"/>
+                    <DataGridTextColumn Header="Brand" Binding="{Binding Brand.Name}" Width="500" MinWidth="100" MaxWidth="700"/>
                     <DataGridTextColumn Header="Price" Width="Auto" Binding="{Binding Price}" MinWidth="100" MaxWidth="400" SortDirection="Ascending"/>
                     <DataGridTextColumn Header="In Stock" Width="Auto" Binding="{Binding InStock}" MinWidth="100" MaxWidth="400" SortDirection="Ascending"/>
                     <DataGridTextColumn Header="Sold" Width="Auto" Binding="{Binding Sold}" MinWidth="100" MaxWidth="400" SortDirection="Ascending"/>
