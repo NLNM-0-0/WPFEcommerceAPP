@@ -23,7 +23,6 @@ namespace WPFEcommerceApp
         public AdminPromo()
         {
             InitializeComponent();
-            DataContext = new AdminPromoViewModel();
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
