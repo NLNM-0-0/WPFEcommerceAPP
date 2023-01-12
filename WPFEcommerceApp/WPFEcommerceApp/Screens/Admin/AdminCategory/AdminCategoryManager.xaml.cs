@@ -23,7 +23,6 @@ namespace WPFEcommerceApp
         public AdminCategoryManager()
         {
             InitializeComponent();
-            this.DataContext = new AdminCategoryViewModel();
         }
 
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
