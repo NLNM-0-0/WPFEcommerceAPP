@@ -12,7 +12,6 @@ namespace WPFEcommerceApp
         public AdsManager()
         {
             InitializeComponent();
-            this.DataContext = new AdsManagerViewModel();
         }
     }
 }

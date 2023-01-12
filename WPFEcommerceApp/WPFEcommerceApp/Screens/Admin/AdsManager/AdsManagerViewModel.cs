@@ -106,7 +106,7 @@ namespace WPFEcommerceApp
             {
                 SelectedCommand = new RelayCommand<object>(p => p != null, Selected);
                 RemoveAdsCommand = new RelayCommand<object>(p => _selectedItem != null, async (p) => await RemoveAds(p));
-                RemoveInUseAdsCommand = new RelayCommand<object>(p => _inUseSelected != null, async (p) => await RemoveInUseAds(p));
+                RemoveInUseAdsCommand = new RelayCommand<object>(p => _inUseSelected != null && _inUseSelected.Id!=null, async (p) => await RemoveInUseAds(p));
                 ApplyAdsCommand = new RelayCommand<object>(p => p != null && CurrentPos != null, async (p) => await ApplyAds(p));
                 CancelAdsCommand = new RelayCommandWithNoParameter(CancelAds);
                 OpenAdsDialogCommand = new RelayCommandWithNoParameter(async () => await OpenAdsDialog());
@@ -133,15 +133,16 @@ namespace WPFEcommerceApp
             {
                 Ads = new ObservableCollection<Advertisement>(Ads);
                 InUseAds = new ObservableCollection<AdInUse>();
-                foreach(var ad in inUseAds)
+                foreach(var item in inUseAds)
                 {
-                    if (ad == null)
+                    if (item == null)
                     {
-                        InUseAds.Add(new AdInUse());
-                        continue;
+                        InUseAds.Add(new AdInUse { Advertisement = new Advertisement { Image = Properties.Resources.DefaultShopBackgroundImage } }); 
                     }
-                    InUseAds.Add(new AdInUse { Id=ad.Id, Advertisement=ad.Advertisement, Position=ad.Position});
+                    else
+                        InUseAds.Add(item);
                 }
+
             }));
         }
 
@@ -192,7 +193,6 @@ namespace WPFEcommerceApp
                 CM = new RelayCommandWithNoParameter(async () =>
                 {
                     MainViewModel.IsLoading = true;
-                    //await adInUseRepo.Remove(InUseSelected.AdInUses.ToArray());
                     await RemoveInUseAdsDB();
                 }),
                 Header = "Banner is in use",
@@ -233,32 +233,34 @@ namespace WPFEcommerceApp
             if (ad == null)
                 return;
 
-            foreach (var item in InUseAds)
+            foreach(var item in InUseAds)
             {
-                if(item!= null)
+                if(item!=null)
                 {
                     if(item.Advertisement!=null&&item.Advertisement.Id==ad.Id)
                     {
+                        string content;
+                        if (item.Position.ToString() == CurrentPos)
+                            content = "The banner has been place at the position chosen!";
+
+                        else
+                            content = "The banner has been placed at another position, cannot use it now!";
                         var existed = new ConfirmDialog()
                         {
                             Header = "Already set",
-                            Content = "The banner has been placed at another position, cannot use it now!"
+                            Content = content
                         };
                         await DialogHost.Show(existed, "adsView");
                         return;
                     }
-                    if (item.Position.ToString() == CurrentPos)
+                }
+            }
+            foreach (var item in InUseAds)
+            {
+                if(item!= null)
+                {
+                    if (item.Position.ToString() == CurrentPos&&item.Advertisement!=null&&item.Advertisement.Id!=null)
                     {
-                        if(item.Advertisement.Id==ad.Id)
-                        {
-                            var existed = new ConfirmDialog()
-                            {
-                                Header = "Already set",
-                                Content = "The banner has been placed at the position chosen!"
-                            };
-                            await DialogHost.Show(existed, "adsView");
-                            return;
-                        }
                         var view = new ConfirmDialog()
                         {
                             Header = "Replace",
@@ -306,8 +308,12 @@ namespace WPFEcommerceApp
             SelectedItem = ads;
             foreach(var item in InUseAds)
             {
-                if (item != null && item.Id == SelectedItem.Id)
+                if (item.Id == null)
+                    continue;
+                if(ads.Id==item.Id)
+                {
                     InUseSelected = item;
+                }
             }
         }
 
