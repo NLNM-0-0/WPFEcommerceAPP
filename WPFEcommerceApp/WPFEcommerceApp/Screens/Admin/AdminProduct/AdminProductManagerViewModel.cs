@@ -42,14 +42,14 @@ namespace WPFEcommerceApp
         public string SearchBy
         {
             get { return _searchBy; }
-            set { _searchBy = value; Search(); OnPropertyChanged(); }
+            set { _searchBy = value; OnPropertyChanged(); }
         }
         private string _searchText;
 
         public string SearchText
         {
             get { return _searchText; }
-            set { _searchText = value; Search(); OnPropertyChanged(); }
+            set { _searchText = value; OnPropertyChanged(); }
         }
 
         private string _lastSearchText;
@@ -106,48 +106,59 @@ namespace WPFEcommerceApp
 
         #region Command Methods
 
-        public void Search()
+        public async Task Search()
         {
-            if (string.IsNullOrEmpty(SearchBy))
-                FilteredProducts = _productsToSearch;
+            await Task.Run(() =>
+            {
+                MainViewModel.IsLoading = true;
+                if (string.IsNullOrEmpty(SearchBy))
+                    FilteredProducts = _productsToSearch;
 
-            if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
-                (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
-            {
-                FilteredProducts = _productsToSearch;
-            }
+                if (string.IsNullOrEmpty(_lastSearchText) && string.IsNullOrEmpty(SearchText) ||
+                    (string.Equals(_lastSearchText, SearchText) && _lastSearchOption == SearchBy))
+                {
+                    FilteredProducts = _productsToSearch;
+                }
 
-            if (string.IsNullOrEmpty(SearchText) || _productsToSearch.Count <= 0 || _productsToSearch == null)
-            {
-                FilteredProducts = _productsToSearch;
-                return;
-            }
+                if (string.IsNullOrEmpty(SearchText) || _productsToSearch.Count <= 0 || _productsToSearch == null)
+                {
+                    FilteredProducts = _productsToSearch;
+                    return;
+                }
 
-            if (SearchBy == "Name")
-            {
-                _lastSearchOption = "Name";
-                FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "ID")
-            {
-                _lastSearchOption = "ID";
-                FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "ShopID")
-            {
-                _lastSearchOption = "ID";
-                FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.IdShop.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "Category")
-            {
-                _lastSearchOption = "Categroy";
-                FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Category.Name.ToLower().Contains(SearchText.ToLower())));
-            }
-            else if (SearchBy == "Brand")
-            {
-                _lastSearchOption = "Brand";
-                FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Brand.Name.ToLower().Contains(SearchText.ToLower())));
-            }
+                if (SearchBy == "Name")
+                {
+                    _lastSearchOption = "Name";
+                    FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "ID")
+                {
+                    _lastSearchOption = "ID";
+                    FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "ShopID")
+                {
+                    _lastSearchOption = "ID";
+                    FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.IdShop.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "Category")
+                {
+                    _lastSearchOption = "Categroy";
+                    FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Category.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                else if (SearchBy == "Brand")
+                {
+                    _lastSearchOption = "Brand";
+                    FilteredProducts = new ObservableCollection<Models.Product>(_productsToSearch.Where(br => br.Brand.Name.ToLower().Contains(SearchText.ToLower())));
+                }
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    FilteredProducts = new ObservableCollection<Models.Product>(FilteredProducts);
+                }));
+            });
+
+            MainViewModel.IsLoading = false;
+
 
         }
 
@@ -185,7 +196,7 @@ namespace WPFEcommerceApp
             SearchByOptions = new List<string> { "ID", "ShopID", "Name", "Category", "Brand" };
 
             RemoveProductCommand = new RelayCommand<object>(p => p != null,async(p)=>await RemoveProduct(p));
-            SearchCommand = new RelayCommandWithNoParameter(Search);
+            SearchCommand = new RelayCommandWithNoParameter(async()=>await Search());
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
 
             Task.Run(async () =>
@@ -218,7 +229,10 @@ namespace WPFEcommerceApp
 
             _lastSearchOption = null;
             _lastSearchText = string.Empty;
-
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                FilteredProducts = new ObservableCollection<Models.Product>(FilteredProducts);
+            }));
         }
 
         #endregion
