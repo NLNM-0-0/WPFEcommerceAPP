@@ -230,7 +230,12 @@
                                                      material:HintAssist.IsFloating="False"
                                                      Height="auto"
                                                      Margin="25 0"
-                                                     VerticalAlignment="Stretch"/>
+                                                     VerticalAlignment="Stretch">
+                                                <TextBox.InputBindings>
+                                                    <KeyBinding Key="Return" Command="{Binding ElementName=CheckoutWindow, Path=DataContext.OnApplyVoucher}"
+                                                CommandParameter="{Binding ElementName=VoucherCodeField, Path=Text}"/>
+                                                </TextBox.InputBindings>
+                                            </TextBox>
                                             <Button
                                                 Content="Apply"
                                                 FontWeight="Normal"

@@ -125,7 +125,9 @@ namespace WPFEcommerceApp {
 
         public ICommand Regist { get; set; }
         public ICommand LoginHandle { get; set; }
-        
+        public ICommand KeyHandle_PolicyEnter { get; }
+
+
         public RegisterViewModel(string email, string password, string id = null) {
 
             try { Email = email; } catch { }
@@ -191,6 +193,10 @@ namespace WPFEcommerceApp {
                         DialogHost.Show(dl, "Regist");
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
+            });
+
+            KeyHandle_PolicyEnter = new ImmediateCommand<object>(p => {
+                IsCheckAgree = !IsCheckAgree;
             });
         }
 

@@ -59,6 +59,9 @@ namespace WPFEcommerceApp {
         public ICommand OnSignUp { get; set; }
         public ICommand OnGoogleSignIn { get; set; }
         public ICommand OnForgotPassword { get; set; }
+        #region Keyhandle
+        public ICommand KeyHandle_EnterKeepSignIn { get; }
+        #endregion
         public LoginViewModel() {
             //_accountStore.CurrentAccount = ;
             OnLogin = new RelayCommand<object>(p => {
@@ -156,6 +159,14 @@ namespace WPFEcommerceApp {
                     var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1);
                     IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
+                    if(KeepSignIn) {
+                        WPFEcommerceApp.Properties.Settings.Default.Cookie = user.Id;
+                        WPFEcommerceApp.Properties.Settings.Default.Save();
+                    }
+                    else {
+                        WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
+                        WPFEcommerceApp.Properties.Settings.Default.Save();
+                    }
                     (p as Window).Hide();
                     App.Current.MainWindow.Show();
                 } catch { ErrorMessage(); }
@@ -166,6 +177,9 @@ namespace WPFEcommerceApp {
                     DataContext = new ForgotPasswordVM()
                 };
                 DialogHost.Show(view, "Login");
+            });
+            KeyHandle_EnterKeepSignIn = new ImmediateCommand<object>(p => {
+                KeepSignIn = !KeepSignIn;
             });
         }
 
