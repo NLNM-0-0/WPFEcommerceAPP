@@ -50,7 +50,8 @@
                 <TextBox
                     x:Name="TextBoxSource"
                     Style="{StaticResource TextBoxHintBlackBorder}"
-                    Width="{Binding ElementName=CanvasFrame, Path=ActualWidth}"
+                    HorizontalAlignment="Stretch"
+                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="Source"
                     Text="{Binding SelectedImageSource}"
@@ -104,11 +105,8 @@
                                         IsHitTestVisible="True">
                                         <local:AsyncImage
                                             Stretch="Fill"
-                                            x:Name="ImageProduct">
-                                            <local:AsyncImage.Source>
-                                                <BitmapImage 
-                                                    UriSource="{Binding}"/>
-                                            </local:AsyncImage.Source>
+                                            x:Name="ImageProduct"
+                                            Source="{Binding}">
                                         </local:AsyncImage>
                                         <behavior:Interaction.Triggers>
                                             <behavior:EventTrigger EventName="MouseEnter">

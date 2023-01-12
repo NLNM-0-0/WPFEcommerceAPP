@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace WPFEcommerceApp
 {
@@ -37,7 +38,7 @@ namespace WPFEcommerceApp
                 string status = (string)values[(int)productInfo.Status];
                 string name = (string)values[(int)productInfo.Name];
                 string price = (string)values[(int)productInfo.Price];
-                ObservableCollection<string> imageProducts = (ObservableCollection<string>)values[(int)productInfo.Images];
+                ObservableCollection<BitmapImage> imageProducts = (ObservableCollection<BitmapImage>)values[(int)productInfo.Images];
                 bool isOneSize = (bool)values[(int)productInfo.IsOneSize];
                 bool isHadSizeS = (bool)values[(int)productInfo.IsHadSizeS];
                 bool isHadSizeM = (bool)values[(int)productInfo.IsHadSizeM];
@@ -58,10 +59,10 @@ namespace WPFEcommerceApp
                 product.ImageProducts.Clear();
                 if (imageProducts != null)
                 {
-                    foreach (string image in imageProducts)
+                    foreach (BitmapImage image in imageProducts)
                     {
                         Models.ImageProduct imageProduct = new Models.ImageProduct();
-                        imageProduct.Source = image;
+                        imageProduct.Source = image.ToString();
                         product.ImageProducts.Add(imageProduct);
                     }
                 }

@@ -104,7 +104,6 @@
                                 <TextBlock
                                     x:Name="nameTextBox"
                                     Text="{Binding Shop.Name,UpdateSourceTrigger=PropertyChanged}"
-                                    Margin="0 0 0 20"
                                     TextTrimming="WordEllipsis"
                                     FontFamily="{StaticResource Bold}"
                                     FontSize="{StaticResource FontSizeHeadline}"

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WPFEcommerceApp.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace WPFEcommerceApp
@@ -32,7 +34,6 @@ namespace WPFEcommerceApp
             set
             {
                 sourceImageAva = value; 
-                ImageAva = new CroppedBitmap(new BitmapImage(new Uri(SourceImageAva)), new Int32Rect(0,0,0,0));
                 OnPropertyChanged();
             }
         }
@@ -111,6 +112,28 @@ namespace WPFEcommerceApp
                 if(op.FileName != "")
                 {
                     SourceImageAva = op.FileName;
+                    var stream = File.Open(op.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    System.Drawing.Image img = new Bitmap(stream);
+                    Bitmap copy = new Bitmap(img.Width, img.Height);
+                    copy.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+                    using (var graphic = Graphics.FromImage(copy))
+                    {
+                        graphic.Clear(System.Drawing.Color.White);
+                        graphic.DrawImageUnscaled(img, 0, 0);
+                    }
+                    using (var memory = new MemoryStream())
+                    {
+                        copy.Save(memory, ImageFormat.Jpeg);
+                        memory.Position = 0;
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = memory;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+                        bitmapImage.Freeze();
+
+                        ImageAva = new CroppedBitmap(bitmapImage as BitmapSource, new Int32Rect(0, 0, 0, 0));
+                    }
                 }    
             });
             ChangeToDefaultAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>

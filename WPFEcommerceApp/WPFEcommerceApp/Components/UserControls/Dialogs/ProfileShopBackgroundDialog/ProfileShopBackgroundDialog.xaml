@@ -81,7 +81,7 @@
             <TextBox
                     x:Name="TextBoxSource"
                     Style="{StaticResource TextBoxHintBlackBorder}"
-                    Width="{Binding ElementName=CanvasFrame, Path=ActualWidth}"
+                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="Source"
                     Text="{Binding SourceImageBackground}"

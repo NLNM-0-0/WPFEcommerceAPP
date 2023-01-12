@@ -156,11 +156,12 @@
                                                     Margin="0 0 10 0"
                                                     Height="70"
                                                     MaxWidth="70">
-                                                    <Image
+                                                    <local:AsyncImage
+                                                        Stretch="Fill"
                                                         Source="{Binding}"
                                                         Height="70"
                                                         Width="70">
-                                                    </Image>
+                                                    </local:AsyncImage>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
