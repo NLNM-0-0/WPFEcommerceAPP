@@ -171,6 +171,7 @@ namespace WPFEcommerceApp
                         MainViewModel.IsLoading = true;
                         await adInUseRepo.Remove(SelectedItem.AdInUses.ToArray());
                         await RemoveAdsDB();
+                        CommandManager.InvalidateRequerySuggested();
                     }),
                     Header = "Banner is in use",
                     Content = "Are you sure to remove it?",
@@ -305,7 +306,10 @@ namespace WPFEcommerceApp
         public void Selected(object obj)
         {
             var ads = obj as Advertisement;
-            
+
+            if (ads.Id == null)
+                return;
+
             SelectedItem = ads;
             foreach(var item in InUseAds)
             {

@@ -22,7 +22,7 @@
                 <Button DockPanel.Dock="Right"
                     Content="Remove"
                     Command="{Binding RemoveInUseAdsCommand}"
-                    CommandParameter="{Binding }"
+                    CommandParameter="{Binding}"
                     >
                 </Button>
 
@@ -65,7 +65,7 @@
                 <Button DockPanel.Dock="Right"
                     Content="Remove"
                     Command="{Binding RemoveAdsCommand}"
-                    CommandParameter="{Binding SelectedItem}"
+                    CommandParameter="{Binding}"
                     >
                 </Button>
 
