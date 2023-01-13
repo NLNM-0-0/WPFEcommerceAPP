@@ -62,6 +62,8 @@ namespace WPFEcommerceApp {
 
             _orderStore = OrderStore.instance;
             _orderStore.OrderListChanged += onOrderListChange;
+            Debug.WriteLine("OrderScreenVM Created");
+
             Task.Run(async () => {
                 MainViewModel.IsLoading = true;
                 await _orderStore.Load();
@@ -93,7 +95,7 @@ namespace WPFEcommerceApp {
             OnReorder = new ImmediateCommand<object>(async p => {
                 var view = new ConfirmDialog() {
                     CM = ReOrderCM,
-                    Param = p
+                    Param = new List<Order>() { p as Order}
                 };
                 await DialogHost.Show(view, "Main");
             });

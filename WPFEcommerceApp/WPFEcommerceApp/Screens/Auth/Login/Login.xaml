@@ -35,6 +35,9 @@
         CloseOnClickAway="False"
         Identifier="Login"
             Grid.Row="1">
+            <materialDesign:DialogHost.InputBindings>
+                <KeyBinding Key="Esc" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+            </materialDesign:DialogHost.InputBindings>
             <!--Content-->
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -54,7 +57,11 @@
                     <StackPanel 
                             x:Name="RightColumnContainer">
 
-                        <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="0,220,0,20"/>
+                        <Label Content="WANO" FontSize="40" FontWeight="Bold" Margin="0,220,0,20">
+                            <Label.InputBindings>
+                                <MouseBinding Gesture="RightDoubleClick" Command="{Binding KeyHandle_AdminAccess}"/>
+                            </Label.InputBindings>
+                        </Label>
                         <TextBox
                             x:Name="Email"
                             Style="{StaticResource TextBoxHintBlackBorder}"
@@ -77,12 +84,16 @@
 
                         <Grid Margin="0 19" >
                             <CheckBox
-                                IsChecked="{Binding ElementName=LoginWindow, Path=DataContext.KeepSignIn}"
+                                IsChecked="{Binding ElementName=LoginWindow, Path=DataContext.KeepSignIn, Mode=TwoWay}"
                                 HorizontalAlignment="Left"
                                 Background="{StaticResource BlackColorBrush}"
                                 Content="Keep me sign in"
                                 Foreground="{StaticResource BlackColorBrush}"
-                                FontSize="{DynamicResource FontSizeDescription}"/>
+                                FontSize="{DynamicResource FontSizeDescription}">
+                                <CheckBox.InputBindings>
+                                    <KeyBinding Key="Return" Command="{Binding ElementName=LoginWindow, Path=DataContext.KeyHandle_EnterKeepSignIn}"/>
+                                </CheckBox.InputBindings>
+                            </CheckBox>
                             <Button
                             Grid.Column="1"
                             Margin="0 3 0 0"

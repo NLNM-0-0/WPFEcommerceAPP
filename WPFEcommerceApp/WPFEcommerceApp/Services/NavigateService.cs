@@ -17,6 +17,9 @@ namespace WPFEcommerceApp {
         public readonly CreateViewModel<TViewModel> CreateVM;
 
         public void Navigate() {
+            if(navigationStore.CurrentViewModel != null && navigationStore.CurrentViewModel.GetType().Equals(typeof(TViewModel))) {
+                return;
+            }
             navigationStore.CurrentViewModel = CreateVM();
             navigationStore.stackScreen.Add(new Tuple<INavigationService, object>(this, null));
             if(navigationStore.stackScreen.Count == 6) {

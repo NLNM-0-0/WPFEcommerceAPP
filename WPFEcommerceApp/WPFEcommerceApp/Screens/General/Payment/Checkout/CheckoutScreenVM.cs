@@ -21,67 +21,71 @@ using MaterialDesignThemes.Wpf;
 using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
-	public class CheckoutScreenVM : BaseViewModel {
+    public class CheckoutScreenVM : BaseViewModel {
         private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
         private readonly GenericDataRepository<Promo> promoRepo = new GenericDataRepository<Promo>();
+        private readonly GenericDataRepository<Cart> cartRepo = new GenericDataRepository<Cart>();
 
-		private readonly AccountStore _accountStore;
-		private readonly Order _order;
-		public List<Order> ListOrder { get; set; }
-		public MUser CurrentUser => _accountStore?.CurrentAccount;
+        private readonly AccountStore _accountStore;
+        public List<Order> ListOrder { get; set; }
+        public MUser CurrentUser => _accountStore?.CurrentAccount;
         public Dictionary<string, Address> ListAddress { get; set; }
 
         #region props
         public Promo PromoChoosen { get; set; } = null;
+        public Promo PrevPromo { get; set; } = null;
 
         private Address _address;
-
         public Address address {
             get { return _address; }
             set { _address = value; OnPropertyChanged(); }
         }
 
         public List<Promo> ListVoucher { get; set; }
+        private bool shippingMethod;
+        public bool ShippingMethod {
+            get => shippingMethod;
+            set {
+                shippingMethod = value;
+                if(value == false) ShipTotal = 50000;
+                else ShipTotal = 0;
+                OnPropertyChanged();
+            }
+        }
+        private double subTotal;
         public double SubTotal {
-			get {
-				if(ListOrder == null) return _order.SubTotal;
-				double total = 0;
-				for(int i = 0; i < ListOrder?.Count; i++) {
-					total += ListOrder[i].SubTotal;
-				}
-				return total;
-			}
-		}
+            get { return subTotal; }
+            set { subTotal = value; OnPropertyChanged(); }
+        }
+
+        private double shipTotal;
+
         public double ShipTotal {
-            get {
-                if(ListOrder == null) return _order.ShipTotal;
-                double total = 0;
-                for(int i = 0; i < ListOrder.Count; i++) {
-                    total += ListOrder[i].ShipTotal;
-                }
-                return total;
+            get { return shipTotal; }
+            set {
+                shipTotal = value;
+                OnPropertyChanged();
             }
         }
+
         public double TotalPayment {
-            get {
-                if(ListOrder == null) return _order.OrderTotal;
-                double total = 0;
-                for(int i = 0; i < ListOrder.Count; i++) {
-                    total += ListOrder[i].OrderTotal;
-                }
-                return total;
-            }
+            get { return ShipTotal + SubTotal - Discount; }
         }
+
+        public double ProductDiscount{get; set;}
+
         public double Discount {
             get {
-                if(ListOrder == null) return _order.Discount;
-                double total = 0;
-                for(int i = 0; i < ListOrder.Count; i++) {
-                    total += ListOrder[i].Discount;
-                }
-                return total;
+                if(PromoChoosen == null) return ProductDiscount;
+                Nullable<double> promoSale = SubTotal* PromoChoosen.Sale / 100 > PromoChoosen.MaxSale 
+                    ? PromoChoosen.MaxSale
+                    : SubTotal* PromoChoosen.Sale / 100;
+                var sale = promoSale + ProductDiscount;
+                if(sale > SubTotal) sale = SubTotal;
+                return (double) sale;
             }
         }
+
 
         public string _vouchercode;
         public string VoucherCode {
@@ -93,7 +97,6 @@ namespace WPFEcommerceApp {
         }
         public bool IsVoucherError { get; set; }
         public int LeftColumnChoice { get; set; }
-
         public int LeftState { get; set; }
 
         #endregion
@@ -111,29 +114,33 @@ namespace WPFEcommerceApp {
         public ICommand OnViewConditionVoucher { get; }
         public ICommand OnApplyVoucher { get; }
         public ICommand OnCloseErrorAlert { get; }
+        public ICommand CheckVoucher { get; }
         #endregion
 
-        public CheckoutScreenVM(
-			Order order = null,
-			List<Order> orders = null) {
+        #region Constructor
+        public CheckoutScreenVM(List<Order> orders = null) {
+            //var order = param.Item1;
+            //var orders = param.Item2;
 
-            ListVoucher = new List<Promo>();
             ListAddress = new Dictionary<string, Address>();
-
+            ShippingMethod = true;
             Task.Run(async () => await Load());
 
 			_accountStore = AccountStore.instance;
 			_accountStore.AccountChanged += OnAccountChange;
-			_order = order;
+			//_order = param.Item1;
 
 			if(orders != null)
 				ListOrder = orders;
-			else {
-				ListOrder = new List<Order>();
-				if(order != null)
-					ListOrder.Add(order);
-			}
-			LeftColumnChoice = 1;
+
+            SubTotal = 0;
+            ProductDiscount = 0;
+            for(int i = 0; i < ListOrder?.Count; i++) {
+                SubTotal += ListOrder[i].SubTotal;
+                ProductDiscount += ListOrder[i].Discount;
+            }
+
+            LeftColumnChoice = 1;
             LeftState = 0;
             //command
             OnLeftChange = new RelayCommand<object>(p => true, p => {
@@ -157,18 +164,33 @@ namespace WPFEcommerceApp {
             });
             PaymentAlertDialogCM = new ImmediateCommand<object>((p)=> {
                 if((bool)p == true) {
-                    order.ShippingSpeedMethod = 0;
+                    foreach(var order in orders) {
+                        order.ShippingSpeedMethod = 0;
+                    }
                 }
-                else order.ShippingSpeedMethod = 1;
-                order.Promo = PromoChoosen?.Id;
-                order.AddressIndex = address.Id;
-                PaymentAlertDialog(order);
-			});
+                else {
+                    foreach(var order in orders)
+                        order.ShippingSpeedMethod = 1;
+                }
+                foreach(var order in orders) {
+                    order.Promo = PromoChoosen?.Id;
+                    order.AddressIndex = address.Id;
+                }
+                PaymentAlertDialog(orders);
+            });
             OnEditAddress = new ImmediateCommand<object>((p) => {
+                var listAddress = ListAddress.Values.ToList();
+                if(listAddress.Count != 0 && address.Id != listAddress[0].Id)
+                    for(int i = 0; i < listAddress.Count; i++) {
+                        if(listAddress[i].Id == address.Id) {
+                            listAddress.RemoveAt(i);
+                            listAddress.Insert(0, address);
+                        }
+                    }
                 var dl = new AddressChoiceDialog() {
                     DataContext = new AddressChoiceDialogVM() {
                         SelectedItem = address,
-                        ListAddress = new ObservableCollection<Address>(ListAddress.Values.ToList()),
+                        ListAddress = new ObservableCollection<Address>(listAddress),
                         ChangeAddressHandle = new ImmediateCommand<object>(async o => {
                             address = o as Address;
                             OnPropertyChanged(nameof(address));
@@ -190,9 +212,20 @@ namespace WPFEcommerceApp {
                 //Do something with store here
                 MainViewModel.IsLoading = true;
 
-                var temp = new Order(order);
-				temp.Status = "Processing";
-				await OrderStore.instance.Add(temp);
+                foreach(var order in orders) {
+                    var temp = new Order(order);
+                    temp.Status = "Processing";
+                    await OrderStore.instance.Add(temp);
+                    await Task.Run(async () => {
+                        foreach(var item in order.ProductList) {
+                            var t = await cartRepo.GetSingleAsync(d =>
+                                d.IdProduct == item.ID &&
+                                d.IdUser == order.IDCustomer &&
+                                d.Size == item.Size);
+                            if(t != null) await cartRepo.Remove(t);
+                        }
+                    }).ConfigureAwait(false);
+                }
 				NavigationStore.instance.clearHistory();
 				NavigationStore.instance.stackScreen.Add(new Tuple<INavigationService, object>(NavigateProvider.OrderScreen(), null));
                 NavigateProvider.SuccessScreen().Navigate();
@@ -224,9 +257,12 @@ namespace WPFEcommerceApp {
             OnEditOrder = new ImmediateCommand<object>(p => {
                 NavigateProvider.BagScreen().Navigate();
             });
+
+            #region Voucher Command
             OnViewConditionVoucher = new ImmediateCommand<object>(p => {
+                var x = p as Promo;
                 var dl = new VoucherConditionDialog() {
-                    Data = p as Promo
+                    Data = x
                 };
                 DialogHost.Show(dl, "Main");
             });
@@ -244,9 +280,19 @@ namespace WPFEcommerceApp {
             OnCloseErrorAlert = new ImmediateCommand<object>(p => {
                 IsVoucherError = false;
             });
+            CheckVoucher = new ImmediateCommand<object>(p => {
+                if(PromoChoosen == null) {
+                    return;
+                }
+                if(!ValidVoucherList.ContainsKey(PromoChoosen.Id)) {
+                    PromoChoosen = PrevPromo;
+                }
+                PrevPromo = PromoChoosen;
+            });
+            #endregion
         }
-
-		public void OnAccountChange() {
+        #endregion
+        public void OnAccountChange() {
 			OnPropertyChanged(nameof(CurrentUser));
         }
         public override void Dispose() {
@@ -254,19 +300,52 @@ namespace WPFEcommerceApp {
 			base.Dispose();
 		}
 
+        public Dictionary<string, bool> productList = new Dictionary<string, bool>();
+        public Dictionary<string, bool> ValidVoucherList = new Dictionary<string, bool>();
         public async Task Load() {
             MainViewModel.IsLoading = true;
 
+
             var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id);
-            var listVoucher = await promoRepo.GetListAsync(d => d.DateEnd > DateTime.Now);
-
-            foreach(var o in listVoucher) {
-                ListVoucher.Add(o);
-            }
-
             foreach(var o in list) {
                 ListAddress.Add(o.Id, o);
             }
+
+            ListVoucher = new List<Promo>();
+            var valid = new List<Promo>();
+            var invalid = new List<Promo>();
+
+            var listVoucher = await promoRepo.GetListAsync(
+                d => d.DateEnd > DateTime.Now && d.Status == 1,
+                d => d.Products
+            );
+
+            if(productList.Count < 1) {
+                foreach(var order in ListOrder) {
+                    foreach(var product in order.ProductList) {
+                        productList[product.ID] = true;
+                    }
+                }
+            }
+
+            foreach(var o in listVoucher) {
+                var flag = true;
+                //if(o.Products.Count == 0) flag = false;
+                foreach(var prd in o.Products) {
+                    if(!productList.ContainsKey(prd.Id)) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if(flag) {
+                    valid.Add(o);
+                    ValidVoucherList.Add(o.Id, true);
+                }
+                else invalid.Add(o);
+            }
+            valid.Sort(new VoucherCompare());
+            invalid.Sort(new VoucherCompare());
+            ListVoucher = valid.Concat(invalid).ToList();
 
             App.Current.Dispatcher.Invoke(() => {
                 OnPropertyChanged(nameof(ListVoucher));
@@ -286,6 +365,13 @@ namespace WPFEcommerceApp {
 				Content = "Before you place your order, please make sure that your shipping information, billing information and bag summary are true. Are you sure to place your order?"
             };
 			await DialogHost.Show(view, "Main");
+        }
+    }
+    class VoucherCompare : IComparer<Promo> {
+        public int Compare(Promo x, Promo y) {
+            double t1 = (double) x.Sale;
+            double t2 = (double) y.Sale;
+            return t1.CompareTo(t2);
         }
     }
 }

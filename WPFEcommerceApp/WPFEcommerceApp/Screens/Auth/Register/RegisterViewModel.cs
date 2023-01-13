@@ -125,7 +125,9 @@ namespace WPFEcommerceApp {
 
         public ICommand Regist { get; set; }
         public ICommand LoginHandle { get; set; }
-        
+        public ICommand KeyHandle_PolicyEnter { get; }
+
+
         public RegisterViewModel(string email, string password, string id = null) {
 
             try { Email = email; } catch { }
@@ -192,6 +194,10 @@ namespace WPFEcommerceApp {
                     }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             });
+
+            KeyHandle_PolicyEnter = new ImmediateCommand<object>(p => {
+                IsCheckAgree = !IsCheckAgree;
+            });
         }
 
         private async Task<bool> CreateLogin() {
@@ -199,12 +205,15 @@ namespace WPFEcommerceApp {
             if(temp.Count > 0) return false;
 
             ID = await GenerateID.Gen(typeof(UserLogin), "IdUser");
-            var encrypted = new Hashing().Encrypt(Email, Password);
+            var hasher = new Hashing();
+            var salt = Convert.ToBase64String(hasher.GenerateSalt());
+            var encrypted = new Hashing().Encrypt(salt, Password);
             try {
                 await loginRepo.Add(new UserLogin() {
                     IdUser = ID,
                     Password = encrypted,
                     Username = Email,
+                    Salt = salt,
                     Provider = 0
                 });
             } catch (Exception e){

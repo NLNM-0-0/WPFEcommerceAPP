@@ -15,6 +15,10 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.6"/>
+                            <Setter Property="IsChecked" Value="False"/>
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True" SourceName="Container">
                             <Setter Property="BorderBrush" Value="#508BE3" TargetName="border"/>
                         </Trigger>

@@ -45,9 +45,6 @@ namespace WPFEcommerceApp {
                 if(string.IsNullOrEmpty(value)) {
                     return;
                 }
-                if(value.Length < 10) {
-                    throw new ArgumentException("*Too short");
-                }
                 _address = value;
             }
         }

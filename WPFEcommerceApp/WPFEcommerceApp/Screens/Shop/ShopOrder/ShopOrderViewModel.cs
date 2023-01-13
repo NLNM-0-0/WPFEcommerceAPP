@@ -470,7 +470,6 @@ namespace WPFEcommerceApp
                         await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Completed");
                         DeliveredShopOrderBlockModels.Remove(shopOrderBlockViewModel);
                         shopOrderBlockViewModel.Order.Status = "Completed";
-                        shopOrderBlockViewModel.Order.DateEnd = DateTime.Now;
                         shopOrderBlockViewModel.NextStatusContent = "";
                         shopOrderBlockViewModel.ShopOrderBlockCommand = null;
                         CompletedShopOrderBlockModels.Insert(0, shopOrderBlockViewModel);

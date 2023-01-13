@@ -90,6 +90,11 @@ namespace WPFEcommerceApp
         {
             MainViewModel.IsLoading = true;
 
+            if(AccountStore.instance.CurrentAccount == null) {
+                MainViewModel.IsLoading = false;
+                return;
+            }
+
             OrderInfos = new List<OrderInfo>(await orderinfoRepo.GetListAsync(
                 ord => ord.MOrder.IdShop == AccountStore.instance.CurrentAccount.Id,
                 ord => ord.MOrder, ord => ord.Rating));

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -160,9 +161,38 @@ namespace WPFEcommerceApp
                         return true;
                 }
                 return false;
-            }, (p) =>
+            }, async (p) =>
             {
-                MessageBox.Show("nav to checkout");
+                Dictionary<string, Tuple<MUser,List<Product>>> prdList = new Dictionary<string, Tuple<MUser, List<Product>>>();
+
+                foreach(BagBlock bag in Bags) {
+                    if(bag.IsChecked == false) continue;
+                    Product temp = new Product(bag.Product, bag.ProductSize, (int) bag.Amount);
+                    if(!prdList.ContainsKey(bag.Shop.Id)) {
+                        prdList[bag.Shop.Id] = new Tuple<MUser, List<Product>>(bag.Shop, new List<Product>());
+                    }
+                    prdList[bag.Shop.Id].Item2.Add(temp);
+                }
+
+                List<Order> orderList = new List<Order>();
+
+                var prdListConvert = prdList.Values.ToList();
+                foreach(var list in prdListConvert) {
+                    var id = await GenerateID.Gen(typeof(MOrder));
+                    Order o = new Order(list.Item2) {
+                        ID = id,
+                        IDCustomer = AccountStore.instance.CurrentAccount.Id,
+                        IDShop = list.Item1.Id,
+                        Status = "Processing",
+                        ShipTotal = 0,
+                        DateBegin = DateTime.Now,
+                        ShopName = list.Item1.Name,
+                        ShopImage = list.Item1.SourceImageAva
+                    };
+                    orderList.Add(o);
+                }
+                DelCommand.Execute(null);
+                NavigateProvider.CheckoutScreen().Navigate(orderList);
             });
             Plusamount = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -214,6 +244,8 @@ namespace WPFEcommerceApp
 
             Bags = new ObservableCollection<BagBlock>(cartList.Select(item => new BagBlock
             {
+                Product = item.Product,
+                Shop = item.Product.MUser,
                 ID = item.IdProduct,
                 ProductImage = (item.Product.ImageProducts.Count == 0) ? Properties.Resources.DefaultProductImage : item.Product.ImageProducts.First().Source,
                 ProductName = item.Product.Name,

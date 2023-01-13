@@ -10,8 +10,8 @@
              x:Name="uc">
     <Grid>
         <TextBlock Text="My Favorite" Margin="110 15 0 0"
-                   FontSize="{StaticResource FontSizeHeadline2}"
-                   FontWeight="SemiBold"/>
+                   FontSize="{StaticResource FontSizeHeadline}"
+                   FontWeight="Normal"/>
         <TextBlock Text="No favorite product" 
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"

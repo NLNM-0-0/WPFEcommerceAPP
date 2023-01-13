@@ -57,10 +57,12 @@
                     <!--Content-->
                     <materialDesign:DialogHost
                             DialogTheme="Inherit"
-                            CloseOnClickAway="True"
                             Grid.Row="1"
                             Grid.Column="1"
                             Identifier="Main">
+                        <materialDesign:DialogHost.InputBindings>
+                            <KeyBinding Key="Esc" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                        </materialDesign:DialogHost.InputBindings>
                         <Grid>
                             <Grid.Resources>
                                 <ResourceDictionary Source="ScreensDT.xaml"/>

@@ -342,11 +342,11 @@ namespace WPFEcommerceApp
             AllProducts = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => p.IdShop == Shop.Id,
                                                                                                         p => p.Brand,
                                                                                                         p => p.Category,
-                                                                                                        p => p.ImageProducts,
                                                                                                         p => p.OrderInfoes,
                                                                                                         p => p.OrderInfoes.Select(oi => oi.Rating),
                                                                                                         p => p.MUsers,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts,
+                                                                                                        p => p.MUser));
             int number = 0;
             long sumRating = 0;
             foreach (Models.Product product in AllProducts)

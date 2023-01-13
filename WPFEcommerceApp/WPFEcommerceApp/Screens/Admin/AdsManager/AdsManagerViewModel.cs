@@ -194,6 +194,7 @@ namespace WPFEcommerceApp
                 {
                     MainViewModel.IsLoading = true;
                     await RemoveInUseAdsDB();
+                    CommandManager.InvalidateRequerySuggested();
                 }),
                 Header = "Banner is in use",
                 Content = "Are you sure to remove it?",

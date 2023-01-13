@@ -148,7 +148,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Name}"
                                    HorizontalAlignment="Left"
-                                   FontSize="13" 
+                                   FontSize="17" 
                                    VerticalAlignment="Center" 
                                    TextWrapping="Wrap" 
                                    Margin="5,0,0,0"/>
@@ -160,31 +160,31 @@
                             <!--Left column-->
                             <StackPanel>
                                 <TextBlock Text="{i:Binding \'Size: \' + Size}" 
-                                               FontSize="10" 
-                                               Foreground="{StaticResource NotAvailableColorBrush}"
+                                               FontSize="12" 
+                                               Foreground="{StaticResource BlackColorBrush}"
                                                Margin="5, 5, 0, 0"/>
                                 <TextBlock Text="{i:Binding \'Color: \' + Color}" 
                                            Margin="5, 5, 0, 0"
-                                           FontSize="10" 
-                                           Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                           FontSize="12" 
+                                           Foreground="{StaticResource BlackColorBrush}"/>
                                 <TextBlock Text="{i:Binding \'Other details: \' Description}" 
                                             Margin="5, 5, 0, 0"
                                             FontSize="10" 
-                                           Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                           Foreground="{StaticResource BlackColorBrush}"/>
                             </StackPanel>
                             <!--Right column-->
-                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 25 0">
                                 <TextBlock Text="{i:Binding \'Unit Price: \' + Price}" 
                                                Margin="5, 5, 0, 0"
-                                               FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                               FontSize="12" Foreground="{StaticResource BlackColorBrush}"/>
                                 <TextBlock Text="{i:Binding \'Amount: \' + Amount}" 
-                                               FontSize="10" 
+                                               FontSize="12" 
                                                Margin="5, 5, 0, 0"
-                                               Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                               Foreground="{StaticResource BlackColorBrush}"/>
                                 <TextBlock Text="{i:Binding \'Subtotal: \' + Subtotal}" 
                                                Margin="5, 5, 0, 0"
-                                               FontSize="10" 
-                                               Foreground="{StaticResource NotAvailableColorBrush}"/>
+                                               FontSize="12" 
+                                               Foreground="{StaticResource BlackColorBrush}"/>
                             </StackPanel>
                         </Grid>
                     </Grid>

@@ -47,13 +47,22 @@
                                 </ListBox>
                             </ScrollViewer>
                         </Grid>
+                        
                     </StackPanel>
                 </Border>
+                <Grid HorizontalAlignment="Right">
+                    <Button Style="{StaticResource Pressable}"
+                            Command="{Binding FilterSearchCommand}">
+                        <Label Content="Go to filters"/>
+                    </Button>
+                </Grid>
             </StackPanel>
         </Grid>
         <StackPanel.InputBindings>
             <KeyBinding Key="Esc"
                             Command="{Binding CloseSearchCommand}"/>
+            <KeyBinding Key="Return"
+                        Command="{Binding FilterSearchCommand}"/>
         </StackPanel.InputBindings>
     </StackPanel>
 

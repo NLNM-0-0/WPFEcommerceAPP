@@ -100,7 +100,7 @@
             <!--Footer-->
 
             <Grid Margin="0 0 0 10">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Margin="15 0">
                     <Button Content="Re-Order" FontWeight="Light"
                             x:Name="Button1"
                             Style="{StaticResource WhiteButton}"
@@ -126,11 +126,21 @@
                     </Button>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Center"
-                            HorizontalAlignment="Right">
-                    <TextBlock Text="Order Total: "
-                               FontSize="{StaticResource FontSizeHeadline3}"/>
-                    <TextBlock Text="{Binding OrderTotal}"
-                               FontSize="{StaticResource FontSizeHeadline3}"/>
+                            HorizontalAlignment="Right"
+                            Margin="20 0"
+                            Orientation="Horizontal">
+                    <StackPanel Margin="30 0">
+                        <TextBlock Text="Discounted: "
+                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                        <TextBlock Text="{Binding Discount}"
+                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Order Total: "
+                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                        <TextBlock Text="{Binding OrderTotal}"
+                                   FontSize="{StaticResource FontSizeHeadline3}"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </StackPanel>

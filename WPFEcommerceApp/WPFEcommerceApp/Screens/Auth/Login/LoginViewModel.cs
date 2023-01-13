@@ -31,7 +31,7 @@ namespace WPFEcommerceApp {
                     email = null;
                     return;
                 }
-                if(!ValidateRegex.Email.IsMatch(value)) {
+                if(!ValidateRegex.Email.IsMatch(value) && !AdminAccess) {
                     email = null;
                     throw new ArgumentException("*Wrong type");
                 }
@@ -44,7 +44,7 @@ namespace WPFEcommerceApp {
                     password = null;
                     return;
                 }
-                if(value.Length < 6) {
+                if(value.Length < 6 && !AdminAccess) {
                     password = null;
                     throw new ArgumentException("*Password length needs to be more than 6 characters.");
                 }
@@ -53,12 +53,17 @@ namespace WPFEcommerceApp {
         }
 
         public bool KeepSignIn { get; set; }
+        public bool AdminAccess { get; set; }
         public static bool IsLoading { get; set; } = false;
         public ICommand OnLogin { get; set; }
         public ICommand CloseCM { get; set; }
         public ICommand OnSignUp { get; set; }
         public ICommand OnGoogleSignIn { get; set; }
         public ICommand OnForgotPassword { get; set; }
+        #region Keyhandle
+        public ICommand KeyHandle_EnterKeepSignIn { get; }
+        public ICommand KeyHandle_AdminAccess { get; }
+        #endregion
         public LoginViewModel() {
             //_accountStore.CurrentAccount = ;
             OnLogin = new RelayCommand<object>(p => {
@@ -66,6 +71,7 @@ namespace WPFEcommerceApp {
                         !string.IsNullOrEmpty(Password);
             }, async p => {
                 if(await Login()) {
+                    AdminAccess = false;
                     (p as Window).Hide();
                     App.Current.MainWindow.Show();
                 }
@@ -94,6 +100,7 @@ namespace WPFEcommerceApp {
                 var auth = new OAuth();
                 (p as Window).Activate();
                 Tuple<string, object> x = new Tuple<string, object>("timeout", null);
+
                 var cts = new CancellationTokenSource();
                 cts.CancelAfter(9229);
 
@@ -153,9 +160,17 @@ namespace WPFEcommerceApp {
                         await CreateAccount(ins1);
                     }
 
-                    var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1);
+                    var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1, d => d.UserLogin);
                     IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
+                    if(KeepSignIn) {
+                        WPFEcommerceApp.Properties.Settings.Default.Cookie = user.Id;
+                        WPFEcommerceApp.Properties.Settings.Default.Save();
+                    }
+                    else {
+                        WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
+                        WPFEcommerceApp.Properties.Settings.Default.Save();
+                    }
                     (p as Window).Hide();
                     App.Current.MainWindow.Show();
                 } catch { ErrorMessage(); }
@@ -166,6 +181,14 @@ namespace WPFEcommerceApp {
                     DataContext = new ForgotPasswordVM()
                 };
                 DialogHost.Show(view, "Login");
+            });
+            KeyHandle_EnterKeepSignIn = new ImmediateCommand<object>(p => {
+                KeepSignIn = !KeepSignIn;
+            });
+            KeyHandle_AdminAccess = new ImmediateCommand<object>(p => {
+                AdminAccess = !AdminAccess;
+                OnPropertyChanged(nameof(Email));
+                OnPropertyChanged(nameof(Password));
             });
         }
 
@@ -234,12 +257,15 @@ namespace WPFEcommerceApp {
         }
         #endregion
         private async Task<bool> Login() {
-            var encode = new Hashing().Encrypt(Email, Password);
 
             UserLogin acc = await loginRepo.GetSingleAsync(
-                x => (x.Username == Email
-                && x.Password == encode),
+                x => x.Username == Email,
                 x => x.MUser);
+
+            if(acc != null) {
+                var encode = new Hashing().Encrypt(acc.Salt, Password);
+                if(acc.Password != encode) acc = null;
+            }
 
             if(acc != null && acc.MUser == null) {
                 OnSignUp.Execute(acc.IdUser);
@@ -248,7 +274,7 @@ namespace WPFEcommerceApp {
 
             if(acc != null && acc.MUser.StatusUser != "Banned" && acc.Provider != 1) {
                 var userRepo = new GenericDataRepository<MUser>();
-                var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1);
+                var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1, d => d.UserLogin);
                 AccountStore.instance.CurrentAccount = user;
 
                 if(KeepSignIn) {

@@ -26,6 +26,7 @@ namespace WPFEcommerceApp
         public ICommand SignInOutCommand { get; set; }
         public ICommand OnBack { get; set; }
         public ICommand ToNoteCommand { get; set; }
+        public ICommand FilterSearchCommand { get; }
         #endregion
 
         #region Properties
@@ -94,6 +95,7 @@ namespace WPFEcommerceApp
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearchText);
             ClosePopupCommand = new RelayCommandWithNoParameter(ClosePopup);
             SearchCommand = new RelayCommandWithNoParameter(Search);
+
             SignInOutCommand = new ImmediateCommand<object>(async o => {
                 if(AccountStore.instance.CurrentAccount != null) {
                     var dialog = new ConfirmDialog() {
@@ -101,8 +103,8 @@ namespace WPFEcommerceApp
                         CM = new RelayCommand<object>(p => true, p =>
                         {
                             //need to be HomeScreen here
-                            AccountStore.instance.CurrentAccount = null;
                             NavigateProvider.HomeScreen().Navigate();
+                            AccountStore.instance.CurrentAccount = null;
                         })
                     };
                     await DialogHost.Show(dialog, "App");
@@ -115,6 +117,7 @@ namespace WPFEcommerceApp
                 App.Current.MainWindow.Hide();
 
             });
+
             OnBack = new RelayCommand<object>(p => NavigationStore.instance.stackScreen.Count > 1, p =>
             {
                 NavigateProvider.Back();
@@ -125,6 +128,12 @@ namespace WPFEcommerceApp
             }, p => {
                 NavigateProvider.NotificationScreen().Navigate();
             });
+
+            FilterSearchCommand = new ImmediateCommand<object>(p => {
+                IsSearchOpen = false;
+                NavigateProvider.FilterScreen().Navigate();
+            });
+
             var task=Task.Run(async () =>
             {
                 MainViewModel.IsLoading = true;
@@ -151,7 +160,7 @@ namespace WPFEcommerceApp
                 await userRepo.GetListAsync(user => user.StatusShop == Status.NotBanned.ToString()));
 
             var products = new ObservableCollection<Models.Product>(
-                await productRepo.GetListAsync(prd => prd.Status == Status.NotBanned.ToString(), prd => prd.ImageProducts));
+                await productRepo.GetListAsync(prd => prd.Status == Status.NotBanned.ToString(), prd => prd.ImageProducts, prd => prd.MUser));
 
             var userSearchItems = new ObservableCollection<SearchItemViewModel>(
                 users.Select(user => new SearchItemViewModel

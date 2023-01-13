@@ -57,6 +57,8 @@ namespace WPFEcommerceApp {
             if(CreatedFile) File.Delete(tempJPG);
             return downloadUrl;
         }
+
+
         public static async Task<Tuple<bool, string>> PushFromFile(
             string Path, 
             string Root, 

@@ -70,7 +70,7 @@ namespace WPFEcommerceApp {
 
                     var oi = await orderInfoRepo.GetSingleAsync(d => {
                         return d.IdOrder == t[i].IdOrder &&
-                        d.IdProduct == t[i].Product.ID;
+                        d.IdProduct == t[i].Product.ID && d.Size == t[i].Product.Size;
                     });
 
                     oi.IdRating = id;

@@ -55,7 +55,7 @@ namespace WPFEcommerceApp {
 			OnReOrder = new ImmediateCommand<object>(async p => {
 				var view = new ConfirmDialog() {
 					CM = ReOrderCM,
-					Param = p,
+					Param = new List<Order>() { p as Order},
 				};
 				await DialogHost.Show(view, "Main");
 			});
@@ -82,7 +82,7 @@ namespace WPFEcommerceApp {
 			});
 
 			OnViewProduct = new ImmediateCommand<object>( async p => {
-				var t = await productRepo.GetSingleAsync(d => d.Id == (p as Product).ID, d => d.Category, d => d.ImageProducts, d => d.Brand);
+				var t = await productRepo.GetSingleAsync(d => d.Id == (p as Product).ID, d => d.Category, d => d.ImageProducts, d => d.Brand, d => d.MUser);
 				NavigateProvider.ProductDetailScreen().Navigate(t);
             });
 			OnReviewProduct = new ImmediateCommand<object>(async p => {

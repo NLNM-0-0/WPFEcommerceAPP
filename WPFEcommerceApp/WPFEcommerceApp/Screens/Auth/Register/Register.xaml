@@ -14,6 +14,9 @@
     <materialDesign:DialogHost  
         CloseOnClickAway="True"
         Identifier="Regist">
+        <materialDesign:DialogHost.InputBindings>
+            <KeyBinding Key="Esc" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+        </materialDesign:DialogHost.InputBindings>
         <StackPanel Background="White">
             <StackPanel.Resources>
                 <Style x:Key="RadioButtonGender" TargetType="{x:Type RadioButton}">
@@ -150,10 +153,14 @@
 
                 <CheckBox
                     Margin="30 30 0 15"
-                    IsChecked="{Binding IsCheckAgree}"
+                    IsChecked="{Binding IsCheckAgree, Mode=TwoWay}"
                     Content="Agree to WANO's Privacy Policy and Terms of Use"
                     FontSize="15"
-                    Background="{StaticResource BlackColorBrush}"/>
+                    Background="{StaticResource BlackColorBrush}">
+                    <CheckBox.InputBindings>
+                        <KeyBinding Key="Return" Command="{Binding ElementName=Regist, Path=DataContext.KeyHandle_PolicyEnter}"/>
+                    </CheckBox.InputBindings>
+                </CheckBox>
             </StackPanel>
             <!--#endregion-->
 
