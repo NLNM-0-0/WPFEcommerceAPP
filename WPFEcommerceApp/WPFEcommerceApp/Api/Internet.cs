@@ -11,6 +11,7 @@ using Timer = System.Threading.Timer;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Threading;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WPFEcommerceApp {
     public class Internet {
@@ -101,6 +102,13 @@ namespace WPFEcommerceApp {
                     IsConnected = false;
                     OfflineNav();
                 }
+                App.Current.Dispatcher.Invoke(() => {
+                    if(App.Current.MainWindow.Visibility != System.Windows.Visibility.Visible) {
+                        Login p = App.serviceProvider.GetRequiredService<Login>();
+                        p.Hide();
+                        App.Current.MainWindow.Show();
+                    }
+                });
             };
         }
     }

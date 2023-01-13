@@ -180,7 +180,7 @@ namespace WPFEcommerceApp {
             });
             OnEditAddress = new ImmediateCommand<object>((p) => {
                 var listAddress = ListAddress.Values.ToList();
-                if(listAddress.Count != 0 && address.Id != listAddress[0].Id)
+                if(listAddress.Count != 0 && address != null && address.Id != listAddress[0].Id)
                     for(int i = 0; i < listAddress.Count; i++) {
                         if(listAddress[i].Id == address.Id) {
                             listAddress.RemoveAt(i);
