@@ -9,7 +9,7 @@
              x:Name="image"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Image Source="..\..\..\Assets\Images\NoImage.jpg" 
+        <Image Source="{Binding ElementName=image, Path=Default}" 
                x:Name="imgDefault"
                Stretch="{Binding ElementName=image, Path=Stretch}"/>
         <Image Source="{Binding ElementName=image, Path=Source}"

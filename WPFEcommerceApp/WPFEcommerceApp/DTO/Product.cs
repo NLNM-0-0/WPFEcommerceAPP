@@ -35,11 +35,11 @@ namespace WPFEcommerceApp {
             Size=size;
             Color = p.Color;
             Description=p.Description;
-            p.Price=(long)p.Price;
+            Price=(long)p.Price;
             Amount=amount;
             Subtotal = Price*amount;
             ID=p.Id;
-            Discount=p.Sale;
+            Discount=p.Sale * Subtotal / 100;
         }
         public string ProductImage { get; set; }
         public string Name { get; set; }

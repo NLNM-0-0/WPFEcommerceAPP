@@ -11,39 +11,20 @@ using WPFEcommerceApp.Models;
 namespace WPFEcommerceApp {
     [DebuggerDisplay("{"+nameof(GetDebuggerDisplay)+"(),nq}")]
     public class Order {
-        public Order(
-            string iD,
-            string iDCustomer,
-            string iDShop,
-            string status,
-            double shipTotal,
-            List<Product> productList,
-            DateTime dateBegin,
-            string shopName,
-            string shopImage,
-            Nullable<int> shippingSpeedMethod = null) {
-
-            ID=iD;
-            IDCustomer=iDCustomer;
-            IDShop=iDShop;
-            Status=status;
-            ShipTotal=shipTotal;
-            ProductList=productList;
-            DateBegin=dateBegin;
-            ShopName=shopName;
-            ShopImage=shopImage;
-            ShippingSpeedMethod=shippingSpeedMethod;
-
+        public Order(List<Product> productList) {
             SubTotal=0;
             Discount=0;
             OrderTotal=0;
+            ProductList=productList;
 
-            for(int i = 0; i< ProductList.Count; i++) {
-                SubTotal += ProductList[i].Subtotal;
-                Discount += ProductList[i].Subtotal * ProductList[i].Discount / 100;
+            if(ProductList != null) {
+                for(int i = 0; i < ProductList.Count; i++) {
+                    SubTotal += ProductList[i].Subtotal;
+                    Discount += ProductList[i].Subtotal * ProductList[i].Discount / 100;
+                }
+
+                OrderTotal = SubTotal + ShipTotal - Discount;
             }
-
-            OrderTotal = SubTotal + ShipTotal - Discount;
         }
 
         public Order(Order o) {

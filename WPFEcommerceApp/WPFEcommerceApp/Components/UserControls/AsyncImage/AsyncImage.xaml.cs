@@ -36,6 +36,18 @@ namespace WPFEcommerceApp {
             DependencyProperty.Register("Stretch", typeof(Stretch), typeof(AsyncImage), new PropertyMetadata(Stretch.Uniform));
 
 
+
+        public string Default {
+            get { return (string)GetValue(DefaultProperty); }
+            set { SetValue(DefaultProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Default.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DefaultProperty =
+            DependencyProperty.Register("Default", typeof(string), typeof(AsyncImage), new PropertyMetadata("..\\..\\..\\Assets\\Images\\NoImage.jpg"));
+
+
+
         public ImageSource Source {
             get { return (ImageSource)GetValue(ImgSourceProperty); }
             set { SetValue(ImgSourceProperty, value); }

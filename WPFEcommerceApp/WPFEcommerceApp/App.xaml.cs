@@ -72,7 +72,7 @@ namespace WPFEcommerceApp {
         async Task load() {
             var t = new GenericDataRepository<MUser>();
             var u = await t.GetSingleAsync(d => d.Id.Equals(WPFEcommerceApp.Properties.Settings.Default.Cookie), 
-                d => d.Products1);
+                d => d.Products1, d => d.UserLogin);
             AccountStore.instance.CurrentAccount = u;
         }
     }

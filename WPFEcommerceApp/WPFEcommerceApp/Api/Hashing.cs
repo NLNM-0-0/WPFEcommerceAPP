@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace WPFEcommerceApp {
     public class Hashing {
-        public string Encrypt(string username, string password) {
-            byte[] salt = Encoding.ASCII.GetBytes(username);
+        public string Encrypt(string Salt, string password) {
+            byte[] salt = Encoding.ASCII.GetBytes(Salt);
             var data = Encoding.UTF8.GetBytes(password);
             var hash = SaltHash(data, salt);
             return Convert.ToBase64String(hash);
         }
 
-        byte[] GenerateSalt() {
+        public byte[] GenerateSalt() {
             const int saltLength = 32;
 
             using(var randomNumberGenerator = new RNGCryptoServiceProvider()) {
