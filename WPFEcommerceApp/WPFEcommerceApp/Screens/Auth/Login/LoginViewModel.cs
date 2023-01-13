@@ -100,6 +100,7 @@ namespace WPFEcommerceApp {
                 var auth = new OAuth();
                 (p as Window).Activate();
                 Tuple<string, object> x = new Tuple<string, object>("timeout", null);
+
                 var cts = new CancellationTokenSource();
                 cts.CancelAfter(9229);
 
@@ -159,7 +160,7 @@ namespace WPFEcommerceApp {
                         await CreateAccount(ins1);
                     }
 
-                    var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1);
+                    var user = await userRepo.GetSingleAsync(d => d.Id == ins1["sub"], d => d.Products1, d => d.UserLogin);
                     IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
                     if(KeepSignIn) {
@@ -256,12 +257,15 @@ namespace WPFEcommerceApp {
         }
         #endregion
         private async Task<bool> Login() {
-            var encode = new Hashing().Encrypt(Email, Password);
 
             UserLogin acc = await loginRepo.GetSingleAsync(
-                x => (x.Username == Email
-                && x.Password == encode),
+                x => x.Username == Email,
                 x => x.MUser);
+
+            if(acc != null) {
+                var encode = new Hashing().Encrypt(acc.Salt, Password);
+                if(acc.Password != encode) acc = null;
+            }
 
             if(acc != null && acc.MUser == null) {
                 OnSignUp.Execute(acc.IdUser);
@@ -270,7 +274,7 @@ namespace WPFEcommerceApp {
 
             if(acc != null && acc.MUser.StatusUser != "Banned" && acc.Provider != 1) {
                 var userRepo = new GenericDataRepository<MUser>();
-                var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1);
+                var user = await userRepo.GetSingleAsync(d => d.Id == acc.MUser.Id, d => d.Products1, d => d.UserLogin);
                 AccountStore.instance.CurrentAccount = user;
 
                 if(KeepSignIn) {

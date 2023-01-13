@@ -205,12 +205,15 @@ namespace WPFEcommerceApp {
             if(temp.Count > 0) return false;
 
             ID = await GenerateID.Gen(typeof(UserLogin), "IdUser");
-            var encrypted = new Hashing().Encrypt(Email, Password);
+            var hasher = new Hashing();
+            var salt = Convert.ToBase64String(hasher.GenerateSalt());
+            var encrypted = new Hashing().Encrypt(salt, Password);
             try {
                 await loginRepo.Add(new UserLogin() {
                     IdUser = ID,
                     Password = encrypted,
                     Username = Email,
+                    Salt = salt,
                     Provider = 0
                 });
             } catch (Exception e){
