@@ -537,6 +537,9 @@ namespace WPFEcommerceApp
                     DateTo = null;
                     SearchByValue = "";
                     SearchBy = "Id";
+                    MainViewModel.IsLoading = true;
+                    Search();
+                    MainViewModel.IsLoading = false;
                 });
                 ScrollToHome = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {
@@ -665,7 +668,7 @@ namespace WPFEcommerceApp
         }
         public async Task UpdateStatus(string id, string status)
         {
-            Models.MOrder order = await orderRepposition.GetSingleAsync(o => o.Id == id);
+            Models.MOrder order = await orderRepposition.GetSingleAsync(o => o.Id == id, o=>o.OrderInfoes);
             if(order.Status == status)
             {
                 throw new Exception("The status is already updated.");
@@ -674,6 +677,13 @@ namespace WPFEcommerceApp
             if(status == "Delivered")
             {
                 order.DateEnd = DateTime.Now;
+                GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
+                foreach(OrderInfo orderInfo in order.OrderInfoes)
+                {
+                    Models.Product product = await productRepository.GetSingleAsync(p => p.Id == orderInfo.IdProduct);
+                    product.Sold += orderInfo.Count;
+                    await productRepository.Update(product);
+                }    
             }
             await orderRepposition.Update(order);
         }

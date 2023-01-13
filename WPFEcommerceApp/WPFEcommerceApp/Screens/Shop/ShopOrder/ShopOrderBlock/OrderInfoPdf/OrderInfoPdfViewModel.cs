@@ -24,7 +24,6 @@ namespace WPFEcommerceApp
                 OnPropertyChanged(nameof(Email));
                 OnPropertyChanged(nameof(PhoneNumber));
                 OnPropertyChanged(nameof(UserName));
-                OnPropertyChanged(nameof(SubTotal));
             }
         }
         public string UserAdress
@@ -74,18 +73,6 @@ namespace WPFEcommerceApp
             get
             {
                 return Properties.Resources.Email;
-            }
-        }
-        public double SubTotal
-        {
-            get
-            {
-                double sum = 0;
-                foreach(Models.OrderInfo orderInfo in Order.OrderInfoes)
-                {
-                    sum += orderInfo.TotalPrice;
-                }    
-                return sum;
             }
         }
         public OrderInfoPdfViewModel(Models.MOrder order)
