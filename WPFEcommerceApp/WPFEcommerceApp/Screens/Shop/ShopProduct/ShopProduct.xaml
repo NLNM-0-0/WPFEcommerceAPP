@@ -135,7 +135,7 @@
             <Setter Property="Foreground">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource ShopProductStatusColorConverter}">
-                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" Path="Item.Status" />
+                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" Path="Item.BanLevel" />
                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" Path="Item.InStock"/>
                     </MultiBinding>
                 </Setter.Value>
@@ -510,7 +510,7 @@
                             <DataGridTextColumn Header="Status" Width="3*" ElementStyle="{StaticResource statusDataRow}">
                                 <DataGridTextColumn.Binding>
                                     <MultiBinding Converter="{StaticResource ShopProductStatusConverter}" >
-                                        <Binding Path="Status"/>
+                                        <Binding Path="BanLevel"/>
                                         <Binding Path="InStock"/>
                                     </MultiBinding>
                                 </DataGridTextColumn.Binding>
