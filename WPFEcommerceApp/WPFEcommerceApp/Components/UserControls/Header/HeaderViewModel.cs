@@ -131,7 +131,8 @@ namespace WPFEcommerceApp
 
             FilterSearchCommand = new ImmediateCommand<object>(p => {
                 IsSearchOpen = false;
-                NavigateProvider.FilterScreen().Navigate();
+                FilterObject filter = new FilterObject(SearchText, null, null, null, FilterStatus.All);
+                NavigateProvider.FilterScreen().Navigate(filter);
             });
 
             var task=Task.Run(async () =>

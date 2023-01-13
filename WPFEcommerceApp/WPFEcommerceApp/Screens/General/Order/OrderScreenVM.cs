@@ -10,10 +10,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp {
     public class OrderScreenVM : BaseViewModel {
+        private readonly GenericDataRepository<MUser> userRepo = new GenericDataRepository<MUser>();
         private readonly OrderStore _orderStore;
 
         private List<Order> OrderList => _orderStore.OrderList;
@@ -93,11 +96,19 @@ namespace WPFEcommerceApp {
 
             ICommand ReOrderCM = new ReOrderCM();
             OnReorder = new ImmediateCommand<object>(async p => {
-                var view = new ConfirmDialog() {
-                    CM = ReOrderCM,
-                    Param = new List<Order>() { p as Order}
-                };
-                await DialogHost.Show(view, "Main");
+                
+                var t = await userRepo.GetSingleAsync(d => d.Id == (p as Order).IDShop);
+                if(t.StatusShop == "Banned") {
+                    var view = new ConfirmDialog() {
+                        Header = "Oops",
+                        Content = "This shop has been banned!"
+                    };
+                    await DialogHost.Show(view, "Main");
+                    return;
+                }
+                else { 
+                    ReOrderCM.Execute(new List<Order>() { p as Order });
+                }
             });
 
             OnReviewProduct = new ImmediateCommand<object>(async p => {

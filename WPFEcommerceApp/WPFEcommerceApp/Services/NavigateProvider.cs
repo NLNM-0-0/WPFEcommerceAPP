@@ -49,8 +49,8 @@ namespace WPFEcommerceApp {
         }
 
         static public INavigationService FilterScreen() {
-            return new NavigationService<FilterViewModel>(
-                serviceProvider.GetRequiredService<FilterViewModel>);
+            return new ParamNavigationService<FilterViewModel>(
+                p => new FilterViewModel(p as FilterObject));
         }
         static public INavigationService ProductDetailScreen() {
             return new ParamNavigationService<ProductDetailViewModel>(
