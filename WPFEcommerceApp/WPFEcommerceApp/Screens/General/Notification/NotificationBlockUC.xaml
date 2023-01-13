@@ -8,8 +8,8 @@
              x:Name="notificationBlock">
     <Border
         Height="100"
-        BorderBrush="{StaticResource BoxLineColorBrush}"
-         BorderThickness="0,0,0,1"
+        BorderBrush="{StaticResource WhiteColorBrush}"
+        BorderThickness="0,0,0,1"
         Padding="20,5">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -23,18 +23,18 @@
             Height="80"
             CornerRadius="40"
             Background="{StaticResource WhiteColorBrush}">
-                <Image
+                <local:AsyncImage
                 Stretch="Fill"
                 Height="80"
                 Width="80"
-                Source="{Binding AvaImage, ElementName=notificationBlock}">
-                    <Image.Clip>
+                Source="{Binding ElementName=notificationBlock,UpdateSourceTrigger=PropertyChanged, Path=AvaImage}">
+                    <local:AsyncImage.Clip>
                         <EllipseGeometry
                         Center="40 40"
                         RadiusX="40"
                         RadiusY="40"/>
-                    </Image.Clip>
-                </Image>
+                    </local:AsyncImage.Clip>
+                </local:AsyncImage>
             </Border>
             <Grid Grid.Column="1"
               Margin="30,0,0,0">
@@ -43,7 +43,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"
-                       Text="{Binding UserName, ElementName=notificationBlock}"
+                       Text="{Binding UserName, ElementName=notificationBlock, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center"
                        FontSize="{StaticResource FontSizeHeadline3}"/>
                 <TextBlock Grid.Row="1"
@@ -51,7 +51,7 @@
                        VerticalAlignment="Center"
                        FontSize="{StaticResource FontSizeDescription}"
                        Foreground="{StaticResource NotAvailableColorBrush}"
-                       Text="{Binding NotificationContent, ElementName=notificationBlock}">
+                       Text="{Binding NotificationContent, ElementName=notificationBlock, UpdateSourceTrigger=PropertyChanged}">
 
                 </TextBlock>
             </Grid>
@@ -61,7 +61,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"
-                   Text="{Binding Date, ElementName=notificationBlock}"
+                   Text="{Binding Date, ElementName=notificationBlock, UpdateSourceTrigger=PropertyChanged}"
                    Margin="20,0,0,0"
                    VerticalAlignment="Center"
                    FontSize="{StaticResource FontSizeDescription}"

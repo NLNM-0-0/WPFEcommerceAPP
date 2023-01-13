@@ -8,13 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using WPFEcommerceApp.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WPFEcommerceApp
 {
     internal class NotificationViewModel : BaseViewModel
     {
         public GenericDataRepository<Models.Notification> NoteRepo;
-        public string ID = "1008";
 
 
 
@@ -31,17 +31,18 @@ namespace WPFEcommerceApp
         public NotificationViewModel()
         {
             NoteRepo = new GenericDataRepository<Models.Notification>();
-            Task task = Task.Run(async () => await Load());
+            Task t = Task.Run(async () => await Load());
+            while (!t.IsCompleted);
         }
         private async Task Load()
         {
             MainViewModel.IsLoading = true;
-            var noteList = new ObservableCollection<Models.Notification>(await NoteRepo.GetListAsync(item => item.IdReceiver == AccountStore.instance.CurrentAccount.Id,
+            var noteList = new ObservableCollection<Models.Notification>((await NoteRepo.GetListAsync(item => item.IdReceiver == AccountStore.instance.CurrentAccount.Id,
                                                         item => item.MUser1
-                                                        ));
+                                                        )).OrderByDescending(n => n.Date));
 
             Notifications = new ObservableCollection<NotificationBlock>(noteList.Select(item => new NotificationBlock {
-                AvaImage = item.MUser1.SourceImageAva,
+                AvaImage = String.IsNullOrEmpty(item.MUser1.SourceImageAva)?Properties.Resources.DefaultShopAvaImage: item.MUser1.SourceImageAva,
                 UserName = item.MUser1.Name,
                 Date = item.Date.ToString(),
                 NotificationContent = item.Content

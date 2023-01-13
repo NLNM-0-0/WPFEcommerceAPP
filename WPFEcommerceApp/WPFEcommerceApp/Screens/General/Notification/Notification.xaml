@@ -59,35 +59,35 @@
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="2.25*"></ColumnDefinition>
             <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
             <TextBlock Text="WANO'S"
-                       FontSize="{StaticResource FontSizeHeadline2}"
+                       FontSize="{StaticResource FontSizeHeadline}"
                        FontWeight="Bold"
-                       Margin="30 50 30 0"
+                       Margin="20 50 40 0"
                        TextWrapping="Wrap"/>
             <TextBlock Text="NOTIFICATION"
-                       FontSize="{StaticResource FontSizeHeadline2}"
+                       FontSize="{StaticResource FontSizeHeadline}"
                        FontWeight="Bold"
-                       Margin="30 10 30 0"
-                       TextWrapping="Wrap"/>
+                       Margin="20 10 40 0"
+                       Width="auto"/>
         </StackPanel>
         <Border  Grid.Column="1"
                  Margin="0,50, 20, 50"
-                 BorderBrush="{StaticResource BlackColorBrush}"
+                 BorderBrush="{StaticResource BoxLineColorBrush}"
                  BorderThickness="1">
             <ScrollViewer>
                 <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Notifications}">
+                    <ItemsControl ItemsSource="{Binding Notifications, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <local:NotificationBlockUC
-                                    AvaImage="{Binding AvaImage}"
-                                    UserName="{Binding UserName}"
-                                    Date="{Binding Date}"
-                                    NotificationContent="{Binding NotificationContent}"/>
+                                    AvaImage="{Binding AvaImage, UpdateSourceTrigger=PropertyChanged}"
+                                    UserName="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"
+                                    Date="{Binding Date, UpdateSourceTrigger=PropertyChanged}"
+                                    NotificationContent="{Binding NotificationContent, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
