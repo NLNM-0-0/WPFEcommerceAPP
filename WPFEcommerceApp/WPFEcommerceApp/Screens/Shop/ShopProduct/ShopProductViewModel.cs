@@ -1,4 +1,4 @@
-﻿using DataAccessLayer;
+﻿ using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -94,7 +94,6 @@ namespace WPFEcommerceApp
                 {
                     return mainItem;
                 }
-                //ATCMT
                 if (SelectedProduct.BanLevel == 0)
                 {
                     IsLoadingCheck.IsLoading = 3;
@@ -477,11 +476,16 @@ namespace WPFEcommerceApp
             {
                 int.TryParse(MinInStockSearch, out minInStock);
             }
+            
             Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
                                                                                                         ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
                                                                                                         ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
                                                                                                         p.Price <= maxPrice && p.Price >= minPrice &&
                                                                                                         p.InStock == 0))));
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                Products = new ObservableCollection<Models.Product>(Products);
+            }));
             if (Products.Count == 0)
             {
                 IsOpenProductInfoPortrait = false;

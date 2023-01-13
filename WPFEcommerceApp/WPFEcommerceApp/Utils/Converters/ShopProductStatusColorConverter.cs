@@ -19,7 +19,7 @@ namespace WPFEcommerceApp
             }
             else
             {
-                if (values[0].ToString() == "NotBanned")
+                if (values[0].ToString() == "0")
                 {
                     if ((int)values[1] > 0)
                     {
@@ -30,12 +30,11 @@ namespace WPFEcommerceApp
                         return (System.Windows.Media.Brush)new SolidColorBrush(System.Windows.Media.Color.FromRgb(253, 197, 0));
                     }
                 }
-                else if (values[0].ToString() == "Banned")
+                else
                 {
                     return (System.Windows.Media.Brush)new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
                 }
             }
-            return (System.Windows.Media.Brush)new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

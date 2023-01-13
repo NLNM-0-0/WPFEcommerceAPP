@@ -51,7 +51,6 @@ namespace WPFEcommerceApp
                 OnPropertyChanged(nameof(IsCanCommandExcute));
                 OnPropertyChanged(nameof(IsProcessing));
                 OnPropertyChanged(nameof(ForegroundStatus));
-                OnPropertyChanged(nameof(SubTotal));
             }
         }
         private ObservableCollection<ShopOrderDetailBlockViewModel> orderDetails;
@@ -170,18 +169,6 @@ namespace WPFEcommerceApp
         public bool IsProcessing
         {
             get => Order.Status == "Processing";
-        }
-        public double SubTotal
-        {
-            get
-            {
-                double sum = 0;
-                foreach (Models.OrderInfo orderInfo in Order.OrderInfoes)
-                {
-                    sum += orderInfo.TotalPrice;
-                }
-                return sum;
-            }
         }
         public ShopOrderBlockViewModel()
         {

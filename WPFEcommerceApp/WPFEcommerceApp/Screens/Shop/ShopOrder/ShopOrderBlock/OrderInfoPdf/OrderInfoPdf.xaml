@@ -422,10 +422,11 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock 
                         Margin="0 5 0 0"
-                        Text="SUBTOTAl" 
+                        Text="SUBTOTAL" 
                         Grid.Column="0" 
                         Grid.Row="0"
                         VerticalAlignment="Center"
@@ -440,7 +441,7 @@
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
                         <TextBlock 
-                            Text="{Binding SubTotal, UpdateSourceTrigger=PropertyChanged}" 
+                            Text="{c:Binding 'Order.OrderTotal-Order.ShipTotal+Order.Discounted', UpdateSourceTrigger=PropertyChanged}" 
                             FontSize="{StaticResource FontSizeHeadline3}" 
                             FontWeight="Medium"/>
                         <TextBlock
@@ -450,9 +451,8 @@
                             Foreground="{StaticResource NotAvailableColorBrush}"/>
                     </StackPanel>
                     <TextBlock 
-                        Visibility="{c:Binding 'Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}"
                         Margin="0 5 0 0"
-                        Text="DISCOUNT" 
+                        Text="SHIPPING FEE" 
                         Grid.Column="0" 
                         Grid.Row="1"
                         VerticalAlignment="Center"
@@ -465,8 +465,35 @@
                         Grid.Row="1"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <TextBlock 
+                            Text="{Binding Order.ShipTotal, UpdateSourceTrigger=PropertyChanged}" 
+                            FontSize="{StaticResource FontSizeHeadline3}" 
+                            FontWeight="Medium"/>
+                        <TextBlock
+                            Text=" đ"
+                            DockPanel.Dock="Right"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            Foreground="{StaticResource NotAvailableColorBrush}"/>
+                    </StackPanel>
+                    <TextBlock 
+                        Visibility="{c:Binding 'Order.Discounted != null and Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0 5 0 0"
+                        Text="DISCOUNT" 
+                        Grid.Column="0" 
+                        Grid.Row="2"
+                        VerticalAlignment="Center"
+                        FontSize="{StaticResource FontSizeDescription}" 
+                        FontWeight="Light"
+                        HorizontalAlignment="Right"/>
+                    <StackPanel
+                        Margin="0 5 0 0"
+                        Grid.Column="2"
+                        Grid.Row="2"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
                         Orientation="Horizontal"
-                        Visibility="{c:Binding 'Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}">
+                        Visibility="{c:Binding 'Order.Discounted != null and Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}">
                         <TextBlock 
                             Text="-" 
                             FontSize="{StaticResource FontSizeHeadline3}" 
@@ -485,7 +512,7 @@
                         Margin="0 5 0 0"
                         Text="TOTAL" 
                         Grid.Column="0"
-                        Grid.Row="2"
+                        Grid.Row="3"
                         VerticalAlignment="Center"
                         FontSize="{StaticResource FontSizeDescription}" 
                         FontWeight="Light" 
@@ -493,7 +520,7 @@
                     <StackPanel
                         Margin="0 5 0 0"
                         Grid.Column="2"
-                        Grid.Row="2"
+                        Grid.Row="3"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">

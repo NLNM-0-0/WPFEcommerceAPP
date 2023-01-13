@@ -30,6 +30,26 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
+                <Button
+                    x:Name="ButtonClose"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Grid.Column="1"
+                    Margin="0 10 10 0"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Padding="0"
+                    Height="30"
+                    Width="30"
+                    Background="Transparent"
+                    BorderBrush="{StaticResource NotAvailableColorBrush}"
+                    BorderThickness="3">
+                    <fa:ImageAwesome
+                        x:Name="IconButtonClose"
+                        Icon="Close"
+                        Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BorderBrush}"
+                        Width="10"
+                        Height="10"/>
+                </Button>
                 <Border
                     x:Name="MainBorder"
                     MaxHeight="170"
@@ -266,7 +286,7 @@
                         Grid.Column="2"
                         VerticalAlignment="Stretch">
                         <TextBox
-                            x:Name="addressTextBox"
+                            x:Name="descriptionTextBox"
                             Style="{StaticResource TextBoxHintWrapText}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Description"

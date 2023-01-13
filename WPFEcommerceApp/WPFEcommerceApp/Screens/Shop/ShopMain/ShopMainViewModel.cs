@@ -349,6 +349,7 @@ namespace WPFEcommerceApp
                                                                                                         p => p.MUser));
             int number = 0;
             long sumRating = 0;
+            DateTime lastDateHasNewProduct = DateTime.MinValue;
             foreach (Models.Product product in AllProducts)
             {
                 foreach (Models.OrderInfo orderInfo in product.OrderInfoes)
@@ -359,11 +360,18 @@ namespace WPFEcommerceApp
                         number += 1;
                     }
                 }
+                if(product.DateOfSale > lastDateHasNewProduct)
+                {
+                    lastDateHasNewProduct = product.DateOfSale??DateTime.MinValue;
+                }    
             }
             AverageRating = sumRating * 1.0 / number;
-            FavoriteProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.MUsers.Count != 0).ToList().OrderByDescending(p => p.MUsers.Count).Take(9));
-            BestSellerProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.OrderInfoes.Count > 0).OrderByDescending(p => p.OrderInfoes.Count).Take(9));
-            NewProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => (DateTime.Now - p.DateOfSale) <= new TimeSpan(7, 0, 0, 0)).ToList().OrderByDescending(p => p.DateOfSale).Take(9));
+            FavoriteProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.MUsers.Count != 0).ToList().OrderByDescending(p => p.MUsers.Count).Take(10));
+            BestSellerProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.OrderInfoes.Count > 0).OrderByDescending(p => p.OrderInfoes.Count).Take(10));
+            if (lastDateHasNewProduct != DateTime.MinValue)
+            {
+                NewProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => (lastDateHasNewProduct - p.DateOfSale) <= new TimeSpan(7, 0, 0, 0)).ToList().OrderByDescending(p => p.DateOfSale).Take(10));
+            }
         }
     }
 }

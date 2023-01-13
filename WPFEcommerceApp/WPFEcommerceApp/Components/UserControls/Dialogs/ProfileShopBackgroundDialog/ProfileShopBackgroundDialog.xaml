@@ -78,16 +78,19 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox
+            <Border
+                HorizontalAlignment="Stretch">
+                <TextBox
                     x:Name="TextBoxSource"
                     Style="{StaticResource TextBoxHintBlackBorder}"
-                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="Source"
                     Text="{Binding SourceImageBackground}"
                     IsReadOnly="True"
                     materialDesign:TextFieldAssist.SuffixText="          ">
                 </TextBox>
+            </Border>
             <Button
                 Style="{StaticResource TransparentButton}"
                 Command="{Binding ChangeBackgroundShopCommand}"

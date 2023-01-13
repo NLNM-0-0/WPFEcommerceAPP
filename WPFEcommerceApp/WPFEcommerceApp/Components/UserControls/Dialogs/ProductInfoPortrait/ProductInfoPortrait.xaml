@@ -374,11 +374,12 @@
             DisplayMemberPath="Name"
             IsSynchronizedWithCurrentItem="True"
             IsEnabled="{Binding IsEditting}"
-            Text="{Binding SelectedProduct.Category.Name}">
+            Text="{Binding SelectedProduct.Category.Name, UpdateSourceTrigger=Explicit}">
             <ComboBox.SelectedItem>
                 <Binding
                     Path="SelectedProduct.Category"
-                    UpdateSourceTrigger="Explicit">
+                    UpdateSourceTrigger="Explicit"
+                    Mode="OneTime">
                 </Binding>
             </ComboBox.SelectedItem>
         </ComboBox>
@@ -391,11 +392,12 @@
             DisplayMemberPath="Name"
             IsSynchronizedWithCurrentItem="True"
             IsEnabled="{Binding IsEditting}"
-            Text="{Binding SelectedProduct.Brand.Name}">
+            Text="{Binding SelectedProduct.Brand.Name, UpdateSourceTrigger=Explicit}">
             <ComboBox.SelectedItem>
                 <Binding
                     Path="SelectedProduct.Brand"
-                    UpdateSourceTrigger="Explicit">
+                    UpdateSourceTrigger="Explicit"
+                    Mode="OneTime">
                 </Binding>
             </ComboBox.SelectedItem>
         </ComboBox>

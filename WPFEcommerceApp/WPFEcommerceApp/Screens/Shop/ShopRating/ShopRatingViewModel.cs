@@ -519,12 +519,20 @@ namespace WPFEcommerceApp
                     DateTo = null;
                     SelectedCategory = null;
                     SelectedBrand = null;
-                    StatusSearchAll = true;
-                    StatusSearch5Star = false;
-                    StatusSearch4Star = false;
-                    StatusSearch3Star = false;
-                    StatusSearch2Star = false;
-                    StatusSearch1Star = false;
+                    if (statusSearchAll)
+                    {
+                        ShopRatingBlockModelFilter = ShopRatingBlockModelsAll;
+                        Search();
+                    }
+                    else
+                    {
+                        StatusSearchAll = true;
+                        StatusSearch5Star = false;
+                        StatusSearch4Star = false;
+                        StatusSearch3Star = false;
+                        StatusSearch2Star = false;
+                        StatusSearch1Star = false;
+                    }
                     MainViewModel.IsLoading = false;
                 });
                 ScrollToHome = new RelayCommand<object>((p) => { return p != null; }, p =>

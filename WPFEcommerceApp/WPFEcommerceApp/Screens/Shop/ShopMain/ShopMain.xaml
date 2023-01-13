@@ -71,6 +71,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <Border
+                            VerticalAlignment="Top"
                             Grid.Column="0"
                             BorderBrush="{StaticResource BoxLineColorBrush}"
                             BorderThickness="1"
@@ -78,18 +79,22 @@
                             CornerRadius="50"
                             Width="100"
                             Height="100">
-                            <local:AsyncImage
-                                Height="98"
-                                Width="98"
-                                Stretch="Fill"
-                                Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
-                                <local:AsyncImage.Clip>
-                                    <EllipseGeometry
-                                        Center="49 49"
-                                        RadiusX="49"
-                                        RadiusY="49"/>
-                                </local:AsyncImage.Clip>
-                            </local:AsyncImage>
+                            <Grid
+                                VerticalAlignment="Top">
+                                <local:AsyncImage
+                                    Height="98"
+                                    Width="98"
+                                    Stretch="Fill"
+                                    Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
+                                    <local:AsyncImage.Clip>
+                                        <EllipseGeometry
+                                            Center="49 49"
+                                            RadiusX="49"
+                                            RadiusY="49"/>
+                                    </local:AsyncImage.Clip>
+                                </local:AsyncImage>
+                            </Grid>
+                            
                         </Border>
                         <Grid 
                             x:Name="panelGrid"

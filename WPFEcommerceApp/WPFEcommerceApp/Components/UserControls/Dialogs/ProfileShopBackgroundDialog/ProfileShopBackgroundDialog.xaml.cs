@@ -43,7 +43,7 @@ namespace WPFEcommerceApp
                 {
                     if (Canvas.GetLeft(content) * ratio - 425 * (ratio - 1) < 850 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage)
                     {
-                        Canvas.SetLeft(content, 425 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage);
+                        Canvas.SetLeft(content, 850 - (DataContext as ProfileShopBackgroundDialogViewModel).WidthImage);
                     }
                     else
                     {

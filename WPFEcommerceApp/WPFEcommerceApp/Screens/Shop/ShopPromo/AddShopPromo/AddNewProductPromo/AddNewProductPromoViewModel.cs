@@ -281,16 +281,27 @@ namespace WPFEcommerceApp
                 });
                 ResetCommand = new RelayCommandWithNoParameter(() =>
                 {
+                    MainViewModel.IsLoading = true;
                     SearchBy = "Id";
                     SearchByValue = "";
                     SelectedBrand = null;
                     SelectedCategory = null;
-                    IsShowSelectedProductOnly = true;
-                    Search();
+                    if (isShowSelectedProductOnly)
+                    {
+                        FilterPromoProductBlocks = SelectedPromoProductBlocks;
+                        Search();
+                    }
+                    else
+                    {
+                        IsShowSelectedProductOnly = true;
+                    }
+                    MainViewModel.IsLoading = false;
                 });
                 SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
+                    MainViewModel.IsLoading = true;
                     Search();
+                    MainViewModel.IsLoading = false;
                 });
                 FilterPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>(AllPromoProductBlocks);
                 TotalProducts = SelectedPromoProductBlocks.Count();
@@ -321,7 +332,6 @@ namespace WPFEcommerceApp
         private async Task LoadProducts()
         {
             GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
-            //ATCMT
             ObservableCollection<Models.Product> allProduct = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => (p.BanLevel == 0 && p.IdShop == User.Id), 
                                                                                                                                             p => p.Brand,
                                                                                                                                             p => p.Category,

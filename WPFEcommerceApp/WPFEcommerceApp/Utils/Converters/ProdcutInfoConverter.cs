@@ -35,7 +35,6 @@ namespace WPFEcommerceApp
         {
             try
             {
-                string status = (string)values[(int)productInfo.Status];
                 string name = (string)values[(int)productInfo.Name];
                 string price = (string)values[(int)productInfo.Price];
                 ObservableCollection<BitmapImage> imageProducts = (ObservableCollection<BitmapImage>)values[(int)productInfo.Images];
@@ -53,8 +52,6 @@ namespace WPFEcommerceApp
                 string description = (string)values[(int)productInfo.Description];
 
                 Models.Product product = new Models.Product();
-                //ATCMT
-                //product.BanLevel = status;
                 product.Name = name;
                 product.Price = long.Parse(price == "" ? "0" : price);
                 product.ImageProducts.Clear();

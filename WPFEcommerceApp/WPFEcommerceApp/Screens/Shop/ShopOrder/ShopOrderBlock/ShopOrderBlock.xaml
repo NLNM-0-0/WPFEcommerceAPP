@@ -23,6 +23,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid
@@ -272,7 +273,7 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right">
                         <TextBlock
-                            Text="{Binding SubTotal, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{c:Binding 'Order.OrderTotal-Order.ShipTotal+Order.Discounted', UpdateSourceTrigger=PropertyChanged}"
                             FontFamily="{StaticResource Medium}"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontWeight="SemiBold"/>
@@ -285,8 +286,43 @@
                 </Grid>
             </Border>
             <Border
-                Visibility="{c:Binding 'Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}"
                 Grid.Row="4"
+                Margin="20 0"
+                Background="Transparent"
+                Padding="0 20 0 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Text="Shipping Fee : "
+                        FontFamily="{StaticResource Medium}"
+                        FontSize="{StaticResource FontSizeHeadline3}"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"/>
+                    <StackPanel
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right">
+                        <TextBlock
+                            Text="{Binding Order.ShipTotal, UpdateSourceTrigger=PropertyChanged}"
+                            FontFamily="{StaticResource Medium}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontWeight="SemiBold"/>
+                        <TextBlock
+                            Text="đ"
+                            FontFamily="{StaticResource Medium}"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border
+                Visibility="{c:Binding 'Order.Discounted != null and Order.Discounted != 0', UpdateSourceTrigger=PropertyChanged}"
+                Grid.Row="5"
                 Margin="20 0"
                 Background="Transparent"
                 Padding="0 20 0 0">
@@ -327,10 +363,10 @@
                 </Grid>
             </Border>
             <Grid
-                Grid.Row="5"
+                Grid.Row="6"
                 Height="20"/>
             <Border
-                Grid.Row="6"
+                Grid.Row="7"
                 Margin="20 0"
                 BorderBrush="{StaticResource NotAvailableColorBrush}"
                 BorderThickness="0 1 0 0"
@@ -406,7 +442,6 @@
                             FontWeight="DemiBold"
                             HorizontalAlignment="Right"/>
                     </StackPanel>
-                    
                 </Grid>
             </Border>
         </Grid>

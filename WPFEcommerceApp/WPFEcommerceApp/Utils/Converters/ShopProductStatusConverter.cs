@@ -12,7 +12,7 @@ namespace WPFEcommerceApp
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {                     
-            if (values[0].ToString() == "NotBanned")
+            if (values[0].ToString() == "0")
             {
                 if ((int)values[1] > 0)
                 {
@@ -23,7 +23,7 @@ namespace WPFEcommerceApp
                     return "Out Of Stock";
                 }
             }
-            else if (values[0].ToString()=="Banned")
+            else
             {
                 return "Banned";
             }
