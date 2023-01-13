@@ -142,6 +142,7 @@ namespace WPFEcommerceApp
                         {
                             Task.Run(async () => await RemoveBag(Bags[i].ID)).Wait();
                             Bags.RemoveAt(i);
+                            NumberOfCheck--;
                             i--;
                         }
                     }

@@ -9,13 +9,23 @@
              xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d">
     <ScrollViewer>
-        <StackPanel>
-            <TextBlock Text="WANO'S BAG"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                Text="WANO'S BAG"
                    Margin="20,30"
                    FontSize="{StaticResource FontSizeHeadline}">
 
             </TextBlock>
-            <Border  BorderBrush="{StaticResource BoxLineColorBrush}"
+            <Border
+                Grid.Row="1"
+                BorderBrush="{StaticResource BoxLineColorBrush}"
                  BorderThickness="1"
                  Margin="20,0,20,0">
                 <Grid Margin="0,20">
@@ -88,13 +98,14 @@
 
             </Border>
             <ListView
-                        ItemsSource="{Binding Bags}"
-                        ScrollViewer.CanContentScroll="False"
-                        ScrollViewer.VerticalScrollBarVisibility="Auto"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        Height="400"
-                        Margin="20,20,20,0"
-                        HorizontalContentAlignment="Stretch">
+                Grid.Row="2"
+                VerticalAlignment="Stretch"
+                ItemsSource="{Binding Bags}"
+                ScrollViewer.CanContentScroll="False"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                Margin="20,20,20,0"
+                HorizontalContentAlignment="Stretch">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <local:BagBlockUC
@@ -109,6 +120,7 @@
                 </ListView.ItemContainerStyle>
             </ListView>
             <Border
+                Grid.Row="3"
             Width="600"
             Margin="0,30,20,15"
             BorderBrush="{StaticResource BoxLineColorBrush}"
@@ -170,8 +182,7 @@
                     </Button>
                 </Grid>
             </Border>
-
-        </StackPanel>
+        </Grid>
     </ScrollViewer>
 
 </UserControl>

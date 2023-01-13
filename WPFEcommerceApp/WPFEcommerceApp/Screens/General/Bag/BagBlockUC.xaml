@@ -37,11 +37,11 @@
                 IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"
                 IsHitTestVisible="False">
                 </CheckBox>
-                <Image Grid.Column="1" Source="{Binding ProductImage, UpdateSourceTrigger=PropertyChanged}"
+                <local:AsyncImage Grid.Column="1" Source="{Binding ProductImage, UpdateSourceTrigger=PropertyChanged}"
                    Margin="-20,0,0,0"
                    VerticalAlignment="Center">
 
-                </Image>
+                </local:AsyncImage>
                 <Border
                 VerticalAlignment="Stretch"
                 HorizontalAlignment="Stretch"
