@@ -18,6 +18,7 @@ namespace WPFEcommerceApp.Models
         public string Password { get; set; }
         public string Username { get; set; }
         public Nullable<int> Provider { get; set; }
+        public string Salt { get; set; }
     
         public virtual MUser MUser { get; set; }
     }

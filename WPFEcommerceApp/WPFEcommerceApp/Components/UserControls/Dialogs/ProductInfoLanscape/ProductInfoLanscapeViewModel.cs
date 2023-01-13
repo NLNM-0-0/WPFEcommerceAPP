@@ -173,7 +173,8 @@ namespace WPFEcommerceApp
         {
             get
             {
-                if (SelectedProduct.Status == "Banned")
+                //ATCMT
+                if (SelectedProduct.BanLevel != 0)
                 {
                     return new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
                 }
@@ -192,7 +193,7 @@ namespace WPFEcommerceApp
         {
             get
             {
-                if (SelectedProduct.Status == "Banned")
+                if (SelectedProduct.BanLevel != 0)
                 {
                     return "Banned";
                 }
@@ -245,7 +246,7 @@ namespace WPFEcommerceApp
                     IsHadOneSize = false;
                 }
                 IsEditting = false;
-                if (SelectedProduct.Status == "Banned")
+                if (SelectedProduct.BanLevel != 0)
                 {
                     IsBanned = true;
                 }

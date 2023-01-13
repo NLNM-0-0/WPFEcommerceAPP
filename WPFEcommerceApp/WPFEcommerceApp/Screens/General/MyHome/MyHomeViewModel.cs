@@ -48,7 +48,8 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             var products = new List<Models.Product>(await
-                prodRepo.GetAllAsync(item => item.Brand,
+                prodRepo.GetListAsync(item=>item.BanLevel==0,
+                item => item.Brand,
                 item => item.Category,
                 item => item.ImageProducts,
                 item => item.MUser));

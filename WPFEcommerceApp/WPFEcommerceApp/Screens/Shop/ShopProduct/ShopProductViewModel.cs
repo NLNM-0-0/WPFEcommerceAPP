@@ -94,7 +94,8 @@ namespace WPFEcommerceApp
                 {
                     return mainItem;
                 }
-                if (SelectedProduct.Status == "NotBanned")
+                //ATCMT
+                if (SelectedProduct.BanLevel == 0)
                 {
                     IsLoadingCheck.IsLoading = 3;
                     ProductInfoPortraitViewModel productInfoPortraitViewModel = new ProductInfoPortraitViewModel(SelectedProduct);
@@ -577,7 +578,7 @@ namespace WPFEcommerceApp
                                                                                                         ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
                                                                                                         p.Price <= maxPrice && p.Price >= minPrice &&
                                                                                                         p.InStock <= maxPrice && p.InStock >= minPrice &&
-                                                                                                        p.Status == "Banned")));
+                                                                                                        p.BanLevel != 0)));
             if (Products.Count == 0)
             {
                 IsOpenProductInfoPortrait = false;
@@ -588,12 +589,12 @@ namespace WPFEcommerceApp
             AllProducts = new ObservableCollection<Models.Product>((await ProductRepository.GetListAsync(p => p.IdShop == Shop.Id,
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts)).OrderByDescending(p=>p.Status).
+                                                                                                        p => p.ImageProducts)).OrderByDescending(p=>p.BanLevel).
                                                                                                                                 ThenByDescending(p=>(p.InStock > 0)).
                                                                                                                                 ThenByDescending(p=>p.DateOfSale));
-            BannedProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.Status == "Banned"));
-            OnSaleProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.Status == "NotBanned" && p.InStock > 0));
-            OutOfStockProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.Status == "NotBanned" && p.InStock == 0));
+            BannedProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel != 0));
+            OnSaleProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel == 0 && p.InStock > 0));
+            OutOfStockProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel == 0 && p.InStock == 0));
         }
     }
 }

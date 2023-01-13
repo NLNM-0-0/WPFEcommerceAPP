@@ -73,7 +73,7 @@ namespace WPFEcommerceApp
             foreach (var favProduct in favProducts.Products1)
             {
                 var prod = await proRepo.GetSingleAsync(
-                    pr => pr.Id == favProduct.Id, 
+                    pr => pr.Id == favProduct.Id&&pr.BanLevel==0, 
                     pr => pr.ImageProducts, 
                     pr => pr.Category, 
                     pr => pr.Brand,

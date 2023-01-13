@@ -42,7 +42,7 @@ namespace WPFEcommerceApp.Models
         public string Color { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> DateOfSale { get; set; }
-        public string Status { get; set; }
+        public Nullable<int> BanLevel { get; set; }
     
         public virtual Brand Brand { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

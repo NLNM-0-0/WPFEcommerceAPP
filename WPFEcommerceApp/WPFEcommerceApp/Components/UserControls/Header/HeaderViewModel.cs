@@ -160,7 +160,7 @@ namespace WPFEcommerceApp
                 await userRepo.GetListAsync(user => user.StatusShop == Status.NotBanned.ToString()));
 
             var products = new ObservableCollection<Models.Product>(
-                await productRepo.GetListAsync(prd => prd.Status == Status.NotBanned.ToString(), prd => prd.ImageProducts, prd => prd.MUser));
+                await productRepo.GetListAsync(prd => prd.BanLevel == 0, prd => prd.ImageProducts, prd => prd.MUser));
 
             var userSearchItems = new ObservableCollection<SearchItemViewModel>(
                 users.Select(user => new SearchItemViewModel
