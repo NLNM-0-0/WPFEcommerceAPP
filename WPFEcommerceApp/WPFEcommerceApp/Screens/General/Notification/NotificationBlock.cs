@@ -9,8 +9,8 @@ namespace WPFEcommerceApp
 {
     public class NotificationBlock
     {
-        private ImageSource avaImage;
-        public ImageSource AvaImage
+        private string avaImage;
+        public string AvaImage
         {
             get => avaImage;
             set

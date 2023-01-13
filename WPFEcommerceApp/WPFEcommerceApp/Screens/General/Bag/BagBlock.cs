@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using WPFEcommerceApp.Models;
 
 namespace WPFEcommerceApp
 {
@@ -23,6 +24,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        public Models.Product Product { get; set; }
+        public MUser Shop { get; set; }
         private string productImage;
         public string ProductImage
         {

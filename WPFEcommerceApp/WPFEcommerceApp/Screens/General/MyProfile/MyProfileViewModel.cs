@@ -25,6 +25,7 @@ namespace WPFEcommerceApp
 
         private GenericDataRepository<MUser> userRepo;
         private GenericDataRepository<Address> addressRepo;
+        private readonly GenericDataRepository<UserLogin> loginRepo = new GenericDataRepository<UserLogin>();
         public MUser EditUser { get; set; }
         public bool IsAdmin
         {
@@ -143,7 +144,31 @@ namespace WPFEcommerceApp
                 AddressDialogViewModel.AddressCommand = new RelayCommand<object>(p => p != null, async (p) => await AddNewAddress(p));
                 AddressItemViewModel.EditAddressCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenEditAddress(p));
                 AddressDialogViewModel.RemoveAddressCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveAddress(p));
-                SavePasswordCommand = new RelayCommandWithNoParameter(SavePassword);
+                SavePasswordCommand = new RelayCommand<object>(p => {
+                    return !string.IsNullOrEmpty(CurrentPassword) &&
+                    !string.IsNullOrEmpty(NewPassword) &&
+                    !string.IsNullOrEmpty(ConfirmNewPassword) &&
+                    ConfirmNewPassword == NewPassword;
+                }, async p => {
+                    var hasher = new Hashing();
+                    var user = AccountStore.instance.CurrentAccount.UserLogin;
+                    var hash = hasher.Encrypt(user.Username, CurrentPassword);
+                    var dl = new ConfirmDialog() {
+                        Content = "Your password is wrong, please try again!",
+                        Header = "Oops",
+                    };
+                    if(hash != user.Password) {
+                        await DialogHost.Show(dl, "Main");
+                        return;
+                    }
+                    dl.Content = "Your password has changed!";
+                    dl.Header = "Success";
+                    
+                    user.Password = hasher.Encrypt(user.Username, NewPassword);
+                    await loginRepo.Update(user);
+                    await DialogHost.Show(dl, "Main");
+
+                });
                 MainViewModel.IsLoading = false;
             });
             
@@ -238,10 +263,30 @@ namespace WPFEcommerceApp
         public async Task SaveProfile(object obj)
         {
             MainViewModel.IsLoading = true;
+
+            var userlogin = AccountStore.instance.CurrentAccount.UserLogin;
+
             var user = obj as MUser;
             if (user == null)
                 return;
-            await AccountStore.instance.Update(user);
+            if(userlogin.Username != EditUser.Email) {
+                var check = await loginRepo.GetSingleAsync(d => d.Username == EditUser.Email);
+                if(check == null) {
+                    await AccountStore.instance.Update(user);
+                    userlogin.Username = EditUser.Email;
+                    AccountStore.instance.CurrentAccount.UserLogin = userlogin;
+                    await loginRepo.Update(userlogin);
+                } 
+                else {
+                    var dl = new ConfirmDialog() {
+                        Content = "This email is already exist, please try again!",
+                        Header = "Oops"
+                    };
+                    await DialogHost.Show(dl, "Main");
+                    MainViewModel.IsLoading = false;
+                    return;
+                }
+            }
             await Load();
             MainViewModel.IsLoading = false;
 
@@ -357,10 +402,6 @@ namespace WPFEcommerceApp
             }
             MainViewModel.IsLoading = false;
 
-        }
-        public void SavePassword()
-        {
-            
         }
         #endregion
 

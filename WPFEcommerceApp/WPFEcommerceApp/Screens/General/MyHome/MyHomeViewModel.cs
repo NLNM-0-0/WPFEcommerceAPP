@@ -50,7 +50,8 @@ namespace WPFEcommerceApp
             var products = new List<Models.Product>(await
                 prodRepo.GetAllAsync(item => item.Brand,
                 item => item.Category,
-                item => item.ImageProducts));
+                item => item.ImageProducts,
+                item => item.MUser));
 
             Products = new ObservableCollection<ProductBlockViewModel>(
                 products.Take(5).Select(pr => new ProductBlockViewModel(pr)));

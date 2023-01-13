@@ -426,14 +426,12 @@ namespace WPFEcommerceApp
             RightCommand = new RelayCommand<object>(p => true, Right);
             LeftCommand = new RelayCommand<object>(p => true, Left);
             Amount = 1;
-            //if(String.IsNullOrEmpty(SelectedProduct.MUser.SourceImageAva))
-            //{
-            //    SourceImageAva = Properties.Resources.DefaultShopAvaImage;
-            //}    
-            //else
-            //{
-            //    SourceImageAva = SelectedProduct.MUser.SourceImageAva;
-            //}
+            if(String.IsNullOrEmpty(SelectedProduct.MUser.SourceImageAva)) {
+                SourceImageAva = Properties.Resources.DefaultShopAvaImage;
+            }
+            else {
+                SourceImageAva = SelectedProduct.MUser.SourceImageAva;
+            }
             if (SelectedProduct.IsOneSize)
             {
                 IsHadOneSize = true;
@@ -510,17 +508,6 @@ namespace WPFEcommerceApp
                 return (AccountStore.instance.CurrentAccount != null && SelectedProduct.IdShop != AccountStore.instance.CurrentAccount.Id);
             }, async (p) =>
             {
-                /*var t = await FavouriteApi.Add(AccountStore.instance.CurrentAccount.Id, (p as Models.Product).Id);
-
-                var dl = new ConfirmDialog() {
-                    Header = t ? "Success" : "Oops",
-                    Content = "This product has been added to your Favourite. \nCheck it out.",
-                    CM = new RelayCommand<object>(pr => true, pr => {
-                        NavigateProvider.FavouriteScreen().Navigate();
-                    }),
-                    Param = ""
-                };
-                await DialogHost.Show(dl, "Main");*/
                 await FavoriteStore.instance.Add(SelectedProduct);
                 OnPropertyChanged(nameof(IsFavorite));
             });
@@ -529,17 +516,6 @@ namespace WPFEcommerceApp
                 return (AccountStore.instance.CurrentAccount != null && SelectedProduct.IdShop != AccountStore.instance.CurrentAccount.Id);
             }, async (p) =>
             {
-                /*var t = await FavouriteApi.Add(AccountStore.instance.CurrentAccount.Id, (p as Models.Product).Id);
-
-                var dl = new ConfirmDialog() {
-                    Header = t ? "Success" : "Oops",
-                    Content = "This product has been added to your Favourite. \nCheck it out.",
-                    CM = new RelayCommand<object>(pr => true, pr => {
-                        NavigateProvider.FavouriteScreen().Navigate();
-                    }),
-                    Param = ""
-                };
-                await DialogHost.Show(dl, "Main");*/
                 await FavoriteStore.instance.Delete(SelectedProduct);
                 OnPropertyChanged(nameof(IsFavorite));
             });
@@ -548,18 +524,27 @@ namespace WPFEcommerceApp
                 var raw = p as Models.Product;
                 var raw2 = await productRepo.GetSingleAsync(d => d.Id == raw.Id, d => d.ImageProducts);
 
-                Product prd = new Product(raw2, Size, 1);
+                Product prd = new Product(raw2, Size, Amount);
                 List<Product> list = new List<Product>();
                 list.Add(prd);
-
 
                 var id = await GenerateID.Gen(typeof(MOrder));
                 var repo = new GenericDataRepository<MUser>();
                 var shop = await repo.GetSingleAsync(d => d.Id == raw.IdShop);
 
-                Order o = new Order(id, AccountStore.instance.CurrentAccount.Id, raw.IdShop, "Processing", 20000, list, DateTime.Now, shop.Name, shop.SourceImageAva);
-
-                NavigateProvider.CheckoutScreen().Navigate(o);
+                Order o = new Order(list) {
+                    ID = id,
+                    IDCustomer = AccountStore.instance.CurrentAccount.Id,
+                    IDShop = raw.IdShop, 
+                    Status = "Processing",
+                    ShipTotal = 0,
+                    DateBegin = DateTime.Now,
+                    ShopName = shop.Name,
+                    ShopImage = shop.SourceImageAva
+                };
+                var orderList = new List<Order>();
+                orderList.Add(o);
+                NavigateProvider.CheckoutScreen().Navigate(orderList);
             });
 
             AddToBagCommand = new RelayCommand<object>((p) => { return ((IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize) && AccountStore.instance.CurrentAccount != null && SelectedProduct.IdShop != AccountStore.instance.CurrentAccount.Id && Amount > 0); }, async (p) =>
@@ -585,6 +570,16 @@ namespace WPFEcommerceApp
         {
             MainViewModel.IsLoading = true;
             GenericDataRepository<Models.Cart> dataRepository = new GenericDataRepository<Models.Cart>();
+            var product = await dataRepository.GetSingleAsync(
+                d => d.IdProduct == SelectedProduct.Id &&
+                    d.IdUser == AccountStore.instance.CurrentAccount.Id &&
+                    d.Size == Size);
+            if(product != null) {
+                product.Amount += Amount;
+                await dataRepository.Update(product);
+                MainViewModel.IsLoading = false;
+                return;
+            }
             await dataRepository.Add(new Models.Cart
             {
                 IdProduct = SelectedProduct.Id,

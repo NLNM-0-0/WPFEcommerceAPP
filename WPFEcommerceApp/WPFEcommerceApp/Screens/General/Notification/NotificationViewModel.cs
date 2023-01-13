@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,13 +37,12 @@ namespace WPFEcommerceApp
         {
             MainViewModel.IsLoading = true;
             var noteList = new ObservableCollection<Models.Notification>(await NoteRepo.GetListAsync(item => item.IdReceiver == AccountStore.instance.CurrentAccount.Id,
-                                                        item => item.MUser
+                                                        item => item.MUser1
                                                         ));
 
-            Notifications = new ObservableCollection<NotificationBlock>(noteList.Select(item => new NotificationBlock
-            {
-                AvaImage = new BitmapImage(new Uri(item.MUser.SourceImageAva)),
-                UserName = item.MUser.Name,
+            Notifications = new ObservableCollection<NotificationBlock>(noteList.Select(item => new NotificationBlock {
+                AvaImage = item.MUser1.SourceImageAva,
+                UserName = item.MUser1.Name,
                 Date = item.Date.ToString(),
                 NotificationContent = item.Content
             }));

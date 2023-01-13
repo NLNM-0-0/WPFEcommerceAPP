@@ -76,7 +76,8 @@ namespace WPFEcommerceApp
                     pr => pr.Id == favProduct.Id, 
                     pr => pr.ImageProducts, 
                     pr => pr.Category, 
-                    pr => pr.Brand);
+                    pr => pr.Brand,
+                    pr => pr.MUser);
 
                 pro.Add(new ProductBlockViewModel(prod));
             }

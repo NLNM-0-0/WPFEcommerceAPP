@@ -381,7 +381,7 @@ namespace WPFEcommerceApp
                                                                                                             (p.IsHadSizeXL == CheckSize[4] == true) || (p.IsHadSizeXXL == CheckSize[5] == true))),
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts, p => p.MUser));
             LoadProductBLockViewModel();
         }
         private void LoadProductBLockViewModel()
@@ -398,7 +398,8 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.Status == "NotBanned",
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts,
+                                                                                                        p => p.MUser));
             MainViewModel.IsLoading = false;
             /*LoadProductBLockViewModel();
             OnPropertyChanged(nameof(ProductViewModels));*/
@@ -410,7 +411,8 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.Sale >= 20,
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts,
+                                                                                                        p => p.MUser));
             MainViewModel.IsLoading = false;
             /* LoadProductBLockViewModel();
              OnPropertyChanged(nameof(ProductViewModels));*/
@@ -421,7 +423,7 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => (DateTime.Today - p.DateOfSale) < new TimeSpan(7, 0, 0, 0),
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts, p => p.MUser));
             MainViewModel.IsLoading = false;
 
             /*LoadProductBLockViewModel();
@@ -433,7 +435,7 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.Sold >= 100,
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts, p => p.MUser));
             MainViewModel.IsLoading = false;
             /* LoadProductBLockViewModel();
              OnPropertyChanged(nameof(ProductViewModels));*/
@@ -454,7 +456,7 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => hellos.Contains(p.Category.Name),
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts, p => p.MUser));
             MainViewModel.IsLoading = false;
             /* LoadProductBLockViewModel();
              OnPropertyChanged(nameof(ProductViewModels));*/
@@ -474,7 +476,7 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => hellos.Contains(p.Brand.Name),
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts));
+                                                                                                        p => p.ImageProducts, p => p.MUser));
             MainViewModel.IsLoading = false;
             /* LoadProductBLockViewModel();
              OnPropertyChanged(nameof(ProductViewModels));*/
