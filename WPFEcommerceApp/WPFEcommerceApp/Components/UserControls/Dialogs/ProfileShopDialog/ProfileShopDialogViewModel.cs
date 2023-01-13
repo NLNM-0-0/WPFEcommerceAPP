@@ -75,7 +75,7 @@ namespace WPFEcommerceApp
                 return (ImageSource)ImageBackground;
             }
         }
-        private bool isEditing = false;
+        private bool isEditing = true;
         public bool IsEditing
         {
             get => isEditing;
@@ -214,11 +214,11 @@ namespace WPFEcommerceApp
                 {
                     if (String.IsNullOrEmpty(mUser.SourceImageBackground) || mUser.SourceImageBackground.Contains("https://firebasestorage.googleapis.com"))
                     {
-                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}", mUser.SourceImageBackground);
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background", mUser.SourceImageBackground, $"{Shop.Id}");
                     }
                     else
                     {
-                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background_{Shop.Id}");
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageBackground, "User", $"Background", null, $"{Shop.Id}");
                     }
                     Shop.SourceImageBackground = link;
                 }
@@ -227,11 +227,11 @@ namespace WPFEcommerceApp
                 {
                     if (String.IsNullOrEmpty(mUser.SourceImageAva) || mUser.SourceImageAva.Contains("https://firebasestorage.googleapis.com"))
                     {
-                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}", mUser.SourceImageAva);
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Ava", mUser.SourceImageAva, $"{Shop.Id}");
                     }
                     else
                     {
-                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Background_{Shop.Id}");
+                        link = await FireStorageAPI.PushFromImage((BitmapSource)SourceImageAva, "User", $"Ava", null, $"{Shop.Id}");
                     }
                     Shop.SourceImageAva = link;
                 }   
