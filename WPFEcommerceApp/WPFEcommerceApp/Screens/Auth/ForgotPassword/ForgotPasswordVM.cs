@@ -67,9 +67,11 @@ namespace WPFEcommerceApp {
                 }
                 else {
                     IsLoading = true;
-                    var pw = new Hashing().Encrypt(Email, Password);
+                    var salt = Convert.ToBase64String(new Hashing().GenerateSalt());
+                    var pw = new Hashing().Encrypt(salt, Password);
                     var x = await loginRepo.GetSingleAsync(d => d.Username == Email);
                     x.Password = pw;
+                    x.Salt = salt;
                     await loginRepo.Update(x);
                     IsLoading = false;
 

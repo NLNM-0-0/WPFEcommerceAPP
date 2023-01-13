@@ -166,6 +166,7 @@ namespace WPFEcommerceApp
 
                     var salt = Convert.ToBase64String(hasher.GenerateSalt());
                     user.Password = hasher.Encrypt(salt, NewPassword);
+                    user.Salt = salt;
                     await loginRepo.Update(user);
                     await DialogHost.Show(dl, "Main");
 
