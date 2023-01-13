@@ -297,7 +297,17 @@ namespace WPFEcommerceApp
                 return;
 
             List<Models.Notification> notes = new List<Models.Notification>();
-
+            if (removeShop.StatusShop == Status.Banned.ToString() && removeShop.StatusUser == Status.Banned.ToString())
+            {
+                var view = new ConfirmDialog
+                {
+                    Header = "No!",
+                    Content = "The user is currently ban, make sure to unban it before unbaning its shop."
+                };
+                await DialogHost.Show(view, "Main");
+                return;
+            }
+            MainViewModel.IsLoading = true;
             if (removeShop.StatusShop == Status.Banned.ToString())
             {
                 removeShop.StatusShop = Status.NotBanned.ToString();
@@ -402,7 +412,7 @@ namespace WPFEcommerceApp
         {
             var prodRepo=new GenericDataRepository<Models.Product>();
             var orderRepo=new GenericDataRepository<MOrder>();
-            var noteRepo=new GenericDataRepository<Models.Notification>();
+            var newNoteRepo=new GenericDataRepository<Models.Notification>();
 
             var notes = new List<Models.Notification>();
             var list = new List<Models.Product>(await prodRepo.GetListAsync(item => item.IdShop == removeShop.Id));
@@ -444,7 +454,7 @@ Sorry for the inconvenience!",
 
                 await orderRepo.Update(orders.ToArray());
             }
-            await noteRepo.Add(notes.ToArray());
+            await newNoteRepo.Add(notes.ToArray());
             await prodRepo.Update(list.ToArray());
 
         }

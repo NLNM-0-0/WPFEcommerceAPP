@@ -28,11 +28,27 @@
 
             <!-- Best seller list -->
             <DockPanel LastChildFill="False">
-                <TextBlock Text="Best Seller"
+                <TextBlock Text="Best Seller" x:Name="bestSeller"
                        Margin="20 20 0 0"
                        FontSize="{StaticResource FontSizeHeadline2}"
                        FontWeight="SemiBold"
                        />
+                <Label
+                    Margin="5 0 0 0"
+                    VerticalAlignment="Bottom"
+                    x:Name="linkLabel"
+                    Visibility="{c:Binding 'LabelExcuteContent!=null'}"
+                    FontSize="{StaticResource FontSizeText}"
+                    FontFamily="{StaticResource Medium}">
+                    <Hyperlink
+                        Foreground="#4B8CDE"
+                        Command="{Binding ToFilter}"
+                        CommandParameter="{Binding ElementName=bestSeller, Path=Text}">
+                        <TextBlock
+                        Text="More">
+                        </TextBlock>
+                    </Hyperlink>
+                </Label>
                 <Button Style="{StaticResource TransparentButton}" Height="50"
                         Background="{StaticResource BoxShadowColorBrush}"
                         Margin="0 0 20 0"
@@ -97,11 +113,26 @@
 
             <!-- Just in list-->
             <DockPanel LastChildFill="False">
-                <TextBlock Text="Just In" DockPanel.Dock="Left"
+                <TextBlock Text="Just In" DockPanel.Dock="Left" x:Name="justin"
                        Margin="20 20 0 0"
                        FontSize="{StaticResource FontSizeHeadline2}"
                        FontWeight="SemiBold"
                        />
+                <Label
+                    Margin="5 0 0 0"
+                    VerticalAlignment="Bottom"
+                    Visibility="{c:Binding 'LabelExcuteContent!=null'}"
+                    FontSize="{StaticResource FontSizeText}"
+                    FontFamily="{StaticResource Medium}">
+                    <Hyperlink
+                        Foreground="#4B8CDE"
+                        Command="{Binding ToFilter}"
+                        CommandParameter="{Binding ElementName=justin, Path=Text}">
+                        <TextBlock
+                        Text="More">
+                        </TextBlock>
+                    </Hyperlink>
+                </Label>
                 <Button Style="{StaticResource TransparentButton}" Height="50"
                         Background="{StaticResource BoxShadowColorBrush}"
                         Margin="0 0 20 0"
@@ -167,11 +198,26 @@
 
             <!-- More list -->
             <DockPanel LastChildFill="False">
-                <TextBlock Text="More" DockPanel.Dock="Left"
+                <TextBlock Text="More" DockPanel.Dock="Left" x:Name="more"
                        Margin="20 20 0 0"
                        FontSize="{StaticResource FontSizeHeadline2}"
                        FontWeight="SemiBold"
                        />
+                <Label
+                    Margin="5 0 0 0"
+                    VerticalAlignment="Bottom"
+                    Visibility="{c:Binding 'LabelExcuteContent!=null'}"
+                    FontSize="{StaticResource FontSizeText}"
+                    FontFamily="{StaticResource Medium}">
+                    <Hyperlink
+                        Foreground="#4B8CDE"
+                        Command="{Binding ToFilter}"
+                        CommandParameter="{Binding ElementName=more, Path=Text}">
+                        <TextBlock
+                        Text="More">
+                        </TextBlock>
+                    </Hyperlink>
+                </Label>
                 <Button Style="{StaticResource TransparentButton}" Height="50"
                         Background="{StaticResource BoxShadowColorBrush}"
                         Margin="0 0 20 0"
