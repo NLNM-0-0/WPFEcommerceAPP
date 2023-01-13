@@ -251,18 +251,18 @@
                             Height="80"
                             CornerRadius="40"
                             Background="{StaticResource WhiteColorBrush}">
-                                <Image
+                                <local:AsyncImage
                                 Stretch="Fill"
                                 Height="78"
                                 Width="78"
                                 Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
-                                    <Image.Clip>
+                                    <local:AsyncImage.Clip>
                                         <EllipseGeometry
                                 Center="39 39"
                                 RadiusX="39"
                                 RadiusY="39"/>
-                                    </Image.Clip>
-                                </Image>
+                                    </local:AsyncImage.Clip>
+                                </local:AsyncImage>
                             </Border>
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
@@ -345,6 +345,7 @@
                     <ListView ItemsSource="{Binding ProductViewModels}" Margin="20"
                           x:Name="ProductList"
                           BorderThickness="0"
+                          Background="{StaticResource BackgroundColorBrush}"
                           ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -480,6 +481,7 @@
                     <ScrollViewer>
                     <ListView ItemsSource="{Binding ProductAlsoViewModels}" Margin="20"
                           x:Name="ProductListAlso"
+                          Background="{StaticResource BackgroundColorBrush}"
                           BorderThickness="0"
                           ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListView.ItemsPanel>
@@ -805,7 +807,7 @@
                     Style="{StaticResource TransparentButton}">
 
                     </Button>
-                    <TextBlock Width="20"
+                    <TextBlock Width="auto"
                          Height="20"
                          FontWeight="Light"
                          FontSize="{StaticResource FontSizeHeadline3}"
