@@ -152,7 +152,7 @@ namespace WPFEcommerceApp
                 }, async p => {
                     var hasher = new Hashing();
                     var user = AccountStore.instance.CurrentAccount.UserLogin;
-                    var hash = hasher.Encrypt(user.Username, CurrentPassword);
+                    var hash = hasher.Encrypt(user.Salt, CurrentPassword);
                     var dl = new ConfirmDialog() {
                         Content = "Your password is wrong, please try again!",
                         Header = "Oops",
@@ -163,8 +163,9 @@ namespace WPFEcommerceApp
                     }
                     dl.Content = "Your password has changed!";
                     dl.Header = "Success";
-                    
-                    user.Password = hasher.Encrypt(user.Username, NewPassword);
+
+                    var salt = Convert.ToBase64String(hasher.GenerateSalt());
+                    user.Password = hasher.Encrypt(salt, NewPassword);
                     await loginRepo.Update(user);
                     await DialogHost.Show(dl, "Main");
 
