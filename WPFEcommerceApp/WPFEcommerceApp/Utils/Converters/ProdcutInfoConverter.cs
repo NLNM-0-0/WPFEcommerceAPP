@@ -53,7 +53,8 @@ namespace WPFEcommerceApp
                 string description = (string)values[(int)productInfo.Description];
 
                 Models.Product product = new Models.Product();
-                product.Status = status;
+                //ATCMT
+                //product.BanLevel = status;
                 product.Name = name;
                 product.Price = long.Parse(price == "" ? "0" : price);
                 product.ImageProducts.Clear();

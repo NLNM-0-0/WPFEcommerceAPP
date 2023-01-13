@@ -18,6 +18,7 @@ namespace WPFEcommerceApp
     {
         #region Public Properties
         public GenericDataRepository<MUser> userRepo;
+
         private ObservableCollection<MUser> _filteredUsers;
         public ObservableCollection<MUser> FilteredUsers
         {
@@ -63,7 +64,7 @@ namespace WPFEcommerceApp
                 {
                     StatusText = "Not Banned";
                     FilteredUsers = usersToSearch = notBannedUsers;
-                    RemoveOrUnBanned = "Remove";
+                    RemoveOrUnBanned = "Ban";
                 }
                 else
                 {
@@ -152,11 +153,11 @@ namespace WPFEcommerceApp
             NewUser = new MUser();
             Role = string.Empty;
             IsChecked = true;
-            RemoveOrUnBanned = "Remove";
+            RemoveOrUnBanned = "Ban";
             SearchBy = SearchByOptions[1];
 
-            notBannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser != Status.Banned.ToString()));
-            bannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser == Status.Banned.ToString()));
+            notBannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser != Status.Banned.ToString() && user.Role != "Admin"));
+            bannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser == Status.Banned.ToString() && user.Role != "Admin"));
             FilteredUsers = usersToSearch = notBannedUsers;
 
             App.Current.Dispatcher.Invoke((Action)(() =>
@@ -179,9 +180,18 @@ namespace WPFEcommerceApp
                 return;
 
             if (removeUser.StatusUser == Status.NotBanned.ToString())
+            {
                 removeUser.StatusUser = Status.Banned.ToString();
+                if (removeUser.Role == "Shop")
+                {
+                    removeUser.StatusShop = Status.Banned.ToString();
+                    await ShopInformationPageViewModel.BanShop(removeUser);
+                }
+            }
             else
+            {
                 removeUser.StatusUser = Status.NotBanned.ToString();
+            }
 
             await userRepo.Update(removeUser);
             await Load();

@@ -14,12 +14,6 @@ namespace WPFEcommerceApp.Models
     
     public partial class Address
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Address()
-        {
-            this.MUsers = new HashSet<MUser>();
-        }
-    
         public string Id { get; set; }
         public string IdUser { get; set; }
         public string Name { get; set; }
@@ -28,7 +22,5 @@ namespace WPFEcommerceApp.Models
         public Nullable<bool> Status { get; set; }
     
         public virtual MUser MUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MUser> MUsers { get; set; }
     }
 }

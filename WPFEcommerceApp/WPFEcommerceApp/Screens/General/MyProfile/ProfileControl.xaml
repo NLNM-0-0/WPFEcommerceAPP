@@ -12,16 +12,27 @@
         <Grid.Resources>
             <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
         </Grid.Resources>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <!-- Profile -->
-        <StackPanel Width="480" HorizontalAlignment="Center" Margin="0 0 20 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
-            <TextBox    Margin="0 15 0 15" x:Name="UserNametb"
+        <Grid Grid.Row="1">
+
+        </Grid>
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Profile -->
+            <StackPanel Width="480" HorizontalAlignment="Center" Margin="0 0 20 0">
+
+                <TextBox    Margin="0 15 0 15" x:Name="UserNametb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             materialDesign:HintAssist.Hint="Name"
                             Text="{Binding EditUser.Name, UpdateSourceTrigger=PropertyChanged}"
@@ -30,7 +41,7 @@
                             VerticalAlignment="Center"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
                             MaxLength="200"/>
-            <TextBox    Margin="0 15 0 15" x:Name="Emailtb"
+                <TextBox    Margin="0 15 0 15" x:Name="Emailtb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Email"
@@ -39,39 +50,16 @@
                             IsEnabled="{i:Binding Path=!IsGoogle}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
                             MaxLength="200">
-                <Binding Path="EditUser.Email"
+                    <Binding Path="EditUser.Email"
                              UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <local:EmailValidateRule IsNotCheckFirstTime="False"
+                        <Binding.ValidationRules>
+                            <local:EmailValidateRule IsNotCheckFirstTime="False"
                                 ValidatesOnTargetUpdated="True"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox>
-            
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Margin="0 0 20 0" Width="480"
-                        HorizontalAlignment="Center">
-            <ComboBox Margin="0 15 0 15" ItemsSource="{Binding GenderOptions}"
-                                    materialDesign:HintAssist.Hint="Gender"
-                                    VerticalAlignment="Center"
-                      >
-                <ComboBox.SelectedItem>
-                    <Binding Path="EditUser.Gender" Converter="{x:Static local:BooleanToGenderConverter.Instance}"
-                                 UpdateSourceTrigger="PropertyChanged">
-                        
+                        </Binding.ValidationRules>
                     </Binding>
-                </ComboBox.SelectedItem>
-            </ComboBox>
-            <DatePicker Grid.Row="0" SelectedDate="{Binding EditUser.DOB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            Width="auto" Margin="0 15 0 15" Padding="15 0 -50 0"
-                            Height="55"
-                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                            materialDesign:HintAssist.Hint="Date of Birth"
-                            FontSize="{StaticResource FontSizeText}"
-                            >
-            </DatePicker>
-            <TextBox    Margin="0 15 0 15" x:Name="Phonetb"
+                </TextBox>
+
+                <TextBox    Margin="0 15 0 15" x:Name="Phonetb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             Width="auto"
                             materialDesign:HintAssist.Hint="Phone Number"
@@ -79,24 +67,88 @@
                             VerticalAlignment="Center"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
                             MaxLength="10">
-                <Binding Path="EditUser.PhoneNumber"
+                    <Binding Path="EditUser.PhoneNumber"
                              UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <local:PhoneValidateRule
+                        <Binding.ValidationRules>
+                            <local:PhoneValidateRule
                                ValidatesOnTargetUpdated="True"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox>
-            
-            <DockPanel>
-                <Button DockPanel.Dock="Right"
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="0 0 20 0" Width="480"
+                        HorizontalAlignment="Center">
+                <ComboBox Margin="0 15 0 15" ItemsSource="{Binding GenderOptions}"
+                                    materialDesign:HintAssist.Hint="Gender"
+                                    VerticalAlignment="Center"
+                      >
+                    <ComboBox.SelectedItem>
+                        <Binding Path="EditUser.Gender" Converter="{x:Static local:BooleanToGenderConverter.Instance}"
+                                 UpdateSourceTrigger="PropertyChanged">
+
+                        </Binding>
+                    </ComboBox.SelectedItem>
+                </ComboBox>
+                <DatePicker Grid.Row="0" SelectedDate="{Binding EditUser.DOB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Width="auto" Margin="0 15 0 15" Padding="15 0 -50 0"
+                            Height="55"
+                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            materialDesign:HintAssist.Hint="Date of Birth"
+                            FontSize="{StaticResource FontSizeText}"
+                            >
+                </DatePicker>
+
+                <!--<TextBox    Margin="0 15 0 15" 
+                            Style="{StaticResource TextBoxHintBlackBorder}"
+                            Width="auto"
+                            MaxLength="10" Visibility="Hidden">
+                </TextBox>-->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                            Margin="0 24 0 0">
+                    <Button 
                     x:Name="SaveButton"
                     Command="{Binding SaveProfileCommand}"
                     Grid.Column="1"
                     Width="100"
                     Content="Save"
                     HorizontalAlignment="Right"
-                    Margin="5 10 0 0"
+                    >
+                        <Button.CommandParameter>
+                            <Binding Path="EditUser"/>
+                        </Button.CommandParameter>
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                                <Binding ElementName="Emailtb" Path="(Validation.HasError)"/>
+                                <Binding ElementName="Phonetb" Path="(Validation.HasError)"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
+
+                    <Button 
+                    x:Name="CancelButton"
+                    Command="{Binding CancelProfileCommand}"
+                    Grid.Column="1"
+                    Width="100" Margin="10 0 0 0"
+                    Content="Cancel"
+                    HorizontalAlignment="Right"
+                    >
+                        <Button.CommandParameter>
+                            <Binding Path="EditUser"/>
+                        </Button.CommandParameter>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                <Button 
+                    x:Name="SaveButton"
+                    Command="{Binding SaveProfileCommand}"
+                    Grid.Column="1"
+                    Width="100"
+                    Content="Save"
+                    HorizontalAlignment="Right"
                     >
                     <Button.CommandParameter>
                         <Binding Path="EditUser"/>
@@ -109,20 +161,20 @@
                     </Button.IsEnabled>
                 </Button>
 
-                <Button DockPanel.Dock="Right"
+                <Button 
                     x:Name="CancelButton"
                     Command="{Binding CancelProfileCommand}"
                     Grid.Column="1"
-                    Width="100"
+                    Width="100" Margin="10 0 0 0"
                     Content="Cancel"
-                    Margin="0 0 5 0"
                     HorizontalAlignment="Right"
                     >
                     <Button.CommandParameter>
                         <Binding Path="EditUser"/>
                     </Button.CommandParameter>
                 </Button>
-            </DockPanel>
-        </StackPanel>
+            </StackPanel>-->
+            
+        </Grid>
     </Grid>
 </UserControl>

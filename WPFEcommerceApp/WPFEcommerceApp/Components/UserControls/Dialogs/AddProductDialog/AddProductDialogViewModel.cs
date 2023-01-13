@@ -357,7 +357,8 @@ namespace WPFEcommerceApp
                     Color = this.Color.Trim(),
                     Description = this.Description.Trim(),
                     DateOfSale = DateTime.Now,
-                    Status = "NotBanned"
+                    //ATCMT
+                    BanLevel = 0
                 });
                 foreach (BitmapImage source in ImageProducts)
                 {

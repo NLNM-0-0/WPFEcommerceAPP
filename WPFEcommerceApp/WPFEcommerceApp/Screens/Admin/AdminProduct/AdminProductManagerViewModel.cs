@@ -66,7 +66,7 @@ namespace WPFEcommerceApp
                 {
                     StatusText = "Not Banned";
                     FilteredProducts = _productsToSearch = notBannedProducts;
-                    RemoveOrUnBanned = "Remove";
+                    RemoveOrUnBanned = "Ban";
                 }
                 else
                 {
@@ -175,15 +175,16 @@ namespace WPFEcommerceApp
             if (removeProduct == null)
                 return;
 
-            if (removeProduct.Status == Status.NotBanned.ToString())
-                removeProduct.Status = Status.Banned.ToString();
+            if (RemoveOrUnBanned == "Ban")
+                removeProduct.BanLevel += 1;
             else
-                removeProduct.Status = Status.NotBanned.ToString();
+            {
+                removeProduct.BanLevel = 0;
+            }
 
             await productRepo.Update(removeProduct);
             await Load();
             MainViewModel.IsLoading = false;
-
         }
 
         #endregion
@@ -214,16 +215,16 @@ namespace WPFEcommerceApp
         private async Task Load()
         {
             IsChecked = true;
-            RemoveOrUnBanned = "Remove";
+            RemoveOrUnBanned = "Ban";
             SearchBy = SearchByOptions[0];
 
             notBannedProducts = new ObservableCollection<Models.Product>( 
                 await productRepo.GetListAsync(
-                    item=>item.Status.Equals(Status.NotBanned.ToString()), item=>item.Brand, item=>item.Category));
+                    item=>item.BanLevel==0, item=>item.Brand, item=>item.Category));
 
             bannedProducts = new ObservableCollection<Models.Product>(
                 await productRepo.GetListAsync(
-                    item => item.Status.Equals(Status.Banned.ToString()), item => item.Brand, item => item.Category));
+                    item => item.BanLevel!=0, item => item.Brand, item => item.Category));
 
             _productsToSearch = FilteredProducts = notBannedProducts;
 

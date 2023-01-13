@@ -321,7 +321,8 @@ namespace WPFEcommerceApp
         private async Task LoadProducts()
         {
             GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
-            ObservableCollection<Models.Product> allProduct = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => (p.Status == "NotBanned" && p.IdShop == User.Id), 
+            //ATCMT
+            ObservableCollection<Models.Product> allProduct = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => (p.BanLevel == 0 && p.IdShop == User.Id), 
                                                                                                                                             p => p.Brand,
                                                                                                                                             p => p.Category,
                                                                                                                                             p => p.ImageProducts));

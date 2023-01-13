@@ -354,12 +354,6 @@ namespace WPFEcommerceApp
 
             var address = ad.Address;
 
-            if (ad.IsSetAsDefault)
-            {
-                AccountStore.instance.CurrentAccount.DefaultAddress = ad.Address.Id;
-                await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
-            }
-
             if (ad.IsAdding)
             {
                 address.IdUser = AccountStore.instance.CurrentAccount.Id;
@@ -370,6 +364,12 @@ namespace WPFEcommerceApp
             else
             {
                 await addressRepo.Update(address);
+            }
+
+            if (ad.IsSetAsDefault)
+            {
+                AccountStore.instance.CurrentAccount.DefaultAddress = ad.Address.Id;
+                await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
             }
 
             await Load();

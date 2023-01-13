@@ -20,6 +20,7 @@ namespace WPFEcommerceApp
         #region Properties
         private GenericDataRepository<Brand> BrandRepository;
         private GenericDataRepository<BrandRequest> RequestRepo;
+        private GenericDataRepository<Models.Product> ProdRepo;
         private GenericDataRepository<Models.Notification> NoteRepo;
 
         private ObservableCollection<Brand> _filteredBrands;
@@ -103,7 +104,7 @@ namespace WPFEcommerceApp
                 {
                     StatusText = "Not Banned";
                     FilteredBrands = _brandToSearch = notBannedBrands;
-                    RemoveOrRestore = "Remove";
+                    RemoveOrRestore = "Ban";
                 }
                 else
                 {
@@ -150,6 +151,7 @@ namespace WPFEcommerceApp
 
             BrandRepository = new GenericDataRepository<Brand>();
             RequestRepo = new GenericDataRepository<BrandRequest>();
+            ProdRepo = new GenericDataRepository<Models.Product>();
             NoteRepo = new GenericDataRepository<Models.Notification>();
             RequestList = new BrandRequestListViewModel();
             SearchByOptions = new List<string> { "ID", "Name" };
@@ -185,7 +187,7 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             IsChecked = true;
-            RemoveOrRestore = "Remove";
+            RemoveOrRestore = "Ban";
 
             FilteredBrands = new ObservableCollection<Brand>(
                 await BrandRepository.GetListAsync(br => br.Status.Equals(Status.NotBanned.ToString())));
@@ -254,6 +256,20 @@ namespace WPFEcommerceApp
             else
                 removeBrand.Status = Status.NotBanned.ToString();
 
+            var list = new List<Models.Product>(await ProdRepo.GetListAsync(item=>item.IdBrand==removeBrand.Id));
+            for(int i = 0; i < list.Count; i++)
+            {
+                if (removeBrand.Status == Status.Banned.ToString())
+                    list[i].BanLevel += 1;
+                else if (removeBrand.Status == Status.NotBanned.ToString())
+                {
+                    list[i].BanLevel -= 1;
+                    if (list[i].BanLevel < 0)
+                        list[i].BanLevel = 0;
+                }
+            }
+
+            await ProdRepo.Update(list.ToArray());
             await BrandRepository.Update(removeBrand);
             await Load();
             MainViewModel.IsLoading = false;

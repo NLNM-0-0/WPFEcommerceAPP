@@ -374,7 +374,8 @@ namespace WPFEcommerceApp
             {
                 listBrandId = allBrandId;
             }
-            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => (p.Status == "NotBanned" &&
+            //ATCMT
+            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => (p.BanLevel == 0 &&
                                                                                                             (p.Price * (100 - p.Sale) / 100 <= MaxPrice && p.Price * (100 - p.Sale) / 100 >= MinPrice) &&
                                                                                                             (listCategoryId.Contains(p.IdCategory)) && (listBrandId.Contains(p.IdBrand)) && ((p.IsOneSize == CheckSize[0] == true) ||
                                                                                                             (p.IsHadSizeS == CheckSize[1] == true) || (p.IsHadSizeM == CheckSize[2] == true) || (p.IsHadSizeL == CheckSize[3] == true) ||
@@ -395,7 +396,7 @@ namespace WPFEcommerceApp
         private async Task Load()
         {
             MainViewModel.IsLoading = true;
-            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.Status == "NotBanned",
+            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0,
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
                                                                                                         p => p.ImageProducts,

@@ -177,7 +177,7 @@ namespace WPFEcommerceApp
             ShopRequestItemViewModel.RemoveRequestCommand = new RelayCommandWithNoParameter(async () => await RemoveRequest());
             ShopRequestItemViewModel.AddRequestCommand = new RelayCommandWithNoParameter(async () => await AddRequest());
             RemoveShopCommand = new RelayCommand<object>(p => p != null, async (p) => await RemoveShop(p));
-            SearchCommand = new RelayCommandWithNoParameter(async()=>await Search());
+            SearchCommand = new RelayCommandWithNoParameter(async () => await Search());
             CloseSearchCommand = new RelayCommandWithNoParameter(CloseSearch);
             OpenRequestCommand = new RelayCommand<object>(p => p != null, async (p) => await OpenDialog(p));
 
@@ -296,12 +296,12 @@ namespace WPFEcommerceApp
             if (AccountStore.instance.CurrentAccount == null)
                 return;
 
-            Models.Notification note;
+            List<Models.Notification> notes = new List<Models.Notification>();
 
             if (removeShop.StatusShop == Status.Banned.ToString())
             {
                 removeShop.StatusShop = Status.NotBanned.ToString();
-                note = new Models.Notification
+                var note = new Models.Notification
                 {
                     Id = await GenerateID.Gen(typeof(Models.Notification)),
                     IdSender = AccountStore.instance.CurrentAccount.Id,
@@ -309,11 +309,12 @@ namespace WPFEcommerceApp
                     Content = "Your shop has been unbanned. Feel free to start selling again.",
                     Date = DateTime.Now,
                 };
+                notes.Add(note);
             }
             else
             {
                 removeShop.StatusShop = Status.Banned.ToString();
-                note = new Models.Notification
+                var note = new Models.Notification
                 {
                     Id = await GenerateID.Gen(typeof(Models.Notification)),
                     IdSender = AccountStore.instance.CurrentAccount.Id,
@@ -321,12 +322,13 @@ namespace WPFEcommerceApp
                     Content = "Your shop has been banned. Contact us for further information.",
                     Date = DateTime.Now,
                 };
+                notes.Add(note);
             }
-
             MainViewModel.IsLoading = true;
 
+            await BanShop(removeShop);
             await userRepo.Update(removeShop);
-            await noteRepo.Add(note);
+            await noteRepo.Add(notes.ToArray());
 
             await Load();
 
@@ -363,7 +365,7 @@ namespace WPFEcommerceApp
 
         public async Task AddRequest()
         {
-            if(AccountStore.instance.CurrentAccount==null)
+            if (AccountStore.instance.CurrentAccount == null)
             {
                 return;
             }
@@ -375,15 +377,15 @@ namespace WPFEcommerceApp
             var newShop = await userRepo.GetSingleAsync(user => user.Id.Equals(item.IdUser));
             newShop.Role = "Shop";
             newShop.StatusShop = Status.NotBanned.ToString();
-            newShop.Description=RequestSelectedItem.Description;
+            newShop.Description = RequestSelectedItem.Description;
 
             var note = new Models.Notification
             {
                 Id = await GenerateID.Gen(typeof(Models.Notification)),
-                IdSender=AccountStore.instance.CurrentAccount.Id,
-                IdReceiver=item.IdUser,
-                Content="Your request to be a shop has been accepted. Check out your shop and start selling.",
-                Date=DateTime.Now,
+                IdSender = AccountStore.instance.CurrentAccount.Id,
+                IdReceiver = item.IdUser,
+                Content = "Your request to be a shop has been accepted. Check out your shop and start selling.",
+                Date = DateTime.Now,
             };
 
             await userRepo.Update(newShop);
@@ -394,6 +396,57 @@ namespace WPFEcommerceApp
             MainViewModel.IsLoading = false;
 
             DialogHost.CloseDialogCommand.Execute(null, null);
+        }
+
+        public static async Task BanShop(MUser removeShop)
+        {
+            var prodRepo=new GenericDataRepository<Models.Product>();
+            var orderRepo=new GenericDataRepository<MOrder>();
+            var noteRepo=new GenericDataRepository<Models.Notification>();
+
+            var notes = new List<Models.Notification>();
+            var list = new List<Models.Product>(await prodRepo.GetListAsync(item => item.IdShop == removeShop.Id));
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (removeShop.StatusShop == Status.NotBanned.ToString())
+                {
+                    list[i].BanLevel -= 1;
+                    if (list[i].BanLevel < 0)
+                        list[i].BanLevel = 0;
+                }
+                else
+                {
+                    list[i].BanLevel += 1;
+                }
+            }
+
+            if(removeShop.StatusShop == Status.Banned.ToString())
+            {
+                var orders = new List<Models.MOrder>(
+                        await orderRepo.GetListAsync(
+                            item => item.IdShop == removeShop.Id
+                            && (item.Status == OrderStatus.Processing.ToString()
+                            || item.Status == OrderStatus.Delivering.ToString())));
+                for (int j = 0; j < orders.Count; j++)
+                {
+                    orders[j].Status = OrderStatus.Cancelled.ToString();
+                    var cancelNote = new Models.Notification
+                    {
+                        Id = await GenerateID.Gen(typeof(Models.Notification)),
+                        IdSender = AccountStore.instance.CurrentAccount.Id,
+                        IdReceiver = orders[j].IdCustomer,
+                        Content = $@"Your order ID {orders[j].Id} is cancelled because the shop is banned. Please checkout other similar products
+Sorry for the inconvenience!",
+                        Date = DateTime.Now,
+                    };
+                    notes.Add(cancelNote);
+                }
+
+                await orderRepo.Update(orders.ToArray());
+            }
+            await noteRepo.Add(notes.ToArray());
+            await prodRepo.Update(list.ToArray());
+
         }
         #endregion
     }

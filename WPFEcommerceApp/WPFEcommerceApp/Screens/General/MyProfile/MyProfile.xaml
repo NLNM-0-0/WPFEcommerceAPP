@@ -135,7 +135,14 @@
         <TabControl Grid.Row="1" Margin="50 20 50 20" x:Name="tabcontrol">
             <TabItem Style="{StaticResource RadioTabItem}"
                      Header="My Profile" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}">
-                <local:ProfileControl Margin="0 -50 0 0"/>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <Border Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth}"
+                            Height="{c:Binding ElementName=tabcontrol, Path=ActualHeight}">
+                        <Grid>
+                            <local:ProfileControl Margin="0 0 0 0"/>
+                        </Grid>
+                    </Border>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem Header="My Address" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}"
@@ -161,8 +168,14 @@
             </TabItem>
 
             <TabItem Header="My Password" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}"
-                     Style="{StaticResource RadioTabItem}">
-                <local:MyPassword/>
+                     Style="{StaticResource RadioTabItem}"
+                     Visibility="{i:Binding Path=!IsGoogle, FalseToVisibility=Collapsed}">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <Border Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth}"
+                            Height="{c:Binding ElementName=tabcontrol, Path=ActualHeight}">
+                        <local:MyPassword/>
+                    </Border>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         <Grid.InputBindings>

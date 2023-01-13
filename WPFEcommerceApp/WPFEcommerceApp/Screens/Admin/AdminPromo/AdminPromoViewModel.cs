@@ -85,7 +85,8 @@ namespace WPFEcommerceApp
                         if(!string.Equals(SearchText, _lastSearchText)||!string.Equals(_lastSearchOption, SearchBy))
                         {
                             if (!timer.IsEnabled)
-                                timer.Start();
+                                timer.Stop();
+                            timer.Start();
                         }
                     }
                     else

@@ -17,6 +17,7 @@ namespace WPFEcommerceApp.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Promo()
         {
+            this.MOrders = new HashSet<MOrder>();
             this.PromoRequests = new HashSet<PromoRequest>();
             this.Products = new HashSet<Product>();
         }
@@ -29,12 +30,15 @@ namespace WPFEcommerceApp.Models
         public Nullable<System.DateTime> DateBegin { get; set; }
         public Nullable<System.DateTime> DateEnd { get; set; }
         public Nullable<int> Amount { get; set; }
+        public Nullable<int> AmountUsed { get; set; }
         public Nullable<double> MaxSale { get; set; }
         public Nullable<double> MinCost { get; set; }
         public Nullable<int> CustomerType { get; set; }
         public Nullable<double> Sale { get; set; }
         public Nullable<int> Status { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MOrder> MOrders { get; set; }
         public virtual MUser MUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PromoRequest> PromoRequests { get; set; }
