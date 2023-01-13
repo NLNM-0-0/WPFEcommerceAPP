@@ -63,35 +63,36 @@
                        Height="{Binding Height, ElementName=ImageContainer}" HorizontalAlignment="Center"/>
                     </Grid>
 
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Name}" FontSize="13" TextWrapping="Wrap"
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center"
+                                Margin="15 0 0 0">
+                        <TextBlock Text="{Binding Name}" FontSize="19" TextWrapping="Wrap"
                                Margin="5 0 0 0"/>
                         <StackPanel Orientation="Horizontal" Margin="5, 9, 0, 0">
-                            <TextBlock Text="Size: " FontSize="9" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                            <TextBlock Text="{Binding Size}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            <TextBlock Text="Size: " FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
+                            <TextBlock Text="{Binding Size}" FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                            <TextBlock Text="Color: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                            <TextBlock Text="{Binding Color}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            <TextBlock Text="Color: " FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
+                            <TextBlock Text="{Binding Color}" FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
-                            <TextBlock Text="Other Detail: " FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
-                            <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{StaticResource NotAvailableColorBrush}"/>
+                            <TextBlock Text="Other Detail: " FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
+                            <TextBlock Text="{Binding Description}" FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="2" 
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
-                        <TextBlock Text="x" FontSize="13"/>
-                        <TextBlock Text="{Binding Amount}" FontSize="13"/>
+                        <TextBlock Text="x" FontSize="19"/>
+                        <TextBlock Text="{Binding Amount}" FontSize="19"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3"
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center">
-                        <TextBlock Text="Subtotal:" FontSize="13"/>
-                        <TextBlock Text="{Binding Subtotal}" FontSize="13"/>
+                        <TextBlock Text="Subtotal:" FontSize="19"/>
+                        <TextBlock Text="{Binding Subtotal}" FontSize="19"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

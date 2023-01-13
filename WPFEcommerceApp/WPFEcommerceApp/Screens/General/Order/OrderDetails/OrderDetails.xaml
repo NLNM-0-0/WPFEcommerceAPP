@@ -79,7 +79,7 @@
                                FontSize="{StaticResource FontSizeHeadline2}"
                                 FontWeight="Light"/>
                         <!--Error because of c:Binding-->
-                        <TextBlock Text="{c:Binding '(OrderDetail.ShippingSpeedMethod == 0 ? \'Fast\' : \'Regular\')', FallbackValue=111}"
+                        <TextBlock Text="{c:Binding '(OrderDetail.ShippingSpeedMethod == 0 ? &quot;Fast&quot; : &quot;Regular&quot;)', FallbackValue=111}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
                                FontSize="{StaticResource FontSizeHeadline2}"
@@ -210,11 +210,11 @@
                             VerticalAlignment="Center">
                     <TextBlock Text="{c:Binding \'Discounted: \' + OrderDetail.Discount}" 
                            DockPanel.Dock="Right"
-                           FontSize="{StaticResource FontSizeHeadline3}"
+                           FontSize="20"
                            Margin="25,5" VerticalAlignment="Center"/>
                     <TextBlock Text="{c:Binding \'Order Total: \' + OrderDetail.OrderTotal}" 
                            DockPanel.Dock="Right"
-                           FontSize="{StaticResource FontSizeHeadline3}"
+                           FontSize="20"
                            Margin="25,5" VerticalAlignment="Center"/>
                 </StackPanel>
             </DockPanel>
