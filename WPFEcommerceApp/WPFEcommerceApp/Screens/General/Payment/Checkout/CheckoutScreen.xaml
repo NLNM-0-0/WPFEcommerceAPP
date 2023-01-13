@@ -18,6 +18,52 @@
                 <ResourceDictionary Source="..\components\HiddenTab\Expander.xaml"/>
                 <ResourceDictionary Source="..\components\ProductCard\BProductCard.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <local:VoucherFilterConverter x:Key="VoucherFilterConverter"/>
+            <Style x:Key="VoucherListItemContainer" TargetType="ListViewItem">
+                <Setter Property="Margin" Value="0 5"/>
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="Padding" Value="4,1"/>
+                <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListViewItem">
+                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                <Grid>
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" x:Name="Content">
+                                        <ContentPresenter.IsEnabled>
+                                            <MultiBinding Converter="{StaticResource VoucherFilterConverter}">
+                                                <Binding Path="Id"/>
+                                                <Binding RelativeSource="{RelativeSource AncestorType=local:CheckoutScreen, Mode=FindAncestor}" Path="DataContext"/>
+                                            </MultiBinding>
+                                        </ContentPresenter.IsEnabled>
+                                    </ContentPresenter>
+                                    <Button Style="{StaticResource Pressable}"
+                                            Margin="20 0"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Right"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:CheckoutScreen}, Path=DataContext.OnViewConditionVoucher}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext}">
+                                        <Label Content="Condition"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False" SourceName="Content">
+                                    <Setter Property="Cursor" Value="Arrow"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <DataTemplate x:Key="VoucherCard" DataType="{x:Type model:Promo}">
                 <RadioButton GroupName="Voucher"
                         x:Name="VoucherContainer"
@@ -58,14 +104,6 @@
                                             TextWrapping="Wrap"/>
                             </StackPanel>
                         </StackPanel>
-                        <Button Style="{StaticResource Pressable}"
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CheckoutScreen}, Path=DataContext.OnViewConditionVoucher}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext}">
-                            <Label Content="Condition"/>
-                        </Button>
                     </Grid>
                 </RadioButton>
             </DataTemplate>
@@ -249,6 +287,10 @@
                                 <Grid>
                                     <!--List voucher-->
                                     <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="229*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
                                         <!--#region Test-->
                                         <!--<RadioButton
                                         x:Name="addressContainer"
@@ -294,14 +336,20 @@
                                     </RadioButton>-->
                                         <!--#endregion-->
                                         <ListView
-                                        SelectedItem="{Binding ElementName=CheckoutWindow, Path=DataContext.PromoChoosen}"
-                                        Margin="0 20"
-                                        MaxHeight="230"
-                                        ItemsSource="{Binding ElementName=CheckoutWindow, Path=DataContext.ListVoucher}"
-                                        ItemTemplate="{StaticResource VoucherCard}"
-                                        ItemContainerStyle="{StaticResource ListItemContainer}"
-                                        ScrollViewer.CanContentScroll="False"
-                                        BorderThickness="0"/>
+                                            SelectedItem="{Binding ElementName=CheckoutWindow, Path=DataContext.PromoChoosen}"
+                                            Margin="0,20,0,20"
+                                            MaxHeight="230"
+                                            ItemsSource="{Binding ElementName=CheckoutWindow, Path=DataContext.ListVoucher}"
+                                            ItemTemplate="{StaticResource VoucherCard}"
+                                            ItemContainerStyle="{StaticResource VoucherListItemContainer}"
+                                            ScrollViewer.CanContentScroll="False"
+                                            BorderThickness="0" Grid.ColumnSpan="2">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding ElementName=CheckoutWindow, Path=DataContext.CheckVoucher}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </ListView>
 
                                     </Grid>
                                     <!--Error message-->
@@ -437,19 +485,22 @@
                         </Grid.RowDefinitions>
                         <Grid Height="39">
                             <Label Content="Subtotal: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <Label Content="{Binding SubTotal}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding SubTotal, StringFormat='0.00 VND'}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                         <Grid Height="39" Grid.Row="1">
                             <Label Content="Shipping Total: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <Label Content="{Binding ShipTotal}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding ShipTotal, StringFormat='0.00 VND'}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                         <Grid Height="39" Grid.Row="2">
                             <Label Content="Discounted: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <Label Content="{Binding Discount}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Discount, StringFormat='0.00 VND'}"
+                                   FontSize="{StaticResource FontSizeHeadline3}"
+                                   HorizontalAlignment="Right" 
+                                   VerticalAlignment="Center"/>
                         </Grid>
                         <Grid Height="39" Grid.Row="3">
                             <Label Content="Total Payment: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <Label Content="{Binding TotalPayment}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding TotalPayment, StringFormat='0.00 VND'}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                     </Grid >
                 </StackPanel>

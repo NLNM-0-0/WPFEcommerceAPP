@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,13 +62,14 @@ namespace WPFEcommerceApp {
         //Checkout and Payment
         static public INavigationService CheckoutScreen() {
             return new ParamNavigationService<CheckoutScreenVM>(
-                (p) => new CheckoutScreenVM(p as Order));
+                (p) => new CheckoutScreenVM(p as List<Order>));
         }
         static public INavigationService OrderParamScreen() {
             return new ParamNavigationService<OrderScreenVM>(
                 (p) => new OrderScreenVM((int)p));
         }
         static public INavigationService OrderScreen() {
+            Debug.WriteLine("Nav to OrderScreen");
             return new NavigationService<OrderScreenVM>(
                 serviceProvider.GetRequiredService<OrderScreenVM>);
         }

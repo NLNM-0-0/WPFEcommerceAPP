@@ -152,6 +152,7 @@
     <Compile Include="Models\UserLogin.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Screens\General\Payment\Checkout\VoucherFilterConverter.cs" />
     <Compile Include="Screens\General\Payment\components\Dialogs\EditInforDialogVM.cs" />
     <Compile Include="Screens\General\Payment\components\Dialogs\VoucherConditionDialog.xaml.cs">
       <DependentUpon>VoucherConditionDialog.xaml</DependentUpon>
@@ -1278,6 +1279,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Images\img_CoverHolder.jpg" />
     <Content Include="Screens\Auth\ForgotPassword\email.html" />
     <Resource Include="Assets\Icon\icon_facebook.png" />
     <Resource Include="Assets\Icon\icon_github.png" />

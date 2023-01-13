@@ -25,6 +25,9 @@ namespace WPFEcommerceApp {
             _navigationStore.CurrentViewModel = _createViewModel(o);
         }
         public void Navigate(object parameter) {
+            if(_navigationStore.CurrentViewModel != null && _navigationStore.CurrentViewModel.GetType().Equals(typeof(TViewModel))) {
+                return;
+            }
             _navigationStore.CurrentViewModel = _createViewModel(parameter);
             _navigationStore.stackScreen.Add(new Tuple<INavigationService, object>(this, parameter));
             if(_navigationStore.stackScreen.Count == 6) {

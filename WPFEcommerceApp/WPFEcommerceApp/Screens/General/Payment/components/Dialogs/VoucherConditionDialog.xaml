@@ -38,6 +38,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Button HorizontalAlignment="Right"
                         Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
@@ -260,6 +261,12 @@
                         materialDesign:TextFieldAssist.SuffixText="VND"
                         IsReadOnly="True">
                 </TextBox>
+            </Grid>
+            <Grid VerticalAlignment="Bottom" Grid.Row="8" Margin="30 10"
+                  Visibility="{c:Binding ElementName=VoucherDialog, Path='(Data.Products.Count>0)'}">
+                <Label Content="*Promo is only valid for certain products"
+                       Foreground="{DynamicResource ErrorColorBrush}"
+                       FontSize="{StaticResource FontSizeDescription}"/>
             </Grid>
         </Grid>
     </Grid>
