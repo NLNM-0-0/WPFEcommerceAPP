@@ -33,7 +33,7 @@ namespace WPFEcommerceApp
 
         public ICommand RightCommand { get; set; }
         public ICommand LeftCommand { get; set; }
-
+        public ICommand ToFilter { get; set; }
         public MyHomeViewModel()
         {
             prodRepo = new GenericDataRepository<Models.Product>();
@@ -41,6 +41,24 @@ namespace WPFEcommerceApp
             adInUseRepo = new GenericDataRepository<AdInUse>();
             RightCommand = new RelayCommand<object>(p => true, Right);
             LeftCommand = new RelayCommand<object>(p => true, Left);
+            ToFilter = new RelayCommand<object>(p => p != null, (p) =>
+            {
+                var list = p as string;
+                FilterStatus option;
+                if (list == null)
+                    return;
+                else if (list == "Best Seller")
+                    option = FilterStatus.BestSeller;
+                else if (list == "Just In")
+                    option = FilterStatus.New;
+                else if (list == "More")
+                    option = FilterStatus.All;
+                else
+                    option=FilterStatus.All;
+
+                var temp = new FilterObject("", null, null, null, option);
+                NavigateProvider.FilterScreen().Navigate(temp);
+            });
             Task.Run(async () => await Load());
         }
 
