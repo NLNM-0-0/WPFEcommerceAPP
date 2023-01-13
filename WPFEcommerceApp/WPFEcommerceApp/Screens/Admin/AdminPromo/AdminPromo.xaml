@@ -9,6 +9,14 @@
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1440">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="HeadlineTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Padding" Value="5 0"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Hidden" 
                       CanContentScroll="True" 
                       Background="{StaticResource WhiteColorBrush}"
@@ -47,7 +55,46 @@
                     </StackPanel>
                 </DockPanel>
 
-                <Grid DockPanel.Dock="Top" Margin="0 20">
+                <Border DockPanel.Dock="Top"
+                        BorderBrush="{StaticResource BlackColorBrush}"
+                        BorderThickness="0 0 0 1"
+                        Padding="0 5"
+                        Margin="0 20 10 5"
+                        Background="{StaticResource WhiteColorBrush}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="Promo Code/Name" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="0"/>
+                        <TextBlock Style="{StaticResource HeadlineTextBlock}"
+                            Text="Target Customer"
+                            Grid.Column="1"/>
+                        <TextBlock
+                            Text="Sale" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="2"/>
+                        <TextBlock
+                            Text="Num Pros" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="3"/>
+                        <TextBlock
+                            Text="Used" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="4"/>
+                        <TextBlock
+                            Text="Status" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="5"/>
+                        <TextBlock
+                            Text="Action" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="6"/>
+                    </Grid>
+                </Border>
+                <Grid DockPanel.Dock="Top" Margin="0 0">
                     <ListView ItemsSource="{Binding Items}" x:Name="itemList" 
                           HorizontalContentAlignment="Stretch"
                           BorderThickness="0" MaxHeight="650"
@@ -56,7 +103,7 @@
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
                                 <Setter Property="Padding" Value="3"/>
-                                <Setter Property="Margin" Value="0 0 8 0"/>
+                                <Setter Property="Margin" Value="0 0 6 0"/>
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
@@ -80,8 +127,46 @@
                         FontFamily="{StaticResource Bold}"
                         FontSize="{StaticResource FontSizeHeadline}"
                         />
-
-                <Grid DockPanel.Dock="Top" Margin="0 20">
+                <Border DockPanel.Dock="Top"
+                        BorderBrush="{StaticResource BlackColorBrush}"
+                        BorderThickness="0 0 0 1"
+                        Padding="0 5"
+                        Margin="0 20 10 5"
+                        Background="{StaticResource WhiteColorBrush}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="Promo Code/Name" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="0"/>
+                        <TextBlock Style="{StaticResource HeadlineTextBlock}"
+                            Text="Target Customer"
+                            Grid.Column="1"/>
+                        <TextBlock
+                            Text="Sale" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="2"/>
+                        <TextBlock
+                            Text="Num Pros" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="3"/>
+                        <TextBlock
+                            Text="Used" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="4"/>
+                        <TextBlock
+                            Text="Status" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="5"/>
+                        <TextBlock
+                            Text="Action" Style="{StaticResource HeadlineTextBlock}"
+                            Grid.Column="6"/>
+                    </Grid>
+                </Border>
+                <Grid DockPanel.Dock="Top" Margin="0 0">
                     <ListView ItemsSource="{Binding RequestItems}" x:Name="reqList" 
                           HorizontalContentAlignment="Stretch" MaxHeight="700"
                           BorderThickness="0"
@@ -90,7 +175,7 @@
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
                                 <Setter Property="Padding" Value="3"/>
-                                <Setter Property="Margin" Value="0 0 8 0"/>
+                                <Setter Property="Margin" Value="0 0 6 0"/>
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
