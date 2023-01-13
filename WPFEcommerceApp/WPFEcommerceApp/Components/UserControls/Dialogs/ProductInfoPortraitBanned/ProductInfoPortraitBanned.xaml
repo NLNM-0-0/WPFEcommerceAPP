@@ -35,13 +35,6 @@
             Orientation="Horizontal"
             HorizontalAlignment="Center">
             <TextBlock
-                Visibility="{c:Binding 'SelectedProduct.BanLevel == 2', UpdateSourceTrigger=PropertyChanged}"
-                VerticalAlignment="Center"
-                Text="Your product is from a banned category or brand. "
-                FontSize="{StaticResource FontSizeText}"
-                FontFamily="{StaticResource Medium}"/>
-            <TextBlock
-                Visibility="{c:Binding 'SelectedProduct.BanLevel == 1', UpdateSourceTrigger=PropertyChanged}"
                 VerticalAlignment="Center"
                 Text="Your product have been banned from us. "
                 FontSize="{StaticResource FontSizeText}"
