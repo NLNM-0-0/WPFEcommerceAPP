@@ -276,6 +276,7 @@
     <UserControl.InputBindings>
         <KeyBinding
             Key="Enter"
-            Command="{Binding SearchCommand}"/>
+            Command="{Binding SearchCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
     </UserControl.InputBindings>
 </UserControl>

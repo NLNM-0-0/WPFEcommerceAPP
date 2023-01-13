@@ -288,8 +288,15 @@ namespace WPFEcommerceApp
                     DateTo = null;
                     SearchBy = "Promo Code";
                     SearchByValue = "";
-                    StatusAll = true;
-                    Search();
+                    if (StatusAll)
+                    {
+                        FilterPromos = AllPromos;
+                        Search();
+                    }
+                    else
+                    {
+                        StatusAll = true;
+                    }
                 });
                 EditPromoCommand = new RelayCommand<object>((p) => p != null, (p) =>
                 {
