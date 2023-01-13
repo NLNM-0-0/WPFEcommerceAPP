@@ -91,6 +91,8 @@
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
                                             ValidatesOnTargetUpdated="True"
+                                            Min="0"
+                                            Type="DoubleType"
                                             IsNotCheckFirstTime="False"/>
                                     </Binding.ValidationRules>
                                 </Binding>
@@ -345,7 +347,8 @@
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
                                             ValidatesOnTargetUpdated="True"
-                                            IsNotCheckFirstTime="False"/>
+                                            IsNotCheckFirstTime="False"
+                                            Min="1"/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -407,7 +410,6 @@
                                     UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <local:NumberTextBoxValidation
-                                            Type="DoubleType"
                                             Min="0"
                                             Max="100"
                                             ValidatesOnTargetUpdated="True"
