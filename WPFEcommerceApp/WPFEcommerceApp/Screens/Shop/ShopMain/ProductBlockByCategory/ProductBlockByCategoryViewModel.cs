@@ -85,6 +85,7 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        public ProductBlockByCategoryViewModel() { }
         public ProductBlockByCategoryViewModel(string header, ObservableCollection<Models.Product> products, bool isHidden, bool isFull, bool isShop)
         {
             Header = header;

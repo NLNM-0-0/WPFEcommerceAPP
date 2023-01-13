@@ -29,7 +29,7 @@ namespace WPFEcommerceApp
                 {
                     return;
                 }
-                (this.DataContext as ShopMainViewModel).LoadedCommand.Execute(new Tuple<double, double, double>(newProductBlock.ActualHeight, bestSellerProductBlock.ActualHeight, favoriteProductBlock.ActualHeight));
+                (this.DataContext as ShopMainViewModel).LoadedCommand.Execute(new Tuple<double, double, double>(newProductBlock.ActualHeight, bestSellerProductBlock.ActualHeight, BigDiscountProductBlock.ActualHeight));
             }
         }
 

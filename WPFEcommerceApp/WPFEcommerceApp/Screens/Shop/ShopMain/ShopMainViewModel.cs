@@ -22,11 +22,11 @@ namespace WPFEcommerceApp
         private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
         private double heightNewProducts;
         private double heightBestSellerProducts;
-        private double heightFavoriteProducts;
+        private double heightBigDiscountProducts;
         private bool isNewProductsCheck;
         public ICommand OpenEditProfileCommand { get; set; }
         public ICommand MoveToNewProducts { get; set; }
-        public ICommand MoveToFavoriteProducts { get; set; }
+        public ICommand MoveToBigDiscountProducts { get; set; }
         public ICommand MoveToBestSellerProducts { get; set; }
         public ICommand MoveToAllProducts { get; set; }
         public ICommand ScrollChangedCommand { get; set; }
@@ -99,13 +99,13 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<Models.Product> favoriteProducts;
-        public ObservableCollection<Models.Product> FavoriteProducts
+        private ObservableCollection<Models.Product> bigDiscountProducts;
+        public ObservableCollection<Models.Product> BigDiscountProducts
         {
-            get => favoriteProducts;
+            get => bigDiscountProducts;
             set
             {
-                favoriteProducts = value;
+                bigDiscountProducts = value;
                 OnPropertyChanged();
             }
         }
@@ -129,13 +129,13 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ProductBlockByCategoryViewModel favoriteProductBlock;
-        public ProductBlockByCategoryViewModel FavoriteProductBlock
+        private ProductBlockByCategoryViewModel bigDiscountProductBlock;
+        public ProductBlockByCategoryViewModel BigDiscountProductBlock
         {
-            get => favoriteProductBlock;
+            get => bigDiscountProductBlock;
             set
             {
-                favoriteProductBlock = value;
+                bigDiscountProductBlock = value;
                 OnPropertyChanged();
             }
         }
@@ -189,13 +189,13 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private bool isFavoriteProductsCheck;
-        public bool IsFavoriteProductsCheck
+        private bool isBigDiscountProductsCheck;
+        public bool IsBigDiscountProductsCheck
         {
-            get => isFavoriteProductsCheck;
+            get => isBigDiscountProductsCheck;
             set
             {
-                isFavoriteProductsCheck = value;
+                isBigDiscountProductsCheck = value;
                 OnPropertyChanged();
             }
         }
@@ -225,6 +225,9 @@ namespace WPFEcommerceApp
                     Shop = user;
                     IsShop = false;
                 }
+                BestSellerProducts = new ObservableCollection<Models.Product>();
+                BigDiscountProducts = new ObservableCollection<Models.Product>();
+                NewProducts = new ObservableCollection<Models.Product>();
                 await LoadAllProduct();
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
@@ -248,7 +251,7 @@ namespace WPFEcommerceApp
                     Tuple<double, double, double> tuple = p as Tuple<double, double, double>;
                     heightNewProducts = (double)tuple.Item1;
                     heightBestSellerProducts = (double)tuple.Item2;
-                    heightFavoriteProducts = (double)tuple.Item3;
+                    heightBigDiscountProducts = (double)tuple.Item3;
                     IsNewProductsCheck = true;
                 });
                 ScrollChangedCommand = new RelayCommand<object>((p) => { return p != null; }, p =>
@@ -279,12 +282,12 @@ namespace WPFEcommerceApp
                             IsBestSellerProductsCheck = false;
                         }
                     }
-                    else if (offset < heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 230)
+                    else if (offset < heightNewProducts + heightBestSellerProducts + heightBigDiscountProducts + 230)
                     {
-                        IsFavoriteProductsCheck = true;
-                        if (FavoriteProductBlock == null || FavoriteProductBlock.FullProducts.Count == 0)
+                        IsBigDiscountProductsCheck = true;
+                        if (BigDiscountProductBlock == null || BigDiscountProductBlock.FullProducts.Count == 0)
                         {
-                            IsFavoriteProductsCheck = false;
+                            IsBigDiscountProductsCheck = false;
                         }
                     }
                     else
@@ -306,7 +309,7 @@ namespace WPFEcommerceApp
                     ScrollViewer scrollViewer = p as ScrollViewer;
                     scrollViewer.ScrollToVerticalOffset(heightNewProducts + 230);
                 });
-                MoveToFavoriteProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
+                MoveToBigDiscountProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
                     scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + 230);
@@ -314,14 +317,22 @@ namespace WPFEcommerceApp
                 MoveToAllProducts = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
-                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightFavoriteProducts + 230);
+                    scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightBigDiscountProducts + 230);
                 });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    AllProductBlock = new ProductBlockByCategoryViewModel("All", AllProducts, AllProducts.Count == 0, true, IsShop);
-                    NewProductBlock = new ProductBlockByCategoryViewModel("New Products", NewProducts, NewProducts.Count == 0, false, IsShop);
-                    BestSellerProductBlock = new ProductBlockByCategoryViewModel("Best Seller Products", BestSellerProducts, BestSellerProducts.Count == 0, false, IsShop);
-                    FavoriteProductBlock = new ProductBlockByCategoryViewModel("Favorite Products", FavoriteProducts, FavoriteProducts.Count == 0, true, IsShop);
+                    FilterObject all = new FilterObject("", Shop.Id, null, null, FilterStatus.All);
+                    FilterObject new_ = new FilterObject("", Shop.Id, null, null, FilterStatus.New);
+                    FilterObject bestSeller = new FilterObject("", Shop.Id, null, null, FilterStatus.BestSeller);
+                    FilterObject bigDiscount = new FilterObject("", Shop.Id, null, null, FilterStatus.BigDiscount);
+                    AllProductBlock = new ProductBlockByCategoryViewModel("All", AllProducts, AllProducts.Count == 0, true, IsShop)
+                    { ChangeToFilterCommand = new RelayCommandWithNoParameter(() => NavigateProvider.FilterScreen().Navigate(all))};
+                    NewProductBlock = new ProductBlockByCategoryViewModel("New Products", NewProducts, NewProducts.Count == 0, false, IsShop)
+                    { ChangeToFilterCommand = new RelayCommandWithNoParameter(() => NavigateProvider.FilterScreen().Navigate(new_))};
+                    BestSellerProductBlock = new ProductBlockByCategoryViewModel("Best Seller Products", BestSellerProducts, BestSellerProducts.Count == 0, false, IsShop)
+                    { ChangeToFilterCommand = new RelayCommandWithNoParameter(() => NavigateProvider.FilterScreen().Navigate(bestSeller))};
+                    BigDiscountProductBlock = new ProductBlockByCategoryViewModel("Big Discount Products", BigDiscountProducts, BigDiscountProducts.Count == 0, false, IsShop)
+                    { ChangeToFilterCommand = new RelayCommandWithNoParameter(() => NavigateProvider.FilterScreen().Navigate(bigDiscount))};
                     lock (IsLoadingCheck.IsLoading as object)
                     {
                         IsLoadingCheck.IsLoading--;
@@ -344,7 +355,6 @@ namespace WPFEcommerceApp
                                                                                                         p => p.Category,
                                                                                                         p => p.OrderInfoes,
                                                                                                         p => p.OrderInfoes.Select(oi => oi.Rating),
-                                                                                                        p => p.MUsers,
                                                                                                         p => p.ImageProducts,
                                                                                                         p => p.MUser));
             int number = 0;
@@ -366,7 +376,7 @@ namespace WPFEcommerceApp
                 }    
             }
             AverageRating = sumRating * 1.0 / number;
-            FavoriteProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.MUsers.Count != 0).ToList().OrderByDescending(p => p.MUsers.Count).Take(10));
+            BigDiscountProducts = new ObservableCollection<Models.Product>(AllProducts.OrderByDescending(p => p.Sale).Take(10));
             BestSellerProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.OrderInfoes.Count > 0).OrderByDescending(p => p.OrderInfoes.Count).Take(10));
             if (lastDateHasNewProduct != DateTime.MinValue)
             {

@@ -35,8 +35,7 @@
                 VerticalAlignment="Center"
                 FontSize="{StaticResource FontSizeHeadline2}"
                 FontFamily="{StaticResource Bold}"
-                FontWeight="DemiBold"
-                Visibility="{c:Binding '(DataContext.ProductBlockViewModels.Count / (Math.Floor(ActualWidth / 360))) > 2 and DataContext.MaxHeightListProducts == 1100', ElementName=productBlockByCategory}">
+                FontWeight="DemiBold">
                 <Hyperlink
                     Foreground="#4B8CDE"
                     Command="{Binding ChangeToFilterCommand}">

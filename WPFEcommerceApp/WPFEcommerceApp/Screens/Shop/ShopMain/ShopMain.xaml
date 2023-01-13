@@ -272,13 +272,13 @@
                     </Grid>
 
                     <Grid
-                        x:Name="favoriteProductBlock">
+                        x:Name="BigDiscountProductBlock">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         <local:ProductBlockByCategory
-                            DataContext="{Binding FavoriteProductBlock}"
+                            DataContext="{Binding BigDiscountProductBlock}"
                             MaxWidth="{Binding ElementName=shopMain, Path=ActualWidth}"
                             SizeChanged="ProductBlockByCategory_SizeChanged"/>
                     </Grid>
@@ -348,10 +348,10 @@
                     Background="White"
                     Grid.Column="2"
                     Style="{StaticResource RadioTabButton}"
-                    Content="Favorite Products"
-                    IsEnabled="{c:Binding 'FavoriteProductBlock.FullProducts.Count != 0'}"
-                    IsChecked="{Binding IsFavoriteProductsCheck, UpdateSourceTrigger=PropertyChanged}"
-                    Command="{Binding MoveToFavoriteProducts}"
+                    Content="Big Discount Products"
+                    IsEnabled="{c:Binding 'BigDiscountProductBlock.FullProducts.Count != 0'}"
+                    IsChecked="{Binding IsBigDiscountProductsCheck, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding MoveToBigDiscountProducts}"
                     CommandParameter="{Binding ElementName=scroll}"/>
                 <RadioButton
                     ScrollViewer.CanContentScroll="False"
