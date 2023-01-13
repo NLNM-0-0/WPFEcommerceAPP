@@ -173,7 +173,6 @@ namespace WPFEcommerceApp
         {
             get
             {
-                //ATCMT
                 if (SelectedProduct.BanLevel != 0)
                 {
                     return new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
@@ -374,6 +373,7 @@ namespace WPFEcommerceApp
                     await UpdateImageProduct();
                     await UpdateProduct();
                     product = SelectedProduct;
+                    OnProductImageChange();
                     MainViewModel.IsLoading = false;
                 });
 
@@ -512,7 +512,7 @@ namespace WPFEcommerceApp
                 }
                 else
                 {     
-                    string link = await FireStorageAPI.PushFromImage(imageProductSource, "Product", $"{SelectedProduct.Id}");
+                    string link = await FireStorageAPI.PushFromImage(imageProductSource, "Product", "Image", null, $"{SelectedProduct.Id}");
                     Models.ImageProduct imageProduct;
                     imageProduct = new Models.ImageProduct() { Source = link, IdProduct = SelectedProduct.Id };
                     SelectedProduct.ImageProducts.Add(imageProduct);
@@ -525,7 +525,6 @@ namespace WPFEcommerceApp
                     await repository.Add(imageproduct);
                 }
             }
-            OnProductImageChange();
         }
     }
 }

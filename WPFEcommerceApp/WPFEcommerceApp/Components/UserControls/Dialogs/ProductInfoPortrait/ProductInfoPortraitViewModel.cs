@@ -399,7 +399,7 @@ namespace WPFEcommerceApp
                 }
                 else
                 {
-                    string link = await FireStorageAPI.PushFromImage(imageProductSource, "Product", $"{SelectedProduct.Id}");
+                    string link = await FireStorageAPI.PushFromImage(imageProductSource, "Product", "Image", null, $"{SelectedProduct.Id}");
                     Models.ImageProduct imageProduct;
                     imageProduct = new Models.ImageProduct() { Source = link, IdProduct = SelectedProduct.Id };
                     SelectedProduct.ImageProducts.Add(imageProduct);

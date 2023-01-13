@@ -338,7 +338,7 @@
                                         ItemsSource="{Binding Categories}"
                                         DisplayMemberPath="Name"
                                         IsEnabled="{Binding IsEditting}"
-                                        Text="{Binding SelectedProduct.Category.Name}"
+                                        Text="{Binding SelectedProduct.Category.Name, UpdateSourceTrigger=Explicit}"
                                         IsSynchronizedWithCurrentItem="True">
                                         <ComboBox.SelectedItem>
                                             <Binding
@@ -381,7 +381,7 @@
                                         IsEnabled="{Binding IsEditting}"
                                         ItemsSource="{Binding Brands}"
                                         DisplayMemberPath="Name"
-                                        Text="{Binding SelectedProduct.Brand.Name}"
+                                        Text="{Binding SelectedProduct.Brand.Name, UpdateSourceTrigger=Explicit}"
                                         IsSynchronizedWithCurrentItem="True">
                                         <ComboBox.SelectedItem>
                                             <Binding
@@ -581,7 +581,7 @@
                             </Button.IsEnabled>
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource ProductInfoConverter}">
-                                    <Binding Path="SelectedProduct.Status"/>
+                                    <Binding Path="SelectedProduct.BanLevel"/>
                                     <Binding ElementName="productNameTextBox" Path="Text"/>
                                     <Binding ElementName="priceTextBox" Path="Text"/>
                                     <Binding Path="ImageProducts" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay"/>
