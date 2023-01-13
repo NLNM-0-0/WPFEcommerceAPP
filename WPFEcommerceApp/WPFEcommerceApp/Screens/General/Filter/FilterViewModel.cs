@@ -31,13 +31,68 @@ namespace WPFEcommerceApp
             }
 
         }
-        private ObservableCollection<ProductBlockViewModel> productViewModels;
-        public ObservableCollection<ProductBlockViewModel> ProductViewModels
+        private ObservableCollection<ProductBlockViewModel> allProducts;
+        public ObservableCollection<ProductBlockViewModel> AllProducts
         {
-            get { return productViewModels; }
+            get { return allProducts; }
             set
             {
-                productViewModels = value;
+                allProducts = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private ObservableCollection<ProductBlockViewModel> bigDiscountProducts;
+        public ObservableCollection<ProductBlockViewModel> BigDiscountProducts
+        {
+            get { return bigDiscountProducts; }
+            set
+            {
+                bigDiscountProducts = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private ObservableCollection<ProductBlockViewModel> bestSellerProducts;
+        public ObservableCollection<ProductBlockViewModel> BestSellerProducts
+        {
+            get { return bestSellerProducts; }
+            set
+            {
+                bestSellerProducts = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private ObservableCollection<ProductBlockViewModel> newProducts;
+        public ObservableCollection<ProductBlockViewModel> NewProducts
+        {
+            get { return newProducts; }
+            set
+            {
+                newProducts = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private ObservableCollection<ProductBlockViewModel> filterProducts;
+        public ObservableCollection<ProductBlockViewModel> FilterProducts
+        {
+            get { return filterProducts; }
+            set
+            {
+                filterProducts = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private ObservableCollection<ProductBlockViewModel> displayedProducts;
+        public ObservableCollection<ProductBlockViewModel> DisplayedProducts
+        {
+            get { return displayedProducts; }
+            set
+            {
+                displayedProducts = value;
                 OnPropertyChanged();
             }
 
@@ -49,10 +104,7 @@ namespace WPFEcommerceApp
             set
             {
                 newProduct = value;
-                if (value)
-                {
-
-                }
+                OnPropertyChanged();
             }
         }
 
@@ -67,7 +119,7 @@ namespace WPFEcommerceApp
                 {
                     Task task = Task.Run(async () => await LoadCategory());
                     while (!task.IsCompleted) ;
-                    LoadProductBLockViewModel();
+                    Search();
                 }
             }
         }
@@ -83,7 +135,7 @@ namespace WPFEcommerceApp
                 {
                     Task task = Task.Run(async () => await LoadBrand());
                     while (!task.IsCompleted) ;
-                    LoadProductBLockViewModel();
+                    Search();
                 }
             }
         }
@@ -97,7 +149,7 @@ namespace WPFEcommerceApp
                 {
                     MinPrice = 0;
                     MaxPrice = 200000;
-                    SearchRadioButton();
+                    Search();
                 }
                 sortPrice0To200k = value;
                 OnPropertyChanged();
@@ -113,7 +165,7 @@ namespace WPFEcommerceApp
                 {
                     MinPrice = 200000;
                     MaxPrice = 500000;
-                    SearchRadioButton();
+                    Search();
                 }
                 sortPrice200kTo500k = value;
                 OnPropertyChanged();
@@ -129,7 +181,7 @@ namespace WPFEcommerceApp
                 {
                     MinPrice = 500000;
                     MaxPrice = 1000000;
-                    SearchRadioButton();
+                    Search();
                 }
                 sortPrice500kTo1000k = value;
                 OnPropertyChanged();
@@ -145,7 +197,7 @@ namespace WPFEcommerceApp
                 {
                     MinPrice = 1000000;
                     MaxPrice = long.MaxValue;
-                    SearchRadioButton();
+                    Search();
                 }
                 sortPriceP1000k = value;
                 OnPropertyChanged();
@@ -160,9 +212,8 @@ namespace WPFEcommerceApp
                 isBigDiscount = value;
                 if (value)
                 {
-                    Task task = Task.Run(async () => await LoadBigDiscount());
-                    while (!task.IsCompleted) ;
-                    LoadProductBLockViewModel();
+                    FilterProducts = BigDiscountProducts;
+                    Search();
                 }
             }
         }
@@ -175,9 +226,8 @@ namespace WPFEcommerceApp
                 isNew = value;
                 if (value)
                 {
-                    Task task = Task.Run(async () => await LoadNew());
-                    while (!task.IsCompleted) ;
-                    LoadProductBLockViewModel();
+                    FilterProducts = NewProducts;
+                    Search();
                 }
             }
         }
@@ -190,24 +240,22 @@ namespace WPFEcommerceApp
                 isBestSeller = value;
                 if (value)
                 {
-                    Task task = Task.Run(async () => await LoadBestSeller());
-                    while (!task.IsCompleted) ;
-                    LoadProductBLockViewModel();
+                    FilterProducts = BestSellerProducts;
+                    Search();
                 }
             }
         }
-        private bool isNoFilter;
-        public bool IsNoFilter
+        private bool isAllFilter;
+        public bool IsAllFilter
         {
-            get => isNoFilter;
+            get => isAllFilter;
             set
             {
-                isNoFilter = value;
+                isAllFilter = value;
                 if (value)
                 {
-                    Task task = Task.Run(async () => await Load());
-                    while (!task.IsCompleted) ;
-                    LoadProductBLockViewModel();
+                    FilterProducts = AllProducts;
+                    Search();
                 }
             }
         }
@@ -217,13 +265,9 @@ namespace WPFEcommerceApp
             get => isHadOneSize;
             set
             {
-                if (value)
-                {
-                    CheckSize[0] = true;
-                    CheckSize[1] = CheckSize[2] = CheckSize[3] = CheckSize[4] = CheckSize[5] = false;
-                    SearchRadioButton();
-                }
                 isHadOneSize = value;
+                CheckSize[0] = value;
+                Search();
                 OnPropertyChanged();
             }
         }
@@ -233,13 +277,9 @@ namespace WPFEcommerceApp
             get => isHadSizeS;
             set
             {
-                if (value)
-                {
-                    CheckSize[1] = true;
-                    CheckSize[0] = CheckSize[2] = CheckSize[3] = CheckSize[4] = CheckSize[5] = false;
-                    SearchRadioButton();
-                }
                 isHadSizeS = value;
+                CheckSize[1] = value;
+                Search();
                 OnPropertyChanged();
             }
         }
@@ -249,13 +289,10 @@ namespace WPFEcommerceApp
             get => isHadSizeM;
             set
             {
-                if (value)
-                {
-                    CheckSize[2] = true;
-                    CheckSize[0] = CheckSize[1] = CheckSize[3] = CheckSize[4] = CheckSize[5] = false;
-                    SearchRadioButton();
-                }
+                    
                 isHadSizeM = value;
+                CheckSize [2] = value;
+                Search();
                 OnPropertyChanged();
             }
         }
@@ -265,13 +302,9 @@ namespace WPFEcommerceApp
             get => isHadSizeL;
             set
             {
-                if (value)
-                {
-                    CheckSize[3] = true;
-                    CheckSize[0] = CheckSize[2] = CheckSize[1] = CheckSize[4] = CheckSize[5] = false;
-                    SearchRadioButton();
-                }
                 isHadSizeL = value;
+                CheckSize[3] = value;
+                Search();
                 OnPropertyChanged();
             }
         }
@@ -281,13 +314,9 @@ namespace WPFEcommerceApp
             get => isHadSizeXL;
             set
             {
-                if (value)
-                {
-                    CheckSize[4] = true;
-                    CheckSize[0] = CheckSize[2] = CheckSize[3] = CheckSize[1] = CheckSize[5] = false;
-                    SearchRadioButton();
-                }
                 isHadSizeXL = value;
+                CheckSize[4] = value;
+                Search();
                 OnPropertyChanged();
             }
         }
@@ -297,13 +326,9 @@ namespace WPFEcommerceApp
             get => isHadSizeXXL;
             set
             {
-                if (value)
-                {
-                    CheckSize[5] = true;
-                    CheckSize[0] = CheckSize[2] = CheckSize[3] = CheckSize[4] = CheckSize[1] = false;
-                    SearchRadioButton();
-                }
                 isHadSizeXXL = value;
+                CheckSize[5] = value;
+                Search();
                 OnPropertyChanged();
             }
         }
@@ -328,23 +353,85 @@ namespace WPFEcommerceApp
             }
         }
         public bool[] CheckSize = { false, false, false, false, false, false };
-        public FilterViewModel()
+        private FilterObject Condition;
+        public FilterViewModel(FilterObject filterObject)
         {
-            ProductViewModels = new ObservableCollection<ProductBlockViewModel>();
-            ProductRepository = new GenericDataRepository<Models.Product>();
-            Task task = Task.Run(async () => { await Load(); await LoadCategoryCheckBox(); await LoadBrandCheckBox(); });
-            while (!task.IsCompleted) ;
-            LoadProductBLockViewModel();
-            SearchCommand = new RelayCommandWithNoParameter(async () =>
+            Condition = filterObject;
+            if (Condition.Categories == null)
             {
-                await Search();
+                Condition.Categories = new List<string>();
+            }
+            if (Condition.Brands == null)
+            {
+                Condition.Brands = new List<string>();
+            }
+            if (Condition.ShopText == null)
+            {
+                Condition.ShopText = "";
+            }
+            IsLoadingCheck.IsLoading = 2;
+            Task.Run(async () =>
+            {
+                AllProducts = new ObservableCollection<ProductBlockViewModel>();
+                BestSellerProducts = new ObservableCollection<ProductBlockViewModel>();
+                BigDiscountProducts = new ObservableCollection<ProductBlockViewModel>();
+                NewProducts = new ObservableCollection<ProductBlockViewModel>();
+                DisplayedProducts = new ObservableCollection<ProductBlockViewModel>();
+                FilterProducts = new ObservableCollection<ProductBlockViewModel>();
+                ProductRepository = new GenericDataRepository<Models.Product>();
+                CategoryCheckBoxViewModels = new ObservableCollection<CategoryCheckBoxViewModel>();
+                BrandCheckBoxViewModels = new ObservableCollection<BrandCheckViewModel>();
+                await Load();
+                await LoadCategoryCheckBox();
+                await LoadBrandCheckBox();
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }).ContinueWith((first) =>
+            {
+                if (Condition.Status == FilterStatus.All)
+                {
+                    IsAllFilter = true;
+                }
+                else if (Condition.Status == FilterStatus.BigDiscount)
+                {
+                    IsBigDiscount = true;
+                }
+                else if (Condition.Status == FilterStatus.BestSeller)
+                {
+                    IsBestSeller = true;
+                }
+                else if (Condition.Status == FilterStatus.New)
+                {
+                    IsNew = true;
+                }
+                else
+                {
+                    IsAllFilter = true;
+                }
+                SearchCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    MainViewModel.IsLoading = true;
+                    Task.Run(() => { }).ContinueWith((second) =>
+                    {
+                        Search();
+                        MainViewModel.IsLoading = false;
+                    });
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
             });
         }
-        private async void SearchRadioButton()
-        {
-            await Search();
-        }
-        private async Task Search()
+        private void Search()
         {
             List<string> listCategoryId = new List<string>();
             List<string> allCategoryId = new List<string>();
@@ -362,7 +449,7 @@ namespace WPFEcommerceApp
             }
             List<string> listBrandId = new List<string>();
             List<string> allBrandId = new List<string>();
-            foreach (BrandCheckViewModel brandCheckViewModel in BrandCheckViewModels)
+            foreach (BrandCheckViewModel brandCheckViewModel in BrandCheckBoxViewModels)
             {
                 if (brandCheckViewModel.IsChecked)
                 {
@@ -374,78 +461,71 @@ namespace WPFEcommerceApp
             {
                 listBrandId = allBrandId;
             }
-            //ATCMT
-            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => (p.BanLevel == 0 &&
-                                                                                                            (p.Price * (100 - p.Sale) / 100 <= MaxPrice && p.Price * (100 - p.Sale) / 100 >= MinPrice) &&
-                                                                                                            (listCategoryId.Contains(p.IdCategory)) && (listBrandId.Contains(p.IdBrand)) && ((p.IsOneSize == CheckSize[0] == true) ||
-                                                                                                            (p.IsHadSizeS == CheckSize[1] == true) || (p.IsHadSizeM == CheckSize[2] == true) || (p.IsHadSizeL == CheckSize[3] == true) ||
-                                                                                                            (p.IsHadSizeXL == CheckSize[4] == true) || (p.IsHadSizeXXL == CheckSize[5] == true))),
-                                                                                                        p => p.Category,
-                                                                                                        p => p.Brand,
-                                                                                                        p => p.ImageProducts, p => p.MUser));
-            LoadProductBLockViewModel();
-        }
-        private void LoadProductBLockViewModel()
-        {
-            ProductViewModels.Clear();
-            foreach (Models.Product product in Products)
+            bool isHasSize = false; 
+            foreach(bool size in CheckSize)
             {
-                ProductViewModels.Add(new ProductBlockViewModel(product));
+                if(size)
+                {
+                    isHasSize = true;
+                    break;
+                }    
+            }
+            if (isHasSize)
+            {
+                DisplayedProducts = new ObservableCollection<ProductBlockViewModel>( FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 &&
+                                                                                                        (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
+                                                                                                        ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
+                                                                                                        (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))));
+            }
+            else
+            {
+                DisplayedProducts = new ObservableCollection<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 &&
+                                                                                                        (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))));
             }
         }
         private async Task Load()
         {
-            MainViewModel.IsLoading = true;
-            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0,
-                                                                                                        p => p.Category,
-                                                                                                        p => p.Brand,
-                                                                                                        p => p.ImageProducts,
-                                                                                                        p => p.MUser));
-            MainViewModel.IsLoading = false;
-            /*LoadProductBLockViewModel();
-            OnPropertyChanged(nameof(ProductViewModels));*/
+            if (String.IsNullOrEmpty(Condition.ShopText))
+            {
+                Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 && p.Name.Contains(Condition.SearchText ?? ""),
+                                                                                                            p => p.Category,
+                                                                                                            p => p.Brand,
+                                                                                                            p => p.ImageProducts,
+                                                                                                            p => p.MUser));
+            }
+            else
+            {
+                Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 && p.Name.Contains(Condition.SearchText ?? "") && p.IdShop == Condition.ShopText,
+                                                                                                            p => p.Category,
+                                                                                                            p => p.Brand,
+                                                                                                            p => p.ImageProducts,
+                                                                                                            p => p.MUser));
+            }    
+            DateTime lastDateHasNewProduct = DateTime.MinValue;
+            foreach (Models.Product product in Products)
+            {
+                ProductBlockViewModel productBlockViewModel = new ProductBlockViewModel(product);
+                AllProducts.Add(productBlockViewModel);
+                if (product.DateOfSale > lastDateHasNewProduct)
+                {
+                    lastDateHasNewProduct = product.DateOfSale ?? DateTime.MinValue;
+                }
+            }
+            if (lastDateHasNewProduct != DateTime.MinValue)
+            {
+                NewProducts = new ObservableCollection<ProductBlockViewModel>(AllProducts.Where(p => (lastDateHasNewProduct - p.SelectedProduct.DateOfSale) < new TimeSpan(7, 0, 0, 0)).Take(50));
+            }
+            else
+            {
+                NewProducts = new ObservableCollection<ProductBlockViewModel>();
+            }
+            BestSellerProducts = new ObservableCollection<ProductBlockViewModel>(AllProducts.OrderByDescending(p => p.SelectedProduct.Sold).Take(50));
+            BigDiscountProducts = new ObservableCollection<ProductBlockViewModel>(AllProducts.OrderByDescending(p => p.SelectedProduct.Sale).Take(50));
         }
-
-        private async Task LoadBigDiscount()
-        {
-            MainViewModel.IsLoading = true;
-            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.Sale >= 20,
-                                                                                                        p => p.Category,
-                                                                                                        p => p.Brand,
-                                                                                                        p => p.ImageProducts,
-                                                                                                        p => p.MUser));
-            MainViewModel.IsLoading = false;
-            /* LoadProductBLockViewModel();
-             OnPropertyChanged(nameof(ProductViewModels));*/
-        }
-        private async Task LoadNew()
-        {
-            MainViewModel.IsLoading = true;
-            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => (DateTime.Today - p.DateOfSale) < new TimeSpan(7, 0, 0, 0),
-                                                                                                        p => p.Category,
-                                                                                                        p => p.Brand,
-                                                                                                        p => p.ImageProducts, p => p.MUser));
-            MainViewModel.IsLoading = false;
-
-            /*LoadProductBLockViewModel();
-            OnPropertyChanged(nameof(ProductViewModels));*/
-        }
-        private async Task LoadBestSeller()
-        {
-            MainViewModel.IsLoading = true;
-            Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => p.Sold >= 100,
-                                                                                                        p => p.Category,
-                                                                                                        p => p.Brand,
-                                                                                                        p => p.ImageProducts, p => p.MUser));
-            MainViewModel.IsLoading = false;
-            /* LoadProductBLockViewModel();
-             OnPropertyChanged(nameof(ProductViewModels));*/
-        }
-
-
         private async Task LoadCategory()
-        {
-            MainViewModel.IsLoading = true;
+        { 
             List<string> hellos = new List<string>();
             foreach (CategoryCheckBoxViewModel categoryCheckBoxViewModel in CategoryCheckBoxViewModels)
             {
@@ -457,17 +537,15 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => hellos.Contains(p.Category.Name),
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts, p => p.MUser));
-            MainViewModel.IsLoading = false;
-            /* LoadProductBLockViewModel();
-             OnPropertyChanged(nameof(ProductViewModels));*/
+                                                                                                        p => p.ImageProducts,
+                                                                                                        p => p.MUser));
         }
 
         private async Task LoadBrand()
         {
             MainViewModel.IsLoading = true;
             List<string> hellos = new List<string>();
-            foreach (BrandCheckViewModel brandCheckViewModel in BrandCheckViewModels)
+            foreach (BrandCheckViewModel brandCheckViewModel in BrandCheckBoxViewModels)
             {
                 if (brandCheckViewModel.IsChecked)
                 {
@@ -477,12 +555,11 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p => hellos.Contains(p.Brand.Name),
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts, p => p.MUser));
+                                                                                                        p => p.ImageProducts,
+                                                                                                        p => p.MUser));
             MainViewModel.IsLoading = false;
-            /* LoadProductBLockViewModel();
-             OnPropertyChanged(nameof(ProductViewModels));*/
         }
-        private ObservableCollection<CategoryCheckBoxViewModel> categoryCheckBoxViewModels = new ObservableCollection<CategoryCheckBoxViewModel>();
+        private ObservableCollection<CategoryCheckBoxViewModel> categoryCheckBoxViewModels;
         public ObservableCollection<CategoryCheckBoxViewModel> CategoryCheckBoxViewModels
         {
             get => categoryCheckBoxViewModels;
@@ -492,45 +569,62 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<BrandCheckViewModel> brandCheckViewModels = new ObservableCollection<BrandCheckViewModel>();
-        public ObservableCollection<BrandCheckViewModel> BrandCheckViewModels
+        private ObservableCollection<BrandCheckViewModel> brandCheckBoxViewModels;
+        public ObservableCollection<BrandCheckViewModel> BrandCheckBoxViewModels
         {
-            get => brandCheckViewModels;
+            get => brandCheckBoxViewModels;
             set
             {
-                brandCheckViewModels = value;
+                brandCheckBoxViewModels = value;
                 OnPropertyChanged();
             }
         }
         private async Task LoadCategoryCheckBox()
-        {
-            MainViewModel.IsLoading = true;
+        { 
             GenericDataRepository<Models.Category> genericDataRepository = new GenericDataRepository<Models.Category>();
             ObservableCollection<Models.Category> categories = new ObservableCollection<Models.Category>(await genericDataRepository.GetListAsync(p => p.Status != "Banned"));
             foreach (Models.Category category in categories)
             {
                 CategoryCheckBoxViewModel categoryCheckBoxViewModel = new CategoryCheckBoxViewModel();
                 categoryCheckBoxViewModel.Category = category;
-                categoryCheckBoxViewModel.IsChecked = false;
+                categoryCheckBoxViewModel.IsChecked = Condition.Categories.Any(c => c == category.Id);
                 CategoryCheckBoxViewModels.Add(categoryCheckBoxViewModel);
             }
-            MainViewModel.IsLoading = false;
-
         }
         private async Task LoadBrandCheckBox()
         {
-            MainViewModel.IsLoading = true;
             GenericDataRepository<Models.Brand> genericDataRepository = new GenericDataRepository<Models.Brand>();
             ObservableCollection<Models.Brand> brands = new ObservableCollection<Models.Brand>(await genericDataRepository.GetListAsync(p => p.Status != "Banned"));
             foreach (Models.Brand brand in brands)
             {
                 BrandCheckViewModel brandCheckViewModel = new BrandCheckViewModel();
                 brandCheckViewModel.Brand = brand;
-                brandCheckViewModel.IsChecked = false;
-                BrandCheckViewModels.Add(brandCheckViewModel);
+                brandCheckViewModel.IsChecked = Condition.Brands.Any(b => b == brand.Id);
+                BrandCheckBoxViewModels.Add(brandCheckViewModel);
             }
-            MainViewModel.IsLoading = false;
-
+        }
+    }
+    public enum FilterStatus
+    {
+        BigDiscount,
+        New,
+        BestSeller,
+        All
+    }
+    public class FilterObject
+    {
+        public string SearchText { get; set; } 
+        public string ShopText { get; set; } 
+        public List<string> Categories { get; set; } 
+        public List<string> Brands { get; set; }
+        public FilterStatus Status  { get; set; }
+        public FilterObject(string searchText, string shopText, List<string> categories, List<string> brands, FilterStatus status)
+        {
+            SearchText = searchText;
+            ShopText = shopText;
+            Categories = categories;
+            Brands = brands;
+            Status = status;
         }
     }
 }
