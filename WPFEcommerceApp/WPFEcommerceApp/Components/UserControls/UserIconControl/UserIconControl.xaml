@@ -13,18 +13,18 @@
             Width="50"
             Height="50">
             <ScrollViewer>
-                <Image
+                <local:AsyncImage
                 Height="50"
                 Width="50"
                 Stretch="UniformToFill"
                 Source="{Binding SourceImageAva}">
-                    <Image.Clip>
+                    <local:AsyncImage.Clip>
                         <EllipseGeometry
                         Center="25 25"
                         RadiusX="25"
                         RadiusY="25"/>
-                    </Image.Clip>
-                </Image>
+                    </local:AsyncImage.Clip>
+                </local:AsyncImage>
             </ScrollViewer>
             
         </Border>

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Globalization;
 using System.Security.Cryptography;
+using MaterialDesignThemes.Wpf;
 
 namespace WPFEcommerceApp
 {
@@ -73,7 +74,19 @@ namespace WPFEcommerceApp
         {
 
             orderinfoRepo = new GenericDataRepository<OrderInfo>();
-            LoadCommand = new RelayCommandWithNoParameter(async () => await Load());
+            LoadCommand = new RelayCommandWithNoParameter(async () =>
+            {
+                if (FromSelectedDate > ToSelectedDate)
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                    var view = new ConfirmDialog { Header = "Day invalid", Content = "The beginning day is later than the end day, choose again!" };
+                    await DialogHost.Show(view, "Main");
+                    FromSelectedDate = ToSelectedDate - new TimeSpan(30, 0, 0, 0);
+                    return;
+                }
+                else
+                    await Load();
+            });
 
             FromSelectedDate = DateTime.Now - new TimeSpan(30, 0, 0, 0);
             ToSelectedDate = DateTime.Now;
