@@ -53,12 +53,19 @@ namespace WPFEcommerceApp {
 			//OnReOrder = new ReOrderCM(navigationStore, successNavService);
 			ICommand ReOrderCM = new ReOrderCM();
 			OnReOrder = new ImmediateCommand<object>(async p => {
-				var view = new ConfirmDialog() {
-					CM = ReOrderCM,
-					Param = new List<Order>() { p as Order},
-				};
-				await DialogHost.Show(view, "Main");
-			});
+                var t = await userRepo.GetSingleAsync(d => d.Id == (p as Order).IDShop);
+                if(t.StatusShop == "Banned") {
+                    var view = new ConfirmDialog() {
+                        Header = "Oops",
+                        Content = "This shop has been banned!"
+                    };
+                    await DialogHost.Show(view, "Main");
+                    return;
+                }
+                else {
+                    ReOrderCM.Execute(new List<Order>() { p as Order });
+                }
+            });
 
 
             ICommand CanCelCM = new ImmediateCommand<object>(async (p) => {

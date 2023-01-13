@@ -180,7 +180,7 @@ namespace WPFEcommerceApp {
             });
             OnEditAddress = new ImmediateCommand<object>((p) => {
                 var listAddress = ListAddress.Values.ToList();
-                if(listAddress.Count != 0 && address.Id != listAddress[0].Id)
+                if(listAddress.Count != 0 && address != null && address.Id != listAddress[0].Id)
                     for(int i = 0; i < listAddress.Count; i++) {
                         if(listAddress[i].Id == address.Id) {
                             listAddress.RemoveAt(i);
@@ -300,7 +300,7 @@ namespace WPFEcommerceApp {
 			base.Dispose();
 		}
 
-        public Dictionary<string, bool> productList = new Dictionary<string, bool>();
+        public List<string> productList = new List<string>();
         public Dictionary<string, bool> ValidVoucherList = new Dictionary<string, bool>();
         public async Task Load() {
             MainViewModel.IsLoading = true;
@@ -323,7 +323,7 @@ namespace WPFEcommerceApp {
             if(productList.Count < 1) {
                 foreach(var order in ListOrder) {
                     foreach(var product in order.ProductList) {
-                        productList[product.ID] = true;
+                        productList.Add(product.ID);
                     }
                 }
             }
@@ -331,11 +331,12 @@ namespace WPFEcommerceApp {
             foreach(var o in listVoucher) {
                 var flag = true;
                 //if(o.Products.Count == 0) flag = false;
-                foreach(var prd in o.Products) {
-                    if(!productList.ContainsKey(prd.Id)) {
-                        flag = false;
-                        break;
-                    }
+                if(o.Products.Count < productList.Count || o.Products.Count == 0) {
+                    flag = false;
+                }
+                else {
+                    List<string> listVoucherId = o.Products.Select(d => d.Id).ToList();
+                    flag = !productList.Except(listVoucherId).Any();
                 }
                 if(flag) {
                     valid.Add(o);

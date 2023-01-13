@@ -24,14 +24,16 @@ namespace WPFEcommerceApp {
         public string Phone {
             get => _phone;
             set {
-                _phone = null;
                 if(string.IsNullOrEmpty(value)) {
+                    _phone = null;
                     return;
                 }
                 if(value.Length <= 6 || value.Length >= 12) {
+                    _phone = null;
                     throw new ArgumentException("*Wrong type");
                 }
                 if(!ValidateRegex.Phone.IsMatch(value)) {
+                    _phone = null;
                     throw new ArgumentException("*Wrong type");
                 }
                 _phone = value;
