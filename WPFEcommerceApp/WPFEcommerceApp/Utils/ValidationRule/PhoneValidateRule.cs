@@ -9,22 +9,37 @@ using System.Windows.Controls;
 
 namespace WPFEcommerceApp {
     public class PhoneValidateRule : ValidationRule {
-        public string MustEndWith { get; set; }
+        public bool IsFirstTime { get; set; } = true;
+
+        public static bool Validate(string value) {
+            var str = value;
+            if(str == null || 
+                str.Length == 0 || 
+                str.Length < 5 ||
+                !ValidateRegex.Phone.IsMatch(str)) {
+                return false;
+            }
+            return true;
+        }
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo) {
             var str = value as string;
             if(str == null || str.Length == 0) {
-                return new ValidationResult(false, null);
+                if(!IsFirstTime)
+                    return new ValidationResult(false, "This field cannot be left blank.");
+                else {
+                    IsFirstTime = false;
+                    return new ValidationResult(true, null);
+                }
             }
-                if(str.Length < 5) {
-                return new ValidationResult(false, "Phone number is wrong type!");
+            if(str.Length < 5) {
+                return new ValidationResult(false, "Phone number is in the wrong format!");
             }
-            string rgStr = @"^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$";
-            Regex regex = new Regex(rgStr);
-            if(regex.IsMatch(str)) {
+
+            if(ValidateRegex.Phone.IsMatch(str)) {
                 return new ValidationResult(true, null);
             }
-            else return new ValidationResult(false, "Phone number is wrong type!");
+            else return new ValidationResult(false, "Phone number is in the wrong format!");
         }
     }
 }

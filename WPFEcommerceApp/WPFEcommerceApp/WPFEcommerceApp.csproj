@@ -539,7 +539,9 @@
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ImmediateCommand.cs" />
+    <Compile Include="Utils\ValidationRule\Wrapper.cs" />
     <Compile Include="Utils\ValidationRule\EmailValidateRule.cs" />
+    <Compile Include="Utils\ValidationRule\PasswordValidateRule.cs" />
     <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\General\Payment\components\ProductCard\BProductCard.xaml.cs">
       <DependentUpon>BProductCard.xaml</DependentUpon>
