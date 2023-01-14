@@ -97,6 +97,7 @@ namespace WPFEcommerceApp
         }
         private bool isChangedAva = false;
         private bool isChangedBackground = false;
+        private System.Windows.Controls.UserControl PreviousItem;
         public ProfileShopDialogViewModel()
         {
             Task.Run(async () =>
@@ -129,19 +130,21 @@ namespace WPFEcommerceApp
             }
             OpenProfileShopBackgroundDialog = new RelayCommandWithNoParameter(async () =>
             {
+                PreviousItem = MainViewModel.UpdateDialog("Main");
                 MainViewModel.IsLoading = true;
                 ProfileShopBackgroundDialog profileShopBackgroundDialog = new ProfileShopBackgroundDialog();
-                profileShopBackgroundDialog.DataContext = new ProfileShopBackgroundDialogViewModel(ImageBackground);
+                profileShopBackgroundDialog.DataContext = new ProfileShopBackgroundDialogViewModel(ImageBackground, PreviousItem);
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(profileShopBackgroundDialog, "SecondDialog", null, null, LoadBackground);
+                await DialogHost.Show(profileShopBackgroundDialog, "Main");
             });
             OpenProfileShopAvaDialog = new RelayCommandWithNoParameter(async () =>
             {
+                PreviousItem = MainViewModel.UpdateDialog("Main");
                 MainViewModel.IsLoading = true;
                 ProfileShopAvaDialog profileShopAvaDialog = new ProfileShopAvaDialog();
-                profileShopAvaDialog.DataContext = new ProfileShopAvaDialogViewModel(ImageAva);
+                profileShopAvaDialog.DataContext = new ProfileShopAvaDialogViewModel(ImageAva, PreviousItem);
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(profileShopAvaDialog, "SecondDialog", null, null, LoadAva);
+                await DialogHost.Show(profileShopAvaDialog, "Main");
             });
             SaveProfileShopCommand = new RelayCommandWithNoParameter(async () =>
             {
@@ -177,25 +180,18 @@ namespace WPFEcommerceApp
                 }
             });
         }
-        private void LoadBackground(object sender, DialogClosedEventArgs eventArgs)
+        public void LoadBackground(CroppedBitmap croppedBitmap)
         {
             OnPropertyChanged(nameof(Shop));
-            if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
-            {
-                ImageBackground = (eventArgs.Parameter as CroppedBitmap);
-                isChangedBackground = true;
-            }
-            
+            ImageBackground = croppedBitmap;
+            isChangedBackground = true;
         }
 
-        private void LoadAva(object sender, DialogClosedEventArgs eventArgs)
+        public void LoadAva(CroppedBitmap croppedBitmap)
         {
             OnPropertyChanged(nameof(Shop));
-            if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
-            {
-                ImageAva = (eventArgs.Parameter as CroppedBitmap);
-                isChangedAva = true;
-            }
+            ImageAva = croppedBitmap;
+            isChangedAva = true;
         }
 
         public async Task LoadTempData()

@@ -101,8 +101,10 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ProfileShopAvaDialogViewModel(CroppedBitmap croppedBitmap)
+        System.Windows.Controls.UserControl PreviousItem;
+        public ProfileShopAvaDialogViewModel(CroppedBitmap croppedBitmap, System.Windows.Controls.UserControl previous = null)
         {
+            PreviousItem = previous;
             ImageAva = croppedBitmap;
             ChangeAvaShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) => 
             {
@@ -153,11 +155,25 @@ namespace WPFEcommerceApp
                 ImageAva  = temp;
                 croppedBitmap = temp;
 
-                DialogHost.CloseDialogCommand.Execute(temp, null);
+                if (PreviousItem != null)
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                    ProfileShopDialogViewModel vm = (ProfileShopDialogViewModel)(PreviousItem as ProfileShopDialog).DataContext;
+                    vm.LoadAva(temp);
+                    DialogHost.Show(PreviousItem, "Main");
+                }
+                else
+                {
+                    DialogHost.CloseDialogCommand.Execute(temp, null);
+                }    
             });
             CancelCommand = new RelayCommandWithNoParameter(() =>
             {
                 DialogHost.CloseDialogCommand.Execute(null, null);
+                if(PreviousItem!=null)
+                {
+                    DialogHost.Show(PreviousItem, "Main");
+                }    
             });
         }
     }
