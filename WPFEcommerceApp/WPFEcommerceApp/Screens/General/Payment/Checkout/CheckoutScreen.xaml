@@ -194,11 +194,11 @@
                                                      Style="{StaticResource RadioButtonOutlineCard}"  
                                                      Padding="13, 8, 60, 8"
                                                      HorizontalAlignment="Left" 
-                                                     IsChecked="True">
+                                                     IsChecked="{Binding ElementName=CheckoutWindow, Path=DataContext.ShippingMethod}">
                                         <StackPanel>
                                             <Label Content="Free No Rush Shipping" 
                                                        FontSize="{StaticResource FontSizeText}"/>
-                                            <Label Content="Arrives Mon, Oct 10- Tue, Oct 11"
+                                            <Label Content="Arrives in 3 - 7 days"
                                                        FontSize="{StaticResource FontSizeDescription}"
                                                        Foreground="{StaticResource NotAvailableColorBrush}"/>
                                         </StackPanel>
@@ -211,7 +211,7 @@
                                         <StackPanel>
                                             <Label Content="Fast Shipping" 
                                                        FontSize="{StaticResource FontSizeText}"/>
-                                            <Label Content="Arrives Mon, Oct 10- Tue, Oct 11"
+                                            <Label Content="Arrives in 1 - 3 days"
                                                         FontSize="{StaticResource FontSizeDescription}"
                                                         Foreground="{StaticResource NotAvailableColorBrush}"/>
                                         </StackPanel>

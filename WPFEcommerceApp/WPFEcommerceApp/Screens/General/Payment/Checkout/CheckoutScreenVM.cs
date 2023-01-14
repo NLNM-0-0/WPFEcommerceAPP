@@ -47,7 +47,7 @@ namespace WPFEcommerceApp {
             get => shippingMethod;
             set {
                 shippingMethod = value;
-                if(value == false) ShipTotal = 50000;
+                if(value == false) ShipTotal = ListOrder.Count * 50000;
                 else ShipTotal = 0;
                 OnPropertyChanged();
             }
