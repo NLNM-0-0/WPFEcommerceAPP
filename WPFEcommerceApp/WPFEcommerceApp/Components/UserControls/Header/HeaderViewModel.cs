@@ -148,11 +148,12 @@ namespace WPFEcommerceApp
             MainViewModel.IsLoading = false;
         }
 
-        private void OnAccountChange()
+        private async void OnAccountChange()
         {
             OnPropertyChanged(nameof(Icon));
             OnPropertyChanged(nameof(IconTooltip));
             OnPropertyChanged(nameof(IsAdmin));
+            await Load();
         }
 
         public async Task Load()
