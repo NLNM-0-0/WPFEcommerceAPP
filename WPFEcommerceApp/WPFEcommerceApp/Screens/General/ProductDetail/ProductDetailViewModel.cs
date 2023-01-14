@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
+using Microsoft.JScript;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -600,7 +602,7 @@ namespace WPFEcommerceApp
 
         private async Task LoadAlso()
         {
-            ProductAlsos = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p =>p.Id != SelectedProduct.Id && (p.IdBrand == SelectedProduct.IdBrand || p.IdCategory == SelectedProduct.IdCategory),
+            ProductAlsos = new ObservableCollection<Models.Product>(await ProductRepository.GetListAsync(p =>p.Id != SelectedProduct.Id && (p.IdBrand == SelectedProduct.IdBrand || p.IdCategory == SelectedProduct.IdCategory) && p.BanLevel == 0,
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
                                                                                                         p => p.ImageProducts, 
