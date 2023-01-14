@@ -807,16 +807,18 @@
                     Style="{StaticResource TransparentButton}">
 
                     </Button>
-                    <TextBlock Width="auto"
+                    <TextBox Width="auto"
                          Height="20"
                          FontWeight="Light"
                          FontSize="{StaticResource FontSizeHeadline3}"
-                         Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
                          Grid.Column="2"
+                         BorderThickness="0"
                          Margin="5,0,5,10"
-                         VerticalAlignment="Bottom">
+                         VerticalAlignment="Bottom"
+                             PreviewTextInput="NumberValidationTextBox">
 
-                    </TextBlock>
+                    </TextBox>
                     <Button Grid.Column="3"
                     Content="+"
                     FontSize="{StaticResource FontSizeHeadline3}"
