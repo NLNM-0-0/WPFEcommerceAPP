@@ -24,6 +24,12 @@
                 <ResourceDictionary Source="Components/Scroll.xaml"/>
                 <ResourceDictionary Source="Components/ListView/ListView.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
+            <local:BooleanToGenderConverter x:Key="BooleanToGenderConverter"/>
+            <local:DateTimeToShortConverter x:Key="DateTimeToShortConverter"/>
+            <local:MultiValueConverter x:Key="MultiValueConverter"/>
+            <local:NumberToBooleanConverter x:Key="NumberToBooleanConverter"/>
+            <local:StringToImageSourceConverter x:Key="StringToImageSourceConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
