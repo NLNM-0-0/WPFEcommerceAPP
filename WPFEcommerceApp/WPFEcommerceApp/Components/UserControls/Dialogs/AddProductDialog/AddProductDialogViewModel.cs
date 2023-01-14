@@ -238,7 +238,7 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-
+        private System.Windows.Controls.UserControl PreviousItem;
         public AddProductDialogViewModel()
         {
             LoadData();
@@ -298,27 +298,40 @@ namespace WPFEcommerceApp
             });
             OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                PreviousItem = MainViewModel.UpdateDialog("Main");
                 MainViewModel.IsLoading = true;
                 ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
-                changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
+                changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts) 
+                {
+                    CloseDialogCommand = new RelayCommandWithNoParameter(() =>
+                    {
+                        DialogHost.CloseDialogCommand.Execute(null, null);
+                        if (PreviousItem != null)
+                        {
+                            DialogHost.Show(PreviousItem, "Main");
+                        }
+                    })
+                };
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(changeImageProductDialog, "SecondDialog");
+                await DialogHost.Show(changeImageProductDialog, "Main");
             });
             OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                PreviousItem = MainViewModel.UpdateDialog("Main");
                 MainViewModel.IsLoading = true;
                 AddBrandDialog addBrandDialog = new AddBrandDialog();
-                addBrandDialog.DataContext = new AddBrandDialogViewModel();
+                addBrandDialog.DataContext = new AddBrandDialogViewModel(PreviousItem);
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(addBrandDialog, "SecondDialog");
+                await DialogHost.Show(addBrandDialog, "Main");
             });
             OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
+                PreviousItem = MainViewModel.UpdateDialog("Main");
                 MainViewModel.IsLoading = true;
                 AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
-                addCategoryDialog.DataContext = new AddCategoryDialogViewModel();
+                addCategoryDialog.DataContext = new AddCategoryDialogViewModel(PreviousItem);
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(addCategoryDialog, "SecondDialog");
+                await DialogHost.Show(addCategoryDialog, "Main");
             });
             RequestProductCommand = new RelayCommand<object>((p) =>
             {
@@ -385,6 +398,7 @@ namespace WPFEcommerceApp
                 }
             });
         }
+
         public async void LoadData()
         {
             ImageProducts = new ObservableCollection<BitmapImage>();

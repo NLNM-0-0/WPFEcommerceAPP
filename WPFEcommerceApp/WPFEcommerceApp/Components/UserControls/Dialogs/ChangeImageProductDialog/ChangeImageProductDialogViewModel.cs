@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,7 +23,7 @@ namespace WPFEcommerceApp
         public ICommand ChangeSelectedImageCommand { get; set; }
         public ICommand AddImageCommand { get; set; }
         public ICommand DeleteImageCommand { get; set; }
-
+        public ICommand CloseDialogCommand { get; set; }
         private ObservableCollection<BitmapImage> imageProducts;
         public ObservableCollection<BitmapImage> ImageProducts
         {
@@ -156,6 +157,13 @@ namespace WPFEcommerceApp
                     }
                 }
             });
+            if (CloseDialogCommand == null)
+            {
+                CloseDialogCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                });
+            }
         }
     }
 }

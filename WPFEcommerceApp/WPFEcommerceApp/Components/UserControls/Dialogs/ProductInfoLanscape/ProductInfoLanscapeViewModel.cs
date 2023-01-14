@@ -206,6 +206,7 @@ namespace WPFEcommerceApp
                 }
             }
         }
+        private System.Windows.Controls.UserControl PreviousItem;
         public ProductInfoLandscapeViewModel(Models.Product product)
         {
             SelectedProduct = product;
@@ -383,27 +384,40 @@ namespace WPFEcommerceApp
                 });
                 OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
+                    PreviousItem = MainViewModel.UpdateDialog("Main");
                     MainViewModel.IsLoading = true;
                     ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
-                    changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
+                    changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts)
+                    {
+                        CloseDialogCommand = new RelayCommandWithNoParameter(() =>
+                        {
+                            DialogHost.CloseDialogCommand.Execute(null, null);
+                            if (PreviousItem != null)
+                            {
+                                DialogHost.Show(PreviousItem, "Main");
+                            }
+                        })
+                    };
                     MainViewModel.IsLoading = false;
-                    await DialogHost.Show(changeImageProductDialog, "SecondDialog");
+                    await DialogHost.Show(changeImageProductDialog, "Main");
                 });
                 OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
+                    PreviousItem = MainViewModel.UpdateDialog("Main");
                     MainViewModel.IsLoading = true;
                     AddBrandDialog addBrandDialog = new AddBrandDialog();
-                    addBrandDialog.DataContext = new AddBrandDialogViewModel();
+                    addBrandDialog.DataContext = new AddBrandDialogViewModel(PreviousItem);
                     MainViewModel.IsLoading = false;
-                    await DialogHost.Show(addBrandDialog, "SecondDialog");
+                    await DialogHost.Show(addBrandDialog, "Main");
                 });
                 OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
+                    PreviousItem = MainViewModel.UpdateDialog("Main");
                     MainViewModel.IsLoading = true;
                     AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
-                    addCategoryDialog.DataContext = new AddCategoryDialogViewModel();
+                    addCategoryDialog.DataContext = new AddCategoryDialogViewModel(PreviousItem);
                     MainViewModel.IsLoading = false;
-                    await DialogHost.Show(addCategoryDialog, "SecondDialog");
+                    await DialogHost.Show(addCategoryDialog, "Main");
                 });
                 ContactCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
@@ -448,12 +462,21 @@ namespace WPFEcommerceApp
         }
         private async Task OpenContact()
         {
+            PreviousItem = MainViewModel.UpdateDialog("Main");
             MainViewModel.IsLoading = true;
             NotificationDialog notificationDialog = new NotificationDialog();
             notificationDialog.Header = "Contact Info";
             notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
+            notificationDialog.CloseCommand = new RelayCommandWithNoParameter(() =>
+            {
+                if (PreviousItem != null)
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                    DialogHost.Show(PreviousItem, "Main");
+                }
+            });
             MainViewModel.IsLoading = false;
-            await DialogHost.Show(notificationDialog, "SecondDialog");
+            await DialogHost.Show(notificationDialog, "Main");
         }
 
         private void ImageProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

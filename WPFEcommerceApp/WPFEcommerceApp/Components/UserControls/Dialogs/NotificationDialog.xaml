@@ -7,13 +7,14 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             mc:Ignorable="d" Width="590">
+             mc:Ignorable="d" Width="590"
+             x:Name="notificationDialog">
     <Border Background="white" BorderThickness="0" CornerRadius="20" Padding="40" Width="auto" Height="auto">
         <StackPanel>
             <Grid>
                 <TextBlock Text="{Binding Header}" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
                 <Button HorizontalAlignment="Right"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Command="{Binding ElementName=notificationDialog, Path=CloseCommand}"
                         x:Name="ButtonClose"
                         Margin="0 0 10 0"
                         Height="30"
@@ -31,12 +32,13 @@
                             Height="10"/>
                 </Button>
             </Grid>
-            <TextBlock Text="{Binding ContentDialog}" TextWrapping="Wrap" FontSize="{StaticResource FontSizeText}" Margin="0, 30, 0,30 " Width="480"
+            <TextBlock Text="{Binding ContentDialog}" 
+                       TextWrapping="Wrap" FontSize="{StaticResource FontSizeText}" Margin="0, 30, 0,30 " Width="480"
                        HorizontalAlignment="Left"/>
             <Button x:Name="ConfirmButton" Content="OK" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click" SourceName="ConfirmButton">
-                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                        <i:InvokeCommandAction Command="{Binding ElementName=notificationDialog, Path=CloseCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
@@ -44,6 +46,6 @@
     </Border>
     <UserControl.InputBindings>
         <KeyBinding Key="Enter"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    Command="{Binding ElementName=notificationDialog, Path=CloseCommand}"/>
     </UserControl.InputBindings>
 </UserControl>

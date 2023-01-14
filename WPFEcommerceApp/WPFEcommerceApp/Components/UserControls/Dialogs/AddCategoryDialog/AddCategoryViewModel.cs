@@ -37,24 +37,44 @@ namespace WPFEcommerceApp
         private string stringCloseDialog = "";
         public ICommand RequestCategoryCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
-        public AddCategoryDialogViewModel()
+        private ICommand closeNotification;
+        public ICommand CloseNotification 
         {
+            get => closeNotification;
+            set
+            {
+                closeNotification = value;
+                OnPropertyChanged();
+            }
+        }
+        private System.Windows.Controls.UserControl PreviousItem;
+        public AddCategoryDialogViewModel(System.Windows.Controls.UserControl item)
+        {
+            PreviousItem = item;
+            CloseNotification = new RelayCommandWithNoParameter(() =>
+            {
+                DialogHost.CloseDialogCommand.Execute(null, null);
+                if (PreviousItem != null)
+                {
+                    DialogHost.Show(PreviousItem, "Main");
+                }
+            });
             RequestCategoryCommand = new RelayCommand<object>((p) =>
             {
                 return !String.IsNullOrEmpty(CategoryName) && !String.IsNullOrEmpty(Reason);
             }, (async (p) =>
             {
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(null, null);
+                DialogHost.CloseDialogCommand.Execute(true, null);
                 MainViewModel.IsLoading = true;
                 await AddCategoryRequest();
                 NotificationDialog notification = new NotificationDialog()
                 {
                     Header = "Notification",
-                    ContentDialog = stringCloseDialog
+                    ContentDialog = stringCloseDialog,
+                    CloseCommand = CloseNotification
                 };
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(notification, "Notification");
+                await DialogHost.Show(notification, "Main");
             }));
             KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
