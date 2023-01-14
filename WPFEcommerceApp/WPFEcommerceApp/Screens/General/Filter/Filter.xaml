@@ -33,11 +33,6 @@
                 <ListView ItemsSource="{Binding CategoryCheckBoxViewModels}" Margin="10"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       BorderBrush="{StaticResource WhiteColorBrush}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger SourceName="ProductList" EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding OnProductChoice}" CommandParameter="{Binding ElementName=ProductList, Path=SelectedItem}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel/>
@@ -65,11 +60,6 @@
                 <ListView ItemsSource="{Binding BrandCheckBoxViewModels}" Margin="10"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       BorderBrush="{StaticResource WhiteColorBrush}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger SourceName="ProductList" EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding OnProductChoice}" CommandParameter="{Binding ElementName=ProductList, Path=SelectedItem}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel/>
@@ -187,7 +177,7 @@
                 </CheckBox>
             </StackPanel>
         </ScrollViewer>
-       
+
         <StackPanel Grid.Column="1">
             <Border BorderBrush="{StaticResource BoxLineColorBrush}"
                     Margin="60,40,60,0"
@@ -253,7 +243,6 @@
             <ScrollViewer CanContentScroll="True"
                 VerticalScrollBarVisibility="Visible">
                 <ListView ItemsSource="{Binding DisplayedProducts}" Height="700" Margin="20"
-                          SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           x:Name="ProductList"
                           BorderThickness="0">
@@ -268,7 +257,7 @@
                             <Setter Property="Margin" Value="5 20"/>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    
+
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <local:ProductBlock 
