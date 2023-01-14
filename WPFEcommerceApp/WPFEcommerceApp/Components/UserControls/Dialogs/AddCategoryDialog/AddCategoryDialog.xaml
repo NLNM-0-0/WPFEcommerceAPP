@@ -31,7 +31,7 @@
                             FontSize="{StaticResource FontSizeHeadline}"/>
                     <Button
                             x:Name="ButtonClose"
-                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                            Command="{Binding CloseNotification, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="1"
                             Margin="0 0 10 0"
                             Padding="0"

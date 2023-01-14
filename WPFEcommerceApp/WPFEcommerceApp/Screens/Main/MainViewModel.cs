@@ -81,7 +81,7 @@ namespace WPFEcommerceApp {
             });
         }
 
-        static UserControl UpdateDialog(string Identifier, UserControl content = null) {
+        public static UserControl UpdateDialog(string Identifier, UserControl content = null) {
             DialogSession dialog;
             try {
                 dialog = DialogHost.GetDialogSession(Identifier);

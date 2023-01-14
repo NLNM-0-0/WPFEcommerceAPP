@@ -3,6 +3,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,25 +40,45 @@ namespace WPFEcommerceApp
         private string stringCloseDialog = "";
         public ICommand RequestBrandCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
-        public AddBrandDialogViewModel()
+        private ICommand closeNotification;
+        public ICommand CloseNotification 
         {
+            get => closeNotification;
+            set
+            {
+                closeNotification = value;
+                OnPropertyChanged();
+            }
+        }
+        private System.Windows.Controls.UserControl PreviousItem;
+        public AddBrandDialogViewModel(System.Windows.Controls.UserControl item)
+        {
+            PreviousItem = item;
+            CloseNotification = new RelayCommandWithNoParameter(() =>
+            {
+                DialogHost.CloseDialogCommand.Execute(null, null);
+                if (PreviousItem != null)
+                {
+                    DialogHost.Show(PreviousItem, "Main");
+                }
+            });
             RequestBrandCommand = new RelayCommand<object>((p) =>
             {
                 return !String.IsNullOrEmpty(Reason) &&
                         !String.IsNullOrEmpty(BrandName);
             }, (async (p) =>
             {
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(null, null);
+                DialogHost.CloseDialogCommand.Execute(true, null);
                 MainViewModel.IsLoading = true;
                 await AddBrandRequest();
                 NotificationDialog notification = new NotificationDialog()
                 {
                     Header = "Notification",
-                    ContentDialog = stringCloseDialog
+                    ContentDialog = stringCloseDialog,
+                    CloseCommand = CloseNotification
                 };
                 MainViewModel.IsLoading = false;
-                await DialogHost.Show(notification, "Notification");
+                await DialogHost.Show(notification, "Main");
             }));
             KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>
             {
@@ -68,6 +89,7 @@ namespace WPFEcommerceApp
                 }
             });
         }
+
         private async Task AddBrandRequest()
         {
             try

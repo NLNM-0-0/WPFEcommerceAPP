@@ -146,6 +146,7 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private System.Windows.Controls.UserControl PreviousItem;
         public ProductInfoPortraitViewModel(Models.Product product)
         {
             SelectedProduct = product;
@@ -243,11 +244,22 @@ namespace WPFEcommerceApp
 
                 OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
+                    PreviousItem = MainViewModel.UpdateDialog("Main");
                     MainViewModel.IsLoading = true;
                     ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
-                    changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts);
+                    changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts)
+                    {
+                        CloseDialogCommand = new RelayCommandWithNoParameter(() =>
+                        {
+                            DialogHost.CloseDialogCommand.Execute(null, null);
+                            if (PreviousItem != null)
+                            {
+                                DialogHost.Show(PreviousItem, "Main");
+                            }
+                        })
+                    };
                     MainViewModel.IsLoading = false;
-                    await DialogHost.Show(changeImageProductDialog, "Main", closeChangeImageDialog);
+                    await DialogHost.Show(changeImageProductDialog, "Main");
                 });
 
                 OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
@@ -320,24 +332,6 @@ namespace WPFEcommerceApp
             OnSelectedProductChange();
         }
 
-        private void closeChangeImageDialog(object sender, DialogClosingEventArgs eventArgs)
-        {
-            if (ImageProducts.Count > 0 && SelectedImage.UriSource != null && SelectedImage.UriSource.ToString() == Properties.Resources.DefaultProductImage)
-            {
-                SelectedImage = ImageProducts.First();
-            }
-            else if (SelectedImage.UriSource != null && SelectedImage.UriSource.ToString() != Properties.Resources.DefaultProductImage && !ImageProducts.Contains(SelectedImage))
-            {
-                if (ImageProducts.Count == 0)
-                {
-                    SelectedImage = new BitmapImage(new Uri(Properties.Resources.DefaultProductImage));
-                }
-                else
-                {
-                    SelectedImage = ImageProducts.First();
-                }
-            }
-        }
         private async Task LoadBrands()
         {
             var repository = new GenericDataRepository<Models.Brand>();

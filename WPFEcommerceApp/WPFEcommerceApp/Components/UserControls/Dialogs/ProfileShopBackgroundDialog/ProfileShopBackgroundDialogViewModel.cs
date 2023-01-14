@@ -98,8 +98,10 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        public ProfileShopBackgroundDialogViewModel(CroppedBitmap croppedBitmap)
+        System.Windows.Controls.UserControl PreviousItem;
+        public ProfileShopBackgroundDialogViewModel(CroppedBitmap croppedBitmap, System.Windows.Controls.UserControl previous = null)
         {
+            PreviousItem = previous;
             ImageBackground = croppedBitmap;
             ChangeBackgroundShopCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
@@ -150,11 +152,25 @@ namespace WPFEcommerceApp
                 ImageBackground = temp;
                 croppedBitmap = temp;
 
-                DialogHost.CloseDialogCommand.Execute(temp, null);
+                if (PreviousItem != null)
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                    ProfileShopDialogViewModel vm = (ProfileShopDialogViewModel)(PreviousItem as ProfileShopDialog).DataContext;
+                    vm.LoadBackground(temp);
+                    DialogHost.Show(PreviousItem, "Main");
+                }
+                else
+                {
+                    DialogHost.CloseDialogCommand.Execute(temp, null);
+                }
             });
             CancelCommand = new RelayCommandWithNoParameter(() =>
             {
                 DialogHost.CloseDialogCommand.Execute(null, null);
+                if (PreviousItem != null)
+                {
+                    DialogHost.Show(PreviousItem, "Main");
+                }
             });
         }
     }

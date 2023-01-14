@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,9 +40,24 @@ namespace WPFEcommerceApp
         // Using a DependencyProperty as the backing store for Content.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ContentDialogProperty =
             DependencyProperty.Register("ContentDialog", typeof(string), typeof(NotificationDialog), new PropertyMetadata(default(string)));
+
+        public ICommand CloseCommand
+        {
+            get { return (ICommand)GetValue(CloseCommandProperty); }
+            set { SetValue(CloseCommandProperty, value); }
+        }
+        public static readonly DependencyProperty CloseCommandProperty =
+            DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(NotificationDialog), new PropertyMetadata(default(ICommand)));
         public NotificationDialog()
         {
             InitializeComponent();
+            if (CloseCommand == null)
+            {
+                CloseCommand = new RelayCommandWithNoParameter(() =>
+                {
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                });
+            }
             this.DataContext = this;
         }
     }

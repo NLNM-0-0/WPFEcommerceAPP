@@ -1,4 +1,4 @@
-﻿ using DataAccessLayer;
+﻿using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -19,15 +19,19 @@ namespace WPFEcommerceApp
 {
     public class ShopProductViewModel : BaseViewModel
     {
+        #region Command
         public ICommand OpenAddBrandDialogCommand { get; set; }
         public ICommand OpenAddCategoryDialogCommand { get; set; }
         public ICommand OpenAddProductDialogCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand SearchProductCommand { get; set; }
+        #endregion
+        #region DataRepository
         private GenericDataRepository<Models.Product> ProductRepository = new GenericDataRepository<Models.Product>();
         private GenericDataRepository<Models.Brand> BrandRepository = new GenericDataRepository<Models.Brand>();
         private GenericDataRepository<Models.Category> CategoryRepository = new GenericDataRepository<Models.Category>();
-
+        #endregion
+        #region Field
         private Models.Product selectedProduct;
         public Models.Product SelectedProduct
         {
@@ -253,6 +257,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        #endregion
+        #region Constructor
         public ShopProductViewModel()
         {
             IsLoadingCheck.IsLoading = 2;
@@ -275,7 +281,7 @@ namespace WPFEcommerceApp
                 {
                     MainViewModel.IsLoading = true;
                     AddBrandDialog addBrandDialog = new AddBrandDialog();
-                    addBrandDialog.DataContext = new AddBrandDialogViewModel();
+                    addBrandDialog.DataContext = new AddBrandDialogViewModel(null);
                     MainViewModel.IsLoading = false;
                     await DialogHost.Show(addBrandDialog, "Main");
                 });
@@ -283,7 +289,7 @@ namespace WPFEcommerceApp
                 {
                     MainViewModel.IsLoading = true;
                     AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
-                    addCategoryDialog.DataContext = new AddCategoryDialogViewModel();
+                    addCategoryDialog.DataContext = new AddCategoryDialogViewModel(null);
                     MainViewModel.IsLoading = false;
                     await DialogHost.Show(addCategoryDialog, "Main");
                 });
@@ -375,7 +381,7 @@ namespace WPFEcommerceApp
                 }));
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
-
+        #endregion  
         private void AddProductDialogViewModel_ClosedDialog()
         {
             LoadDataFromModel();
@@ -593,7 +599,7 @@ namespace WPFEcommerceApp
             AllProducts = new ObservableCollection<Models.Product>((await ProductRepository.GetListAsync(p => p.IdShop == Shop.Id,
                                                                                                         p => p.Category,
                                                                                                         p => p.Brand,
-                                                                                                        p => p.ImageProducts)).OrderByDescending(p=>p.BanLevel).
+                                                                                                        p => p.ImageProducts)).OrderByDescending(p=>p.BanLevel == 0).
                                                                                                                                 ThenByDescending(p=>(p.InStock > 0)).
                                                                                                                                 ThenByDescending(p=>p.DateOfSale));
             BannedProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel != 0));
