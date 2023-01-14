@@ -13,7 +13,7 @@
         <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
     </UserControl.Resources>
 
-    <materialDesign:DialogHost>
+    <materialDesign:DialogHost Identifier="AddUser">
         <StackPanel Margin="20">
             <Grid Margin="0 30">
                 <Grid.ColumnDefinitions>
@@ -90,11 +90,29 @@
 
                 <Grid Grid.Column="1">
                     <StackPanel>
+                        
+                        <TextBox DockPanel.Dock="Left"
+                                 x:Name="email"
+                        Width="300" Margin="15"
+                        Style="{StaticResource TextBoxHintBlackBorder}"
+                        materialDesign:HintAssist.Hint="Username/Email"
+                        MaxLength="100"
+                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
+                            <Binding
+                                    Path="NewUser.Email"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <local:NotEmptyValidationRule
+                                            ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+
                         <TextBox DockPanel.Dock="Left"
                                  x:Name="username"
                             Width="300" Margin="15"
                             Style="{StaticResource TextBoxHintBlackBorder}"
-                            materialDesign:HintAssist.Hint="User Name"
+                            materialDesign:HintAssist.Hint="Name"
                             MaxLength="50"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <Binding
@@ -123,22 +141,7 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <TextBox DockPanel.Dock="Left"
-                                 x:Name="email"
-                        Width="300" Margin="15"
-                        Style="{StaticResource TextBoxHintBlackBorder}"
-                        materialDesign:HintAssist.Hint="Email"
-                        MaxLength="100"
-                        materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
-                            <Binding
-                                    Path="NewUser.Email"
-                                    UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <local:NotEmptyValidationRule
-                                            ValidatesOnTargetUpdated="True"/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox>
+                        
 
                         <TextBox DockPanel.Dock="Left"
                                  x:Name="description"

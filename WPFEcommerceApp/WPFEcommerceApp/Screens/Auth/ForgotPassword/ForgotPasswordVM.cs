@@ -16,34 +16,15 @@ namespace WPFEcommerceApp {
         private readonly GenericDataRepository<UserLogin> loginRepo = new GenericDataRepository<UserLogin>();
         public bool IsLoading { get; set; } = false;
         public string Email { get; set; }
-        public string Password {
-            get => _password; set {
-                if(string.IsNullOrEmpty(value)) {
-                    return;
-                }
-                if(value.Length < 6) {
-                    throw new ArgumentException("*Password length needs to be more than 6 characters.");
-                }
-                _password = value;
-                OnPropertyChanged();
-            }
+        private string password;
+        public string Password { get => password;
+            set {
+                password = value;
+                ConfirmPassword = null;
+                ConfirmPassword = "";
+            } 
         }
-
-        private string _password;
-        private string _confirmPassword;
-        public string ConfirmPassword {
-            get => _confirmPassword; set {
-                _confirmPassword = null;
-                if(string.IsNullOrEmpty(value)) {
-                    return;
-                }
-                if(value != _password) {
-                    throw new ArgumentException("*Not the same as Password");
-                }
-                _confirmPassword = value;
-                OnPropertyChanged();
-            }
-        }
+        public string ConfirmPassword { get; set; }
         public string ResetCode { get; set; }
         private string Code { get; set; }
         public int FunctionNumber { get; set; }
@@ -99,6 +80,7 @@ namespace WPFEcommerceApp {
                         var x = await loginRepo.GetSingleAsync(d => d.Username == Email);
                         x.Password = pw;
                         x.Salt = salt;
+                        if(x.Provider == -1) x.Provider = 0;
                         await loginRepo.Update(x);
                         IsLoading = false;
 

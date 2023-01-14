@@ -24,36 +24,24 @@ namespace WPFEcommerceApp {
         private readonly GenericDataRepository<Address> addressRepo = new GenericDataRepository<Address>();
 
         private string email;
-        private string password;
         public string Email {
-            get => email; set {
-                if(string.IsNullOrEmpty(value)) {
-                    email = null;
-                    return;
-                }
-                if(!ValidateRegex.Email.IsMatch(value) && !AdminAccess) {
-                    email = null;
-                    throw new ArgumentException("*Wrong type");
-                }
+            get => email;
+            set {
                 email = value;
-            }
+            } 
         }
-        public string Password {
-            get => password; set {
-                if(value.Length == 0) {
-                    password = null;
-                    return;
-                }
-                if(value.Length < 6 && !AdminAccess) {
-                    password = null;
-                    throw new ArgumentException("*Password length needs to be more than 6 characters.");
-                }
-                password = value;
-            }
-        }
-
+        public string Password { get; set; }
         public bool KeepSignIn { get; set; }
-        public bool AdminAccess { get; set; }
+
+        private bool adminAccess;
+        public bool AdminAccess {
+            get => adminAccess;
+            set {
+                adminAccess = value;
+                Email = "";
+                Password = "";
+            }
+        }
         public static bool IsLoading { get; set; } = false;
         public ICommand OnLogin { get; set; }
         public ICommand CloseCM { get; set; }
@@ -67,8 +55,8 @@ namespace WPFEcommerceApp {
         public LoginViewModel() {
             //_accountStore.CurrentAccount = ;
             OnLogin = new RelayCommand<object>(p => {
-                return !string.IsNullOrEmpty(Email) &&
-                        !string.IsNullOrEmpty(Password);
+                return EmailValidateRule.Validate(Email, AdminAccess) &&
+                        PasswordValidateRule.Validate(Password);
             }, async p => {
                 if(await Login()) {
                     AdminAccess = false;
@@ -90,6 +78,8 @@ namespace WPFEcommerceApp {
                             var temp = t as Tuple<string, string>;
                             Email = temp.Item1;
                             Password = temp.Item2;
+                            OnPropertyChanged(nameof(Password));
+                            OnPropertyChanged(nameof(Email));
                         }),
                     }
                 };
@@ -285,6 +275,19 @@ namespace WPFEcommerceApp {
                     WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
                     WPFEcommerceApp.Properties.Settings.Default.Save();
                 }
+
+                if(acc.Provider == -1) {
+                    var changePass = new ForgotPassword(){
+                        DataContext = new ForgotPasswordVM() {
+                            Email = Email,
+                            FunctionName = "RESET PASSWORD",
+                            FunctionNumber = 3
+                        }
+                    };
+                    await DialogHost.Show(changePass, "Login");
+                    //return false;
+                }
+
                 Email = "";
                 Password = "";
                 return true;

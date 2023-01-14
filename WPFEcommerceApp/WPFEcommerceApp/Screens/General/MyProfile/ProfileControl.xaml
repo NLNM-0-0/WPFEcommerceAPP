@@ -53,8 +53,7 @@
                     <Binding Path="EditUser.Email"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <local:EmailValidateRule IsNotCheckFirstTime="False"
-                                ValidatesOnTargetUpdated="True"/>
+                            <local:EmailValidateRule ValidatesOnTargetUpdated="True" IsFirstTime="False"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>

@@ -10,6 +10,8 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              d:DesignHeight="800" Width="780">
     <UserControl.Resources>
+        <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
+        <local:BindingProxy x:Key="proxy" Data="{Binding ElementName=Regist, Path=DataContext}"/>
     </UserControl.Resources>
     <materialDesign:DialogHost  
         CloseOnClickAway="True"
@@ -123,33 +125,56 @@
                 <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                         materialDesign:HintAssist.Hint="Email Address"
                         Width="auto"
-                        Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                        x:Name="Email"
                         HorizontalContentAlignment="Stretch"
                         Margin="30,20,30,5">
-
+                    <TextBox.Text>
+                        <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <local:EmailValidateRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
 
                 <PasswordBox
                         x:Name="Password"
-                        materialDesign:PasswordBoxAssist.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                         Style="{StaticResource PasswordOutlinedReveal}"            
                         materialDesign:HintAssist.Hint="Password"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Width="auto"
                         Margin="30,20,30,5"
                         HorizontalContentAlignment="Stretch"
-                        materialDesign:HintAssist.HelperText=""/>
-
+                        materialDesign:HintAssist.HelperText="">
+                    <materialDesign:PasswordBoxAssist.Password>
+                        <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True">
+                            <Binding.ValidationRules>
+                                <local:PasswordValidateRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </materialDesign:PasswordBoxAssist.Password>
+                </PasswordBox>
                 <PasswordBox
                         x:Name="ConfirmPassword"
-                        materialDesign:PasswordBoxAssist.Password="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                         Style="{StaticResource PasswordOutlinedReveal}"            
                         materialDesign:HintAssist.Hint="Confirm Password"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Width="auto"
                         Margin="30,20,30,5"
                         HorizontalContentAlignment="Stretch"
-                        materialDesign:HintAssist.HelperText=""/>
+                        materialDesign:HintAssist.HelperText="">
+                    <materialDesign:PasswordBoxAssist.Password>
+                        <Binding Path="ConfirmPassword" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <local:PasswordValidateRule CheckPrevPass="True">
+                                    <local:PasswordValidateRule.Wrapper>
+                                        <local:Wrapper PrevPassword="{Binding Data.Password, Source={StaticResource proxy}}"/>
+                                    </local:PasswordValidateRule.Wrapper>
+                                </local:PasswordValidateRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </materialDesign:PasswordBoxAssist.Password>
+                </PasswordBox>
 
                 <CheckBox
                     Margin="30 30 0 15"
@@ -177,11 +202,17 @@
                 
                 <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
                     materialDesign:HintAssist.Hint="Phone Number"
+                    x:Name="PhoneNumber"
                     Width="auto"
-                    Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                     HorizontalContentAlignment="Stretch"
                     Margin="30,20,30,5">
-
+                    <TextBox.Text>
+                        <Binding Path="Phone" UpdateSourceTrigger="PropertyChanged" ValidatesOnExceptions="True">
+                            <Binding.ValidationRules>
+                                <local:PhoneValidateRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
                 </TextBox>
                 
                 <TextBox Style="{StaticResource TextBoxHintBlackBorder}"
@@ -223,7 +254,16 @@
                 Margin="30"
                 Content="Register"
                 Command="{Binding Regist}"
-                CommandParameter="{Binding ElementName=ButtonClose}"/>
+                CommandParameter="{Binding ElementName=ButtonClose}">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                        <Binding ElementName="PhoneNumber" Path="(Validation.HasError)"/>
+                        <Binding ElementName="ConfirmPassword" Path="(Validation.HasError)"/>
+                        <Binding ElementName="Password" Path="(Validation.HasError)"/>
+                        <Binding ElementName="Email" Path="(Validation.HasError)"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
         </StackPanel>
     </materialDesign:DialogHost>
 </UserControl>

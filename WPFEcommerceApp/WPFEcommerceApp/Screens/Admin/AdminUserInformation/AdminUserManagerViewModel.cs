@@ -18,6 +18,7 @@ namespace WPFEcommerceApp
     {
         #region Public Properties
         public GenericDataRepository<MUser> userRepo;
+        private readonly GenericDataRepository<UserLogin> loginRepo = new GenericDataRepository<UserLogin>();
 
         private ObservableCollection<MUser> _filteredUsers;
         public ObservableCollection<MUser> FilteredUsers
@@ -241,10 +242,31 @@ namespace WPFEcommerceApp
         public async Task AddUser(object p)
         {
             MainViewModel.IsLoading = true;
-
             var user = p as MUser;
+
+            var check = await loginRepo.GetSingleAsync(d => d.Username == user.Email);
+            if(check != null) {
+                var dl = new ConfirmDialog() {
+                    Header = "Oops",
+                    Content = "This username/email already exists"
+                };
+                await DialogHost.Show(dl, "AddUser");
+                MainViewModel.IsLoading = false;
+                return;
+            }
+
+            var userLogin = new UserLogin();
+            userLogin.Username = user.Email;
+            var hasher = new Hashing();
+            var salt = Convert.ToBase64String(hasher.GenerateSalt());
+            userLogin.Password = hasher.Encrypt(salt, "WANO123");
+            userLogin.Salt = salt;
+            userLogin.Provider = -1;
+            userLogin.IdUser = await GenerateID.Gen(typeof(UserLogin), "IdUser");
+            await loginRepo.Add(userLogin);
+
             user.Role = Role;
-            user.Id =await GenerateID.Gen(typeof(MUser));
+            user.Id = userLogin.IdUser;
             user.StatusUser = Status.NotBanned.ToString();
             if (Role == "Shop")
                 user.StatusShop = Status.NotBanned.ToString();
@@ -253,7 +275,7 @@ namespace WPFEcommerceApp
                 user.StatusShop = Status.NotExist.ToString();
                 user.Description = string.Empty;
             }
-                await userRepo.Add(user);
+            await userRepo.Add(user);
             await Load();
 
             MainViewModel.IsLoading = false;
