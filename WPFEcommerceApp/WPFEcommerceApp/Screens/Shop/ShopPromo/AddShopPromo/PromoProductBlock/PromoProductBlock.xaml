@@ -117,7 +117,8 @@
                         Text="{c:Binding 'SelectedProduct.Price * (100 - SelectedProduct.Sale) / 100', UpdateSourceTrigger=PropertyChanged}"
                         HorizontalAlignment="Left"
                         FontSize="{StaticResource FontSizeDescription}"
-                        TextTrimming="CharacterEllipsis"/>
+                        TextTrimming="CharacterEllipsis"
+                        materialDesign:TextFieldAssist.SuffixText=" $"/>
                 </Border>
             </Grid>
             <Button

@@ -247,7 +247,7 @@
                         Width="{Binding ElementName=saleTextBox, Path=ActualWidth}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
-                        materialDesign:TextFieldAssist.SuffixText="VND"
+                        materialDesign:TextFieldAssist.SuffixText=" USD"
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
                             <Binding
@@ -337,7 +337,7 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
                         Visibility="{c:Binding IsMaxSale, UpdateSourceTrigger=PropertyChanged}"
-                        materialDesign:TextFieldAssist.SuffixText="VND"
+                        materialDesign:TextFieldAssist.SuffixText=" USD"
                         materialDesign:HintAssist.IsFloating="False"
                         IsReadOnly="{c:Binding 'IsAdmin', UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Text>
@@ -627,7 +627,8 @@
                             HorizontalContentAlignment ="Stretch"
                             Height="700"
                             MaxHeight="700"
-                            Margin="0,41,0,0" Grid.RowSpan="2">
+                            Margin="0,41,0,0" 
+                            Grid.RowSpan="2">
                             <ListView.ItemTemplate >
                                 <DataTemplate>
                                     <local:PromoProductBlock
@@ -636,12 +637,32 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                             <ListView.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource BaseStyle}">
+                                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListItemContainer}">
                                     <Setter Property="Padding" Value="0"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                 </Style>
                             </ListView.ItemContainerStyle>
                         </ListView>
+                        <Grid
+                            Background="Transparent"
+                            VerticalAlignment="Center"
+                            Grid.Row="1"
+                            Margin="20"
+                            Visibility="{c:Binding 'FilterProductPromos == null or FilterProductPromos.Count == 0', UpdateSourceTrigger=PropertyChanged}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Image
+                                Source="..\..\..\..\Assets\Images\MagicBox.png"
+                                Height="150"/>
+                            <TextBlock
+                                Grid.Row="2"
+                                Text="No product yet"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                HorizontalAlignment="Center"/>
+                        </Grid>
                     </Grid>
                 </Border>
             </Grid>

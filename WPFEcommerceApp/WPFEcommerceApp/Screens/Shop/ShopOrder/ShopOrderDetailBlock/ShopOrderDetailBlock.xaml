@@ -144,7 +144,7 @@
                     FontFamily="{StaticResource Medium}"
                     FontSize="{StaticResource FontSizeText}"/>
                 <TextBlock
-                    Text="đ"
+                    Text=" USD"
                     FontFamily="{StaticResource Medium}"
                     FontSize="{StaticResource FontSizeText}"/>
             </StackPanel>

@@ -332,7 +332,7 @@
                                 HorizontalAlignment="Right"
                                 MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border},Path=ActualWidth}">
                                 <TextBlock
-                                    Text=" đ"
+                                    Text=" USD"
                                     DockPanel.Dock="Right"
                                     FontSize="{StaticResource FontSizeDescription}"
                                     Foreground="{StaticResource NotAvailableColorBrush}"/>
@@ -445,7 +445,7 @@
                             FontSize="{StaticResource FontSizeHeadline3}" 
                             FontWeight="Medium"/>
                         <TextBlock
-                            Text=" đ"
+                            Text=" USD"
                             DockPanel.Dock="Right"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             Foreground="{StaticResource NotAvailableColorBrush}"/>
@@ -471,7 +471,7 @@
                             FontSize="{StaticResource FontSizeHeadline3}" 
                             FontWeight="Medium"/>
                         <TextBlock
-                            Text=" đ"
+                            Text=" USD"
                             DockPanel.Dock="Right"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             Foreground="{StaticResource NotAvailableColorBrush}"/>
@@ -503,7 +503,7 @@
                             FontSize="{StaticResource FontSizeHeadline3}" 
                             FontWeight="Medium"/>
                         <TextBlock
-                            Text=" đ"
+                            Text=" USD"
                             DockPanel.Dock="Right"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             Foreground="{StaticResource NotAvailableColorBrush}"/>
@@ -529,7 +529,7 @@
                             FontSize="{StaticResource FontSizeHeadline3}" 
                             FontWeight="Medium"/>
                         <TextBlock
-                            Text=" đ"
+                            Text=" USD"
                             DockPanel.Dock="Right"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             Foreground="{StaticResource NotAvailableColorBrush}"/>

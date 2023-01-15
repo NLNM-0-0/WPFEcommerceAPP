@@ -288,7 +288,8 @@
                 materialDesign:HintAssist.Hint="Price"
                 Width="auto"
                 IsReadOnly="{i:Binding !IsEditting}"
-                TextChanged="textBox_TextChanged">
+                TextChanged="textBox_TextChanged"
+                materialDesign:TextFieldAssist.SuffixText=" USD">
                 <TextBox.Text>
                     <Binding
                         Path="SelectedProduct.Price"
@@ -309,7 +310,8 @@
                 materialDesign:HintAssist.Hint="Sale"
                 Width="auto"
                 IsReadOnly="{i:Binding !IsEditting}"
-                TextChanged="textBox_TextChanged">
+                TextChanged="textBox_TextChanged"
+                materialDesign:TextFieldAssist.SuffixText=" %">
                 <TextBox.Text>
                     <Binding
                         Path="SelectedProduct.Sale"

@@ -110,7 +110,8 @@
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             materialDesign:HintAssist.Hint="Price"
                             IsReadOnly="{i:Binding !IsEditting}"
-                            TextChanged="textBox_TextChanged">
+                            TextChanged="textBox_TextChanged"
+                            materialDesign:TextFieldAssist.SuffixText=" USD">
                             <TextBox.Text>
                                 <Binding
                                     Path="SelectedProduct.Price"
@@ -441,7 +442,8 @@
                                 Style="{StaticResource TextBoxHintBlackBorder}"
                                 materialDesign:HintAssist.Hint="Sale"
                                 IsReadOnly="{i:Binding !IsEditting}"
-                                TextChanged="textBox_TextChanged">
+                                TextChanged="textBox_TextChanged"
+                                materialDesign:TextFieldAssist.SuffixText=" %">
                                 <TextBox.Text>
                                     <Binding 
                                         Path="SelectedProduct.Sale"

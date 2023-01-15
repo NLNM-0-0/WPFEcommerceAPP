@@ -171,6 +171,26 @@
                         </Grid>
                     </ScrollViewer>
                     <Grid
+                        Background="Transparent"
+                        VerticalAlignment="Center"
+                        Grid.Row="4"
+                        Margin="20"
+                        Visibility="{c:Binding 'SearchedShopOrderBlockModels == null or SearchedShopOrderBlockModels.Count == 0', UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Image
+                            Source="..\..\..\Assets\Images\MagicBox.png"
+                            Height="150"/>
+                        <TextBlock
+                            Grid.Row="2"
+                            Text="No order yet"
+                            FontSize="{StaticResource FontSizeHeadline3}"
+                            HorizontalAlignment="Center"/>
+                    </Grid>
+                    <Grid
                         Grid.Row="5"
                         Height="20"/>
                 </Grid>

@@ -108,7 +108,6 @@
                             materialDesign:ButtonAssist.CornerRadius="10"                        FontFamily="{StaticResource Regular}"
                             Margin="0 0 0 5"
                             FontSize="{StaticResource FontSizeDescription}"
-                            Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
                             Foreground="#4B8CDE">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
@@ -159,7 +158,6 @@
                             Width="auto"
                             HorizontalAlignment="Center"
                             FontSize="{StaticResource FontSizeDescription}"
-                            Visibility="{i:Binding Path=!IsEnabled, ElementName=EditButton, FalseToVisibility=Hidden}"
                             Foreground="#4B8CDE">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
@@ -245,7 +243,6 @@
                             materialDesign:HintAssist.Hint="Name shop"
                             Grid.Row="0"
                             VerticalAlignment="Center"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
                             MaxLength="200">
                             <TextBox.Text>
@@ -266,7 +263,6 @@
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="Email"
                             Grid.Row="2"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}"
                             MaxLength="200"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
                             IsEnabled="{i:Binding '!IsGGAccount', UpdateSourceTrigger=PropertyChanged}">
@@ -293,8 +289,7 @@
                             Grid.Row="0"
                             Height="150"
                             MaxLength="1000"
-                            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible"
-                            IsReadOnly="{i:Binding Path=IsEnabled, ElementName=EditButton}">
+                            materialDesign:TextFieldAssist.CharacterCounterVisibility="Visible">
                             <TextBox.Text>
                                 <Binding
                                     Path="Shop.Description"
@@ -315,15 +310,6 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Button
-                        x:Name="EditButton"
-                        Command="{Binding EditProfileShopCommand}"
-                        Grid.Column="0"
-                        Width="100"
-                        Content="Edit"
-                        HorizontalAlignment="Right"
-                        IsEnabled="{i:Binding !IsEditing}"
-                        Margin="0 0 30 0"/>
-                    <Button
                         x:Name="SaveButton"
                         Command="{Binding SaveProfileShopCommand}"
                         Grid.Column="1"
@@ -335,7 +321,6 @@
                                 <Binding ElementName="nameTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="emailTextBox" Path="(Validation.HasError)"/>
                                 <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
-                                <Binding ElementName="EditButton" Path="IsEnabled"/>
                             </MultiBinding>
                         </Button.IsEnabled>
                     </Button>

@@ -247,7 +247,16 @@ namespace WPFEcommerceApp
                 });
                 SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    Search();
+                    MainViewModel.IsLoading = true;
+                    Task.Run(() => { }).ContinueWith((second) =>
+                    {
+                        Search();
+                        App.Current.Dispatcher.Invoke((Action)(() =>
+                        {
+                            FilterProductPromos = new ObservableCollection<PromoProductBlockViewModel>(FilterProductPromos);
+                        }));
+                        MainViewModel.IsLoading = false;
+                    });
                 });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {

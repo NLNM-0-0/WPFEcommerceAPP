@@ -215,7 +215,7 @@ namespace WPFEcommerceApp
             {
                 MainViewModel.IsLoading = true;
                 ProductDetailMini productDetail = new ProductDetailMini();
-                productDetail.DataContext = new ProductDetailViewModel(SelectedProduct);
+                productDetail.DataContext = new ProductDetailNormalViewModel(SelectedProduct);
                 MainViewModel.IsLoading = false;
                 await DialogHost.Show(productDetail, "App");
             });
