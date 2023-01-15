@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for ProductDetail.xaml
+    /// Interaction logic for ProductDetailBanned.xaml
     /// </summary>
-    public partial class ProductDetail : UserControl
+    public partial class ProductDetailBanned:UserControl
     {
-        public ProductDetail()
+        public ProductDetailBanned()
         {
             InitializeComponent();
         }
