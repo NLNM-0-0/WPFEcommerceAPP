@@ -261,6 +261,7 @@
       <DependentUpon>AddressChoiceDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\General\Payment\components\Dialogs\AddressChoiceDialogVM.cs" />
+    <Compile Include="Utils\Converters\DoubleToCurrencyConverter.cs" />
     <Compile Include="Utils\IsLoadingCheck.cs" />
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />
@@ -539,7 +540,9 @@
       <DependentUpon>EditInforDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ImmediateCommand.cs" />
+    <Compile Include="Utils\ValidationRule\Wrapper.cs" />
     <Compile Include="Utils\ValidationRule\EmailValidateRule.cs" />
+    <Compile Include="Utils\ValidationRule\PasswordValidateRule.cs" />
     <Compile Include="Utils\ValidationRule\PhoneValidateRule.cs" />
     <Compile Include="Screens\General\Payment\components\ProductCard\BProductCard.xaml.cs">
       <DependentUpon>BProductCard.xaml</DependentUpon>

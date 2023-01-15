@@ -132,13 +132,13 @@
                     <StackPanel Margin="30 0">
                         <TextBlock Text="Discounted: "
                                    FontSize="{StaticResource FontSizeHeadline3}"/>
-                        <TextBlock Text="{Binding Discount}"
+                        <TextBlock Text="{Binding Discount, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=None||}"
                                    FontSize="{StaticResource FontSizeHeadline3}"/>
                     </StackPanel>
                     <StackPanel>
                         <TextBlock Text="Order Total: "
                                    FontSize="{StaticResource FontSizeHeadline3}"/>
-                        <TextBlock Text="{Binding OrderTotal}"
+                        <TextBlock Text="{Binding OrderTotal, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=None||}"
                                    FontSize="{StaticResource FontSizeHeadline3}"/>
                     </StackPanel>
                 </StackPanel>

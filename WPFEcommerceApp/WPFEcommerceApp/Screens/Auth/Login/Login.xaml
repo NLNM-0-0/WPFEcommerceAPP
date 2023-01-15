@@ -20,6 +20,8 @@
     </WindowChrome.WindowChrome>
     <Window.Resources>
         <local:MultiValueConverter x:Key="MultiValueConverter"/>
+        <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+        <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
     </Window.Resources>
 
     <Grid>
@@ -66,21 +68,38 @@
                             x:Name="Email"
                             Style="{StaticResource TextBoxHintBlackBorder}"
                             materialDesign:HintAssist.Hint="Email"
-                            Text="{Binding Email, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
                             Width="auto"
                             HorizontalContentAlignment="Stretch"
                             Margin="0 30"
                             materialDesign:HintAssist.HelperText="">
+                            <TextBox.Text>
+                                <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                                    <Binding.ValidationRules>
+                                        <local:EmailValidateRule ValidatesOnTargetUpdated="True" CanRefresh="False">
+                                            <local:EmailValidateRule.Wrapper>
+                                                <local:Wrapper AdminAccess="{Binding Data.AdminAccess, Source={StaticResource proxy}}"/>
+                                            </local:EmailValidateRule.Wrapper>
+                                        </local:EmailValidateRule>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
                         </TextBox>
                         <PasswordBox
                             x:Name="Password"
-                            materialDesign:PasswordBoxAssist.Password="{Binding Password, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource PasswordOutlinedReveal}"            
                             materialDesign:HintAssist.Hint="Password"
                             materialDesign:TextFieldAssist.HasClearButton="True"
                             Width="auto"
                             HorizontalContentAlignment="Stretch"
-                            materialDesign:HintAssist.HelperText=""/>
+                            materialDesign:HintAssist.HelperText="">
+                            <materialDesign:PasswordBoxAssist.Password>
+                                <Binding Path="Password" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                                    <Binding.ValidationRules>
+                                        <local:PasswordValidateRule ValidatesOnTargetUpdated="True" CanRefresh="False"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </materialDesign:PasswordBoxAssist.Password>
+                        </PasswordBox>
 
                         <Grid Margin="0 19" >
                             <CheckBox
@@ -126,6 +145,12 @@
                                 Content="Login"
                                 Command="{Binding OnLogin}"
                                  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                                        <Binding ElementName="Password" Path="(Validation.HasError)"/>
+                                        <Binding ElementName="Email" Path="(Validation.HasError)"/>
+                                    </MultiBinding>
+                                </Button.IsEnabled>
                             </Button>
                         </Grid>
 

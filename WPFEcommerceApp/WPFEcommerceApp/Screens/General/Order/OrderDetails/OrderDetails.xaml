@@ -208,11 +208,11 @@
                 </Button>
                 <StackPanel HorizontalAlignment="Right"
                             VerticalAlignment="Center">
-                    <TextBlock Text="{c:Binding \'Discounted: \' + OrderDetail.Discount}" 
+                    <TextBlock Text="{Binding OrderDetail.Discount, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=None|Discounted: |}" 
                            DockPanel.Dock="Right"
                            FontSize="20"
                            Margin="25,5" VerticalAlignment="Center"/>
-                    <TextBlock Text="{c:Binding \'Order Total: \' + OrderDetail.OrderTotal}" 
+                    <TextBlock Text="{Binding OrderDetail.OrderTotal, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=None|Order Total: |}" 
                            DockPanel.Dock="Right"
                            FontSize="20"
                            Margin="25,5" VerticalAlignment="Center"/>

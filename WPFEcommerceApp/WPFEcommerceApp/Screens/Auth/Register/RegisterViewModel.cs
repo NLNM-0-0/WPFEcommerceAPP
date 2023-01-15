@@ -23,12 +23,8 @@ namespace WPFEcommerceApp {
 
         #region Shitprop
         private string _name;
-        private string _email;
-        private string _password;
-        private string _phone;
         private string _address;
         private bool _isCheckAgree;
-        private string _confirmPassword;
         #endregion
         #region Shit Props2
         public bool IsCheckAgree {
@@ -48,63 +44,19 @@ namespace WPFEcommerceApp {
                 _name = value;
             }
         }
-        public string Email {
-            get => _email;
+        public string Email { get; set; }
+
+        private string password;
+        public string Password { get => password;
             set {
-                _email = null;
-                if(string.IsNullOrEmpty(value)) {
-                    return;
-                }
-                if(!ValidateRegex.Email.IsMatch(value)) {
-                    throw new ArgumentException("*Wrong type");
-                }
-                _email = value;
-            }
-        }
-        
-        public string Password {
-            get => _password; set {
-                if(string.IsNullOrEmpty(value)) {
-                    return;
-                }
-                if(value.Length < 6) {
-                    throw new ArgumentException("*Password length needs to be more than 6 characters.");
-                }
-                _password = value;
-                OnPropertyChanged();
+                password = value;
+                ConfirmPassword = null;
+                ConfirmPassword = "";
             }
         }
 
-        public string ConfirmPassword {
-            get => _confirmPassword; set {
-                _confirmPassword = null;
-                if(string.IsNullOrEmpty(value)) {
-                    return;
-                }
-                if(value != _password) {
-                    throw new ArgumentException("*Not the same as Password");
-                }
-                _confirmPassword = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Phone {
-            get => _phone;
-            set {
-                _phone = null;
-                if(string.IsNullOrEmpty(value)) {
-                    return;
-                }
-                if(value.Length <= 6 || value.Length >= 12) {
-                    throw new ArgumentException("*Wrong type");
-                }
-                if(!ValidateRegex.Phone.IsMatch(value)) {
-                    throw new ArgumentException("*Wrong type");
-                }
-                _phone = value;
-                OnPropertyChanged();
-            }
-        }
+        public string ConfirmPassword { get; set; }
+        public string Phone { get; set; }
         public string Address {
             get => _address;
             set {
@@ -139,13 +91,13 @@ namespace WPFEcommerceApp {
             Regist = new RelayCommand<object>((p) => {
                 if(isCreated) {
                     return (!string.IsNullOrEmpty(Name) &&
-                    !string.IsNullOrEmpty(Phone) &&
+                    PhoneValidateRule.Validate(Phone) &&
                     !string.IsNullOrEmpty(Address));
                 }
                 return (
-                    !string.IsNullOrEmpty(Email) &&
-                    !string.IsNullOrEmpty(ConfirmPassword) &&
-                    !string.IsNullOrEmpty(Password) &&
+                    EmailValidateRule.Validate(Email) &&
+                    PasswordValidateRule.Validate(Password) &&
+                    PasswordValidateRule.Validate(ConfirmPassword) &&
                     IsCheckAgree == true);
             }, (p) => {
                 

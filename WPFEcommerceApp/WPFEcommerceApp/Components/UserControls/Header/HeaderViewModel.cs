@@ -103,8 +103,8 @@ namespace WPFEcommerceApp
                         CM = new RelayCommand<object>(p => true, p =>
                         {
                             //need to be HomeScreen here
-                            NavigateProvider.HomeScreen().Navigate();
                             AccountStore.instance.CurrentAccount = null;
+                            NavigateProvider.HomeScreen().Navigate();
                         })
                     };
                     await DialogHost.Show(dialog, "App");

@@ -90,7 +90,15 @@ namespace WPFEcommerceApp
         public bool IsGoogle { get; set; }
         public List<string> GenderOptions => new List<string> { "Female", "Male" };
         public string CurrentPassword { get; set; }
-        public string NewPassword { get; set; }
+        private string newPassword;
+        public string NewPassword {
+            get => newPassword;
+            set {
+                newPassword = value;
+                ConfirmNewPassword = null;
+                ConfirmNewPassword = "";
+            }
+        }
         public string ConfirmNewPassword { get; set; }
         #endregion
 
@@ -167,9 +175,12 @@ namespace WPFEcommerceApp
                     var salt = Convert.ToBase64String(hasher.GenerateSalt());
                     user.Password = hasher.Encrypt(salt, NewPassword);
                     user.Salt = salt;
+                    if(user.Provider == -1) user.Provider = 0;
                     await loginRepo.Update(user);
                     await DialogHost.Show(dl, "Main");
-
+                    CurrentPassword = "";
+                    NewPassword = "";
+                    ConfirmNewPassword ="";
                 });
                 MainViewModel.IsLoading = false;
             });

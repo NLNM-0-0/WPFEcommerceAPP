@@ -20,7 +20,7 @@ namespace WPFEcommerceApp {
             if(ProductList != null) {
                 for(int i = 0; i < ProductList.Count; i++) {
                     SubTotal += ProductList[i].Subtotal;
-                    Discount += ProductList[i].Subtotal * ProductList[i].Discount / 100;
+                    Discount += ProductList[i].Discount;
                 }
 
                 OrderTotal = SubTotal + ShipTotal - Discount;
