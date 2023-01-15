@@ -7,14 +7,16 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-            >
+            xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="4.5*"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Grid.Column="0"
-              Background="{StaticResource WhiteColorBrush}">
+        <ScrollViewer 
+            Grid.Column="0"
+            Background="{StaticResource WhiteColorBrush}"
+            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
             <StackPanel>
                 <TextBlock Text="WANO'S PRODUCT"
                        FontSize="{StaticResource FontSizeHeadline}"
@@ -30,7 +32,7 @@
                        Margin="30,30,5,5">
 
                 </TextBlock>
-                <ListView ItemsSource="{Binding CategoryCheckBoxViewModels}" Margin="10"
+                <ListView ItemsSource="{Binding DislayedCategoryCheckBoxViewModels}" Margin="10"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       BorderBrush="{StaticResource WhiteColorBrush}">
                     <ListView.ItemsPanel>
@@ -38,26 +40,61 @@
                             <StackPanel/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
-
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListItemContainer}">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="10 5 0 5"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <CheckBox
-                            Content="{Binding Category.Name}"
-                            IsChecked="{Binding IsChecked}"
-                            FontSize="{StaticResource FontSizeDescription}"
-                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Filter}, Path=DataContext.SearchCommand}"/>
+                                Width="{c:Binding 'ActualWidth - 20', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"
+                                HorizontalAlignment="Stretch"
+                                IsChecked="{Binding IsChecked}"
+                                FontSize="{StaticResource FontSizeText}"
+                                VerticalContentAlignment="Top"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Filter}, Path=DataContext.SearchCommand}">
+                                <TextBlock
+                                    Margin="0 -2 0 0 "
+                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=CheckBox}, Path=ActualWidth}"
+                                    Text="{Binding Category.Name,UpdateSourceTrigger=PropertyChanged}"
+                                    TextWrapping="Wrap"/>
+                            </CheckBox>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
-                <TextBlock Text="All Brand"
-                       FontSize="{StaticResource FontSizeHeadline3}"
-                       FontWeight="DemiBold"
-                       Foreground="{StaticResource BlackColorBrush}"
-                       Margin="30,30,5,5">
+                <Button
+                    HorizontalAlignment="Left"
+                    Margin="20 5 0 0"
+                    Style="{StaticResource TransparentButton}"
+                    materialDesign:ButtonAssist.CornerRadius="0"
+                    FontSize="{StaticResource FontSizeText}"
+                    Command="{Binding OpenAllCategories,UpdateSourceTrigger=PropertyChanged}"
+                    Visibility="{c:Binding !IsNeedShowAllCategory, UpdateSourceTrigger=PropertyChanged}">
+                    <Button.Content>
+                        <StackPanel
+                                Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                    Kind="SubdirectoryArrowRight"
+                                    Margin="0 0 10 0"
+                                    Foreground="#4B8CDE"/>
+                            <TextBlock
+                                    Text="See more "
+                                    FontSize="{StaticResource FontSizeText}"
+                                    Foreground="#4B8CDE"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <TextBlock 
+                    Text="All Brand"
+                    FontSize="{StaticResource FontSizeHeadline3}"
+                    FontWeight="DemiBold"
+                    Foreground="{StaticResource BlackColorBrush}"
+                    Margin="30,30,5,5">
 
                 </TextBlock>
-                <ListView ItemsSource="{Binding BrandCheckBoxViewModels}" Margin="10"
+                <ListView ItemsSource="{Binding DislayedBrandCheckBoxViewModels}" Margin="10"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       BorderBrush="{StaticResource WhiteColorBrush}">
                     <ListView.ItemsPanel>
@@ -65,18 +102,52 @@
                             <StackPanel/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
-
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListItemContainer}">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="10 5 0 5"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <CheckBox
-                            Content="{Binding Brand.Name}"
-                            IsChecked="{Binding IsChecked}"
-                            FontSize="{StaticResource FontSizeDescription}"
-                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Filter}, Path=DataContext.SearchCommand}"/>
+                                MaxWidth="{c:Binding 'ActualWidth - 20', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"
+                                HorizontalAlignment="Stretch"
+                                IsChecked="{Binding IsChecked}"
+                                FontSize="{StaticResource FontSizeText}"
+                                VerticalContentAlignment="Top"
+                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Filter}, Path=DataContext.SearchCommand}">
+                                <TextBlock
+                                    Margin="0 -2 0 0 "
+                                    Text="{Binding Brand.Name,UpdateSourceTrigger=PropertyChanged}"
+                                    MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=CheckBox}, Path=ActualWidth}"
+                                    TextWrapping="Wrap"/>
+                            </CheckBox>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
+                <Button
+                    HorizontalAlignment="Left"
+                    Margin="20 5 0 0"
+                    Style="{StaticResource TransparentButton}"
+                    materialDesign:ButtonAssist.CornerRadius="0"
+                    FontSize="{StaticResource FontSizeText}"
+                    Command="{Binding OpenAllBrands,UpdateSourceTrigger=PropertyChanged}"
+                    Visibility="{c:Binding !IsNeedShowAllBrand, UpdateSourceTrigger=PropertyChanged}">
+                    <Button.Content>
+                        <StackPanel
+                                Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                    Kind="SubdirectoryArrowRight"
+                                    Margin="0 0 10 0"
+                                    Foreground="#4B8CDE"/>
+                            <TextBlock
+                                    Text="See more "
+                                    FontSize="{StaticResource FontSizeText}"
+                                    Foreground="#4B8CDE"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <TextBlock Text="Price"
                        FontSize="{StaticResource FontSizeHeadline3}"
                        FontWeight="DemiBold"
@@ -97,7 +168,7 @@
                         Margin="20,5,5,0"
                         HorizontalContentAlignment="Left"
                         BorderBrush="{StaticResource WhiteColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}"
+                        FontSize="{StaticResource FontSizeText}"
                         IsChecked="{Binding SortPrice0To200k}">
 
                     </RadioButton>
@@ -107,7 +178,7 @@
                         Margin="20,0,5,0"
                         HorizontalContentAlignment="Left"
                         BorderBrush="{StaticResource WhiteColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}"
+                        FontSize="{StaticResource FontSizeText}"
                         IsChecked="{Binding SortPrice200kTo500k}">
 
                     </RadioButton>
@@ -118,7 +189,7 @@
                         HorizontalContentAlignment="Left"
                         IsChecked="{Binding SortPrice500kTo1000k}"
                         BorderBrush="{StaticResource WhiteColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}">
+                        FontSize="{StaticResource FontSizeText}">
 
                     </RadioButton>
                     <RadioButton Grid.Row="3"
@@ -128,7 +199,7 @@
                         IsChecked="{Binding SortPriceP1000k}"
                         HorizontalContentAlignment="Left"
                         BorderBrush="{StaticResource WhiteColorBrush}"
-                        FontSize="{StaticResource FontSizeDescription}">
+                        FontSize="{StaticResource FontSizeText}">
 
                     </RadioButton>
                 </Grid>
@@ -139,135 +210,227 @@
                        Margin="30,30,5,5">
 
                 </TextBlock>
-                <CheckBox Content="OneSize"
-                      Margin="25,10,0,0"
-                      IsChecked="{Binding IsHadOneSize, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="{StaticResource FontSizeDescription}">
+                <CheckBox 
+                    Content="Free size"
+                    Margin="25,10,0,0"
+                    IsChecked="{Binding IsHadOneSize, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="{StaticResource FontSizeText}">
 
                 </CheckBox>
-                <CheckBox Content="S"
-                      Margin="25,10,0,0"
-                      IsChecked="{Binding IsHadSizeS, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="{StaticResource FontSizeDescription}">
+                <CheckBox 
+                    Content="S"
+                    Margin="25,10,0,0"
+                    IsChecked="{Binding IsHadSizeS, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="{StaticResource FontSizeText}">
 
                 </CheckBox>
-                <CheckBox Content="M"
-                      Margin="25,10,0,0"
-                      IsChecked="{Binding IsHadSizeM, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="{StaticResource FontSizeDescription}">
+                <CheckBox 
+                    Content="M"
+                    Margin="25,10,0,0"
+                    IsChecked="{Binding IsHadSizeM, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="{StaticResource FontSizeText}">
 
                 </CheckBox>
-                <CheckBox Content="L"
-                      Margin="25,10,0,0"
-                      IsChecked="{Binding IsHadSizeL, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="{StaticResource FontSizeDescription}">
+                <CheckBox 
+                    Content="L"
+                    Margin="25,10,0,0"
+                    IsChecked="{Binding IsHadSizeL, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="{StaticResource FontSizeText}">
 
                 </CheckBox>
-                <CheckBox Content="XL"
-                      Margin="25,10,0,0"
-                      IsChecked="{Binding IsHadSizeXL, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="{StaticResource FontSizeDescription}">
+                <CheckBox 
+                    Content="XL"
+                    Margin="25,10,0,0"
+                    IsChecked="{Binding IsHadSizeXL, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="{StaticResource FontSizeText}">
 
                 </CheckBox>
-                <CheckBox Content="XXL"
-                      Margin="25,10,0,20"
-                      IsChecked="{Binding IsHadSizeXXL, UpdateSourceTrigger=PropertyChanged}"
-                      FontSize="{StaticResource FontSizeDescription}">
+                <CheckBox 
+                    Content="XXL"
+                    Margin="25,10,0,20"
+                    IsChecked="{Binding IsHadSizeXXL, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="{StaticResource FontSizeText}">
 
                 </CheckBox>
+                <Grid
+                    Height="20"/>
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Column="1">
+        <Grid 
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
             <Border BorderBrush="{StaticResource BoxLineColorBrush}"
-                    Margin="60,40,60,0"
-                    Height="50">
+                    Margin="20,40,20,0"
+                    Height="60">
                 <Grid Background="{StaticResource BackgroundColorBrush}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                               Text="Sort by"
-                               FontSize="14"
-                               VerticalAlignment="Bottom"
-                               Margin="80,0,0,12"
-                               Foreground="{StaticResource BlackColorBrush}">
+                    <Border
+                        CornerRadius="5"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BlackColorBrush}"
+                        Background="{StaticResource WhiteColorBrush}">
+                        <Grid 
+                            Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
 
-                    </TextBlock>
-                    <RadioButton Grid.Column="1"
-                                 Style="{StaticResource RadioButtonFill}"
-                                 Content="Big Discount"
-                                 Height="35"
-                                 materialDesign:ButtonAssist.CornerRadius="2"
-                                 IsChecked="{Binding IsBigDiscount}"
-                                 FontSize="{StaticResource FontSizeDescription}"
-                                 Margin="30,5,0,0">
+                            <Grid 
+                                Grid.Column="0">
+                                <TextBox 
+                                    x:Name="textBoxSearch"
+                                    BorderBrush="Transparent"
+                                    Width="auto"
+                                    Style="{StaticResource TextBoxHintBlackBorder}"
+                                    MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
+                                    materialDesign:HintAssist.Hint="Search"
+                                    materialDesign:HintAssist.IsFloating="False"
+                                    Text="{Binding SearchByValue, UpdateSourceTrigger=PropertyChanged}">
+                                </TextBox>
+                            </Grid>
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="|"
+                                Foreground="{StaticResource BoxLineColorBrush}"
+                                VerticalAlignment="Center"
+                                FontSize="{StaticResource FontSizeHeadline2}"
+                                Visibility="{c:Binding IsNeedSearchBy, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                x:Name="searchByComboBox"
+                                Style="{StaticResource ComboBoxTransparentBorder}"
+                                Height="{Binding ElementName=textBoxSearch, Path=ActualHeight}"
+                                IsEditable="False"
+                                BorderThickness="0"
+                                SelectedValuePath="Content"
+                                Margin="0 5 0 0"
+                                SelectedValue="{Binding SearchBy, UpdateSourceTrigger=PropertyChanged}"
+                                Visibility="{c:Binding IsNeedSearchBy, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:TextFieldAssist.UnderlineBrush ="Transparent">
+                                <ComboBoxItem Content="Only in this shop"/>
+                                <ComboBoxItem Content="In WANO"/>
+                            </ComboBox>
+                            <Button
+                                Grid.Column="3"
+                                Width="40"
+                                Height="40"
+                                Margin="0 0 3 0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Padding="0"
+                                materialDesign:ButtonAssist.CornerRadius="0"
+                                Style="{StaticResource TransparentButton}"
+                                Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}">
+                                <materialDesign:PackIcon
+                                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button},Path=ActualWidth}"
+                                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button},Path=ActualHeight}"
+                                    Kind="Search">
+                                </materialDesign:PackIcon>
+                            </Button>
+                        </Grid>
+                        <Border.InputBindings>
+                            <KeyBinding Key="Enter" 
+                                        Command="{Binding SearchCommand}"/>
+                        </Border.InputBindings>
+                    </Border>
+
+                    <RadioButton 
+                        Grid.Column="2"
+                        Style="{StaticResource RadioButtonFill}"
+                        Content="Big Discount"
+                        Height="40"
+                        materialDesign:ButtonAssist.CornerRadius="2"
+                        IsChecked="{Binding IsBigDiscount}"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        Width="120"
+                        Margin="5 0 0 0">
 
                     </RadioButton>
-                    <RadioButton Grid.Column="2"
-                                 Style="{StaticResource RadioButtonFill}"
-                                 Content="New"
-                                 Height="35"
-                                 IsChecked="{Binding IsNew}"
-                                  materialDesign:ButtonAssist.CornerRadius="2"
-                                 FontSize="{StaticResource FontSizeDescription}"
-                                 Margin="5,5,0,0">
-
+                    <RadioButton 
+                        Grid.Column="3"
+                        Style="{StaticResource RadioButtonFill}"
+                        Content="Best Seller"
+                        Width="120"
+                        IsChecked="{Binding IsBestSeller}"
+                        materialDesign:ButtonAssist.CornerRadius="2"
+                        Height="40"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        Margin="5,0,0,0">
                     </RadioButton>
-                    <RadioButton Grid.Column="3"
-                                 Style="{StaticResource RadioButtonFill}"
-                                 Content="Best Seller"
-                                 IsChecked="{Binding IsBestSeller}"
-                                  materialDesign:ButtonAssist.CornerRadius="2"
-                                 Height="35"
-                                 FontSize="{StaticResource FontSizeDescription}"
-                                 Margin="5,5,0,0">
-
+                    <RadioButton 
+                        Grid.Column="4"
+                        Style="{StaticResource RadioButtonFill}"
+                        Content="New"
+                        Height="40"
+                        Width="80"
+                        IsChecked="{Binding IsNew}"
+                        materialDesign:ButtonAssist.CornerRadius="2"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        Margin="5,0,0,0">
                     </RadioButton>
-                    <RadioButton Grid.Column="4"
-                                 Style="{StaticResource RadioButtonFill}"
-                                 Content="All"
-                                 IsChecked="{Binding IsAllFilter}"
-                                 materialDesign:ButtonAssist.CornerRadius="2"
-                                 Height="35"
-                                 FontSize="{StaticResource FontSizeDescription}"
-                                 Margin="5,5,10,0">
+                    <RadioButton 
+                        Grid.Column="5"
+                        Style="{StaticResource RadioButtonFill}"
+                        Content="All"
+                        IsChecked="{Binding IsAllFilter}"
+                        materialDesign:ButtonAssist.CornerRadius="2"
+                        Height="40"
+                        Width="80"
+                        FontSize="{StaticResource FontSizeDescription}"
+                        Margin="5,0,10,0">
 
                     </RadioButton>
                 </Grid>
             </Border>
-            <ScrollViewer CanContentScroll="True"
-                VerticalScrollBarVisibility="Visible">
-                <ListView ItemsSource="{Binding DisplayedProducts}" Height="700" Margin="20"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          x:Name="ProductList"
-                          BorderThickness="0">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+            <ListView 
+                ItemsSource="{Binding DisplayedProducts}"
+                Margin="20"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                x:Name="ProductList"
+                BorderThickness="0"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                ScrollViewer.CanContentScroll="True"
+                Grid.Row="1">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
 
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
-                            <Setter Property="Margin" Value="5 20"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                        <Setter Property="Margin" Value="5 20"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <local:ProductBlock 
-                                Height="500" 
-                                Width="350"
-                                DataContext="{Binding}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollViewer>
-        </StackPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:ProductBlock 
+                            Height="500" 
+                            Width="350"
+                            DataContext="{Binding}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Grid
+                Grid.Row="2"
+                Height="20"/>
+        </Grid>
     </Grid>
 </UserControl>

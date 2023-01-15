@@ -20,6 +20,8 @@ namespace WPFEcommerceApp
 
         public GenericDataRepository<Models.Product> ProductRepository { get; set; }
         public ICommand SearchCommand { get; set; }
+        public ICommand OpenAllBrands { get; set; }
+        public ICommand OpenAllCategories { get; set; }
 
         private IList<ProductBlockViewModel> allProducts;
         public IList<ProductBlockViewModel> AllProducts
@@ -447,6 +449,16 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private IList<CategoryCheckBoxViewModel> dislayedCategoryCheckBoxViewModels;
+        public IList<CategoryCheckBoxViewModel> DislayedCategoryCheckBoxViewModels
+        {
+            get => dislayedCategoryCheckBoxViewModels;
+            set
+            {
+                dislayedCategoryCheckBoxViewModels = value;
+                OnPropertyChanged();
+            }
+        }
         private IList<BrandCheckViewModel> brandCheckBoxViewModels;
         public IList<BrandCheckViewModel> BrandCheckBoxViewModels
         {
@@ -457,7 +469,67 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private IList<BrandCheckViewModel> dislayedBrandCheckBoxViewModels;
+        public IList<BrandCheckViewModel> DislayedBrandCheckBoxViewModels
+        {
+            get => dislayedBrandCheckBoxViewModels;
+            set
+            {
+                dislayedBrandCheckBoxViewModels = value;
+                OnPropertyChanged();
+            }
+        }
         public bool[] CheckSize = { false, false, false, false, false, false };
+        private string searchBy;
+        public string SearchBy
+        {
+            get => searchBy;
+            set
+            {
+                searchBy = value;
+                OnPropertyChanged();
+            }
+        }
+        private string searchByValue;
+        public string SearchByValue
+        {
+            get => searchByValue;
+            set
+            {
+                searchByValue = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isNeedSearchBy;
+        public bool IsNeedSearchBy
+        {
+            get => isNeedSearchBy;
+            set
+            {
+                isNeedSearchBy = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isNeedShowAllCategory;
+        public bool IsNeedShowAllCategory
+        {
+            get => isNeedShowAllCategory;
+            set
+            {
+                isNeedShowAllCategory = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isNeedShowAllBrand;
+        public bool IsNeedShowAllBrand
+        {
+            get => isNeedShowAllBrand;
+            set
+            {
+                isNeedShowAllBrand = value;
+                OnPropertyChanged();
+            }
+        }
         private FilterObject Condition;
         public FilterViewModel(FilterObject filterObject)
         {
@@ -473,7 +545,15 @@ namespace WPFEcommerceApp
             if (Condition.ShopText == null)
             {
                 Condition.ShopText = "";
+                SearchBy = "In WANO";
+                IsNeedSearchBy = false;
             }
+            else
+            {
+                SearchBy = "Only in this shop";
+                IsNeedSearchBy = true;
+            }
+            SearchByValue = Condition.SearchText;
             IsLoadingCheck.IsLoading = 2;
             Task.Run(async () =>
             {
@@ -493,7 +573,6 @@ namespace WPFEcommerceApp
                 {
                     lock (IsLoadingCheck.IsLoading as object)
                     {
-                        DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         CategoryCheckBoxViewModels = new List<CategoryCheckBoxViewModel>(CategoryCheckBoxViewModels);
                         BrandCheckBoxViewModels = new List<BrandCheckViewModel>(BrandCheckBoxViewModels);
                         IsLoadingCheck.IsLoading--;
@@ -534,10 +613,21 @@ namespace WPFEcommerceApp
                         MainViewModel.IsLoading = false;
                     });
                 });
+                OpenAllBrands = new RelayCommandWithNoParameter(() =>
+                {
+                    DislayedBrandCheckBoxViewModels = new List<BrandCheckViewModel>(BrandCheckBoxViewModels);
+                    IsNeedShowAllBrand = true;
+                });
+                OpenAllCategories = new RelayCommandWithNoParameter(() =>
+                {
+                    DislayedCategoryCheckBoxViewModels = new List<CategoryCheckBoxViewModel>(CategoryCheckBoxViewModels);
+                    IsNeedShowAllCategory = true;
+                });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
                     lock (IsLoadingCheck.IsLoading as object)
                     {
+                        DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         IsLoadingCheck.IsLoading--;
                     }
                 }));
@@ -547,7 +637,7 @@ namespace WPFEcommerceApp
         {
             List<string> listCategoryId = new List<string>();
             List<string> allCategoryId = new List<string>();
-            foreach (CategoryCheckBoxViewModel categoryCheckBoxViewModel in CategoryCheckBoxViewModels)
+            foreach (CategoryCheckBoxViewModel categoryCheckBoxViewModel in DislayedCategoryCheckBoxViewModels)
             {
                 if (categoryCheckBoxViewModel.IsChecked)
                 {
@@ -561,7 +651,7 @@ namespace WPFEcommerceApp
             }
             List<string> listBrandId = new List<string>();
             List<string> allBrandId = new List<string>();
-            foreach (BrandCheckViewModel brandCheckViewModel in BrandCheckBoxViewModels)
+            foreach (BrandCheckViewModel brandCheckViewModel in DislayedBrandCheckBoxViewModels)
             {
                 if (brandCheckViewModel.IsChecked)
                 {
@@ -584,40 +674,54 @@ namespace WPFEcommerceApp
             }
             if (isHasSize)
             {
-                DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 &&
-                                                                                                        (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                        listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
-                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
-                                                                                                        ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
-                                                                                                        (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))));
+                if (SearchBy == "In WANO")
+                {
+                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) &&
+                                                                                                            (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                                                            listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
+                                                                                                            (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
+                                                                                                            ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
+                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))));
+                    IsNeedSearchBy = false;
+                }
+                else
+                {
+                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) && p.SelectedProduct.IdShop == Condition.ShopText &&
+                                                                                                            (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                                                            listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
+                                                                                                            (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
+                                                                                                            ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
+                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))));
+                }
             }
             else
             {
-                DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 &&
+                if (SearchBy == "In WANO")
+                {
+                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) &&
                                                                                                         (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
                                                                                                         listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
                                                                                                         (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))));
+                    IsNeedSearchBy = false;
+                }
+                else
+                {
+                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) && p.SelectedProduct.IdShop == Condition.ShopText &&
+                                                                                                        (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                                                        listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
+                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))));
+                }
             }
         }
         private async Task Load()
         {
             IList<Models.Product> products = new List<Models.Product>();
-            if (String.IsNullOrEmpty(Condition.ShopText))
-            {
-                products = new List<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 && p.Name.Contains(Condition.SearchText ?? ""),
-                                                                                                            p => p.Category,
-                                                                                                            p => p.Brand,
-                                                                                                            p => p.ImageProducts,
-                                                                                                            p => p.MUser));
-            }
-            else
-            {
-                products = new List<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 && p.Name.Contains(Condition.SearchText ?? "") && p.IdShop == Condition.ShopText,
-                                                                                                            p => p.Category,
-                                                                                                            p => p.Brand,
-                                                                                                            p => p.ImageProducts,
-                                                                                                            p => p.MUser));
-            }
+            products = new List<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 
+                                                                                        && p.InStock!=0,
+                                                                                        p => p.Category,
+                                                                                        p => p.Brand,
+                                                                                        p => p.ImageProducts,
+                                                                                        p => p.MUser));
             DateTime lastDateHasNewProduct = DateTime.MinValue;
             foreach (Models.Product product in products)
             {
@@ -650,6 +754,15 @@ namespace WPFEcommerceApp
                 categoryCheckBoxViewModel.IsChecked = Condition.Categories.Any(c => c == category.Id);
                 CategoryCheckBoxViewModels.Add(categoryCheckBoxViewModel);
             }
+            if(CategoryCheckBoxViewModels.Count() > 5)
+            {
+                IsNeedShowAllCategory = false;
+            }
+            else
+            {
+                IsNeedShowAllCategory = true;    
+            }
+            DislayedCategoryCheckBoxViewModels = new List<CategoryCheckBoxViewModel>(CategoryCheckBoxViewModels.Take(5));
         }
         private async Task LoadBrandCheckBox()
         {
@@ -662,6 +775,15 @@ namespace WPFEcommerceApp
                 brandCheckViewModel.IsChecked = Condition.Brands.Any(b => b == brand.Id);
                 BrandCheckBoxViewModels.Add(brandCheckViewModel);
             }
+            if(BrandCheckBoxViewModels.Count() > 5)
+            {
+                IsNeedShowAllBrand = false;
+            }
+            else
+            {
+                IsNeedShowAllBrand = true;    
+            }
+            DislayedBrandCheckBoxViewModels = new List<BrandCheckViewModel>(BrandCheckBoxViewModels.Take(5));
         }
     }
     public enum FilterStatus
