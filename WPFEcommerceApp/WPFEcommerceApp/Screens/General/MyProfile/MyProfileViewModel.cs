@@ -233,11 +233,11 @@ namespace WPFEcommerceApp
                 string link;
                 if (String.IsNullOrEmpty(SourceImageAva) || SourceImageAva.Contains("https://firebasestorage.googleapis.com"))
                 {
-                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageAva, "User", $"Ava_{AccountStore.instance.CurrentAccount.Id}", AccountStore.instance.CurrentAccount.SourceImageAva);
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageAva, "User", $"Ava", AccountStore.instance.CurrentAccount.SourceImageAva, $"{AccountStore.instance.CurrentAccount.Id}");
                 }
                 else
                 {
-                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageAva, "User", $"Ava_{AccountStore.instance.CurrentAccount.Id}");
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageAva, "User", "Ava", null, $"{AccountStore.instance.CurrentAccount.Id}");
                 }
 
                 AccountStore.instance.CurrentAccount.SourceImageAva = link;
@@ -258,11 +258,11 @@ namespace WPFEcommerceApp
                 string link;
                 if (String.IsNullOrEmpty(SourceImageBackground) || SourceImageBackground.Contains("https://firebasestorage.googleapis.com"))
                 {
-                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageBackground, "User", $"Background_{AccountStore.instance.CurrentAccount.Id}", AccountStore.instance.CurrentAccount.SourceImageAva);
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageBackground, "User", $"Background", AccountStore.instance.CurrentAccount.SourceImageAva, $"{AccountStore.instance.CurrentAccount.Id}");
                 }
                 else
                 {
-                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageBackground, "User", $"Background_{AccountStore.instance.CurrentAccount.Id}");
+                    link = await FireStorageAPI.PushFromImage((BitmapSource)ImageBackground, "User", "Background", null, $"{AccountStore.instance.CurrentAccount.Id}");
                 }
 
                 AccountStore.instance.CurrentAccount.SourceImageBackground = link;
