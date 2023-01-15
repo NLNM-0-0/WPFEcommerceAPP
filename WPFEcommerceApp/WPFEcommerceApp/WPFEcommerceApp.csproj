@@ -261,6 +261,7 @@
       <DependentUpon>AddressChoiceDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\General\Payment\components\Dialogs\AddressChoiceDialogVM.cs" />
+    <Compile Include="Utils\Converters\DoubleToCurrencyConverter.cs" />
     <Compile Include="Utils\IsLoadingCheck.cs" />
     <Compile Include="Screens\General\Filter\BrandCheckViewModel.cs" />
     <Compile Include="Screens\General\Filter\CategoryCheckBoxViewModel.cs" />

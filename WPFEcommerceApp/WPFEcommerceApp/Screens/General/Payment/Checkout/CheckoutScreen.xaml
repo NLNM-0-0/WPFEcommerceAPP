@@ -485,22 +485,24 @@
                         </Grid.RowDefinitions>
                         <Grid Height="39">
                             <Label Content="Subtotal: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding SubTotal, StringFormat='0.00 VND'}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding SubTotal, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=||USD}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                         <Grid Height="39" Grid.Row="1">
                             <Label Content="Shipping Total: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding ShipTotal, StringFormat='0.00 VND'}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding ShipTotal, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=||USD}" 
+                                       FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                         <Grid Height="39" Grid.Row="2">
                             <Label Content="Discounted: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Discount, StringFormat='0.00 VND'}"
+                            <TextBlock Text="{Binding Discount, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=||USD}"
                                    FontSize="{StaticResource FontSizeHeadline3}"
                                    HorizontalAlignment="Right" 
                                    VerticalAlignment="Center"/>
                         </Grid>
                         <Grid Height="39" Grid.Row="3">
                             <Label Content="Total Payment: " FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding TotalPayment, StringFormat='0.00 VND'}" FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding TotalPayment, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=||USD}" 
+                                       FontSize="{StaticResource FontSizeHeadline3}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                         </Grid>
                     </Grid >
                 </StackPanel>

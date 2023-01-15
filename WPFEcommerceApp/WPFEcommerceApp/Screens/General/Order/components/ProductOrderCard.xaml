@@ -47,7 +47,7 @@
                         VerticalAlignment="Center" 
                         HorizontalAlignment="Center">
                 <TextBlock Text="Subtotal:" FontSize="17"/>
-                <TextBlock Text="{Binding Subtotal}" FontSize="17"/>
+                <TextBlock Text="{Binding Subtotal, Converter={StaticResource DoubleToCurrencyConverter}, ConverterParameter=None||}" FontSize="17"/>
             </StackPanel>
         </Grid>
         <Separator BorderThickness="0 0.5 0 0" 
