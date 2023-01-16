@@ -11,10 +11,13 @@
     <Grid>
         <Image Source="{Binding ElementName=image, Path=Default}" 
                x:Name="imgDefault"
-               Stretch="{Binding ElementName=image, Path=Stretch}"/>
+               Width="{Binding ElementName=imgAsync, Path=ActualWidth}"
+               Height="{Binding ElementName=imgAsync, Path=ActualHeight}"/>
         <Image Source="{Binding ElementName=image, Path=Source}"
                x:Name="imgAsync"
                Stretch="{Binding ElementName=image, Path=Stretch}">
+            
         </Image>
+        
     </Grid>
 </UserControl>
