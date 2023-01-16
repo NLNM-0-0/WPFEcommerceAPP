@@ -9,7 +9,8 @@
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignWidth="800"
-             x:Name="shopRatingBlock">
+             x:Name="shopRatingBlock"
+             Background="{StaticResource WhiteColorBrush}">
     <Border
         BorderBrush="{StaticResource BoxLineColorBrush}"
         BorderThickness="0 1 0 0"
@@ -137,7 +138,7 @@
                             <Border
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Stretch"
-                                Grid.Column="1">
+                                Grid.Column="2">
                                 <TextBlock 
                                     Foreground="{StaticResource NotAvailableColorBrush}"
                                     Text="{Binding OrderInfo.Size, UpdateSourceTrigger=PropertyChanged}"

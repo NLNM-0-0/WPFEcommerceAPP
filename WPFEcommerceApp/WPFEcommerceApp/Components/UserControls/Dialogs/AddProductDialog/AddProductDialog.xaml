@@ -83,7 +83,8 @@
                             x:Name="priceTextBox"
                             Width="auto"
                             Style="{StaticResource TextBoxHintBlackBorder}"
-                            materialDesign:HintAssist.Hint="Price">
+                            materialDesign:HintAssist.Hint="Price"
+                            materialDesign:TextFieldAssist.SuffixText=" USD">
                             <TextBox.Text>
                                 <Binding
                                     Path="Price"
@@ -403,7 +404,8 @@
                             VerticalAlignment="Top"
                             Width="auto"
                             Style="{StaticResource TextBoxHintBlackBorder}"
-                            materialDesign:HintAssist.Hint="Sale">
+                            materialDesign:HintAssist.Hint="Sale"
+                            materialDesign:TextFieldAssist.SuffixText=" %">
                             <TextBox.Text>
                                 <Binding
                                     Path="Sale"

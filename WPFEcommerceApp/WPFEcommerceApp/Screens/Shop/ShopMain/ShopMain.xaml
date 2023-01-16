@@ -294,6 +294,26 @@
                     </Grid>
                 </StackPanel>
                 <Grid
+                    Background="Transparent"
+                    VerticalAlignment="Center"
+                    Grid.Row="2"
+                    Margin="20"
+                    Visibility="{c:Binding 'AllProductBlock == null or AllProductBlock.FullProducts.Count == 0', UpdateSourceTrigger=PropertyChanged}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Image
+                        Source="..\..\..\Assets\Images\MagicBox.png"
+                        Height="150"/>
+                    <TextBlock
+                        Grid.Row="2"
+                        Text="No product yet"
+                        FontSize="{StaticResource FontSizeHeadline3}"
+                        HorizontalAlignment="Center"/>
+                </Grid>
+                <Grid
                     Grid.Row="3"
                     Height="20">
                 </Grid>

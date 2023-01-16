@@ -428,8 +428,28 @@
                     </StackPanel>
                 </Grid>
                 <Grid
-                Grid.Row="4"
-                Height="20"/>
+                    Background="Transparent"
+                    VerticalAlignment="Center"
+                    Grid.Row="3"
+                    Margin="20"
+                    Visibility="{c:Binding 'DisplayShopRatingBlockModels == null or DisplayShopRatingBlockModels.Count == 0', UpdateSourceTrigger=PropertyChanged}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Image
+                        Source="..\..\..\Assets\Images\MagicBox.png"
+                        Height="150"/>
+                    <TextBlock
+                        Grid.Row="2"
+                        Text="No rating yet"
+                        FontSize="{StaticResource FontSizeHeadline3}"
+                        HorizontalAlignment="Center"/>
+                </Grid>
+                <Grid
+                    Grid.Row="4"
+                    Height="20"/>
             </Grid>
         </ScrollViewer>
         <Canvas

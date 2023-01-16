@@ -176,7 +176,7 @@ namespace WPFEcommerceApp
 
             RevenueLabels = labels.ToArray();
 
-            yRevenueFormatter = (value) => value.ToString("#,##0.00 VNĐ");
+            yRevenueFormatter = (value) => value.ToString("C");
 
             RevenueSeriesCollection = new SeriesCollection
             {

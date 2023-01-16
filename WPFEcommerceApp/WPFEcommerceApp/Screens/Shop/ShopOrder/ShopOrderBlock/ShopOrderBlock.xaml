@@ -278,7 +278,7 @@
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontWeight="SemiBold"/>
                         <TextBlock
-                            Text="đ"
+                            Text=" USD"
                             FontFamily="{StaticResource Medium}"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontWeight="SemiBold"/>
@@ -313,7 +313,7 @@
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontWeight="SemiBold"/>
                         <TextBlock
-                            Text="đ"
+                            Text=" USD"
                             FontFamily="{StaticResource Medium}"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontWeight="SemiBold"/>
@@ -354,7 +354,7 @@
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontWeight="SemiBold"/>
                         <TextBlock
-                            Text="đ"
+                            Text=" USD"
                             FontFamily="{StaticResource Medium}"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontWeight="SemiBold"/>
@@ -436,7 +436,7 @@
                             HorizontalAlignment="Right"/>
                         <TextBlock
                             VerticalAlignment="Center"
-                            Text="đ"
+                            Text=" USD"
                             FontSize="{StaticResource FontSizeHeadline3}"
                             FontFamily="{StaticResource Medium}"
                             FontWeight="DemiBold"

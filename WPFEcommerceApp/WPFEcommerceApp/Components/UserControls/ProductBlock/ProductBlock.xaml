@@ -310,22 +310,22 @@
                     </Border>
                 </Grid>
                 <StackPanel Grid.Row="3" Orientation="Horizontal">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Margin" Value="0 0 10 0"/>
-                        </Style>
-                    </StackPanel.Resources>
                     <TextBlock 
                         Text="{Binding SelectedProduct.Price, UpdateSourceTrigger=PropertyChanged}"
                         TextDecorations="Strikethrough"
                         FontSize="16"
                         FontWeight="DemiBold"
                         Foreground="{StaticResource NotAvailableColorBrush}"
-                        Visibility="{c:Binding 'SelectedProduct.Sale != 100'}"/>
+                        Visibility="{c:Binding 'SelectedProduct.Sale != 100'}"
+                        Margin="0 0 10 0"/>
                     <TextBlock 
-                    Text="{c:Binding '(100 - SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
-                    FontSize="18"
-                    FontWeight="DemiBold"/>
+                        Text="{c:Binding '(100 - SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
+                        FontSize="18"
+                        FontWeight="DemiBold"/>
+                    <TextBlock
+                        Text=" USD"
+                        FontSize="18"
+                        FontWeight="DemiBold"/>
                 </StackPanel>
             </Grid>
             <i:Interaction.Triggers>

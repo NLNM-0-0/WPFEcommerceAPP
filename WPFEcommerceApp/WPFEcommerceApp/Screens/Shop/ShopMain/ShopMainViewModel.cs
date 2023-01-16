@@ -350,7 +350,7 @@ namespace WPFEcommerceApp
 
         private async Task LoadAllProduct()
         {
-            AllProducts = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => p.IdShop == Shop.Id,
+            AllProducts = new ObservableCollection<Models.Product>(await productRepository.GetListAsync(p => p.IdShop == Shop.Id && p.InStock!=0 && p.BanLevel == 0,
                                                                                                         p => p.Brand,
                                                                                                         p => p.Category,
                                                                                                         p => p.OrderInfoes,

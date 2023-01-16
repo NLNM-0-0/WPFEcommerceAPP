@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,14 +19,21 @@ using System.Windows.Shapes;
 namespace WPFEcommerceApp
 {
     /// <summary>
-    /// Interaction logic for ProductDetailMini.xaml
+    /// Interaction logic for ProductDetail.xaml
     /// </summary>
-    public partial class ProductDetailMini : UserControl
+    public partial class ProductDetailNormal : UserControl
     {
-        public ProductDetailMini()
+        public ProductDetailNormal()
         {
             InitializeComponent();
         }
+
+        private void ScrollViewer_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             int amount;
@@ -36,20 +44,20 @@ namespace WPFEcommerceApp
             }
             else if (int.TryParse((sender as TextBox).Text, out amount))
             {
-                if (int.Parse((sender as TextBox).Text) == 0)
+                if(int.Parse((sender as TextBox).Text) == 0)
                 {
                     (sender as TextBox).Text = "1";
                 }
                 else if (int.TryParse(instockTextBox.Text, out maxAmount))
                 {
-                    if (maxAmount == 0 && (sender as TextBox).Text == "1")
+                    if(maxAmount == 0 && (sender as TextBox).Text == "1")
                     {
                         return;
                     }
-                    if (amount > maxAmount)
+                    if(amount > maxAmount)
                     {
                         (sender as TextBox).Text = maxAmount.ToString();
-                    }
+                    }    
                 }
             }
         }
@@ -89,3 +97,4 @@ namespace WPFEcommerceApp
         }
     }
 }
+
