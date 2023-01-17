@@ -119,6 +119,16 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private bool isNewCustomer;
+        public bool IsNewCustomer
+        {
+            get => isNewCustomer;
+            set
+            {
+                isNewCustomer = value;
+                OnPropertyChanged();
+            }
+        }
         private Models.Promo initialPromo;
         public PromoInformationViewModel(PromoVMConstructor param)
         {
@@ -137,6 +147,7 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = false;
             }).ContinueWith((first) =>
             {
+                IsNewCustomer = SelectedPromo.CustomerType == 0;
                 AddNewProductCommand = new RelayCommandWithNoParameter(async() =>
                 {
                     MainViewModel.IsLoading = true;
@@ -259,7 +270,14 @@ namespace WPFEcommerceApp
             promo.MaxSale = (IsMaxSale ? SelectedPromo.MaxSale : double.MaxValue);
             promo.MinCost = SelectedPromo.MinCost;
             promo.Sale = SelectedPromo.Sale;
-            promo.CustomerType = SelectedPromo.CustomerType;
+            if (IsNewCustomer)
+            {
+                promo.CustomerType = 0;
+            }
+            else
+            {
+                promo.CustomerType = 1;
+            }    
             promo.Name = SelectedPromo.Name;
             await promoRepository.Update(promo);
             foreach(Models.Product p in SelectedPromo.Products)

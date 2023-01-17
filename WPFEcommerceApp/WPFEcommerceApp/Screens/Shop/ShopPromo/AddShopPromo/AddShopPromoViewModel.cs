@@ -103,13 +103,13 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private int targetCustomer;
-        public int TargetCustomer
+        private bool isNewCustomer;
+        public bool IsNewCustomer
         {
-            get => targetCustomer;
+            get => isNewCustomer;
             set
             {
-                targetCustomer = value;
+                isNewCustomer = value;
                 OnPropertyChanged();
             }
         }
@@ -215,6 +215,7 @@ namespace WPFEcommerceApp
                 SelectedProductPromos = new ObservableCollection<PromoProductBlockViewModel>();
                 FilterProductPromos = SelectedProductPromos;
                 SearchBy = "Id";
+                IsNewCustomer = true;
                 AddNewProductCommand = new RelayCommandWithNoParameter( async() =>
                 {
                     MainViewModel.IsLoading = true;
@@ -295,7 +296,7 @@ namespace WPFEcommerceApp
                 MaxSale = (IsMaxSale?double.Parse(this.MaxSale) :double.MaxValue),
                 MinCost = double.Parse(this.MinCost),
                 Sale = double.Parse(this.Sale),
-                CustomerType = this.TargetCustomer,
+                CustomerType = IsNewCustomer?0:1,
                 Status = 0,
                 Name = this.Name
             }) ;
