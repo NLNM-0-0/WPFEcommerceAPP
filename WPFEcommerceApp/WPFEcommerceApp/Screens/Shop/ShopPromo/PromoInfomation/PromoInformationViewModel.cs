@@ -270,6 +270,7 @@ namespace WPFEcommerceApp
             promo.MaxSale = (IsMaxSale ? SelectedPromo.MaxSale : double.MaxValue);
             promo.MinCost = SelectedPromo.MinCost;
             promo.Sale = SelectedPromo.Sale;
+            promo.Status = 0;
             if (IsNewCustomer)
             {
                 promo.CustomerType = 0;
