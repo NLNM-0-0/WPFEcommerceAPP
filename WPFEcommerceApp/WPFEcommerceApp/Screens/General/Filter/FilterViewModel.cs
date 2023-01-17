@@ -100,16 +100,16 @@ namespace WPFEcommerceApp
             }
         }
 
-        private bool sortPrice0To200k;
-        public bool SortPrice0To200k
+        private bool sortPrice0To200USD;
+        public bool SortPrice0To200USD
         {
-            get => sortPrice0To200k;
+            get => sortPrice0To200USD;
             set
             {
                 if (value)
                 {
                     MinPrice = 0;
-                    MaxPrice = 200000;
+                    MaxPrice = 200;
                     MainViewModel.IsLoading = true;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
@@ -121,20 +121,20 @@ namespace WPFEcommerceApp
                         MainViewModel.IsLoading = false;
                     });
                 }
-                sortPrice0To200k = value;
+                sortPrice0To200USD = value;
                 OnPropertyChanged();
             }
         }
-        private bool sortPrice200kTo500k;
-        public bool SortPrice200kTo500k
+        private bool sortPrice200USDTo500USD;
+        public bool SortPrice200USDTo500USD
         {
-            get => sortPrice200kTo500k;
+            get => sortPrice200USDTo500USD;
             set
             {
                 if (value)
                 {
-                    MinPrice = 200000;
-                    MaxPrice = 500000;
+                    MinPrice = 200;
+                    MaxPrice = 500;
                     MainViewModel.IsLoading = true;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
@@ -146,20 +146,20 @@ namespace WPFEcommerceApp
                         MainViewModel.IsLoading = false;
                     });
                 }
-                sortPrice200kTo500k = value;
+                sortPrice200USDTo500USD = value;
                 OnPropertyChanged();
             }
         }
-        private bool sortPrice500kTo1000k;
-        public bool SortPrice500kTo1000k
+        private bool sortPrice500USDTo1000USD;
+        public bool SortPrice500USDTo1000USD
         {
-            get => sortPrice500kTo1000k;
+            get => sortPrice500USDTo1000USD;
             set
             {
                 if (value)
                 {
-                    MinPrice = 500000;
-                    MaxPrice = 1000000;
+                    MinPrice = 500;
+                    MaxPrice = 1000;
                     MainViewModel.IsLoading = true;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
@@ -171,19 +171,19 @@ namespace WPFEcommerceApp
                         MainViewModel.IsLoading = false;
                     });
                 }
-                sortPrice500kTo1000k = value;
+                sortPrice500USDTo1000USD = value;
                 OnPropertyChanged();
             }
         }
-        private bool sortPriceP1000k;
-        public bool SortPriceP1000k
+        private bool sortPriceP1000USD;
+        public bool SortPriceP1000USD
         {
-            get => sortPriceP1000k;
+            get => sortPriceP1000USD;
             set
             {
                 if (value)
                 {
-                    MinPrice = 1000000;
+                    MinPrice = 1000;
                     MaxPrice = long.MaxValue;
                     MainViewModel.IsLoading = true;
                     Task.Run(() => { }).ContinueWith((second) =>
@@ -196,7 +196,7 @@ namespace WPFEcommerceApp
                         MainViewModel.IsLoading = false;
                     });
                 }
-                sortPriceP1000k = value;
+                sortPriceP1000USD = value;
                 OnPropertyChanged();
             }
         }
