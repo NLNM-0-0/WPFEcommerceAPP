@@ -26,7 +26,7 @@
                         BorderThickness="0 0.5"
                         x:Name="prdBorder" Width="395" HorizontalAlignment="Right"/>
                     <DockPanel Panel.ZIndex="1">
-                        <Grid x:Name="imgContainer" Background="Pink"
+                        <Grid x:Name="imgContainer" Background="Transparent"
                               Width="70" Height="70">
                             <local:AsyncImage Source="{Binding Product.ProductImage}" 
                                               Stretch="Uniform"
