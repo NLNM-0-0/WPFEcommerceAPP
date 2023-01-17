@@ -350,17 +350,43 @@
 
                     </Button>
                 </Grid>
-                <TextBlock Text="DESCRIPTION"
-                       FontWeight="Bold"
-                       Margin="20"
-                       Foreground="{StaticResource BlackColorBrush}"
-                       FontSize="{StaticResource FontSizeHeadline3}">
+                <TextBlock Text="COLOR"
+                    FontWeight="Bold"
+                    Margin="20"
+                    Foreground="{StaticResource BlackColorBrush}"
+                    FontSize="{StaticResource FontSizeHeadline3}">
 
                 </TextBlock>
-                <TextBlock 
-                    Text="{Binding SelectedProduct.Description}"
-                    FontSize="{StaticResource FontSizeText}"
-                    MaxWidth="900"/>
+                <Border
+                    HorizontalAlignment="Stretch"
+                    Padding="20, 0"
+                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}">
+                        <TextBlock 
+                        MaxWidth="{i:Binding '(ActualWidth less 420)?0:(ActualWidth - 420)', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                        Text="{Binding SelectedProduct.Color}"
+                        FontSize="{StaticResource FontSizeText}"
+                        HorizontalAlignment="Left"
+                        TextWrapping="Wrap"/>
+                </Border>
+                <TextBlock Text="DESCRIPTION"
+                    FontWeight="Bold"
+                    Margin="20"
+                    Foreground="{StaticResource BlackColorBrush}"
+                    FontSize="{StaticResource FontSizeHeadline3}">
+
+                </TextBlock>
+                <Border
+                    HorizontalAlignment="Stretch"
+                    Padding="20, 0"
+                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}">
+                    <TextBlock 
+                        MaxWidth="{i:Binding '(ActualWidth less 420)?0:(ActualWidth - 420)', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                        Text="{Binding SelectedProduct.Description}"
+                        FontSize="{StaticResource FontSizeText}"
+                        HorizontalAlignment="Left"
+                        TextWrapping="Wrap"/>
+                </Border>
+               
                 <TextBlock Text="SHOP INFORMATION"
                        FontWeight="Bold"
                        Margin="20,20,20,0"
@@ -902,8 +928,13 @@
                                 FontWeight="Normal"
                                 FontSize="{StaticResource FontSizeHeadline2}"
                                 Foreground="{StaticResource BlackColorBrush}">
-
                             </TextBlock>
+                            <TextBlock
+                                Text=" USD"
+                                FontWeight="Normal"
+                                FontSize="{StaticResource FontSizeHeadline2}"
+                                Foreground="{StaticResource BlackColorBrush}">
+                            </TextBlock>    
                         </WrapPanel>
                     </Border>
 

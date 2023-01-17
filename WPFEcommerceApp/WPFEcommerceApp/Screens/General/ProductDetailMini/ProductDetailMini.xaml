@@ -295,23 +295,24 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Stretch"
             Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="8*"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="auto" ></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1">
                 <local:AsyncImage Source="{Binding SelectedImage}"
-                        Margin="5,30,5,30"
-                        Width="auto"
-                        Height="auto">
-
+                            Margin="5,30,5,30"
+                            Width="auto"
+                            HorizontalAlignment="Stretch"
+                            Height="600"
+                            Stretch="Uniform">
                 </local:AsyncImage>
 
             </StackPanel>
@@ -572,7 +573,12 @@
                                 FontWeight="Normal"
                                 FontSize="{StaticResource FontSizeHeadline2}"
                                 Foreground="{StaticResource BlackColorBrush}">
-
+                        </TextBlock>
+                        <TextBlock
+                                Text=" USD"
+                                FontWeight="Normal"
+                                FontSize="{StaticResource FontSizeHeadline2}"
+                                Foreground="{StaticResource BlackColorBrush}">
                         </TextBlock>
                     </WrapPanel>
                 </Border>

@@ -569,7 +569,9 @@ namespace WPFEcommerceApp
                 });
                 UnFavouriteCommand = new RelayCommand<object>((p) =>
                 {
-                    return (AccountStore.instance.CurrentAccount != null && SelectedProduct.IdShop != AccountStore.instance.CurrentAccount.Id);
+                    return (AccountStore.instance.CurrentAccount != null && 
+                    SelectedProduct.IdShop != AccountStore.instance.CurrentAccount.Id) &&
+                    SelectedProduct.InStock >= Amount;
                 }, async (p) =>
                 {
                     await FavoriteStore.instance.Delete(SelectedProduct);
@@ -578,7 +580,8 @@ namespace WPFEcommerceApp
                 BuyNowCommand = new RelayCommand<object>((p) => 
                 {
                     return ((IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize) &&
-                    (AccountStore.instance.CurrentAccount != null) ? (AccountStore.instance.CurrentAccount.Id != SelectedProduct.IdShop) : true);
+                    (AccountStore.instance.CurrentAccount != null) ? (AccountStore.instance.CurrentAccount.Id != SelectedProduct.IdShop) : true) &&
+                    SelectedProduct.InStock >= Amount;
                 }, async (p) =>
                 {
                     if (AccountStore.instance.CurrentAccount == null)
