@@ -75,7 +75,7 @@ namespace WPFEcommerceApp
             get => averageRating;
             set
             {
-                averageRating = value;
+                averageRating = Math.Round(value, 2);
                 OnPropertyChanged();
             }
         }
