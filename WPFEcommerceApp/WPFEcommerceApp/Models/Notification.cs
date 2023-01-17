@@ -19,6 +19,7 @@ namespace WPFEcommerceApp.Models
         public string IdSender { get; set; }
         public System.DateTime Date { get; set; }
         public string Content { get; set; }
+        public Nullable<bool> HaveSeen { get; set; }
     
         public virtual MUser MUser { get; set; }
         public virtual MUser MUser1 { get; set; }
