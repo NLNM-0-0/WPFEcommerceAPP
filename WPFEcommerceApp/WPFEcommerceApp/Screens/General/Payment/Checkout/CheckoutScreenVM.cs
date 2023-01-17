@@ -315,8 +315,12 @@ namespace WPFEcommerceApp {
             var valid = new List<Promo>();
             var invalid = new List<Promo>();
 
+            var listShop = ListOrder.Select(s => s.IDShop).ToList();
+
             var listVoucher = await promoRepo.GetListAsync(
-                d => d.DateEnd > DateTime.Now && d.Status == 1,
+                d => d.DateEnd > DateTime.Now && 
+                     d.Status == 1 &&
+                     listShop.Contains(d.IdShop),
                 d => d.Products
             );
 
@@ -331,13 +335,19 @@ namespace WPFEcommerceApp {
             foreach(var o in listVoucher) {
                 var flag = true;
                 //if(o.Products.Count == 0) flag = false;
-                if(o.Products.Count < productList.Count || o.Products.Count == 0) {
+                //if(CurrentUser)
+                
+                if(o.Products.Count < productList.Count || 
+                    o.Products.Count == 0 ||
+                    (o.CustomerType == 0 && DateTime.Now - CurrentUser.UserLogin.CreatedDate > TimeSpan.FromDays(7)) ||
+                    o.MinCost > SubTotal) {
                     flag = false;
                 }
                 else {
                     List<string> listVoucherId = o.Products.Select(d => d.Id).ToList();
                     flag = !productList.Except(listVoucherId).Any();
                 }
+
                 if(flag) {
                     valid.Add(o);
                     ValidVoucherList.Add(o.Id, true);

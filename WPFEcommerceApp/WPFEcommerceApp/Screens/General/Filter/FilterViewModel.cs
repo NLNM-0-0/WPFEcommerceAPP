@@ -542,7 +542,9 @@ namespace WPFEcommerceApp
             {
                 Condition.Brands = new List<string>();
             }
-            if (Condition.ShopText == null)
+            //VHCMT: Vì Condition.ShopText đổi từ null => ""
+            //=> Thay đổi filterObject => Back về sẽ chuyển sang else
+            if (string.IsNullOrEmpty(Condition.ShopText))
             {
                 Condition.ShopText = "";
                 SearchBy = "In WANO";

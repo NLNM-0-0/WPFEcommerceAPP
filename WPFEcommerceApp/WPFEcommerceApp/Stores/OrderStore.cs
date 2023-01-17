@@ -123,6 +123,7 @@ namespace WPFEcommerceApp {
             temp.IdCustomer = p.IDCustomer;
             temp.IdShop = p.IDShop;
             temp.ShipTotal = (int)p.ShipTotal;
+            temp.Discounted = p.Discount;
             temp.DateBegin = p.DateBegin;
             temp.DateEnd = p.DateEnd;
             temp.Promo = p.Promo;

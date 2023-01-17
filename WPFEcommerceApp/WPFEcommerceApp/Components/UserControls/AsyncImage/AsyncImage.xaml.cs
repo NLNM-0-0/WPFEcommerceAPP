@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -57,7 +59,7 @@ namespace WPFEcommerceApp {
         public static readonly DependencyProperty ImgSourceProperty =
             DependencyProperty.Register("Source", typeof(ImageSource), typeof(AsyncImage), new PropertyMetadata(default(ImageSource), OnImgSourceChanged));
 
-        private static void OnImgSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
+        private static void OnImgSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs evt) {
             var x = o.GetValue(ImgSourceProperty) as ImageSource;
             try {
                 //Handle

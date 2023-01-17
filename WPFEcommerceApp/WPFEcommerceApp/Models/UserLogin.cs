@@ -19,6 +19,7 @@ namespace WPFEcommerceApp.Models
         public string Username { get; set; }
         public Nullable<int> Provider { get; set; }
         public string Salt { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
     
         public virtual MUser MUser { get; set; }
     }

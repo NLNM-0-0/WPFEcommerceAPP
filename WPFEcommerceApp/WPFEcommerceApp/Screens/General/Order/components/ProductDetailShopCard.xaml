@@ -3,6 +3,7 @@
                     xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
                     xmlns:fa= "http://schemas.fontawesome.io/icons/"
                     xmlns:vm="clr-namespace:WPFEcommerceApp"
+                    xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
                     xmlns:it="http://schemas.microsoft.com/xaml/behaviors"
                     x:Class="WPFEcommerceApp.ProductDetailShopCard"
                     xmlns:materialDesign = "http://materialdesigninxaml.net/winfx/xaml/themes">
@@ -36,6 +37,7 @@
     </Style>
 
     <vm:MultiValueConverter x:Key="MultiValueConverter"/>
+    <vm:DescriptionConverter x:Key="DescriptionConverter"/>
 
     <DataTemplate x:Key="ProductCard" DataType="{x:Type vm:Product}">
         <Button Width="{i:Binding ElementName=prdContainer, Path=ActualWidth-10}"
@@ -53,8 +55,8 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
@@ -64,7 +66,7 @@
                     </Grid>
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center"
-                                Margin="15 0 0 0">
+                                Margin="15 0 0 0" x:Name="OtherDetailCtn">
                         <TextBlock Text="{Binding Name}" FontSize="19" TextWrapping="Wrap"
                                Margin="5 0 0 0"/>
                         <StackPanel Orientation="Horizontal" Margin="5, 9, 0, 0">
@@ -75,9 +77,16 @@
                             <TextBlock Text="Color: " FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
                             <TextBlock Text="{Binding Color}" FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
                         </StackPanel>
+
                         <StackPanel Orientation="Horizontal" Margin="5, 5, 0, 0">
                             <TextBlock Text="Other Detail: " FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
-                            <TextBlock Text="{Binding Description}" FontSize="13" Foreground="{StaticResource BlackColorBrush}"/>
+                            <TextBlock Text="{Binding Description, Converter={StaticResource DescriptionConverter}}"
+                                       FontSize="13" 
+                                       MaxHeight="60"
+                                       MaxWidth="{c:Binding ElementName=OtherDetailCtn, Path=ActualWidth-150}"
+                                       Foreground="{StaticResource BlackColorBrush}"
+                                       TextTrimming="CharacterEllipsis"
+                                       TextWrapping="WrapWithOverflow"/>
                         </StackPanel>
                     </StackPanel>
 

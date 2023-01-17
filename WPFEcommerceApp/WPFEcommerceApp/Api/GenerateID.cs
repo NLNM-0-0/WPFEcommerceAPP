@@ -49,6 +49,14 @@ namespace WPFEcommerceApp {
                     res = context.Database.SqlQuery<int>(sql).Single();
                 }
             });
+
+            #region Fake ID
+            //string id = type.Name.Substring(0, 4);
+            //id = id + (res + 50).ToString();
+            //50 thay bằng các số bắt đầu của mỗi người
+            #endregion
+
+            #region Real ID
             bool check = false;
             string id = "";
             while(!check) {
@@ -70,6 +78,7 @@ namespace WPFEcommerceApp {
                 });
                 if(!check) res = (long)(res * 1.5);
             }
+            #endregion
 
             return id;
         }

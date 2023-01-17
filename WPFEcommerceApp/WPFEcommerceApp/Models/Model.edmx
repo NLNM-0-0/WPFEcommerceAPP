@@ -138,6 +138,7 @@
           <Property Name="IdSender" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Date" Type="smalldatetime" Nullable="false" />
           <Property Name="Content" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="HaveSeen" Type="bit" />
         </EntityType>
         <EntityType Name="OrderInfo">
           <Key>
@@ -183,7 +184,7 @@
           </Key>
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="Code" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
           <Property Name="DateBegin" Type="smalldatetime" />
@@ -219,7 +220,7 @@
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="DateRating" Type="smalldatetime" />
           <Property Name="Rating" Type="int" />
-          <Property Name="Comment" Type="varchar" MaxLength="500" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="RatingInfo">
           <Key>
@@ -245,12 +246,13 @@
             <PropertyRef Name="IdUser" />
           </Key>
           <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
           <Property Name="Password" Type="varchar" MaxLength="100" />
-          <Property Name="Username" Type="varchar" MaxLength="100" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" />
           <Property Name="Salt" Type="varchar" MaxLength="100" />
           <Property Name="Provider" Type="int" />
         </EntityType>
-        <Association Name="FK__AdInUse__Id__5535A963">
+        <Association Name="FK__AdInUse__Id__5812160E">
           <End Role="Advertisement" Type="Self.Advertisement" Multiplicity="1" />
           <End Role="AdInUse" Type="Self.AdInUse" Multiplicity="*" />
           <ReferentialConstraint>
@@ -262,7 +264,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cart__IdProduct__440B1D61">
+        <Association Name="FK__Cart__IdProduct__46E78A0C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -274,7 +276,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cart__IdUser__4316F928">
+        <Association Name="FK__Cart__IdUser__45F365D3">
           <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -286,7 +288,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__70DDC3D8">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Role="MUser" Type="Self.MUser" Multiplicity="0..1" />
           <End Role="ShopRequest" Type="Self.ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -621,19 +623,19 @@
           <EntitySet Name="RatingInfo" EntityType="Self.RatingInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopRequest" EntityType="Self.ShopRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AdInUse__Id__5535A963" Association="Self.FK__AdInUse__Id__5535A963">
+          <AssociationSet Name="FK__AdInUse__Id__5812160E" Association="Self.FK__AdInUse__Id__5812160E">
             <End Role="Advertisement" EntitySet="Advertisement" />
             <End Role="AdInUse" EntitySet="AdInUse" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cart__IdProduct__440B1D61" Association="Self.FK__Cart__IdProduct__440B1D61">
+          <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="Self.FK__Cart__IdProduct__46E78A0C">
             <End Role="Product" EntitySet="Product" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cart__IdUser__4316F928" Association="Self.FK__Cart__IdUser__4316F928">
+          <AssociationSet Name="FK__Cart__IdUser__45F365D3" Association="Self.FK__Cart__IdUser__45F365D3">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__70DDC3D8" Association="Self.FK__ShopReque__IdUse__70DDC3D8">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="Self.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUser" />
             <End Role="ShopRequest" EntitySet="ShopRequest" />
           </AssociationSet>
@@ -767,7 +769,7 @@
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Address" EntitySet="Addresses" />
           </AssociationSet>
-          <AssociationSet Name="FK__AdInUse__Id__5535A963" Association="EcommerceAppModel.FK__AdInUse__Id__5535A963">
+          <AssociationSet Name="FK__AdInUse__Id__5812160E" Association="EcommerceAppModel.FK__AdInUse__Id__5812160E">
             <End Role="Advertisement" EntitySet="Advertisements" />
             <End Role="AdInUse" EntitySet="AdInUses" />
           </AssociationSet>
@@ -779,11 +781,11 @@
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="BrandRequest" EntitySet="BrandRequests" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cart__IdProduct__440B1D61" Association="EcommerceAppModel.FK__Cart__IdProduct__440B1D61">
+          <AssociationSet Name="FK__Cart__IdProduct__46E78A0C" Association="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C">
             <End Role="Product" EntitySet="Products" />
             <End Role="Cart" EntitySet="Carts" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cart__IdUser__4316F928" Association="EcommerceAppModel.FK__Cart__IdUser__4316F928">
+          <AssociationSet Name="FK__Cart__IdUser__45F365D3" Association="EcommerceAppModel.FK__Cart__IdUser__45F365D3">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Cart" EntitySet="Carts" />
           </AssociationSet>
@@ -815,7 +817,7 @@
             <End Role="MOrder" EntitySet="MOrders" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ShopReque__IdUse__70DDC3D8" Association="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8">
+          <AssociationSet Name="FK__ShopReque__IdUse__73BA3083" Association="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="ShopRequest" EntitySet="ShopRequests" />
           </AssociationSet>
@@ -882,8 +884,8 @@
           <Property Name="IdProduct" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Amount" Type="Int32" />
           <Property Name="Size" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK__Cart__IdProduct__440B1D61" FromRole="Cart" ToRole="Product" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__Cart__IdUser__4316F928" FromRole="Cart" ToRole="MUser" />
+          <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" FromRole="Cart" ToRole="Product" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="Cart" ToRole="MUser" />
           </EntityType>
         <EntityType Name="UserLogin">
           <Key>
@@ -891,9 +893,10 @@
           </Key>
           <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Provider" Type="Int32" />
           <Property Name="Salt" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_MUser_Id" FromRole="UserLogin" ToRole="MUser" />
         </EntityType>
         <EntityType Name="Address">
@@ -916,7 +919,7 @@
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Position" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Advertisement" Relationship="EcommerceAppModel.FK__AdInUse__Id__5535A963" FromRole="AdInUse" ToRole="Advertisement" />
+          <NavigationProperty Name="Advertisement" Relationship="EcommerceAppModel.FK__AdInUse__Id__5812160E" FromRole="AdInUse" ToRole="Advertisement" />
         </EntityType>
         <EntityType Name="Advertisement">
           <Key>
@@ -924,7 +927,7 @@
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Image" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AdInUses" Relationship="EcommerceAppModel.FK__AdInUse__Id__5535A963" FromRole="Advertisement" ToRole="AdInUse" />
+          <NavigationProperty Name="AdInUses" Relationship="EcommerceAppModel.FK__AdInUse__Id__5812160E" FromRole="Advertisement" ToRole="AdInUse" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -1014,11 +1017,11 @@
           <Property Name="DefaultAddress" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Addresses" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="MUser" ToRole="Address" />
           <NavigationProperty Name="BrandRequests" Relationship="EcommerceAppModel.FK_BrandRequest_Shop" FromRole="MUser" ToRole="BrandRequest" />
-          <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdUser__4316F928" FromRole="MUser" ToRole="Cart" />
+          <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdUser__45F365D3" FromRole="MUser" ToRole="Cart" />
           <NavigationProperty Name="CategoryRequests" Relationship="EcommerceAppModel.FK_CategoryRequest_Shop" FromRole="MUser" ToRole="CategoryRequest" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_MUser" FromRole="MUser" ToRole="MOrder" />
           <NavigationProperty Name="MOrders1" Relationship="EcommerceAppModel.FK_MOrder_Shop" FromRole="MUser" ToRole="MOrder" />
-          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" FromRole="MUser" ToRole="ShopRequest" />
+          <NavigationProperty Name="ShopRequests" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="MUser" ToRole="ShopRequest" />
           <NavigationProperty Name="UserLogin" Relationship="EcommerceAppModel.FK_MUser_Id" FromRole="MUser" ToRole="UserLogin" />
           <NavigationProperty Name="Notifications" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
@@ -1037,6 +1040,7 @@
           <Property Name="IdSender" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="HaveSeen" Type="Boolean" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Notification_UserReceiver" FromRole="Notification" ToRole="MUser" />
           <NavigationProperty Name="MUser1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="Notification" ToRole="MUser" />
         </EntityType>
@@ -1081,7 +1085,7 @@
           <Property Name="DateOfSale" Type="DateTime" Precision="0" />
           <Property Name="BanLevel" Type="Int32" />
           <NavigationProperty Name="Brand" Relationship="EcommerceAppModel.FK_Product_Brand" FromRole="Product" ToRole="Brand" />
-          <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdProduct__440B1D61" FromRole="Product" ToRole="Cart" />
+          <NavigationProperty Name="Carts" Relationship="EcommerceAppModel.FK__Cart__IdProduct__46E78A0C" FromRole="Product" ToRole="Cart" />
           <NavigationProperty Name="Category" Relationship="EcommerceAppModel.FK_Product_Category" FromRole="Product" ToRole="Category" />
           <NavigationProperty Name="ImageProducts" Relationship="EcommerceAppModel.FK_IP_Product" FromRole="Product" ToRole="ImageProduct" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="Product" ToRole="MUser" />
@@ -1095,7 +1099,7 @@
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
@@ -1129,7 +1133,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="DateRating" Type="DateTime" Precision="0" />
           <Property Name="Rating1" Type="Int32" />
-          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OrderInfoes" Relationship="EcommerceAppModel.FK_MOrder_Rating" FromRole="Rating" ToRole="OrderInfo" />
           <NavigationProperty Name="RatingInfoes" Relationship="EcommerceAppModel.FK_RatingInfo_IdRating" FromRole="Rating" ToRole="RatingInfo" />
         </EntityType>
@@ -1153,7 +1157,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdUser" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__70DDC3D8" FromRole="ShopRequest" ToRole="MUser" />
+          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK__ShopReque__IdUse__73BA3083" FromRole="ShopRequest" ToRole="MUser" />
         </EntityType>
         <Association Name="FK_Address_IdUser">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
@@ -1167,7 +1171,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AdInUse__Id__5535A963">
+        <Association Name="FK__AdInUse__Id__5812160E">
           <End Type="EcommerceAppModel.Advertisement" Role="Advertisement" Multiplicity="1" />
           <End Type="EcommerceAppModel.AdInUse" Role="AdInUse" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1203,7 +1207,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cart__IdProduct__440B1D61">
+        <Association Name="FK__Cart__IdProduct__46E78A0C">
           <End Type="EcommerceAppModel.Product" Role="Product" Multiplicity="1" />
           <End Type="EcommerceAppModel.Cart" Role="Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1215,7 +1219,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cart__IdUser__4316F928">
+        <Association Name="FK__Cart__IdUser__45F365D3">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
           <End Type="EcommerceAppModel.Cart" Role="Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1311,7 +1315,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ShopReque__IdUse__70DDC3D8">
+        <Association Name="FK__ShopReque__IdUse__73BA3083">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="0..1" />
           <End Type="EcommerceAppModel.ShopRequest" Role="ShopRequest" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1482,6 +1486,7 @@
           <EntitySetMapping Name="UserLogins">
             <EntityTypeMapping TypeName="EcommerceAppModel.UserLogin">
               <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="Provider" ColumnName="Provider" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
@@ -1605,6 +1610,7 @@
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="EcommerceAppModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="HaveSeen" ColumnName="HaveSeen" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="IdSender" ColumnName="IdSender" />
