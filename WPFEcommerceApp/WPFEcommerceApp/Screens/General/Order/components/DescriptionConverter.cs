@@ -11,7 +11,8 @@ namespace WPFEcommerceApp {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             string description = (string)value;
             description = description.Trim();
-            description = description.Substring(0, 196);
+            if(description.Length > 195)
+                description = description.Substring(0, 196);
             description += "...";
             return description;
         }

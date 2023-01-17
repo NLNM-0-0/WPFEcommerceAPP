@@ -14,10 +14,10 @@ namespace WPFEcommerceApp {
             if(nav.Count < 2) {
                 return false;
             }
-            nav.RemoveAt(nav.Count - 1);
-            var t = nav[nav.Count - 1];
+            var t = nav[nav.Count - 2];
             if(t.Item2 == null) t.Item1.Navigate();
             else t.Item1.Navigate(t.Item2);
+            nav.RemoveAt(nav.Count - 1);
             nav.RemoveAt(nav.Count - 1);
             return true;
         }

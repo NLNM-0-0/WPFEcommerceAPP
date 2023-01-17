@@ -1336,7 +1336,6 @@
     <Resource Include="Assets\Icon\Home.png" />
     <Resource Include="Assets\Images\Offline.png" />
     <Resource Include="Assets\Images\NoImage.jpg" />
-    <Content Include="DTO\SQL.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
