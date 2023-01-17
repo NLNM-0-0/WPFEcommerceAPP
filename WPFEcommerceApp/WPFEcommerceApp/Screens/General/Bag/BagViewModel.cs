@@ -121,109 +121,133 @@ namespace WPFEcommerceApp
 
         public BagViewModel()
         {
-            CartRepo = new GenericDataRepository<Models.Cart>();
-            Bags = new ObservableCollection<BagBlock>();
-            Task task = Task.Run(async () => await Load());
-            DelCommand = new RelayCommand<object>((p) =>
+            IsLoadingCheck.IsLoading = 2;
+            Task.Run(async () =>
             {
-                foreach (BagBlock bag in Bags)
+                CartRepo = new GenericDataRepository<Models.Cart>();
+                Bags = new ObservableCollection<BagBlock>();
+                Plusamount = new RelayCommand<object>((p) => { return p != null; }, (p) =>
                 {
-                    if (bag.IsChecked == true)
-                        return true;
-                }
-                return false;
-            }, (p) =>
-            {
-                try
+                    BagBlock bagBlock = p as BagBlock;
+                    bagBlock.Amount += 1;
+                    OnPropertyChanged(nameof(Total));
+                });
+                Tamount = new RelayCommand<object>((p) =>
                 {
-                    for (int i = 0; i < Bags.Count(); i++)
+                    BagBlock bagBlock = p as BagBlock;
+                    return bagBlock != null && bagBlock.Amount >= 2;
+                }, (p) =>
+                {
+                    BagBlock bagBlock = p as BagBlock;
+                    bagBlock.Amount -= 1;
+                    OnPropertyChanged(nameof(Total));
+                });
+                await Load();
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    lock (IsLoadingCheck.IsLoading as object)
                     {
-                        if (Bags[i].IsChecked == true)
+                        IsLoadingCheck.IsLoading--;
+                    }
+                }));
+            }).ContinueWith((first) =>
+            {
+                DelCommand = new RelayCommand<object>((p) =>
+                {
+                    foreach (BagBlock bag in Bags)
+                    {
+                        if (bag.IsChecked == true)
+                            return true;
+                    }
+                    return false;
+                }, (p) =>
+                {
+                    try
+                    {
+                        for (int i = 0; i < Bags.Count(); i++)
                         {
-                            Task.Run(async () => await RemoveBag(Bags[i].ID)).Wait();
-                            Bags.RemoveAt(i);
-                            NumberOfCheck--;
-                            i--;
+                            if (Bags[i].IsChecked == true)
+                            {
+                                Task.Run(async () => await RemoveBag(Bags[i].ID)).Wait();
+                                Bags.RemoveAt(i);
+                                NumberOfCheck--;
+                                i--;
+                            }
                         }
+                        OnPropertyChanged(nameof(Total));
+                        IsCheckedAll = false;
+                    }
+                    catch
+                    {
+
+                    }
+                });
+                BuyCommand = new RelayCommand<object>((p) =>
+                {
+                    foreach (BagBlock bag in Bags)
+                    {
+                        if (bag.IsChecked == true)
+                            return true;
+                    }
+                    return false;
+                }, async (p) =>
+                {
+                    Dictionary<string, Tuple<MUser, List<Product>>> prdList = new Dictionary<string, Tuple<MUser, List<Product>>>();
+
+                    foreach (BagBlock bag in Bags)
+                    {
+                        if (bag.IsChecked == false) continue;
+                        Product temp = new Product(bag.Product, bag.ProductSize, (int)bag.Amount);
+                        if (!prdList.ContainsKey(bag.Shop.Id))
+                        {
+                            prdList[bag.Shop.Id] = new Tuple<MUser, List<Product>>(bag.Shop, new List<Product>());
+                        }
+                        prdList[bag.Shop.Id].Item2.Add(temp);
+                    }
+
+                    List<Order> orderList = new List<Order>();
+
+                    var prdListConvert = prdList.Values.ToList();
+                    foreach (var list in prdListConvert)
+                    {
+                        var id = await GenerateID.Gen(typeof(MOrder));
+                        Order o = new Order(list.Item2)
+                        {
+                            ID = id,
+                            IDCustomer = AccountStore.instance.CurrentAccount.Id,
+                            IDShop = list.Item1.Id,
+                            Status = "Processing",
+                            ShipTotal = 0,
+                            DateBegin = DateTime.Now,
+                            ShopName = list.Item1.Name,
+                            ShopImage = list.Item1.SourceImageAva
+                        };
+                        orderList.Add(o);
+                    }
+                    DelCommand.Execute(null);
+                    NavigateProvider.CheckoutScreen().Navigate(orderList);
+                });
+                ClickCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+                {
+                    BagBlock bagBlock = p as BagBlock;
+                    bagBlock.IsChecked = !bagBlock.IsChecked;
+                    if (!bagBlock.IsChecked)
+                    {
+                        NumberOfCheck--;
+                    }
+                    else
+                    {
+                        NumberOfCheck++;
                     }
                     OnPropertyChanged(nameof(Total));
-                    IsCheckedAll = false;
-                }
-                catch
+                });
+                App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-
-                }
-            });
-            BuyCommand = new RelayCommand<object>((p) =>
-            {
-                foreach (BagBlock bag in Bags)
-                {
-                    if (bag.IsChecked == true)
-                        return true;
-                }
-                return false;
-            }, async (p) =>
-            {
-                Dictionary<string, Tuple<MUser,List<Product>>> prdList = new Dictionary<string, Tuple<MUser, List<Product>>>();
-
-                foreach(BagBlock bag in Bags) {
-                    if(bag.IsChecked == false) continue;
-                    Product temp = new Product(bag.Product, bag.ProductSize, (int) bag.Amount);
-                    if(!prdList.ContainsKey(bag.Shop.Id)) {
-                        prdList[bag.Shop.Id] = new Tuple<MUser, List<Product>>(bag.Shop, new List<Product>());
+                    lock (IsLoadingCheck.IsLoading as object)
+                    {
+                        IsLoadingCheck.IsLoading--;
                     }
-                    prdList[bag.Shop.Id].Item2.Add(temp);
-                }
-
-                List<Order> orderList = new List<Order>();
-
-                var prdListConvert = prdList.Values.ToList();
-                foreach(var list in prdListConvert) {
-                    var id = await GenerateID.Gen(typeof(MOrder));
-                    Order o = new Order(list.Item2) {
-                        ID = id,
-                        IDCustomer = AccountStore.instance.CurrentAccount.Id,
-                        IDShop = list.Item1.Id,
-                        Status = "Processing",
-                        ShipTotal = 0,
-                        DateBegin = DateTime.Now,
-                        ShopName = list.Item1.Name,
-                        ShopImage = list.Item1.SourceImageAva
-                    };
-                    orderList.Add(o);
-                }
-                DelCommand.Execute(null);
-                NavigateProvider.CheckoutScreen().Navigate(orderList);
-            });
-            Plusamount = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                BagBlock bagBlock = p as BagBlock;
-                bagBlock.Amount += 1;
-                OnPropertyChanged(nameof(Total));
-            });
-            Tamount = new RelayCommand<object>((p) =>
-            {
-                BagBlock bagBlock = p as BagBlock;
-                return bagBlock != null && bagBlock.Amount >= 2;
-            }, (p) =>
-            {
-                BagBlock bagBlock = p as BagBlock;
-                bagBlock.Amount -= 1;
-                OnPropertyChanged(nameof(Total));
-            });
-            ClickCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
-            {
-                BagBlock bagBlock = p as BagBlock;
-                bagBlock.IsChecked = !bagBlock.IsChecked;
-                if (!bagBlock.IsChecked)
-                {
-                    NumberOfCheck--;
-                }
-                else
-                {
-                    NumberOfCheck++;
-                }
-                OnPropertyChanged(nameof(Total));
+                }));
             });
         }
         private async Task RemoveBag(string idProduct)
