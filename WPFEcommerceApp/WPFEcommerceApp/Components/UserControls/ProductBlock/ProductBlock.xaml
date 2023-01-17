@@ -164,12 +164,12 @@
                     MaxWidth="{c:Binding (ActualWidth - 10 less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
                     MaxHeight="{c:Binding (ActualWidth - 10 less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
                     Grid.Row="0"
-                    Background="{StaticResource BackgroundColorBrush}">
+                    Background="{StaticResource WhiteColorBrush}">
                     <local:AsyncImage 
                         x:Name="ImageMainProduct"
                         MaxWidth="{c:Binding ((ActualWidth - 10) less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
                         MaxHeight="{c:Binding ((ActualWidth - 10) less 0)?0:(ActualWidth - 10), ElementName=productBlock}"
-                        Stretch="Fill"
+                        Stretch="UniformToFill"
                         Source="{Binding MainImage, UpdateSourceTrigger=PropertyChanged}"/>
 
                 </Border>
@@ -228,12 +228,12 @@
                                     BorderBrush="Transparent">
                                         <Button.Content>
                                             <local:AsyncImage
-                                            HorizontalAlignment="Center"
-                                            MaxHeight="40"
-                                            MaxWidth="40"
-                                            Stretch="Fill"
-                                            x:Name="MiniImageProductButton"
-                                            Source="{Binding}"/>
+                                                HorizontalAlignment="Center"
+                                                MaxHeight="40"
+                                                MaxWidth="40"
+                                                Stretch="Uniform"
+                                                x:Name="MiniImageProductButton"
+                                                Source="{Binding}"/>
                                         </Button.Content>
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="MouseMove">
@@ -316,7 +316,7 @@
                         FontSize="16"
                         FontWeight="DemiBold"
                         Foreground="{StaticResource NotAvailableColorBrush}"
-                        Visibility="{c:Binding 'SelectedProduct.Sale != 100'}"
+                        Visibility="{c:Binding 'SelectedProduct.Sale != 0'}"
                         Margin="0 0 10 0"/>
                     <TextBlock 
                         Text="{c:Binding '(100 - SelectedProduct.Sale) * SelectedProduct.Price / 100'}"
