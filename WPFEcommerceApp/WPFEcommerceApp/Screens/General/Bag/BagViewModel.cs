@@ -102,8 +102,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged(nameof(Total));
             }
         }
-        private long total;
-        public long Total
+        private double total;
+        public double Total
         {
             get
             {

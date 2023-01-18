@@ -305,17 +305,17 @@ namespace WPFEcommerceApp
                 });
                 SearchProductCommand = new RelayCommandWithNoParameter(async () =>
                 {
-                    long maxPrice = long.MaxValue;
-                    long minPrice = 0;
+                    double maxPrice = double.MaxValue;
+                    double minPrice = 0;
                     int maxInStock = int.MaxValue;
                     int minInStock = 0;
                     if (!String.IsNullOrEmpty(MaxPriceSearch))
                     {
-                        long.TryParse(MaxPriceSearch, out maxPrice);
+                        double.TryParse(MaxPriceSearch, out maxPrice);
                     }
                     if (!String.IsNullOrEmpty(MinPriceSearch))
                     {
-                        long.TryParse(MinPriceSearch, out minPrice);
+                        double.TryParse(MinPriceSearch, out minPrice);
                     }
                     if (!String.IsNullOrEmpty(MaxInStockSearch))
                     {
@@ -462,17 +462,17 @@ namespace WPFEcommerceApp
         }
         private void LoadOutOfStockProduct()
         {
-            long maxPrice = long.MaxValue;
-            long minPrice = 0;
+            double maxPrice = double.MaxValue;
+            double minPrice = 0;
             int maxInStock = int.MaxValue;
             int minInStock = 0;
             if (!String.IsNullOrEmpty(MaxPriceSearch))
             {
-                long.TryParse(MaxPriceSearch, out maxPrice);
+                double.TryParse(MaxPriceSearch, out maxPrice);
             }
             if (!String.IsNullOrEmpty(MinPriceSearch))
             {
-                long.TryParse(MinPriceSearch, out minPrice);
+                double.TryParse(MinPriceSearch, out minPrice);
             }
             if (!String.IsNullOrEmpty(MaxInStockSearch))
             {
@@ -499,17 +499,17 @@ namespace WPFEcommerceApp
         }
         private void LoadOnSaleProduct()
         {
-            long maxPrice = long.MaxValue;
-            long minPrice = 0;
+            double maxPrice = double.MaxValue;
+            double minPrice = 0;
             int maxInStock = int.MaxValue;
             int minInStock = 0;
             if (!String.IsNullOrEmpty(MaxPriceSearch))
             {
-                long.TryParse(MaxPriceSearch, out maxPrice);
+                double.TryParse(MaxPriceSearch, out maxPrice);
             }
             if (!String.IsNullOrEmpty(MinPriceSearch))
             {
-                long.TryParse(MinPriceSearch, out minPrice);
+                double.TryParse(MinPriceSearch, out minPrice);
             }
             if (!String.IsNullOrEmpty(MaxInStockSearch))
             {
@@ -531,17 +531,17 @@ namespace WPFEcommerceApp
         }
         private void LoadAllProduct()
         {
-            long maxPrice = long.MaxValue;
-            long minPrice = 0;
+            double maxPrice = double.MaxValue;
+            double minPrice = 0;
             int maxInStock = int.MaxValue;
             int minInStock = 0;
             if (!String.IsNullOrEmpty(MaxPriceSearch))
             {
-                long.TryParse(MaxPriceSearch, out maxPrice);
+                double.TryParse(MaxPriceSearch, out maxPrice);
             }
             if (!String.IsNullOrEmpty(MinPriceSearch))
             {
-                long.TryParse(MinPriceSearch, out minPrice);
+                double.TryParse(MinPriceSearch, out minPrice);
             }
             if (!String.IsNullOrEmpty(MaxInStockSearch))
             {
@@ -563,17 +563,17 @@ namespace WPFEcommerceApp
         }
         private void LoadBannedProduct()
         {
-            long maxPrice = long.MaxValue;
-            long minPrice = 0;
+            double maxPrice = double.MaxValue;
+            double minPrice = 0;
             int maxInStock = int.MaxValue;
             int minInStock = 0;
             if (!String.IsNullOrEmpty(MaxPriceSearch))
             {
-                long.TryParse(MaxPriceSearch, out maxPrice);
+                double.TryParse(MaxPriceSearch, out maxPrice);
             }
             if (!String.IsNullOrEmpty(MinPriceSearch))
             {
-                long.TryParse(MinPriceSearch, out minPrice);
+                double.TryParse(MinPriceSearch, out minPrice);
             }
             if (!String.IsNullOrEmpty(MaxInStockSearch))
             {

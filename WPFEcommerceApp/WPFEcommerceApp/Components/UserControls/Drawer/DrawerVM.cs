@@ -284,7 +284,7 @@ namespace WPFEcommerceApp {
                     new ButtonItem("Heart", "Favourite"),
                     new ButtonItem("Store", "Shop"),
                     new ButtonItem("AccountCircle", "My profile"),
-                    new ButtonItem("Cog", "Settings"),
+                    //new ButtonItem("Cog", "Settings"),
                 };
         }
     }

@@ -81,6 +81,7 @@ namespace WPFEcommerceApp {
                             OnPropertyChanged(nameof(Password));
                             OnPropertyChanged(nameof(Email));
                         }),
+                        Gender = false
                     }
                 };
                 DialogHost.Show(register, "Login");
@@ -252,7 +253,7 @@ namespace WPFEcommerceApp {
                 x => x.Username == Email,
                 x => x.MUser);
 
-            if(acc != null) {
+            if(acc != null && acc.Provider != 1) {
                 var encode = new Hashing().Encrypt(acc.Salt, Password);
                 if(acc.Password != encode) acc = null;
             }

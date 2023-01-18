@@ -367,7 +367,7 @@
                                                 <material:PackIcon Kind="AlertCircleOutline"
                                                                    Foreground="{StaticResource ErrorColorBrush}"
                                                                    VerticalAlignment="Center"/>
-                                                <TextBlock Text="No voucher found"
+                                                <TextBlock Text="{Binding VoucherErrorMessage}"
                                                            Margin="15 0"
                                                            VerticalAlignment="Center"
                                                            Foreground="{StaticResource ErrorColorBrush}"

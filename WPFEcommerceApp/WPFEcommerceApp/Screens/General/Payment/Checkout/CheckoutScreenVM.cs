@@ -91,13 +91,16 @@ namespace WPFEcommerceApp {
         public string VoucherCode {
             get => _vouchercode; set {
                 _vouchercode = value;
-                if(IsVoucherError)
+                if(IsVoucherError) {
                     IsVoucherError = false;
+                    VoucherErrorMessage = "No voucher found";
+                }
             }
         }
         public bool IsVoucherError { get; set; }
         public int LeftColumnChoice { get; set; }
         public int LeftState { get; set; }
+        public string VoucherErrorMessage { get; set; } = "No voucher found";
 
         #endregion
         #region command
@@ -174,6 +177,10 @@ namespace WPFEcommerceApp {
                 }
                 foreach(var order in orders) {
                     order.Promo = PromoChoosen?.Id;
+                    order.Discount = Discount;
+                    order.ShipTotal = ShipTotal;
+                    order.OrderTotal = TotalPayment;
+                    order.SubTotal = SubTotal;
                     order.AddressIndex = address.Id;
                 }
                 PaymentAlertDialog(orders);
@@ -270,6 +277,11 @@ namespace WPFEcommerceApp {
                 bool flag = false;
                 foreach(var o in ListVoucher) {
                     if(o.Code == (p as string).ToUpper()) {
+                        if(!ValidVoucherList.ContainsKey(o.Code)) {
+                            flag = false;
+                            VoucherErrorMessage = "Not meet conditions";
+                            break;
+                        }
                         PromoChoosen = o;
                         flag = true;
                         break;
@@ -279,6 +291,7 @@ namespace WPFEcommerceApp {
             });
             OnCloseErrorAlert = new ImmediateCommand<object>(p => {
                 IsVoucherError = false;
+                VoucherErrorMessage = "No voucher found";
             });
             CheckVoucher = new ImmediateCommand<object>(p => {
                 if(PromoChoosen == null) {
@@ -306,7 +319,7 @@ namespace WPFEcommerceApp {
             MainViewModel.IsLoading = true;
 
 
-            var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id);
+            var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id && d.Status == true);
             foreach(var o in list) {
                 ListAddress.Add(o.Id, o);
             }

@@ -15,7 +15,8 @@ namespace WPFEcommerceApp {
             var str = value;
             if(str == null || 
                 str.Length == 0 || 
-                str.Length < 5 ||
+                str.Length < 5 || 
+                str.Length > 15 ||
                 !ValidateRegex.Phone.IsMatch(str)) {
                 return false;
             }
@@ -32,7 +33,7 @@ namespace WPFEcommerceApp {
                     return new ValidationResult(true, null);
                 }
             }
-            if(str.Length < 5) {
+            if(str.Length < 5 || str.Length > 15) {
                 return new ValidationResult(false, "Phone number is in the wrong format!");
             }
 

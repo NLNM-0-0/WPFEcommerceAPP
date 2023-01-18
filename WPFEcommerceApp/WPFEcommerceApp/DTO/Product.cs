@@ -21,7 +21,7 @@ namespace WPFEcommerceApp {
             Size=size;
             Color=color;
             Description=description;
-            Price=(long)price;
+            Price= price;
             Amount=amount;
             Subtotal=amount * price;
             ID=iD;
@@ -35,7 +35,7 @@ namespace WPFEcommerceApp {
             Size=size;
             Color = p.Color;
             Description=p.Description;
-            Price=(long)p.Price;
+            Price= p.Price;
             Amount=amount;
             Subtotal = Price*amount;
             ID=p.Id;

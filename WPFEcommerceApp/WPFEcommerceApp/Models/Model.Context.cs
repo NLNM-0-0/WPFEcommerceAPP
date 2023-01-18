@@ -41,7 +41,6 @@ namespace WPFEcommerceApp.Models
         public virtual DbSet<OrderInfo> OrderInfoes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Promo> Promoes { get; set; }
-        public virtual DbSet<PromoRequest> PromoRequests { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<RatingInfo> RatingInfoes { get; set; }
         public virtual DbSet<ShopRequest> ShopRequests { get; set; }

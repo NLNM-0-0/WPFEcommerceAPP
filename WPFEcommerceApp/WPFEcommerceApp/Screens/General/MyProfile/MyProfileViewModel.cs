@@ -300,6 +300,9 @@ namespace WPFEcommerceApp
                     return;
                 }
             }
+            else {
+                await AccountStore.instance.Update(user);
+            }
             await Load();
             MainViewModel.IsLoading = false;
 

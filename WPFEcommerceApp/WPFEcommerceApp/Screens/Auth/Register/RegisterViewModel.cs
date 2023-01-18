@@ -86,7 +86,8 @@ namespace WPFEcommerceApp {
             try { Password = password; } catch { }
             isCreated = id != null;
             if(isCreated) ID = id;
-            
+
+            Gender = false;
 
             Regist = new RelayCommand<object>((p) => {
                 if(isCreated) {

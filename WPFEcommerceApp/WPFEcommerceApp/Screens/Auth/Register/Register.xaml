@@ -236,14 +236,14 @@
                         Margin="30,20,30,0"
                         Content="Male"
                         Width="auto"
-                        IsChecked="{Binding Gender, Converter={StaticResource InvertBooleanConverter}}"
+                        IsChecked="True"
                         HorizontalAlignment="Stretch"/>
                     <RadioButton
                         GroupName="Gender"
                         Grid.Column="1"
                         Style="{StaticResource RadioButtonGender}"
                         Margin="30,20,30,0"
-                        IsChecked="{Binding Gender}"
+                        IsChecked="{Binding ElementName=Regist, Path=DataContext.Gender}"
                         Content="Female" />
                 </Grid>
                 

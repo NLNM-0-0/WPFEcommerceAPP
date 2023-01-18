@@ -222,10 +222,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBox
-                    Text="{Binding ElementName=VoucherDialog, Path=Data.Amount}"
+                    Text="{c:Binding '(Data.Amount less 0 ? &quot;Unlimited&quot; : (Data.Amount-Data.AmountUsed).ToString())', ElementName=VoucherDialog}"
                         x:Name="amountTextBox"
                         Grid.Column="0"
-                        materialDesign:HintAssist.Hint="Amount"
+                        materialDesign:HintAssist.Hint="Remaining"
                         Width="auto"
                         VerticalAlignment="Center"
                         IsReadOnly="True">
@@ -237,7 +237,7 @@
                         materialDesign:HintAssist.Hint="Sale"
                         Width="auto"
                         VerticalAlignment="Center"
-                        materialDesign:TextFieldAssist.SuffixText="%"
+                        materialDesign:TextFieldAssist.SuffixText=" %"
                         IsReadOnly="True">
                 </TextBox>
                 <TextBox
@@ -247,7 +247,7 @@
                     materialDesign:HintAssist.Hint="Min Cost"
                     Width="auto"
                     VerticalAlignment="Center"
-                    materialDesign:TextFieldAssist.SuffixText="VND"
+                    materialDesign:TextFieldAssist.SuffixText=" USD"
                     IsReadOnly="True">
                 </TextBox>
                 <TextBox
@@ -258,7 +258,7 @@
                         Width="auto"
                         VerticalAlignment="Center"
                         Visibility="Visible"
-                        materialDesign:TextFieldAssist.SuffixText="VND"
+                        materialDesign:TextFieldAssist.SuffixText=" USD"
                         IsReadOnly="True">
                 </TextBox>
             </Grid>

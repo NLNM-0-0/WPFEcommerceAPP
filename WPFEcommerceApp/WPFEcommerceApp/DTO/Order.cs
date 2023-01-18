@@ -27,6 +27,10 @@ namespace WPFEcommerceApp {
             }
         }
 
+        public Order() {
+
+        }
+
         public Order(Order o) {
             ID = o.ID;
             Status = o.Status;
