@@ -125,7 +125,7 @@ namespace WPFEcommerceApp
                     && ord.DateBegin.Value.Date <= toDate
                     || (ord.DateEnd != null && (ord.DateEnd.Value.Date >= fromDate && ord.DateEnd.Value.Date <= toDate)))));
 
-            long totalSale = 0;
+            double totalSale = 0;
             foreach (var ord in orders)
             {
                 if (ord.Status == OrderStatus.Completed.ToString() || ord.Status == OrderStatus.Delivered.ToString())
@@ -148,7 +148,7 @@ namespace WPFEcommerceApp
             var labels = new List<string>();
             var dayList = new List<DateTime>();
 
-            var revenueList = new List<long>();
+            var revenueList = new List<double>();
 
 
             for (int i = 0; ; i++)
@@ -162,7 +162,7 @@ namespace WPFEcommerceApp
 
             foreach (var day in dayList)
             {
-                long temp = 0;
+                double temp = 0;
                 foreach (var ord in orders)
                 {
                     if (ord.DateEnd == null)
@@ -183,7 +183,7 @@ namespace WPFEcommerceApp
                 new LineSeries
                 {
                     Title="Revenue",
-                    Values=new ChartValues<long>(revenueList),
+                    Values=new ChartValues<double>(revenueList),
                     PointGeometrySize=0,
                 },
             };

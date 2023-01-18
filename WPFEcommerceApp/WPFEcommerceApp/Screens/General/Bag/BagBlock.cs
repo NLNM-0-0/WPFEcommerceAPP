@@ -67,8 +67,8 @@ namespace WPFEcommerceApp
             }
         }
 
-        private long unitPrice;
-        public long UnitPrice
+        private double unitPrice;
+        public double UnitPrice
         {
             get => unitPrice;
             set
@@ -87,8 +87,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private long price;
-        public long Price
+        private double price;
+        public double Price
         {
             get => price;
             set

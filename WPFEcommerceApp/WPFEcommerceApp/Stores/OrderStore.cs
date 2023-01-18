@@ -97,10 +97,18 @@ namespace WPFEcommerceApp {
             for(int i = 0; i < mOrders.Count; i++) {
                 var order = await orderRepo.GetSingleAsync(d => d.Id == mOrders[i].Id, d => d.MUser1);
                 var t = order.ShippingSpeedMethod;
-                Order ordertemp = new Order(listOrderProduct[i]) {
+                double subtotal = 0;
+                foreach(var prd in listOrderProduct[i]) {
+                    subtotal += prd.Subtotal;
+                }
+                Order ordertemp = new Order() {
+                    SubTotal = subtotal,
+                    OrderTotal = order.OrderTotal,
+                    Discount = order.Discounted != null ? (double)order.Discounted : 0,
                     ID = order.Id,
                     IDCustomer = order.IdCustomer,
                     IDShop = order.IdShop,
+                    ProductList = listOrderProduct[i],
                     Status =order.Status,
                     ShipTotal = (double)order.ShipTotal,
                     DateBegin = (DateTime)order.DateBegin,
@@ -122,13 +130,13 @@ namespace WPFEcommerceApp {
             temp.Id = p.ID;
             temp.IdCustomer = p.IDCustomer;
             temp.IdShop = p.IDShop;
-            temp.ShipTotal = (int)p.ShipTotal;
+            temp.ShipTotal = p.ShipTotal;
             temp.Discounted = p.Discount;
             temp.DateBegin = p.DateBegin;
             temp.DateEnd = p.DateEnd;
             temp.Promo = p.Promo;
             temp.AddressIndex = p.AddressIndex;
-            temp.OrderTotal = (int)p.OrderTotal;
+            temp.OrderTotal = p.OrderTotal;
             temp.Status = p.Status;
             temp.ShippingSpeedMethod = p.ShippingSpeedMethod;
             return temp;
@@ -144,7 +152,7 @@ namespace WPFEcommerceApp {
                     ImageProduct = products[i].ProductImage,
                     Size = products[i].Size,
                     Count = products[i].Amount,
-                    TotalPrice = (int)p.OrderTotal
+                    TotalPrice = products[i].Subtotal,
                 };
                 if(type == "Add")
                     await orderInfoRepo.Add(orderInfo);
@@ -185,10 +193,10 @@ namespace WPFEcommerceApp {
             var temp = await orderRepo.GetSingleAsync(d => d.Id == p.ID);
             temp.IdCustomer = p.IDCustomer;
             temp.IdShop = p.IDShop;
-            temp.ShipTotal = (int)p.ShipTotal;
+            temp.ShipTotal = p.ShipTotal;
             temp.DateBegin = p.DateBegin;
             temp.DateEnd = p.DateEnd;
-            temp.OrderTotal = (int)p.OrderTotal;
+            temp.OrderTotal = p.OrderTotal;
             temp.Status = p.Status;
             temp.ShippingSpeedMethod = p.ShippingSpeedMethod;
             await orderRepo.Update(temp);

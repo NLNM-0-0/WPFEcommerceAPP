@@ -625,7 +625,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Image
-                                Source="..\..\..\Assets\Images\MagicBox.png"
+                                Source="..\..\..\..\Assets\Images\MagicBox.png"
                                 Height="150"/>
                             <TextBlock
                                 Grid.Row="2"

@@ -106,8 +106,16 @@ namespace WPFEcommerceApp {
                     await DialogHost.Show(view, "Main");
                     return;
                 }
-                else { 
-                    ReOrderCM.Execute(new List<Order>() { p as Order });
+                else {
+                    var rootOrder = p as Order;
+                    var tempOrder = new Order(rootOrder.ProductList) {
+                         DateBegin = DateTime.Now,
+                         IDCustomer = rootOrder.IDCustomer,
+                         IDShop = rootOrder.IDShop,
+                         ShopImage = rootOrder.ShopImage,
+                         ShopName = rootOrder.ShopName,
+                    };
+                    ReOrderCM.Execute(new List<Order>() { tempOrder });
                 }
             });
 

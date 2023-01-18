@@ -184,7 +184,7 @@ namespace WPFEcommerceApp
                 if (value)
                 {
                     MinPrice = 1000;
-                    MaxPrice = long.MaxValue;
+                    MaxPrice = double.MaxValue;
                     IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
@@ -208,8 +208,8 @@ namespace WPFEcommerceApp
             {
                 if (value)
                 {
-                    MinPrice = long.MinValue;
-                    MaxPrice = long.MaxValue;
+                    MinPrice = double.MinValue;
+                    MaxPrice = double.MaxValue;
                     IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
@@ -444,8 +444,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private long minPrice = long.MinValue;
-        public long MinPrice
+        private double minPrice = double.MinValue;
+        public double MinPrice
         {
             get => minPrice;
             set
@@ -454,8 +454,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private long maxPrice = long.MaxValue;
-        public long MaxPrice
+        private double maxPrice = double.MaxValue;
+        public double MaxPrice
         {
             get => maxPrice;
             set
