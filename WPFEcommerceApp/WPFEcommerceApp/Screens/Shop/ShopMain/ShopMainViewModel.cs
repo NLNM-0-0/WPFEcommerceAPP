@@ -31,6 +31,7 @@ namespace WPFEcommerceApp
         public ICommand MoveToAllProducts { get; set; }
         public ICommand ScrollChangedCommand { get; set; }
         public ICommand LoadedCommand { get; set; }
+        public ICommand OpenContactInfoCommand { get; set; }
         public string SourceImageBackground
         {
             get
@@ -318,6 +319,14 @@ namespace WPFEcommerceApp
                 {
                     ScrollViewer scrollViewer = p as ScrollViewer;
                     scrollViewer.ScrollToVerticalOffset(heightNewProducts + heightBestSellerProducts + heightBigDiscountProducts + 230);
+                });
+                OpenContactInfoCommand = new RelayCommandWithNoParameter(async () =>
+                {
+                    IsLoadingCheck.IsLoading++;
+                    ShopContact shopContact = new ShopContact();
+                    shopContact.DataContext = new ShopContactViewModel(Shop);
+                    IsLoadingCheck.IsLoading--;
+                    await DialogHost.Show(shopContact, "Main");
                 });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {

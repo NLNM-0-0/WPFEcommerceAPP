@@ -148,17 +148,15 @@ namespace WPFEcommerceApp
             });
             SaveProfileShopCommand = new RelayCommandWithNoParameter(async () =>
             {
-                var closeDialog = DialogHost.CloseDialogCommand;
-                closeDialog.Execute(null, null);
+                PreviousItem = MainViewModel.UpdateDialog("Main");
                 MainViewModel.IsLoading = true;
                 IsEditing = false;
                 await SaveImage();
                 Shop.Email = Shop.Email.Trim();
                 Shop.Name = Shop.Name.Trim();
                 Shop.Description = Shop.Description.Trim();
-                await AccountStore.instance.Update(Shop);
+                await UpdateShop();
                 await LoadTempData();
-                MainViewModel.IsLoading = false;
             });
             EditProfileShopCommand = new RelayCommandWithNoParameter(() =>
             {
@@ -198,6 +196,42 @@ namespace WPFEcommerceApp
         {
             Shop = await userRepository.GetSingleAsync(u => u.Id == AccountStore.instance.CurrentAccount.Id, 
                                                         u => u.UserLogin);
+        }
+        public async Task UpdateShop()
+        {
+            GenericDataRepository<Models.UserLogin> loginRepo = new GenericDataRepository<UserLogin>();
+            Models.UserLogin userlogin = await loginRepo.GetSingleAsync(l => l.IdUser == Shop.Id);
+            if (Shop.UserLogin.Username != Shop.Email)
+            {
+                var check = await loginRepo.GetSingleAsync(d => d.Username == Shop.Email);
+                if (check == null)
+                {
+                    await AccountStore.instance.Update(Shop);
+                    userlogin.Username = Shop.Email;
+                    AccountStore.instance.CurrentAccount.UserLogin = userlogin;
+                    await loginRepo.Update(userlogin);
+                    MainViewModel.IsLoading = false;
+                }
+                else
+                {
+                    var dl = new NotificationDialog()
+                    {
+                        ContentDialog = "This email is already exist, please try again!",
+                        Header = "Oops", 
+                        CloseCommand = new RelayCommandWithNoParameter(()=>
+                        {
+                            DialogHost.CloseDialogCommand.Execute(null, null);
+                            if (PreviousItem != null)
+                            {
+                                DialogHost.Show(PreviousItem, "Main");
+                            }
+                        })
+                    };
+                    MainViewModel.IsLoading = false;
+                    await DialogHost.Show(dl, "Main");
+                    return;
+                }
+            }
         }
         public async Task SaveImage()
         {
