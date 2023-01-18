@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -169,8 +170,6 @@ namespace WPFEcommerceApp
 
         public async Task RemoveProduct(object obj)
         {
-            MainViewModel.IsLoading = true;
-
             var removeProduct = obj as Models.Product;
             if (removeProduct == null)
                 return;
@@ -179,9 +178,19 @@ namespace WPFEcommerceApp
                 removeProduct.BanLevel += 1;
             else
             {
+                if(removeProduct.MUser.StatusShop==Status.Banned.ToString())
+                {
+                    var view = new ConfirmDialog
+                    {
+                        Header = "No!",
+                        Content = "The shop selling this product is currently banned, make sure to unban it before unbaning its product."
+                    };
+                    await DialogHost.Show(view, "Main");
+                    return;
+                }
                 removeProduct.BanLevel = 0;
             }
-
+            MainViewModel.IsLoading = true;
             await productRepo.Update(removeProduct);
             await Load();
             MainViewModel.IsLoading = false;
@@ -220,11 +229,17 @@ namespace WPFEcommerceApp
 
             notBannedProducts = new ObservableCollection<Models.Product>( 
                 await productRepo.GetListAsync(
-                    item=>item.BanLevel==0, item=>item.Brand, item=>item.Category));
+                    item=>item.BanLevel==0, 
+                    item=>item.Brand, 
+                    item=>item.Category,
+                    item => item.MUser));
 
             bannedProducts = new ObservableCollection<Models.Product>(
                 await productRepo.GetListAsync(
-                    item => item.BanLevel!=0, item => item.Brand, item => item.Category));
+                    item => item.BanLevel!=0, 
+                    item => item.Brand, 
+                    item => item.Category,
+                    item => item.MUser));
 
             _productsToSearch = FilteredProducts = notBannedProducts;
 

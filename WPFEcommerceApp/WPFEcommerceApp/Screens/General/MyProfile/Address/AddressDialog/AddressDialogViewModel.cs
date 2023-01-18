@@ -75,7 +75,7 @@ namespace WPFEcommerceApp
                 Name=tempAddress.Name;
                 PhoneNumber=tempAddress.PhoneNumber;
                 ThisAddress = tempAddress.Address1;
-                IsSetAsDefault ^= true;
+                IsSetAsDefault =IsDefault;
             });
         }
 

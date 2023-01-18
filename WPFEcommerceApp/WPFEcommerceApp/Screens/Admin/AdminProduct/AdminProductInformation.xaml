@@ -70,7 +70,7 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Width="Auto" Binding="{Binding Id}" MinWidth="100" MaxWidth="200" SortDirection="Ascending"/>
-                    <DataGridTextColumn Header="ShopID" Width="Auto" Binding="{Binding IdShop}" MinWidth="100" MaxWidth="200" SortDirection="Ascending"/>
+                    <DataGridTextColumn Header="ShopID" Width="Auto" Binding="{Binding IdShop}" MinWidth="100" MaxWidth="400" SortDirection="Ascending"/>
                     <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" MinWidth="200" MaxWidth="1000" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style>

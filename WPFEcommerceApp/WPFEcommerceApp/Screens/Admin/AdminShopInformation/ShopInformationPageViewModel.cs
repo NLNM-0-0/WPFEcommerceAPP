@@ -414,7 +414,6 @@ namespace WPFEcommerceApp
             var orderRepo=new GenericDataRepository<MOrder>();
             var newNoteRepo=new GenericDataRepository<Models.Notification>();
 
-            var notes = new List<Models.Notification>();
             var list = new List<Models.Product>(await prodRepo.GetListAsync(item => item.IdShop == removeShop.Id));
             for (int i = 0; i < list.Count; i++)
             {
@@ -440,6 +439,7 @@ namespace WPFEcommerceApp
                 for (int j = 0; j < orders.Count; j++)
                 {
                     orders[j].Status = OrderStatus.Cancelled.ToString();
+                    orders[j].DateEnd = DateTime.Now;
                     var cancelNote = new Models.Notification
                     {
                         Id = await GenerateID.Gen(typeof(Models.Notification)),
@@ -449,12 +449,11 @@ namespace WPFEcommerceApp
 Sorry for the inconvenience!",
                         Date = DateTime.Now,
                     };
-                    notes.Add(cancelNote);
+                    await newNoteRepo.Add(cancelNote);
                 }
 
                 await orderRepo.Update(orders.ToArray());
             }
-            await newNoteRepo.Add(notes.ToArray());
             await prodRepo.Update(list.ToArray());
 
         }
