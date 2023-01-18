@@ -477,8 +477,10 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="12*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="20"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="OTHERS OF SHOP"
                        FontWeight="Bold"
@@ -489,7 +491,7 @@
                         </TextBlock>
                         <Button Style="{StaticResource TransparentButton}" Height="50"
                         Background="{StaticResource BoxShadowColorBrush}"
-                        Grid.Column="2"
+                        Grid.Column="3"
                         Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                         Command="{Binding RightCommand}"
                         CommandParameter="{Binding ElementName=ProductList}">
@@ -532,8 +534,8 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <local:ProductBlock 
-                                    Height="500" 
-                                    Width="350"
+                                    Height="400" 
+                                    Width="280"
                                     DataContext="{Binding}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -635,8 +637,10 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="12*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="20"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="YOU MAY ALSO LIKE"
                         FontWeight="Bold"
@@ -647,7 +651,7 @@
                         </TextBlock>
                         <Button Style="{StaticResource TransparentButton}" Height="50"
                         Background="{StaticResource BoxShadowColorBrush}"
-                        Grid.Column="2"
+                        Grid.Column="3"
                         Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                         Command="{Binding RightCommand}"
                         CommandParameter="{Binding ElementName=ProductListAlso}">
@@ -690,8 +694,8 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <local:ProductBlock 
-                                    Height="500" 
-                                    Width="350"
+                                    Height="400" 
+                                    Width="280"
                                     DataContext="{Binding}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>

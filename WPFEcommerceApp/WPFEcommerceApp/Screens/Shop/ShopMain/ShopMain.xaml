@@ -159,6 +159,33 @@
                                     Text="Edit"/>
                             </StackPanel>
                         </Button>
+                        <Button 
+                            Grid.Column="2"
+                            Style="{StaticResource WhiteButton}"
+                            Visibility="{c:Binding !IsShop}"
+                            Command="{Binding OpenContactInfoCommand}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Foreground="#4B8CDE"
+                            Width="120"
+                            FontSize="{StaticResource FontSizeHeadline3}">
+                            <StackPanel 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                                <fa:FontAwesome 
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Icon="Phone"
+                                    Margin="5 0"/>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Text="Contact"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
 
                     
