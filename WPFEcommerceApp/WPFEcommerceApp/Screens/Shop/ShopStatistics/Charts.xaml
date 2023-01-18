@@ -46,7 +46,7 @@
                 <DatePicker Grid.Row="0" SelectedDate="{Binding FromSelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Width="auto" Margin="0 10" Padding="20 10 -50 10"
                             DisplayDateEnd="{Binding FromSelectedDateMax, Mode=OneWay}"
-                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="From"
                             >
                     <DatePicker.Resources>
@@ -62,7 +62,7 @@
                 </DatePicker>
                 <DatePicker Grid.Row="1" SelectedDate="{Binding ToSelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Width="auto" Margin="0 10" Padding="20 10 -50 10"
-                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            Style="{StaticResource OurDatePicker}"
                             DisplayDateStart="{Binding ToSelectedDateMin, Mode=OneWay}"
                             materialDesign:HintAssist.Hint="To"
                             >
