@@ -179,6 +179,10 @@
       <DependentUpon>ProductDetailNormal.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\General\ProductDetail\ProductDetailNormal\ProductDetailNormalViewModel.cs" />
+    <Compile Include="Screens\Shop\ShopContact\ShopContact.xaml.cs">
+      <DependentUpon>ShopContact.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Shop\ShopContact\ShopContactViewModel.cs" />
     <Compile Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdf.xaml.cs">
       <DependentUpon>OrderInfoPdf.xaml</DependentUpon>
     </Compile>
@@ -666,6 +670,10 @@
     <Page Include="Screens\General\ProductDetail\ProductDetailNormal\ProductDetailNormal.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\Shop\ShopContact\ShopContact.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\Shop\ShopOrder\ShopOrderBlock\OrderInfoPdf\OrderInfoPdf.xaml">
       <SubType>Designer</SubType>
