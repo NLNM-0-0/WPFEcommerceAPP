@@ -8,7 +8,8 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid
+        HorizontalAlignment="Stretch">
         <Grid.Resources>
             <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
         </Grid.Resources>
@@ -25,12 +26,12 @@
         <Grid Grid.Row="0">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2.5*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Profile -->
-            <StackPanel Width="480" HorizontalAlignment="Center" Margin="0 0 20 0">
+            <StackPanel HorizontalAlignment="Stretch" Margin="0 0 20 0">
 
                 <TextBox    Margin="0 15 0 15" x:Name="UserNametb"
                             Style="{StaticResource TextBoxHintBlackBorder}"
@@ -76,8 +77,7 @@
                 </TextBox>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Margin="0 0 20 0" Width="480"
-                        HorizontalAlignment="Center">
+            <StackPanel Grid.Column="1" Margin="0 0 20 0" HorizontalAlignment="Stretch">
                 <ComboBox Margin="0 15 0 15" ItemsSource="{Binding GenderOptions}"
                                     materialDesign:HintAssist.Hint="Gender"
                                     VerticalAlignment="Center"
@@ -92,7 +92,7 @@
                 <DatePicker Grid.Row="0" SelectedDate="{Binding EditUser.DOB, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Width="auto" Margin="0 15 0 15" Padding="15 0 -50 0"
                             Height="55"
-                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            Style="{StaticResource OurDatePicker}"
                             materialDesign:HintAssist.Hint="Date of Birth"
                             FontSize="{StaticResource FontSizeText}"
                             >
@@ -103,16 +103,35 @@
                             Width="auto"
                             MaxLength="10" Visibility="Hidden">
                 </TextBox>-->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                            Margin="0 24 0 0">
+                <Grid
+                    HorizontalAlignment="Stretch"
+                    Margin="0 30 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
                     <Button 
-                    x:Name="SaveButton"
-                    Command="{Binding SaveProfileCommand}"
-                    Grid.Column="1"
-                    Width="100"
-                    Content="Save"
-                    HorizontalAlignment="Right"
-                    >
+                        x:Name="CancelButton"
+                        Grid.Column="1"
+                        Style="{StaticResource WhiteButton}"
+                        Command="{Binding CancelProfileCommand}"
+                        Width="100" 
+                        Content="Cancel"
+                        HorizontalAlignment="Right">
+                        <Button.CommandParameter>
+                            <Binding Path="EditUser"/>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button 
+                        x:Name="SaveButton"
+                        Grid.Column="3"
+                        Command="{Binding SaveProfileCommand}"
+                        Width="100"
+                        Content="Save"
+                        Margin="10 0 0 0"
+                        HorizontalAlignment="Right">
                         <Button.CommandParameter>
                             <Binding Path="EditUser"/>
                         </Button.CommandParameter>
@@ -124,19 +143,8 @@
                         </Button.IsEnabled>
                     </Button>
 
-                    <Button 
-                    x:Name="CancelButton"
-                    Command="{Binding CancelProfileCommand}"
-                    Grid.Column="1"
-                    Width="100" Margin="10 0 0 0"
-                    Content="Cancel"
-                    HorizontalAlignment="Right"
-                    >
-                        <Button.CommandParameter>
-                            <Binding Path="EditUser"/>
-                        </Button.CommandParameter>
-                    </Button>
-                </StackPanel>
+                    
+                </Grid>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">

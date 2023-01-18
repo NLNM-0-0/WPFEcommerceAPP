@@ -71,7 +71,7 @@
                             materialDesign:HintAssist.Hint="Phone Number"
                             Grid.Row="0"
                             VerticalAlignment="Center"
-                            MaxLength="200">
+                            MaxLength="10">
                 <Binding Path="PhoneNumber" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <local:PhoneValidateRule
