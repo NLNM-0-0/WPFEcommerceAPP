@@ -11,13 +11,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="1500" d:DesignWidth="1440"
             >
-    <Grid Margin="50 0 50 20">
+    <Grid Margin="0 0 0 20">
 
         <ScrollViewer VerticalScrollBarVisibility="Hidden" x:Name="scroll"
                       CanContentScroll="True" 
                       Background="{StaticResource WhiteColorBrush}"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
-            <DockPanel Margin="0 20" LastChildFill="False">
+            <DockPanel Margin="50 20" LastChildFill="False">
                 <DockPanel DockPanel.Dock="Top">
                     <TextBlock Text="Brands"
                                    FontFamily="{StaticResource Bold}"

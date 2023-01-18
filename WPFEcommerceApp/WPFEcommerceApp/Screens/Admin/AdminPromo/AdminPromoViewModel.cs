@@ -191,8 +191,6 @@ namespace WPFEcommerceApp
 
         public async Task BanPromo(object obj)
         {
-            MainViewModel.IsLoading = true;
-
             var pro = obj as ShopPromoBlockViewModel;
             if (pro == null)
                 return;
@@ -208,6 +206,8 @@ namespace WPFEcommerceApp
             }
             else
             {
+                MainViewModel.IsLoading = true;
+
                 pro.Promo.Status = 2;
                 var note = new Models.Notification
                 {
@@ -221,6 +221,7 @@ namespace WPFEcommerceApp
                 await promoRepo.Update(pro.Promo);
                 await noteRepo.Add(note);
             }
+            MainViewModel.IsLoading = true;
 
             await Load();
 

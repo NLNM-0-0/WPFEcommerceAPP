@@ -66,14 +66,11 @@ namespace WPFEcommerceApp
         public async Task Load()
         {
             var products = new List<Models.Product>(await
-                prodRepo.GetListAsync(item=>item.BanLevel==0,
+                prodRepo.GetListAsync(item=>item.BanLevel==0 && item.InStock>0,
                 item => item.Brand,
                 item => item.Category,
                 item => item.ImageProducts,
                 item => item.MUser));
-
-            Products = new ObservableCollection<ProductBlockViewModel>(
-                products.Take(5).Select(pr => new ProductBlockViewModel(pr)));
 
             products.Sort(productBySoldDesc);
             BestSeller = new ObservableCollection<ProductBlockViewModel>(
@@ -83,7 +80,10 @@ namespace WPFEcommerceApp
             JustIn=new ObservableCollection<ProductBlockViewModel>(
                 products.Take(5).Select(pr=>new ProductBlockViewModel(pr)));
 
-
+            Products = new ObservableCollection<ProductBlockViewModel>(
+                products.Where(item=>!BestSeller.Any(item2=>item.Id==item2.SelectedProduct.Id)
+                && !JustIn.Any(item3=>item.Id==item3.SelectedProduct.Id))
+                .Take(5).Select(pr => new ProductBlockViewModel(pr)));
 
             var ads = await adInUseRepo.GetAllAsync(item => item.Advertisement);
             foreach (var ad in ads)
