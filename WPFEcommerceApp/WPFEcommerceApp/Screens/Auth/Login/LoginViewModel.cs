@@ -51,6 +51,7 @@ namespace WPFEcommerceApp {
         #region Keyhandle
         public ICommand KeyHandle_EnterKeepSignIn { get; }
         public ICommand KeyHandle_AdminAccess { get; }
+        public ICommand KeyHandle_EnterLogin { get; }
         #endregion
         public LoginViewModel() {
             //_accountStore.CurrentAccount = ;
@@ -60,8 +61,7 @@ namespace WPFEcommerceApp {
             }, async p => {
                 if(await Login()) {
                     AdminAccess = false;
-                    (p as Window).Hide();
-                    App.Current.MainWindow.Show();
+                    NavigateProvider.LoginScreenHandle(false);
                 }
             });
 
@@ -180,6 +180,11 @@ namespace WPFEcommerceApp {
                 AdminAccess = !AdminAccess;
                 OnPropertyChanged(nameof(Email));
                 OnPropertyChanged(nameof(Password));
+            });
+            KeyHandle_EnterLogin = new RelayCommand<object>(p => {
+                return (bool)p;
+            }, p => {
+                OnLogin.Execute(p);
             });
         }
 

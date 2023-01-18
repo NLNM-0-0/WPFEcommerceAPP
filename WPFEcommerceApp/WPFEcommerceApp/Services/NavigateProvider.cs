@@ -22,6 +22,24 @@ namespace WPFEcommerceApp {
             return true;
         }
 
+        public static bool LoginScreenHandle(bool type = false) {
+            try {
+                App.Current.Dispatcher.Invoke(() => {
+                    Login p = App.serviceProvider.GetRequiredService<Login>();
+                    bool IsMainVisible = App.Current.MainWindow.Visibility == System.Windows.Visibility.Visible;
+                    if(!IsMainVisible && !type) {
+                        App.Current.MainWindow.Show();
+                        p.Hide();
+                    }
+                    else if(IsMainVisible && type) {
+                        p.Show();
+                        App.Current.MainWindow.Hide();
+                    }
+                });
+                return true;
+            } catch { return false; }
+        }
+
         #region General
         static public INavigationService OfflineScreen() {
             return new NavigationService<OfflineScreenVM>(
