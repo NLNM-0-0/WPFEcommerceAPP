@@ -357,7 +357,7 @@ namespace WPFEcommerceApp
                     IdShop = AccountStore.instance.CurrentAccount.Id,
                     IdCategory = SelectedCategory.Id,
                     IdBrand = SelectedBrand.Id,
-                    Price = long.Parse(Price),
+                    Price = double.Parse(Price),
                     Sale = int.Parse(Sale),
                     InStock = int.Parse(InStock),
                     Sold = 0,

@@ -263,7 +263,7 @@
         <Grid x:Name="blurBox" 
               Background="{StaticResource BlackColorBrush}" 
               Opacity="0.39"
-              Width="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Width}"
+              Width="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualWidth}"
               Style="{StaticResource BlurBox}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseDown" SourceName="blurBox">

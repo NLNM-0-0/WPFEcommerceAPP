@@ -23,10 +23,10 @@ namespace WPFEcommerceApp.Models
         public string Id { get; set; }
         public string IdCustomer { get; set; }
         public string IdShop { get; set; }
-        public Nullable<int> ShipTotal { get; set; }
+        public Nullable<double> ShipTotal { get; set; }
         public Nullable<System.DateTime> DateBegin { get; set; }
         public Nullable<System.DateTime> DateEnd { get; set; }
-        public long OrderTotal { get; set; }
+        public double OrderTotal { get; set; }
         public Nullable<double> Discounted { get; set; }
         public string Promo { get; set; }
         public Nullable<int> ShippingMethod { get; set; }

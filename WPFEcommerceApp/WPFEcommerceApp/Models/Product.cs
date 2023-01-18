@@ -29,7 +29,7 @@ namespace WPFEcommerceApp.Models
         public string IdCategory { get; set; }
         public string IdBrand { get; set; }
         public string IdShop { get; set; }
-        public long Price { get; set; }
+        public double Price { get; set; }
         public int Sale { get; set; }
         public int InStock { get; set; }
         public int Sold { get; set; }

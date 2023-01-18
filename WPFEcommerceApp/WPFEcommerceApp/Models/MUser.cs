@@ -28,7 +28,6 @@ namespace WPFEcommerceApp.Models
             this.Notifications1 = new HashSet<Notification>();
             this.Products = new HashSet<Product>();
             this.Promoes = new HashSet<Promo>();
-            this.PromoRequests = new HashSet<PromoRequest>();
             this.RatingInfoes = new HashSet<RatingInfo>();
             this.Products1 = new HashSet<Product>();
         }
@@ -70,8 +69,6 @@ namespace WPFEcommerceApp.Models
         public virtual ICollection<Product> Products { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Promo> Promoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PromoRequest> PromoRequests { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RatingInfo> RatingInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

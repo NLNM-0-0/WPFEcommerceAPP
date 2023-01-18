@@ -53,7 +53,7 @@ namespace WPFEcommerceApp
 
                 Models.Product product = new Models.Product();
                 product.Name = name;
-                product.Price = long.Parse(price == "" ? "0" : price);
+                product.Price = double.Parse(price == "" ? "0" : price);
                 product.ImageProducts.Clear();
                 if (imageProducts != null)
                 {

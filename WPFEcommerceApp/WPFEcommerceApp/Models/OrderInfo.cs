@@ -20,7 +20,7 @@ namespace WPFEcommerceApp.Models
         public string ImageProduct { get; set; }
         public string Size { get; set; }
         public int Count { get; set; }
-        public long TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
     
         public virtual MOrder MOrder { get; set; }
         public virtual Rating Rating { get; set; }

@@ -147,9 +147,6 @@
     <Compile Include="Models\Promo.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PromoRequest.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Rating.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -1318,6 +1315,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Images\img_CoverHolder.jpg" />
+    <Resource Include="Assets\Images\MagicBox.png" />
     <Content Include="Screens\Auth\ForgotPassword\email.html" />
     <Resource Include="Assets\Icon\icon_facebook.png" />
     <Resource Include="Assets\Icon\icon_github.png" />

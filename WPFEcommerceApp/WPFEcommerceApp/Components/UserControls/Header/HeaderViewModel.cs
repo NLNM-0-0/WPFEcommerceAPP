@@ -105,11 +105,12 @@ namespace WPFEcommerceApp
                             //need to be HomeScreen here
                             AccountStore.instance.CurrentAccount = null;
                             NavigateProvider.HomeScreen().Navigate();
+                            WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
+                            WPFEcommerceApp.Properties.Settings.Default.Save();
                         })
                     };
                     await DialogHost.Show(dialog, "App");
-                    WPFEcommerceApp.Properties.Settings.Default.Cookie = "";
-                    WPFEcommerceApp.Properties.Settings.Default.Save();
+                    
                     return;
                 }
                 Login login = App.serviceProvider.GetRequiredService<Login>();

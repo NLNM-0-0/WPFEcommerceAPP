@@ -232,6 +232,10 @@ namespace WPFEcommerceApp
                     return;
                 }
             }
+            else {
+                await AccountStore.instance.Update(Shop);
+            }
+            MainViewModel.IsLoading = false;
         }
         public async Task SaveImage()
         {

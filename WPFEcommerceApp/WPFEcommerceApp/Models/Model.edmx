@@ -13,7 +13,7 @@
           <Property Name="Id" Type="varchar" MaxLength="14" Nullable="false" />
           <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
-          <Property Name="PhoneNumber" Type="varchar" MaxLength="13" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
           <Property Name="Status" Type="bit" />
         </EntityType>
@@ -100,10 +100,10 @@
           <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdCustomer" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="ShipTotal" Type="int" />
+          <Property Name="ShipTotal" Type="float" />
           <Property Name="DateBegin" Type="smalldatetime" />
           <Property Name="DateEnd" Type="smalldatetime" />
-          <Property Name="OrderTotal" Type="bigint" Nullable="false" />
+          <Property Name="OrderTotal" Type="float" Nullable="false" />
           <Property Name="Discounted" Type="float" />
           <Property Name="Promo" Type="varchar" MaxLength="8" />
           <Property Name="ShippingMethod" Type="int" />
@@ -118,7 +118,7 @@
           <Property Name="Id" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Role" Type="varchar" MaxLength="5" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="PhoneNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Gender" Type="bit" Nullable="false" />
           <Property Name="DOB" Type="smalldatetime" />
@@ -152,7 +152,7 @@
           <Property Name="ImageProduct" Type="varchar" MaxLength="200" />
           <Property Name="Size" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Count" Type="int" Nullable="false" />
-          <Property Name="TotalPrice" Type="bigint" Nullable="false" />
+          <Property Name="TotalPrice" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -163,7 +163,7 @@
           <Property Name="IdCategory" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdBrand" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdShop" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="Price" Type="bigint" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="Sale" Type="int" Nullable="false" />
           <Property Name="InStock" Type="int" Nullable="false" />
           <Property Name="Sold" Type="int" Nullable="false" />
@@ -204,14 +204,6 @@
           </Key>
           <Property Name="IdProduct" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="IdPromo" Type="varchar" MaxLength="8" Nullable="false" />
-        </EntityType>
-        <EntityType Name="PromoRequest">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdPromo" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="IdUser" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -552,30 +544,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PromoRequest_idPromo">
-          <End Role="Promo" Type="Self.Promo" Multiplicity="1" />
-          <End Role="PromoRequest" Type="Self.PromoRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Promo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PromoRequest">
-              <PropertyRef Name="IdPromo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PromoRequest_idUser">
-          <End Role="MUser" Type="Self.MUser" Multiplicity="1" />
-          <End Role="PromoRequest" Type="Self.PromoRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PromoRequest">
-              <PropertyRef Name="IdUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RatingInfo_IdRating">
           <End Role="Rating" Type="Self.Rating" Multiplicity="1" />
           <End Role="RatingInfo" Type="Self.RatingInfo" Multiplicity="*" />
@@ -618,7 +586,6 @@
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promo" EntityType="Self.Promo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PromoDetail" EntityType="Self.PromoDetail" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PromoRequest" EntityType="Self.PromoRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RatingInfo" EntityType="Self.RatingInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopRequest" EntityType="Self.ShopRequest" Schema="dbo" store:Type="Tables" />
@@ -723,14 +690,6 @@
             <End Role="Promo" EntitySet="Promo" />
             <End Role="PromoDetail" EntitySet="PromoDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_PromoRequest_idPromo" Association="Self.FK_PromoRequest_idPromo">
-            <End Role="Promo" EntitySet="Promo" />
-            <End Role="PromoRequest" EntitySet="PromoRequest" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PromoRequest_idUser" Association="Self.FK_PromoRequest_idUser">
-            <End Role="MUser" EntitySet="MUser" />
-            <End Role="PromoRequest" EntitySet="PromoRequest" />
-          </AssociationSet>
           <AssociationSet Name="FK_RatingInfo_IdRating" Association="Self.FK_RatingInfo_IdRating">
             <End Role="Rating" EntitySet="Rating" />
             <End Role="RatingInfo" EntitySet="RatingInfo" />
@@ -761,7 +720,6 @@
           <EntitySet Name="OrderInfoes" EntityType="EcommerceAppModel.OrderInfo" />
           <EntitySet Name="Products" EntityType="EcommerceAppModel.Product" />
           <EntitySet Name="Promoes" EntityType="EcommerceAppModel.Promo" />
-          <EntitySet Name="PromoRequests" EntityType="EcommerceAppModel.PromoRequest" />
           <EntitySet Name="Ratings" EntityType="EcommerceAppModel.Rating" />
           <EntitySet Name="RatingInfoes" EntityType="EcommerceAppModel.RatingInfo" />
           <EntitySet Name="ShopRequests" EntityType="EcommerceAppModel.ShopRequest" />
@@ -841,10 +799,6 @@
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="Promo" EntitySet="Promoes" />
           </AssociationSet>
-          <AssociationSet Name="FK_PromoRequest_idUser" Association="EcommerceAppModel.FK_PromoRequest_idUser">
-            <End Role="MUser" EntitySet="MUsers" />
-            <End Role="PromoRequest" EntitySet="PromoRequests" />
-          </AssociationSet>
           <AssociationSet Name="FK_RatingInfo_IdUser" Association="EcommerceAppModel.FK_RatingInfo_IdUser">
             <End Role="MUser" EntitySet="MUsers" />
             <End Role="RatingInfo" EntitySet="RatingInfoes" />
@@ -856,10 +810,6 @@
           <AssociationSet Name="FK_OrderInfo_Product" Association="EcommerceAppModel.FK_OrderInfo_Product">
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderInfo" EntitySet="OrderInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PromoRequest_idPromo" Association="EcommerceAppModel.FK_PromoRequest_idPromo">
-            <End Role="Promo" EntitySet="Promoes" />
-            <End Role="PromoRequest" EntitySet="PromoRequests" />
           </AssociationSet>
           <AssociationSet Name="FK_RatingInfo_IdRating" Association="EcommerceAppModel.FK_RatingInfo_IdRating">
             <End Role="Rating" EntitySet="Ratings" />
@@ -907,7 +857,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Address_IdUser" FromRole="Address" ToRole="MUser" />
@@ -983,10 +933,10 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdCustomer" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="ShipTotal" Type="Int32" />
+          <Property Name="ShipTotal" Type="Double" />
           <Property Name="DateBegin" Type="DateTime" Precision="0" />
           <Property Name="DateEnd" Type="DateTime" Precision="0" />
-          <Property Name="OrderTotal" Type="Int64" Nullable="false" />
+          <Property Name="OrderTotal" Type="Double" Nullable="false" />
           <Property Name="Discounted" Type="Double" />
           <Property Name="Promo" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="ShippingMethod" Type="Int32" />
@@ -1005,7 +955,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Role" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="Boolean" Nullable="false" />
           <Property Name="DOB" Type="DateTime" Precision="0" />
@@ -1027,7 +977,6 @@
           <NavigationProperty Name="Notifications1" Relationship="EcommerceAppModel.FK_Notification_UserSender" FromRole="MUser" ToRole="Notification" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.FK_Product_Shop" FromRole="MUser" ToRole="Product" />
           <NavigationProperty Name="Promoes" Relationship="EcommerceAppModel.FK_Promo_idShop" FromRole="MUser" ToRole="Promo" />
-          <NavigationProperty Name="PromoRequests" Relationship="EcommerceAppModel.FK_PromoRequest_idUser" FromRole="MUser" ToRole="PromoRequest" />
           <NavigationProperty Name="RatingInfoes" Relationship="EcommerceAppModel.FK_RatingInfo_IdUser" FromRole="MUser" ToRole="RatingInfo" />
           <NavigationProperty Name="Products1" Relationship="EcommerceAppModel.FavouriteProduct" FromRole="MUser" ToRole="Product" />
         </EntityType>
@@ -1056,7 +1005,7 @@
           <Property Name="ImageProduct" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Size" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Count" Type="Int32" Nullable="false" />
-          <Property Name="TotalPrice" Type="Int64" Nullable="false" />
+          <Property Name="TotalPrice" Type="Double" Nullable="false" />
           <NavigationProperty Name="MOrder" Relationship="EcommerceAppModel.FK_OrderInfo_MOrder" FromRole="OrderInfo" ToRole="MOrder" />
           <NavigationProperty Name="Rating" Relationship="EcommerceAppModel.FK_MOrder_Rating" FromRole="OrderInfo" ToRole="Rating" />
           <NavigationProperty Name="Product" Relationship="EcommerceAppModel.FK_OrderInfo_Product" FromRole="OrderInfo" ToRole="Product" />
@@ -1070,7 +1019,7 @@
           <Property Name="IdCategory" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdBrand" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="IdShop" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Price" Type="Int64" Nullable="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
           <Property Name="Sale" Type="Int32" Nullable="false" />
           <Property Name="InStock" Type="Int32" Nullable="false" />
           <Property Name="Sold" Type="Int32" Nullable="false" />
@@ -1113,18 +1062,7 @@
           <Property Name="Status" Type="Int32" />
           <NavigationProperty Name="MOrders" Relationship="EcommerceAppModel.FK_MOrder_Promo" FromRole="Promo" ToRole="MOrder" />
           <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_Promo_idShop" FromRole="Promo" ToRole="MUser" />
-          <NavigationProperty Name="PromoRequests" Relationship="EcommerceAppModel.FK_PromoRequest_idPromo" FromRole="Promo" ToRole="PromoRequest" />
           <NavigationProperty Name="Products" Relationship="EcommerceAppModel.PromoDetail" FromRole="Promo" ToRole="Product" />
-        </EntityType>
-        <EntityType Name="PromoRequest">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdPromo" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="IdUser" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MUser" Relationship="EcommerceAppModel.FK_PromoRequest_idUser" FromRole="PromoRequest" ToRole="MUser" />
-          <NavigationProperty Name="Promo" Relationship="EcommerceAppModel.FK_PromoRequest_idPromo" FromRole="PromoRequest" ToRole="Promo" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -1387,18 +1325,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PromoRequest_idUser">
-          <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
-          <End Type="EcommerceAppModel.PromoRequest" Role="PromoRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PromoRequest">
-              <PropertyRef Name="IdUser" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RatingInfo_IdUser">
           <End Type="EcommerceAppModel.MUser" Role="MUser" Multiplicity="1" />
           <End Type="EcommerceAppModel.RatingInfo" Role="RatingInfo" Multiplicity="*" />
@@ -1432,18 +1358,6 @@
             </Principal>
             <Dependent Role="OrderInfo">
               <PropertyRef Name="IdProduct" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PromoRequest_idPromo">
-          <End Type="EcommerceAppModel.Promo" Role="Promo" Multiplicity="1" />
-          <End Type="EcommerceAppModel.PromoRequest" Role="PromoRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Promo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PromoRequest">
-              <PropertyRef Name="IdPromo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1673,15 +1587,6 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="IdShop" ColumnName="IdShop" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PromoRequests">
-            <EntityTypeMapping TypeName="EcommerceAppModel.PromoRequest">
-              <MappingFragment StoreEntitySet="PromoRequest">
-                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
-                <ScalarProperty Name="IdPromo" ColumnName="IdPromo" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
