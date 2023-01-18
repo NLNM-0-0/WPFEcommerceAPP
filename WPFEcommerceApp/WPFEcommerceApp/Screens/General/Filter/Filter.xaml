@@ -161,8 +161,17 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <RadioButton Grid.Row="0"
+                        Style="{StaticResource RadioButtonFill}"
+                        Content="All"
+                        Margin="20,5,5,0"
+                        HorizontalContentAlignment="Left"
+                        BorderBrush="{StaticResource WhiteColorBrush}"
+                        FontSize="{StaticResource FontSizeText}"
+                        IsChecked="{Binding SortAllPrice}"/>
+                    <RadioButton Grid.Row="1"
                         Style="{StaticResource RadioButtonFill}"
                         Content="0 - 200 USD"
                         Margin="20,5,5,0"
@@ -172,7 +181,7 @@
                         IsChecked="{Binding SortPrice0To200USD}">
 
                     </RadioButton>
-                    <RadioButton Grid.Row="1"
+                    <RadioButton Grid.Row="2"
                         Style="{StaticResource RadioButtonFill}"
                         Content="200 USD - 500 USD"
                         Margin="20,0,5,0"
@@ -182,7 +191,7 @@
                         IsChecked="{Binding SortPrice200USDTo500USD}">
 
                     </RadioButton>
-                    <RadioButton Grid.Row="2"
+                    <RadioButton Grid.Row="3"
                         Style="{StaticResource RadioButtonFill}"
                         Content="500 USD - 1.000 USD"
                         Margin="20,0,5,0"
@@ -192,7 +201,7 @@
                         FontSize="{StaticResource FontSizeText}">
 
                     </RadioButton>
-                    <RadioButton Grid.Row="3"
+                    <RadioButton Grid.Row="4"
                         Style="{StaticResource RadioButtonFill}"
                         Content="> 1.000 USD"
                         Margin="20,0,5,0"
