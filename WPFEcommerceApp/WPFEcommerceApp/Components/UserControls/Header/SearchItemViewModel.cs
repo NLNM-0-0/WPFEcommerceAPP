@@ -23,7 +23,7 @@ namespace WPFEcommerceApp
         private string _sourceImage;
         public string SourceImage
         {
-            get { return _sourceImage; }
+            get { return string.IsNullOrEmpty(_sourceImage)?Properties.Resources.DefaultShopAvaImage:_sourceImage; }
             set { _sourceImage = value; OnPropertyChanged(); }
         }
         public object Model { get; set; }

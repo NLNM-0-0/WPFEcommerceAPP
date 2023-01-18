@@ -76,7 +76,7 @@ namespace WPFEcommerceApp
         private string _sourceImageAva;
         public string SourceImageAva
         {
-            get { return _sourceImageAva; }
+            get { return string.IsNullOrEmpty(_sourceImageAva) ? Properties.Resources.DefaultShopAvaImage : _sourceImageAva; ; }
             set { _sourceImageAva = value; OnPropertyChanged(); }
         }
 
