@@ -717,26 +717,26 @@ namespace WPFEcommerceApp
         }
         private async Task Load()
         {
-            Products = new List<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 && 
+            Products = new List<Models.Product>((await ProductRepository.GetListAsync(p => p.BanLevel == 0 && 
                                                                                         p.IdShop == SelectedProduct.IdShop && 
                                                                                         p.Id != SelectedProduct.Id && 
                                                                                         p.InStock!=0,
                                                                                         p => p.Category,
                                                                                         p => p.Brand,
                                                                                         p => p.ImageProducts, 
-                                                                                        p => p.MUser));
+                                                                                        p => p.MUser)).Take(20));
         }
 
         private async Task LoadAlso()
         {
-            ProductAlsos = new List<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 &&
+            ProductAlsos = new List<Models.Product>((await ProductRepository.GetListAsync(p => p.BanLevel == 0 &&
                                                                                             p.Id != SelectedProduct.Id && 
                                                                                             (p.IdBrand == SelectedProduct.IdBrand || p.IdCategory == SelectedProduct.IdCategory) && 
                                                                                             p.InStock != 0,
                                                                                             p => p.Category,
                                                                                             p => p.Brand,
                                                                                             p => p.ImageProducts, 
-                                                                                            p => p.MUser));
+                                                                                            p => p.MUser)).Take(20));
         }
 
         private void LoadProductBLockViewModel()
@@ -773,7 +773,7 @@ namespace WPFEcommerceApp
                 {
                     var temp = scrollViewer.HorizontalOffset;
                     var temp2 = scrollViewer.ViewportWidth;
-                    var temp3 = (int)((temp + temp2) / 350);
+                    var temp3 = (int)((temp + temp2) / 280);
                     var items = listView.ItemsSource.Cast<object>();
                     listView.ScrollIntoView(items.ElementAt(temp3));
                 }
@@ -801,7 +801,7 @@ namespace WPFEcommerceApp
                     var temp = scrollViewer.HorizontalOffset;
                     var temp2 = scrollViewer.ViewportWidth;
 
-                    int temp3 = (int)Math.Ceiling(temp / 365) - 1;
+                    int temp3 = (int)Math.Ceiling(temp / 295) - 1;
 
                     var items = listView.ItemsSource.Cast<object>();
                     listView.ScrollIntoView(items.ElementAt(temp3));
