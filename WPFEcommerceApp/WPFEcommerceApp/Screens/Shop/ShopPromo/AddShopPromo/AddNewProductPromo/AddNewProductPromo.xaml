@@ -194,7 +194,7 @@
                                     FontWeight="DemiBold"
                                     FontSize="{StaticResource FontSizeText}"/>
                                 <TextBlock
-                                    Text="Sale"
+                                    Text="Sold"
                                     Grid.Column="2"
                                     VerticalAlignment="Center"
                                     Padding="5 0"

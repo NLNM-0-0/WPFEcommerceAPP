@@ -100,17 +100,17 @@ namespace WPFEcommerceApp
             }
         }
 
-        private bool sortPrice0To200k;
-        public bool SortPrice0To200k
+        private bool sortPrice0To200USD;
+        public bool SortPrice0To200USD
         {
-            get => sortPrice0To200k;
+            get => sortPrice0To200USD;
             set
             {
                 if (value)
                 {
                     MinPrice = 0;
-                    MaxPrice = 200000;
-                    MainViewModel.IsLoading = true;
+                    MaxPrice = 200;
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -118,24 +118,24 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
-                sortPrice0To200k = value;
+                sortPrice0To200USD = value;
                 OnPropertyChanged();
             }
         }
-        private bool sortPrice200kTo500k;
-        public bool SortPrice200kTo500k
+        private bool sortPrice200USDTo500USD;
+        public bool SortPrice200USDTo500USD
         {
-            get => sortPrice200kTo500k;
+            get => sortPrice200USDTo500USD;
             set
             {
                 if (value)
                 {
-                    MinPrice = 200000;
-                    MaxPrice = 500000;
-                    MainViewModel.IsLoading = true;
+                    MinPrice = 200;
+                    MaxPrice = 500;
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -143,24 +143,24 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
-                sortPrice200kTo500k = value;
+                sortPrice200USDTo500USD = value;
                 OnPropertyChanged();
             }
         }
-        private bool sortPrice500kTo1000k;
-        public bool SortPrice500kTo1000k
+        private bool sortPrice500USDTo1000USD;
+        public bool SortPrice500USDTo1000USD
         {
-            get => sortPrice500kTo1000k;
+            get => sortPrice500USDTo1000USD;
             set
             {
                 if (value)
                 {
-                    MinPrice = 500000;
-                    MaxPrice = 1000000;
-                    MainViewModel.IsLoading = true;
+                    MinPrice = 500;
+                    MaxPrice = 1000;
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -168,24 +168,24 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
-                sortPrice500kTo1000k = value;
+                sortPrice500USDTo1000USD = value;
                 OnPropertyChanged();
             }
         }
-        private bool sortPriceP1000k;
-        public bool SortPriceP1000k
+        private bool sortPriceP1000USD;
+        public bool SortPriceP1000USD
         {
-            get => sortPriceP1000k;
+            get => sortPriceP1000USD;
             set
             {
                 if (value)
                 {
-                    MinPrice = 1000000;
+                    MinPrice = 1000;
                     MaxPrice = long.MaxValue;
-                    MainViewModel.IsLoading = true;
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -193,10 +193,35 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
-                sortPriceP1000k = value;
+                sortPriceP1000USD = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool sortAllPrice;
+        public bool SortAllPrice
+        {
+            get => sortAllPrice;
+            set
+            {
+                if (value)
+                {
+                    MinPrice = long.MinValue;
+                    MaxPrice = long.MaxValue;
+                    IsLoadingCheck.IsLoading++;
+                    Task.Run(() => { }).ContinueWith((second) =>
+                    {
+                        Search();
+                        App.Current.Dispatcher.Invoke((Action)(() =>
+                        {
+                            DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
+                        }));
+                        IsLoadingCheck.IsLoading--;
+                    });
+                }
+                sortAllPrice = value;
                 OnPropertyChanged();
             }
         }
@@ -210,7 +235,7 @@ namespace WPFEcommerceApp
                 if (value)
                 {
                     FilterProducts = BigDiscountProducts;
-                    MainViewModel.IsLoading = true;
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -218,7 +243,7 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
             }
@@ -232,8 +257,8 @@ namespace WPFEcommerceApp
                 isNew = value;
                 if (value)
                 {
-                    FilterProducts = NewProducts;
-                    MainViewModel.IsLoading = true;
+                    FilterProducts = NewProducts;   
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -241,7 +266,7 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
             }
@@ -256,7 +281,7 @@ namespace WPFEcommerceApp
                 if (value)
                 {
                     FilterProducts = BestSellerProducts;
-                    MainViewModel.IsLoading = true;
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -264,7 +289,7 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
             }
@@ -279,7 +304,7 @@ namespace WPFEcommerceApp
                 if (value)
                 {
                     FilterProducts = AllProducts;
-                    MainViewModel.IsLoading = true;
+                    IsLoadingCheck.IsLoading++;
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -287,7 +312,7 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        IsLoadingCheck.IsLoading--;
                     });
                 }
             }
@@ -300,7 +325,7 @@ namespace WPFEcommerceApp
             {
                 isHadOneSize = value;
                 CheckSize[0] = value;
-                MainViewModel.IsLoading = true;
+                IsLoadingCheck.IsLoading++;
                 Task.Run(() => { }).ContinueWith((second) =>
                 {
                     Search();
@@ -308,7 +333,7 @@ namespace WPFEcommerceApp
                     {
                         DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                     }));
-                    MainViewModel.IsLoading = false;
+                    IsLoadingCheck.IsLoading--;
                 });
                 OnPropertyChanged();
             }
@@ -321,7 +346,7 @@ namespace WPFEcommerceApp
             {
                 isHadSizeS = value;
                 CheckSize[1] = value;
-                MainViewModel.IsLoading = true;
+                IsLoadingCheck.IsLoading++;
                 Task.Run(() => { }).ContinueWith((second) =>
                 {
                     Search();
@@ -329,7 +354,7 @@ namespace WPFEcommerceApp
                     {
                         DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                     }));
-                    MainViewModel.IsLoading = false;
+                    IsLoadingCheck.IsLoading--;
                 });
                 OnPropertyChanged();
             }
@@ -343,7 +368,7 @@ namespace WPFEcommerceApp
 
                 isHadSizeM = value;
                 CheckSize[2] = value;
-                MainViewModel.IsLoading = true;
+                IsLoadingCheck.IsLoading++;
                 Task.Run(() => { }).ContinueWith((second) =>
                 {
                     Search();
@@ -351,7 +376,7 @@ namespace WPFEcommerceApp
                     {
                         DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                     }));
-                    MainViewModel.IsLoading = false;
+                    IsLoadingCheck.IsLoading--;
                 });
                 OnPropertyChanged();
             }
@@ -364,7 +389,7 @@ namespace WPFEcommerceApp
             {
                 isHadSizeL = value;
                 CheckSize[3] = value;
-                MainViewModel.IsLoading = true;
+                IsLoadingCheck.IsLoading++;
                 Task.Run(() => { }).ContinueWith((second) =>
                 {
                     Search();
@@ -372,7 +397,7 @@ namespace WPFEcommerceApp
                     {
                         DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                     }));
-                    MainViewModel.IsLoading = false;
+                    IsLoadingCheck.IsLoading--;
                 });
                 OnPropertyChanged();
             }
@@ -385,7 +410,7 @@ namespace WPFEcommerceApp
             {
                 isHadSizeXL = value;
                 CheckSize[4] = value;
-                MainViewModel.IsLoading = true;
+                IsLoadingCheck.IsLoading++;
                 Task.Run(() => { }).ContinueWith((second) =>
                 {
                     Search();
@@ -393,7 +418,7 @@ namespace WPFEcommerceApp
                     {
                         DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                     }));
-                    MainViewModel.IsLoading = false;
+                    IsLoadingCheck.IsLoading--;
                 });
                 OnPropertyChanged();
             }
@@ -406,7 +431,7 @@ namespace WPFEcommerceApp
             {
                 isHadSizeXXL = value;
                 CheckSize[5] = value;
-                MainViewModel.IsLoading = true;
+                IsLoadingCheck.IsLoading++;
                 Task.Run(() => { }).ContinueWith((second) =>
                 {
                     Search();
@@ -414,7 +439,7 @@ namespace WPFEcommerceApp
                     {
                         DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                     }));
-                    MainViewModel.IsLoading = false;
+                    IsLoadingCheck.IsLoading--;
                 });
                 OnPropertyChanged();
             }
@@ -556,6 +581,7 @@ namespace WPFEcommerceApp
                 IsNeedSearchBy = true;
             }
             SearchByValue = Condition.SearchText;
+            sortAllPrice = true;
             IsLoadingCheck.IsLoading = 2;
             Task.Run(async () =>
             {
@@ -624,12 +650,11 @@ namespace WPFEcommerceApp
                 {
                     DislayedCategoryCheckBoxViewModels = new List<CategoryCheckBoxViewModel>(CategoryCheckBoxViewModels);
                     IsNeedShowAllCategory = true;
-                });
+                });  
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
                     lock (IsLoadingCheck.IsLoading as object)
                     {
-                        DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         IsLoadingCheck.IsLoading--;
                     }
                 }));
@@ -645,10 +670,13 @@ namespace WPFEcommerceApp
                 {
                     listCategoryId.Add(categoryCheckBoxViewModel.Category.Id);
                 }
-                allCategoryId.Add(categoryCheckBoxViewModel.Category.Id);
             }
             if (listCategoryId.Count == 0)
             {
+                foreach (CategoryCheckBoxViewModel categoryCheckBoxViewModel in CategoryCheckBoxViewModels)
+                {
+                    allCategoryId.Add(categoryCheckBoxViewModel.Category.Id);
+                }
                 listCategoryId = allCategoryId;
             }
             List<string> listBrandId = new List<string>();
@@ -663,6 +691,10 @@ namespace WPFEcommerceApp
             }
             if (listBrandId.Count == 0)
             {
+                foreach (BrandCheckViewModel brandCheckViewModel in BrandCheckBoxViewModels)
+                {
+                    allBrandId.Add(brandCheckViewModel.Brand.Id);
+                }
                 listBrandId = allBrandId;
             }
             bool isHasSize = false;
@@ -678,47 +710,43 @@ namespace WPFEcommerceApp
             {
                 if (SearchBy == "In WANO")
                 {
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) &&
-                                                                                                            (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                            listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
-                                                                                                            (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
+                    DisplayedProducts = new List<ProductBlockViewModel>((FilterProducts.Where(p => ((p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim())) &&
+                                                                                                            ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100) <= MaxPrice) && ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                                                            (listBrandId.Contains(p.SelectedProduct.IdBrand)) && (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
                                                                                                             ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
-                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))));
+                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))))).Take(50));
                     IsNeedSearchBy = false;
                 }
                 else
                 {
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) && p.SelectedProduct.IdShop == Condition.ShopText &&
-                                                                                                            (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                            listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
-                                                                                                            (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
+                    DisplayedProducts = new List<ProductBlockViewModel>((FilterProducts.Where(p => ((p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim())) && (p.SelectedProduct.IdShop == Condition.ShopText) &&
+                                                                                                            ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100) <= MaxPrice) && ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                                                            (listBrandId.Contains(p.SelectedProduct.IdBrand)) && (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
                                                                                                             ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
-                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))));
+                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))))).Take(50));
                 }
             }
             else
             {
                 if (SearchBy == "In WANO")
                 {
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) &&
+                    DisplayedProducts = new List<ProductBlockViewModel>((FilterProducts.Where(p => (p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim()) &&
                                                                                                         (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                        listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
-                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))));
+                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand))))).Take(50));
                     IsNeedSearchBy = false;
                 }
                 else
-                {
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.BanLevel == 0 && p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower()) && p.SelectedProduct.IdShop == Condition.ShopText &&
+                { 
+                    DisplayedProducts = new List<ProductBlockViewModel>((FilterProducts.Where(p => (p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim()) && (p.SelectedProduct.IdShop == Condition.ShopText) &&
                                                                                                         (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                        listBrandId.Contains(p.SelectedProduct.IdBrand) && listCategoryId.Contains(p.SelectedProduct.IdCategory) &&
-                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))));
+                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand))))).Take(50));
                 }
             }
         }
         private async Task Load()
         {
             IList<Models.Product> products = new List<Models.Product>();
-            products = new List<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0 
+            products = new List<Models.Product>(await ProductRepository.GetListAsync(p => p.BanLevel == 0
                                                                                         && p.InStock!=0,
                                                                                         p => p.Category,
                                                                                         p => p.Brand,
@@ -736,14 +764,14 @@ namespace WPFEcommerceApp
             }
             if (lastDateHasNewProduct != DateTime.MinValue)
             {
-                NewProducts = new List<ProductBlockViewModel>(AllProducts.Where(p => (lastDateHasNewProduct - p.SelectedProduct.DateOfSale) < new TimeSpan(7, 0, 0, 0)).Take(50));
+                NewProducts = new List<ProductBlockViewModel>(AllProducts.Where(p => (lastDateHasNewProduct - p.SelectedProduct.DateOfSale) < new TimeSpan(7, 0, 0, 0)));
             }
             else
             {
                 NewProducts = new List<ProductBlockViewModel>();
             }
-            BestSellerProducts = new List<ProductBlockViewModel>(AllProducts.OrderByDescending(p => p.SelectedProduct.Sold).Take(50));
-            BigDiscountProducts = new List<ProductBlockViewModel>(AllProducts.OrderByDescending(p => p.SelectedProduct.Sale).Take(50));
+            BestSellerProducts = new List<ProductBlockViewModel>(AllProducts.OrderByDescending(p => p.SelectedProduct.Sold));
+            BigDiscountProducts = new List<ProductBlockViewModel>(AllProducts.OrderByDescending(p => p.SelectedProduct.Sale));
         }
         private async Task LoadCategoryCheckBox()
         {

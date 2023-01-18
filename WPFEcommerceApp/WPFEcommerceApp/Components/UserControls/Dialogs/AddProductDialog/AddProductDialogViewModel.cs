@@ -375,7 +375,7 @@ namespace WPFEcommerceApp
                 });
                 foreach (BitmapImage source in ImageProducts)
                 {
-                    string link = await FireStorageAPI.PushFromImage(source, "Product", $"{id}");
+                    string link = await FireStorageAPI.PushFromImage(source, "Product", "Image", null, $"{id}");
                     await imageProductRepository.Add(new Models.ImageProduct() { IdProduct = id, Source = link });
                 }
                 MainViewModel.IsLoading = false;

@@ -161,42 +161,51 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <RadioButton Grid.Row="0"
                         Style="{StaticResource RadioButtonFill}"
-                        Content="0 - 200.000 VND"
+                        Content="All"
                         Margin="20,5,5,0"
                         HorizontalContentAlignment="Left"
                         BorderBrush="{StaticResource WhiteColorBrush}"
                         FontSize="{StaticResource FontSizeText}"
-                        IsChecked="{Binding SortPrice0To200k}">
-
-                    </RadioButton>
+                        IsChecked="{Binding SortAllPrice}"/>
                     <RadioButton Grid.Row="1"
                         Style="{StaticResource RadioButtonFill}"
-                        Content="200.000 - 500.000 VND"
-                        Margin="20,0,5,0"
+                        Content="0 - 200 USD"
+                        Margin="20,5,5,0"
                         HorizontalContentAlignment="Left"
                         BorderBrush="{StaticResource WhiteColorBrush}"
                         FontSize="{StaticResource FontSizeText}"
-                        IsChecked="{Binding SortPrice200kTo500k}">
+                        IsChecked="{Binding SortPrice0To200USD}">
 
                     </RadioButton>
                     <RadioButton Grid.Row="2"
                         Style="{StaticResource RadioButtonFill}"
-                        Content="500.000 - 1.000.000 VND"
+                        Content="200 USD - 500 USD"
                         Margin="20,0,5,0"
                         HorizontalContentAlignment="Left"
-                        IsChecked="{Binding SortPrice500kTo1000k}"
                         BorderBrush="{StaticResource WhiteColorBrush}"
-                        FontSize="{StaticResource FontSizeText}">
+                        FontSize="{StaticResource FontSizeText}"
+                        IsChecked="{Binding SortPrice200USDTo500USD}">
 
                     </RadioButton>
                     <RadioButton Grid.Row="3"
                         Style="{StaticResource RadioButtonFill}"
-                        Content="> 1.000.000 VND"
+                        Content="500 USD - 1.000 USD"
                         Margin="20,0,5,0"
-                        IsChecked="{Binding SortPriceP1000k}"
+                        HorizontalContentAlignment="Left"
+                        IsChecked="{Binding SortPrice500USDTo1000USD}"
+                        BorderBrush="{StaticResource WhiteColorBrush}"
+                        FontSize="{StaticResource FontSizeText}">
+
+                    </RadioButton>
+                    <RadioButton Grid.Row="4"
+                        Style="{StaticResource RadioButtonFill}"
+                        Content="> 1.000 USD"
+                        Margin="20,0,5,0"
+                        IsChecked="{Binding SortPriceP1000USD}"
                         HorizontalContentAlignment="Left"
                         BorderBrush="{StaticResource WhiteColorBrush}"
                         FontSize="{StaticResource FontSizeText}">

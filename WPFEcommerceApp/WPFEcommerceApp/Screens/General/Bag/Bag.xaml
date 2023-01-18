@@ -8,96 +8,99 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d">
-    <ScrollViewer>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock
                 Grid.Row="0"
                 Text="WANO'S BAG"
                    Margin="20,30"
                    FontSize="{StaticResource FontSizeHeadline}">
 
-            </TextBlock>
-            <Border
+        </TextBlock>
+        <Border
                 Grid.Row="1"
                 BorderBrush="{StaticResource BoxLineColorBrush}"
                  BorderThickness="1"
                  Margin="20,0,20,0">
-                <Grid Margin="0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <CheckBox 
+            <Grid Margin="0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <CheckBox 
                     Width="20"
                     Height="20"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
+                    VerticalAlignment="Center" 
                     Foreground="{StaticResource BlackColorBrush}"
                     Background="{StaticResource BlackColorBrush}"
                     IsChecked="{Binding IsCheckedAll}">
 
-                    </CheckBox>
-                    <TextBlock Grid.Column="1"
+                </CheckBox>
+                <TextBlock Grid.Column="1"
+                           Grid.ColumnSpan="2"
                            Text="Product"
                            FontSize="{StaticResource FontSizeText}"
-                           TextAlignment="Center"
-                           Foreground="{StaticResource NotAvailableColorBrush}">
+                           TextAlignment="Left"
+                           Foreground="{StaticResource NotAvailableColorBrush}"
+                           Margin="5 0">
 
-                    </TextBlock>
-                    <TextBlock Grid.Column="3"
+                </TextBlock>
+                <TextBlock Grid.Column="3"
                            Text="Shop name"
-                           Margin="-50,0,0,0"
                            TextAlignment="Left"
                            FontSize="{StaticResource FontSizeText}"
-                           Foreground="{StaticResource NotAvailableColorBrush}">
+                           Foreground="{StaticResource NotAvailableColorBrush}"
+                           Margin="20 0">
 
-                    </TextBlock>
-                    <TextBlock Grid.Column="4"
+                </TextBlock>
+                <TextBlock Grid.Column="4"
                            Text="Size"
-                           Margin="-50,0,0,0"
                            TextAlignment="Left"
                            FontSize="{StaticResource FontSizeText}"
-                           Foreground="{StaticResource NotAvailableColorBrush}">
+                           Foreground="{StaticResource NotAvailableColorBrush}"
+                           Margin="5 0">
 
-                    </TextBlock>
-                    <TextBlock Grid.Column="5"
+                </TextBlock>
+                <TextBlock Grid.Column="5"
                            Text="Unit price"
                            TextAlignment="Left"
                            FontSize="{StaticResource FontSizeText}"
-                           Foreground="{StaticResource NotAvailableColorBrush}">
+                           Foreground="{StaticResource NotAvailableColorBrush}"
+                           Margin="5 0">
 
-                    </TextBlock>
-                    <TextBlock Grid.Column="6"
+                </TextBlock>
+                <TextBlock Grid.Column="6"
                            Text="Amount"
-                           Margin="15,0,0,0"
-                           TextAlignment="Left"
+                           TextAlignment="Center"
                            FontSize="{StaticResource FontSizeText}"
-                           Foreground="{StaticResource NotAvailableColorBrush}">
+                           Foreground="{StaticResource NotAvailableColorBrush}"
+                           Margin="5 0">
 
-                    </TextBlock>
-                    <TextBlock Grid.Column="7"
+                </TextBlock>
+                <TextBlock Grid.Column="7"
                            Text="Price"
                            TextAlignment="Center"
                            FontSize="{StaticResource FontSizeText}"
-                           Foreground="{StaticResource NotAvailableColorBrush}">
+                           Foreground="{StaticResource NotAvailableColorBrush}"
+                           Margin="5 0">
 
-                    </TextBlock>
-                </Grid>
+                </TextBlock>
+            </Grid>
 
-            </Border>
-            <ListView
+        </Border>
+        <ListView
                 Grid.Row="2"
                 VerticalAlignment="Stretch"
                 ItemsSource="{Binding Bags}"
@@ -106,20 +109,20 @@
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 Margin="20,20,20,0"
                 HorizontalContentAlignment="Stretch">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <local:BagBlockUC
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <local:BagBlockUC
                                 DataContext="{Binding}">
-                        </local:BagBlockUC>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
-                        <Setter Property="Padding" Value="0"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
-            <Border
+                    </local:BagBlockUC>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <Border
                 Grid.Row="3"
             Width="600"
             Margin="0,30,20,15"
@@ -128,14 +131,14 @@
             Height="70"
             VerticalAlignment="Stretch"
             HorizontalAlignment="Right">
-                <Grid Margin="0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0"
+            <Grid Margin="0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
                     Style="{StaticResource ButtonRectangle}"
                     Content="Detele"
                     FontSize="{StaticResource FontSizeDescription}"
@@ -148,8 +151,8 @@
                     Width="120"
                     Height="40">
 
-                    </Button>
-                    <TextBlock Text="Total price"
+                </Button>
+                <TextBlock Text="Total price"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
                        FontWeight="Bold"
@@ -157,7 +160,7 @@
                        Grid.Column="1"
                        Foreground="{StaticResource NotAvailableColorBrush}"
                        ></TextBlock>
-                    <TextBlock Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}"
+                <TextBlock Text="{Binding Total, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
                        Grid.Column="2"
@@ -165,7 +168,7 @@
                        FontSize="{StaticResource FontSizeDescription}"
                        Foreground="{StaticResource NotAvailableColorBrush}"
                        ></TextBlock>
-                    <Button Grid.Column="5"
+                <Button Grid.Column="5"
                     Style="{StaticResource ButtonRectangle}"
                     Content="Buy now"
                     FontSize="{StaticResource FontSizeDescription}"
@@ -179,11 +182,9 @@
                     Width="120"
                     Height="40">
 
-                    </Button>
-                </Grid>
-            </Border>
-        </Grid>
-    </ScrollViewer>
-
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>
 
