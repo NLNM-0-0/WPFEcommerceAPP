@@ -12,12 +12,15 @@
         <Image Source="{Binding ElementName=image, Path=Default}" 
                x:Name="imgDefault"
                Width="{Binding ElementName=imgAsync, Path=ActualWidth}"
-               Height="{Binding ElementName=imgAsync, Path=ActualHeight}"/>
+               Height="{Binding ElementName=imgAsync, Path=ActualHeight}"
+               Stretch="{Binding ElementName=image, Path=Stretch}"/>
         <Image Source="{Binding ElementName=image, Path=Source}"
                x:Name="imgAsync"
                Stretch="{Binding ElementName=image, Path=Stretch}">
-            
         </Image>
-        
+        <!--<local:CachedImage CachedSource="{Binding ElementName=image, Path=Source}"
+                           x:Name="imgAsync"
+                           Stretch="{Binding ElementName=image, Path=Stretch}"
+                           ImageCacheMode="{Binding ElementName=image, Path=ImageCacheMode}"/>-->
     </Grid>
 </UserControl>

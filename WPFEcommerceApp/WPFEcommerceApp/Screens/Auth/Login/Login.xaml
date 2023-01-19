@@ -99,6 +99,10 @@
                                     </Binding.ValidationRules>
                                 </Binding>
                             </materialDesign:PasswordBoxAssist.Password>
+                            <PasswordBox.InputBindings>
+                                <KeyBinding Key="Return" Command="{Binding KeyHandle_EnterLogin}"
+                                CommandParameter="{Binding ElementName=LoginButton, Path=IsEnabled}"/>
+                            </PasswordBox.InputBindings>
                         </PasswordBox>
 
                         <Grid Margin="0 19" >
@@ -140,11 +144,11 @@
                             HorizontalAlignment="Left"
                             Content="Sign up"
                             Command="{Binding OnSignUp}"/>
-                            <Button
+                            <Button x:Name="LoginButton"
                                 HorizontalAlignment="Right"
                                 Content="Login"
                                 Command="{Binding OnLogin}"
-                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                                CommandParameter="">
                                 <Button.IsEnabled>
                                     <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
                                         <Binding ElementName="Password" Path="(Validation.HasError)"/>

@@ -145,8 +145,7 @@
                                 <i:InvokeCommandAction Command="{Binding OnChangeScreen}" CommandParameter="{Binding ElementName=LV}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <!--// Listview items style template //-->
-
+                        <!--// Listview item's Container style template //-->
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template">
@@ -166,7 +165,6 @@
                                             </Border>
 
                                             <ControlTemplate.Triggers>
-
                                                 <MultiTrigger>
                                                     <MultiTrigger.Conditions>
                                                         <Condition Property="IsMouseOver" Value="True"/>
@@ -192,6 +190,7 @@
                                 </Setter>
                             </Style>
                         </ListView.ItemContainerStyle>
+                        <!-- Item Template-->
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel x:Name="ButtonContainer" Orientation="Horizontal"
@@ -226,6 +225,11 @@
                                             </i:InvokeCommandAction>
                                         </i:DataTrigger>
                                     </i:Interaction.Triggers>
+                                    <StackPanel.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" 
+                                                      Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:Drawer}}, Path=DataContext.OnButtonClick}"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=DataContext.Index}"/>
+                                    </StackPanel.InputBindings>
                                     <material:PackIcon Kind="{Binding Icon}"
                                         Width="29" Height="29"
                                         Margin="8, 0, 0, 0"

@@ -157,8 +157,14 @@ namespace WPFEcommerceApp
             RemoveOrUnBanned = "Ban";
             SearchBy = SearchByOptions[1];
 
-            notBannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser != Status.Banned.ToString() && user.Role != "Admin"));
-            bannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(user => user.StatusUser == Status.Banned.ToString() && user.Role != "Admin"));
+            notBannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(
+                user => user.StatusUser != Status.Banned.ToString() && 
+                user.Id != AccountStore.instance.CurrentAccount.Id)
+            );
+            bannedUsers = new ObservableCollection<MUser>(await userRepo.GetListAsync(
+                user => user.StatusUser == Status.Banned.ToString() &&
+                user.Id != AccountStore.instance.CurrentAccount.Id)
+            );
             FilteredUsers = usersToSearch = notBannedUsers;
 
             App.Current.Dispatcher.Invoke((Action)(() =>

@@ -113,10 +113,7 @@ namespace WPFEcommerceApp
                     
                     return;
                 }
-                Login login = App.serviceProvider.GetRequiredService<Login>();
-                login.Show();
-                App.Current.MainWindow.Hide();
-
+                NavigateProvider.LoginScreenHandle(true);
             });
 
             OnBack = new RelayCommand<object>(p => NavigationStore.instance.stackScreen.Count > 1, p =>

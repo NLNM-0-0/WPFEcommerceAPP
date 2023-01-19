@@ -318,7 +318,6 @@ namespace WPFEcommerceApp {
         public async Task Load() {
             MainViewModel.IsLoading = true;
 
-
             var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id && d.Status == true);
             foreach(var o in list) {
                 ListAddress.Add(o.Id, o);
@@ -378,7 +377,6 @@ namespace WPFEcommerceApp {
                     address = ListAddress[CurrentUser.DefaultAddress];
                 } catch { address = null; }
             });
-
             MainViewModel.IsLoading = false;
         }
         private async void PaymentAlertDialog(object p) {

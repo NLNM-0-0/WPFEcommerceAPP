@@ -37,7 +37,7 @@ namespace WPFEcommerceApp {
         public void Start() {
             oldInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             //Invoke a callback every x time (period)
-            timer = new Timer(UpdateNetworkStatus, null, new TimeSpan(0, 0, 0, 0, 100), new TimeSpan(0, 0, 0, 0, 100));
+            timer = new Timer(UpdateNetworkStatus, null, new TimeSpan(0, 0, 0, 0, 100), new TimeSpan(0, 0, 0, 0, 500));
         }
 
         private void UpdateNetworkStatus(object o) {
@@ -83,17 +83,19 @@ namespace WPFEcommerceApp {
             NetworkChanged += (sender, args) => {
                 bool internet = IsConnected;
                 bool flag = false;
+                var timer = new DispatcherTimer();
                 if(!internet) {
-                    var timer = new DispatcherTimer();
-                    timer.Interval = TimeSpan.FromMilliseconds(100);
+                    timer.Interval = TimeSpan.FromMilliseconds(3000);
                     timer.Tick += (sd, e) => {
                         flag = true;
                     };
+                    timer.Start();
                 }
                 while(internet != !IsConnected) {
                     internet = CheckConnection();
                     if(flag) break;
                 }
+                timer.Stop();
                 if(CheckConnection()) {
                     IsConnected = true;
                     OnlineNav();
@@ -102,13 +104,7 @@ namespace WPFEcommerceApp {
                     IsConnected = false;
                     OfflineNav();
                 }
-                App.Current.Dispatcher.Invoke(() => {
-                    if(App.Current.MainWindow.Visibility != System.Windows.Visibility.Visible) {
-                        Login p = App.serviceProvider.GetRequiredService<Login>();
-                        p.Hide();
-                        App.Current.MainWindow.Show();
-                    }
-                });
+                NavigateProvider.LoginScreenHandle(false);
             };
         }
     }

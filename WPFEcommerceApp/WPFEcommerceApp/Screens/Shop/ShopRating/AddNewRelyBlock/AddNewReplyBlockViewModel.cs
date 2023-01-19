@@ -25,7 +25,7 @@ namespace WPFEcommerceApp
         {
             get
             {
-                if (String.IsNullOrEmpty(User.SourceImageAva))
+                if (String.IsNullOrEmpty(User?.SourceImageAva))
                 {
                     return Properties.Resources.DefaultShopAvaImage;
                 }

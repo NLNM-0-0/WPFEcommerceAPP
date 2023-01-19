@@ -53,6 +53,7 @@ namespace WPFEcommerceApp {
         public ICommand OnChangeScreen { get; set; }
         public ICommand OnShopMouseOver { get; set; }
         public ICommand OnShopMouseLeave { get; set; }
+        public ICommand OnButtonClick { get; }
         public ShopPopUpVM ShopPopUpDataContext { get; set; }
         #endregion
 
@@ -76,7 +77,7 @@ namespace WPFEcommerceApp {
                     return true;
                 }
                 return false;
-            }, 
+            },
             (p) => {
                 if(DialogHost.IsDialogOpen("Main"))
                     DialogHost.Close("Main");
@@ -120,7 +121,6 @@ namespace WPFEcommerceApp {
                     else {
                         //Unknown
                     }
-                    prevSelected = SelectedIndex;
                 }
                 else {
                     if(SelectedIndex == 0) {
@@ -148,12 +148,33 @@ namespace WPFEcommerceApp {
                         ChangeIndex(NavigateProvider.ProfileScreen());
                     }
                 }
+                prevSelected = SelectedIndex;
+
             });
 
+            OnButtonClick = new RelayCommand<object>(p => {
+                if((int)p != SelectedIndex) {
+                    SelectedIndex = (int)p;
+                    return false;
+                }
+                if(AccountStore.instance.CurrentAccount == null && SelectedIndex != 0) return false;
+                return true;
+            }, p => {
+                NavigationStore.instance.CurrentViewModel = null;
+                SelectedIndex = -1;
+                SelectedIndex = (int)p;
+                var stackScreen = NavigationStore.instance.stackScreen;
+
+                if(stackScreen.Count > 1 &&
+                    stackScreen[stackScreen.Count - 1].Item1.GetType().Equals(
+                    stackScreen[stackScreen.Count - 2].Item1.GetType()) ) {
+                    stackScreen.RemoveAt(stackScreen.Count - 1);
+                }
+            });
             //Shop popup Handle
             var timer = new DispatcherTimer();
             OnShopMouseOver = new RelayCommand<object>(p => {
-                if(CurrentUser == null || CurrentUser.StatusShop == "NotExist" || !Internet.IsConnected) return false;
+                if(CurrentUser == null || CurrentUser.StatusShop != "NotBanned" || !Internet.IsConnected) return false;
                 var values = (object[])p;
                 if((values[0] as ButtonItem).Text == "Shop") return true;
                 return false;
@@ -186,6 +207,7 @@ namespace WPFEcommerceApp {
 
         #region Outside change handle
         private void OnScreenChange() {
+            if(NavigationStore.instance.CurrentViewModel == null) return;
             Type type = NavigationStore.instance.CurrentViewModel.GetType();
             switch(type.Name) {
                 case "AdminUserManagerViewModel":
@@ -235,14 +257,15 @@ namespace WPFEcommerceApp {
         #endregion
 
         void ChangeIndex(INavigationService nav, object o = null) {
+            var _navStore = NavigationStore.instance;
             if(!Internet.IsConnected) {
                 if(AccountStore.instance.CurrentAccount == null)
                     SelectedIndex = 0;
                 else
-                    NavigationStore.instance.stackScreen.Add(new Tuple<INavigationService, object>(nav, o));
+                    _navStore.stackScreen.Add(new Tuple<INavigationService, object>(nav, o));
                 return;
             }
-            if(nav.GetViewModel() != NavigationStore.instance.CurrentViewModel.GetType()) {
+            if(_navStore.currentViewModel == null || nav.GetViewModel() != _navStore.CurrentViewModel.GetType()) {
                 if(o != null)
                     nav.Navigate(o);
                 else nav.Navigate();
@@ -265,25 +288,25 @@ namespace WPFEcommerceApp {
 
         private ObservableCollection<ButtonItem> AdminButtonCreate() {
             return new ObservableCollection<ButtonItem> {
-                    new ButtonItem("AccountGroup", "Users"),
-                    new ButtonItem("Store", "Shops"),
-                    new ButtonItem("Dropbox", "Products"),
-                    new ButtonItem("Advertisements", "Ads"),
-                    new ButtonItem("TicketConfirmation", "Promo"),
-                    new ButtonItem("TagMultiple", "Catergories"),
-                    new ButtonItem("AlphaBBox", "Brands"),
-                    new ButtonItem("AccountCircle", "My Profile"),
+                    new ButtonItem("AccountGroup", "Users", 0),
+                    new ButtonItem("Store", "Shops", 1),
+                    new ButtonItem("Dropbox", "Products", 2),
+                    new ButtonItem("Advertisements", "Ads", 3),
+                    new ButtonItem("TicketConfirmation", "Promo", 4),
+                    new ButtonItem("TagMultiple", "Catergories", 5),
+                    new ButtonItem("AlphaBBox", "Brands", 6),
+                    new ButtonItem("AccountCircle", "My Profile", 7),
                 };
         }
 
         private ObservableCollection<ButtonItem> NormalButtonCreate() {
             return new ObservableCollection<ButtonItem> {
-                    new ButtonItem("Home", "Home"),
-                    new ButtonItem("Shopping", "Bag"),
-                    new ButtonItem("Cart", "Order"),
-                    new ButtonItem("Heart", "Favourite"),
-                    new ButtonItem("Store", "Shop"),
-                    new ButtonItem("AccountCircle", "My profile"),
+                    new ButtonItem("Home", "Home", 0),
+                    new ButtonItem("Shopping", "Bag", 1),
+                    new ButtonItem("Cart", "Order", 2),
+                    new ButtonItem("Heart", "Favourite", 3),
+                    new ButtonItem("Store", "Shop", 4),
+                    new ButtonItem("AccountCircle", "My profile", 5),
                     //new ButtonItem("Cog", "Settings"),
                 };
         }
@@ -293,8 +316,10 @@ namespace WPFEcommerceApp {
 public class ButtonItem {
     public string Icon { get; set; }
     public string Text { get; set; }
-    public ButtonItem(string icon, string text) {
+    public int Index { get; set; }
+    public ButtonItem(string icon, string text, int index) {
         Icon=icon;
         Text=text;
+        Index=index;
     }
 }
