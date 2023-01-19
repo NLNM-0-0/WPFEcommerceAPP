@@ -27,7 +27,9 @@ namespace WPFEcommerceApp
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        //public virtual async Task Load() { }
+        //public virtual Task Load() {
+        //    return Task.CompletedTask;
+        //}
         public virtual void Dispose() { }
     }
 }

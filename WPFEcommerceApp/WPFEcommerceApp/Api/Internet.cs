@@ -83,9 +83,9 @@ namespace WPFEcommerceApp {
             NetworkChanged += (sender, args) => {
                 bool internet = IsConnected;
                 bool flag = false;
+                var timer = new DispatcherTimer();
                 if(!internet) {
-                    var timer = new DispatcherTimer();
-                    timer.Interval = TimeSpan.FromMilliseconds(1000);
+                    timer.Interval = TimeSpan.FromMilliseconds(3000);
                     timer.Tick += (sd, e) => {
                         flag = true;
                     };
@@ -95,6 +95,7 @@ namespace WPFEcommerceApp {
                     internet = CheckConnection();
                     if(flag) break;
                 }
+                timer.Stop();
                 if(CheckConnection()) {
                     IsConnected = true;
                     OnlineNav();

@@ -153,18 +153,14 @@ namespace WPFEcommerceApp {
             });
 
             OnButtonClick = new RelayCommand<object>(p => {
-                if((int)p != SelectedIndex || AccountStore.instance.CurrentAccount == null) {
+                if((int)p != SelectedIndex) {
                     SelectedIndex = (int) p;
                     return false;
                 }
+                if(AccountStore.instance.CurrentAccount == null && SelectedIndex != 0) return false;
                 return true; 
             }, p => {
-                //var navStack = NavigationStore.instance.stackScreen;
-                //var screen = navStack[navStack.Count - 1];
-                //navStack.RemoveAt(navStack.Count - 1);
-                
                 NavigationStore.instance.CurrentViewModel = null;
-                //ChangeIndex(screen.Item1, screen.Item2);
                 SelectedIndex = -1;
                 SelectedIndex = (int)p;
             });

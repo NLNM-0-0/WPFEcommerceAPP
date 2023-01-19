@@ -22,7 +22,7 @@
                       ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     <Window.InputBindings>
-        <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding CloseCM}" CommandParameter="{Binding ElementName=MainWD}"/>
+        <KeyBinding Key="F4" Modifiers="Alt" Command="{Binding CloseCM}"/>
     </Window.InputBindings>
     <Window.Resources>
         <ResourceDictionary>
