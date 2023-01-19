@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
@@ -25,7 +26,9 @@ namespace WPFEcommerceApp {
                 ChangeAddressHandle.Execute(p);
                 DialogHost.Close("Main");
             });
-            OnAddAddress = new ImmediateCommand<object>(p => {
+            OnAddAddress = new ImmediateCommand<object>(async p => {
+                var Main = MainViewModel.UpdateDialog("Main");
+
                 var dl = new EditInforDialog() {
                     DataContext = new EditInforDialogVM() {
                         OnOK = new ImmediateCommand<object>(async o => {
@@ -34,12 +37,16 @@ namespace WPFEcommerceApp {
                             SelectedItem = o as Address;
                             AddAddressHandle.Execute(o);
                             CommandManager.InvalidateRequerySuggested();
-                        })
+                        }),
+                        PrevDialog = Main
                     }
                 };
-                DialogHost.Show(dl, "AddressCheckout");
+
+                await DialogHost.Show(dl, "Main");
             });
             OnEditAddress = new ImmediateCommand<object>(p => {
+                var Main = MainViewModel.UpdateDialog("Main");
+
                 var dl = new EditInforDialog() {
                     DataContext = new EditInforDialogVM(p as Address) {
                         OnOK = new ImmediateCommand<object>(async o => {
@@ -53,11 +60,12 @@ namespace WPFEcommerceApp {
                                 }
                             }
                             AddAddressHandle.Execute(o);
-                        })
+                        }),
+                        PrevDialog = Main
                     },
                     Header = "Edit address"
                 };
-                DialogHost.Show(dl, "AddressCheckout");
+                DialogHost.Show(dl, "Main");
             });
         }
     }

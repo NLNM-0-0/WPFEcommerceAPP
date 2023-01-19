@@ -16,7 +16,7 @@
             <Grid>
                 <Label Content="{Binding Header}" HorizontalAlignment="Left" FontSize="{StaticResource FontSizeHeadline2}"/>
                 <Button HorizontalAlignment="Right"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Command="{Binding ElementName=EditDialog, Path=DataContext.CloseCM}"
                         x:Name="ButtonClose"
                         Height="30"
                         Width="30"
@@ -87,11 +87,6 @@
                         <Binding ElementName="phoneBox" Path="(Validation.HasError)"/>
                     </MultiBinding>
                 </Button.IsEnabled>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click" SourceName="lel">
-                        <i:InvokeCommandAction Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
             </Button>
         </StackPanel>
     </Border>
