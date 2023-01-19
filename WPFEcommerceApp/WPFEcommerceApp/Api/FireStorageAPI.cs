@@ -4,17 +4,22 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Cache;
+using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Firebase.Storage;
+using Newtonsoft.Json;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace WPFEcommerceApp {
     public class FireStorageAPI {
         readonly static string BUCKET = "wano-wpf.appspot.com";
+        readonly static string FireStorageEndpoint = "https://firebasestorage.googleapis.com/v0/b/";
         readonly static FirebaseStorage storage = new FirebaseStorage(BUCKET);
         const string tempJPG = "CreateTempJpg.jpg";
         const string tempIMG = "TempIMG.jpg";
@@ -46,7 +51,7 @@ namespace WPFEcommerceApp {
             var task = CreateRef(Root, Name, child);
             int clone = 0;
             string nclone = Name;
-            while(await Exist(task)) {
+            while(await Exist(Root, Name, child)) {
                 clone = (clone + new Random().Next(0, 99)) * 2;
                 Name = nclone + $"_{clone}";
                 task = CreateRef(Root, Name, child);
@@ -117,9 +122,28 @@ namespace WPFEcommerceApp {
             return true;
         }
 
-        static async Task<bool> Exist(FirebaseStorageReference ins) {
+        static async Task<bool> Exist(string Root, string Name, params string[] child) {
+            List<string> childs = new List<string>();
+            childs.Add(Root);
+            childs = childs.Concat(child).ToList();
+            childs.Add(Name);
             try {
-                await ins.GetMetaDataAsync();
+                var downloadUrl = $"{FireStorageEndpoint}{BUCKET}/o/{Uri.EscapeDataString(string.Join("/", childs))}?time={DateTime.Now}";
+                using(var http = new HttpClient()) {
+                    http.DefaultRequestHeaders.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue {
+                        NoCache = true,
+                        NoStore = true,
+                    };
+                    //respone will keep return cache if cacheLevel is CacheIfAvailable
+                    //=> Should not use this policy
+                    //=> But in this app, just store image, so we can use this
+                    var result = await http.GetAsync(downloadUrl);
+                    var resultContent = await result.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<FirebaseMetaData>(resultContent);
+                    if(data.ContentType == null) {
+                        return false;
+                    }
+                }
             }
             catch {
                 return false;

@@ -28,45 +28,52 @@ namespace WPFEcommerceApp {
     /// Interaction logic for AsyncImage.xaml
     /// </summary>
     public partial class AsyncImage : UserControl {
+
+        /// <summary>
+        /// get or set Stretch Property
+        /// </summary>
         public Stretch Stretch {
             get { return (Stretch)GetValue(StretchProperty); }
             set { SetValue(StretchProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Stretch.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StretchProperty =
             DependencyProperty.Register("Stretch", typeof(Stretch), typeof(AsyncImage), new PropertyMetadata(Stretch.Uniform));
 
 
-
+        /// <summary>
+        /// get or set Default Image when Image not load from Http
+        /// </summary>
         public string Default {
             get { return (string)GetValue(DefaultProperty); }
             set { SetValue(DefaultProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Default.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DefaultProperty =
             DependencyProperty.Register("Default", typeof(string), typeof(AsyncImage), new PropertyMetadata("..\\..\\..\\Assets\\Images\\NoImage.jpg"));
 
 
+        /// <summary>
+        /// get, set CacheMode
+        /// </summary>
+        public FileCache.CacheMode ImageCacheMode {
+            get { return (FileCache.CacheMode)GetValue(ImageCacheModeProperty); }
+            set { SetValue(ImageCacheModeProperty, value); }
+        }
 
+        public static readonly DependencyProperty ImageCacheModeProperty =
+            DependencyProperty.Register("ImageCacheMode", typeof(FileCache.CacheMode), typeof(AsyncImage), new PropertyMetadata(FileCache.CacheMode.FromIE));
+
+        /// <summary>
+        /// get or set Source of image
+        /// </summary>
         public ImageSource Source {
             get { return (ImageSource)GetValue(ImgSourceProperty); }
             set { SetValue(ImgSourceProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ImgSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImgSourceProperty =
-            DependencyProperty.Register("Source", typeof(ImageSource), typeof(AsyncImage), new PropertyMetadata(default(ImageSource), OnImgSourceChanged));
-
-        private static void OnImgSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs evt) {
-            var x = o.GetValue(ImgSourceProperty) as ImageSource;
-            try {
-                //Handle
-            } catch {
-                Debug.WriteLine("false");
-            }
-        }
+            DependencyProperty.Register("Source", typeof(ImageSource), typeof(AsyncImage), new PropertyMetadata(default(ImageSource)));
 
         public AsyncImage() {
             InitializeComponent();

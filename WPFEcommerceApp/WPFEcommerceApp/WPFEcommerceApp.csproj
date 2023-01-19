@@ -80,6 +80,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\UserControls\AsyncImage\CachedImage.cs" />
+    <Compile Include="Components\UserControls\AsyncImage\FileCache.cs" />
     <Compile Include="Components\UserControls\CategoryRequest\DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>

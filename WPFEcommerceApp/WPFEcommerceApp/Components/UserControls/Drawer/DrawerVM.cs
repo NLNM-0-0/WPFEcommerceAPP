@@ -77,7 +77,7 @@ namespace WPFEcommerceApp {
                     return true;
                 }
                 return false;
-            }, 
+            },
             (p) => {
                 if(DialogHost.IsDialogOpen("Main"))
                     DialogHost.Close("Main");
@@ -154,15 +154,22 @@ namespace WPFEcommerceApp {
 
             OnButtonClick = new RelayCommand<object>(p => {
                 if((int)p != SelectedIndex) {
-                    SelectedIndex = (int) p;
+                    SelectedIndex = (int)p;
                     return false;
                 }
                 if(AccountStore.instance.CurrentAccount == null && SelectedIndex != 0) return false;
-                return true; 
+                return true;
             }, p => {
                 NavigationStore.instance.CurrentViewModel = null;
                 SelectedIndex = -1;
                 SelectedIndex = (int)p;
+                var stackScreen = NavigationStore.instance.stackScreen;
+
+                if(stackScreen.Count > 1 &&
+                    stackScreen[stackScreen.Count - 1].Item1.GetType().Equals(
+                    stackScreen[stackScreen.Count - 2].Item1.GetType()) ) {
+                    stackScreen.RemoveAt(stackScreen.Count - 1);
+                }
             });
             //Shop popup Handle
             var timer = new DispatcherTimer();
