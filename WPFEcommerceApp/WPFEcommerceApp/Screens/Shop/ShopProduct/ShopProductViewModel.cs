@@ -607,4 +607,9 @@ namespace WPFEcommerceApp
             OutOfStockProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel == 0 && p.InStock == 0));
         }
     }
+    public class MImageProuct
+    {
+        public BitmapImage BMImage { get; set; }
+        public string Source { get; set; }
+    }
 }

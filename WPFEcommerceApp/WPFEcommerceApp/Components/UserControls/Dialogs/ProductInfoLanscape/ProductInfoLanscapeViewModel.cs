@@ -49,8 +49,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<BitmapImage> imageProducts;
-        public ObservableCollection<BitmapImage> ImageProducts
+        private ObservableCollection<MImageProuct> imageProducts;
+        public ObservableCollection<MImageProuct> ImageProducts
         {
             get
             {
@@ -210,7 +210,7 @@ namespace WPFEcommerceApp
         public ProductInfoLandscapeViewModel(Models.Product product)
         {
             SelectedProduct = product;
-            ImageProducts = new ObservableCollection<BitmapImage>();
+            ImageProducts = new ObservableCollection<MImageProuct>();
             if (SelectedProduct.ImageProducts.Count != 0)
             {
                 foreach (var item in SelectedProduct.ImageProducts)
@@ -220,7 +220,7 @@ namespace WPFEcommerceApp
                     bitmapImage.UriSource = new Uri(item.Source);
                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                     bitmapImage.EndInit();
-                    ImageProducts.Add(bitmapImage);
+                    ImageProducts.Add(new MImageProuct() { BMImage = bitmapImage, Source = item.Source });
                 }
             }
             ImageProducts.CollectionChanged += ImageProducts_CollectionChanged;
@@ -520,22 +520,22 @@ namespace WPFEcommerceApp
             {
                 foreach (var imageproduct in imageproducts)
                 {
-                    if (imageproduct.Source.Contains("https://firebasestorage.googleapis.com") && !ImageProducts.Any(p => (p.UriSource != null  && p.UriSource.ToString() == imageproduct.Source)))
+                    if (imageproduct.Source.Contains("https://firebasestorage.googleapis.com") && !ImageProducts.Any(p => (p.BMImage.UriSource != null  && p.BMImage.UriSource.ToString() == imageproduct.Source)))
                     {
                         await FireStorageAPI.Delete(imageproduct.Source);
                         await repository.Remove(imageproduct);
                     }
                 }
             }
-            foreach (BitmapImage imageProductSource in ImageProducts)
+            foreach (MImageProuct imageProductSource in ImageProducts)
             {
-                if (imageProductSource.UriSource != null && imageProductSource.UriSource.ToString().Contains("https://firebasestorage.googleapis.com"))
+                if (imageProductSource.Source.Contains("https://firebasestorage.googleapis.com"))
                 {
                     continue;
                 }
                 else
                 {     
-                    string link = await FireStorageAPI.PushFromImage(imageProductSource, "Product", "Image", null, $"{SelectedProduct.Id}");
+                    string link = await FireStorageAPI.PushFromImage(imageProductSource.BMImage, "Product", "Image", null, $"{SelectedProduct.Id}");
                     Models.ImageProduct imageProduct;
                     imageProduct = new Models.ImageProduct() { Source = link, IdProduct = SelectedProduct.Id };
                     SelectedProduct.ImageProducts.Add(imageProduct);

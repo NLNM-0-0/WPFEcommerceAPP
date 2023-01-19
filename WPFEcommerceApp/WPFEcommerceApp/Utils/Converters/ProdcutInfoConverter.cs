@@ -37,7 +37,7 @@ namespace WPFEcommerceApp
             {
                 string name = (string)values[(int)productInfo.Name];
                 string price = (string)values[(int)productInfo.Price];
-                ObservableCollection<BitmapImage> imageProducts = (ObservableCollection<BitmapImage>)values[(int)productInfo.Images];
+                ObservableCollection<MImageProuct> imageProducts = (ObservableCollection<MImageProuct>)values[(int)productInfo.Images];
                 bool isOneSize = (bool)values[(int)productInfo.IsOneSize];
                 bool isHadSizeS = (bool)values[(int)productInfo.IsHadSizeS];
                 bool isHadSizeM = (bool)values[(int)productInfo.IsHadSizeM];
@@ -57,10 +57,10 @@ namespace WPFEcommerceApp
                 product.ImageProducts.Clear();
                 if (imageProducts != null)
                 {
-                    foreach (BitmapImage image in imageProducts)
+                    foreach (MImageProuct image in imageProducts)
                     {
                         Models.ImageProduct imageProduct = new Models.ImageProduct();
-                        imageProduct.Source = image.ToString();
+                        imageProduct.Source = image.Source;
                         product.ImageProducts.Add(imageProduct);
                     }
                 }

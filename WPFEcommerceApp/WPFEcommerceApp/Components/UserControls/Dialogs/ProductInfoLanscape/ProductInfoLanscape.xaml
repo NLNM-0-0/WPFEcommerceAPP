@@ -187,10 +187,10 @@
                                                     Height="70"
                                                     MaxWidth="70">
                                                     <local:AsyncImage 
-                                                        Source="{Binding}"
+                                                        Source="{Binding BMImage}"
                                                         Height="70"
                                                         Width="70"
-                                                        Stretch="Fill">
+                                                        Stretch="UniformToFill">
                                                     </local:AsyncImage>
                                                 </Border>
                                             </DataTemplate>

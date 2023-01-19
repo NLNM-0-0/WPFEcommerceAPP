@@ -137,15 +137,15 @@
                                     IsHitTestVisible="True">
                                     <local:AsyncImage 
                                         x:Name="ImageProduct"
-                                        Source="{Binding}"
-                                        Stretch="Fill"/>
+                                        Source="{Binding BMImage}"
+                                        Stretch="UniformToFill"/>
                                     <behavior:Interaction.Triggers>
                                         <behavior:EventTrigger EventName="MouseMove">
                                             <behavior:InvokeCommandAction
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                             AncestorType={x:Type UserControl}}, 
                                                             Path=DataContext.ChangeSelectedImageCommand}" 
-                                                CommandParameter="{Binding ElementName=ImageProduct}"/>
+                                                CommandParameter="{Binding}"/>
                                         </behavior:EventTrigger>
                                     </behavior:Interaction.Triggers>
                                 </Grid>
@@ -162,8 +162,8 @@
                 Background="{StaticResource BoxShadowColorBrush}">
                 <local:AsyncImage 
                     x:Name="ImageMainProduct"
-                    Source="{Binding SelectedImage, UpdateSourceTrigger=PropertyChanged}"
-                    Stretch="Fill"/>
+                    Source="{Binding SelectedImage.BMImage, UpdateSourceTrigger=PropertyChanged}"
+                    Stretch="UniformToFill"/>
             </Grid>
 
             <Grid

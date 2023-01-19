@@ -132,16 +132,160 @@
             </Setter>
         </Style>
         <Style x:Key="statusDataRow" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Padding" Value="5 0"/>
             <Setter Property="Foreground">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource ShopProductStatusColorConverter}">
-                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" Path="Item.BanLevel" />
-                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}" Path="Item.InStock"/>
+                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}" Path="Item.BanLevel" />
+                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}" Path="Item.InStock"/>
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
         </Style>
         <local:DoubleToCurrencyConverter x:Key="DoubleToCurrencyConverter"/>
+        <Style TargetType="{x:Type DataGridCell}" x:Key="RightCell">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="FontFamily" Value="{StaticResource Medium}"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
+            <Setter Property="Padding" Value="5 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border 
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource BoxLineColorBrush}"/>
+                    <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BoxLineColorBrush}"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style TargetType="{x:Type DataGridCell}" x:Key="CenterCell" BasedOn="{StaticResource RightCell}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="CenterHeader">
+            <Setter Property="Padding" Value="5 0"/>
+            <Setter Property="Background" Value="{StaticResource NotAvailableColorBrush}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{StaticResource Medium}"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
+            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"/>
+            <Setter Property="MinHeight" Value="25"/>
+            <Setter Property="Padding" Value="10 5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                        <Grid>
+                            <Border 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                                <Grid Margin="{TemplateBinding Padding}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter 
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    RecognizesAccessKey="True" 
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    <Grid
+                                    Grid.Column="1"
+                                    Margin="5 0 0 0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Width="10">
+                                        <TextBlock
+                                        x:Name="SortUpIcon"
+                                        Visibility="Collapsed"
+                                        Height="10"
+                                        Width="10"
+                                        VerticalAlignment="Center"
+                                        Foreground="{TemplateBinding Foreground}">
+                                        <fa:ImageAwesome Icon="SortUp" 
+                                                         Height="{Binding ElementName=SortUpIcon, Path=ActualHeight}"
+                                                         Width="{Binding ElementName=SortUpIcon, Path=ActualHeight}"
+                                                         Foreground="{Binding ElementName=SortDownIcon, Path=Foreground}"/>
+                                        </TextBlock>
+                                        <TextBlock
+                                        x:Name="SortDownIcon"
+                                        Visibility="Collapsed"
+                                        Height="10"
+                                        Width="10"
+                                        VerticalAlignment="Center"
+                                        Foreground="{TemplateBinding Foreground}">
+                                        <fa:ImageAwesome Icon="SortDown" 
+                                                         Height="{Binding ElementName=SortUpIcon, Path=ActualHeight}"
+                                                         Width="{Binding ElementName=SortUpIcon, Path=ActualHeight}"
+                                                         Foreground="{Binding ElementName=SortDownIcon, Path=Foreground}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <Thumb 
+                            x:Name="PART_LeftHeaderGripper" 
+                            HorizontalAlignment="Left" 
+                            Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                            <Thumb 
+                            x:Name="PART_RightHeaderGripper" 
+                            HorizontalAlignment="Right" 
+                            Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="SortDirection" Value="Ascending">
+                                <Setter 
+                                TargetName="SortUpIcon"
+                                Property="Visibility"
+                                Value="Visible"/>
+                                <Setter 
+                                TargetName="SortDownIcon"
+                                Property="Visibility"
+                                Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="SortDirection" Value="Descending">
+                                <Setter 
+                                TargetName="SortUpIcon"
+                                Property="Visibility"
+                                Value="Collapsed"/>
+                                <Setter 
+                                TargetName="SortDownIcon"
+                                Property="Visibility"
+                                Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="RightHeader" BasedOn="{StaticResource CenterHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        </Style>
     </UserControl.Resources>
     <materialDesign:DialogHost
             CloseOnClickAway="True"
@@ -502,15 +646,42 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Width="2*" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Name" Width="4*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Category" Width="3*" Binding="{Binding Category.Name, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Brand" Width="3*" Binding="{Binding Brand.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn
+                                HeaderStyle="{StaticResource CenterHeader}"
+                                CellStyle="{StaticResource CenterCell}"
+                                Header="Category" 
+                                Width="3*" 
+                                Binding="{Binding Category.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn
+                                HeaderStyle="{StaticResource CenterHeader}"
+                                CellStyle="{StaticResource CenterCell}"
+                                Header="Brand" 
+                                Width="3*" 
+                                Binding="{Binding Brand.Name, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn 
+                                HeaderStyle="{StaticResource RightHeader}"
+                                CellStyle="{StaticResource RightCell}"
                                 Header="Price" 
                                 Width="3*" 
                                 Binding="{i:Binding '(Price * (100 - Sale) / 100).ToString() + &quot; $&quot;', UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="InStock" Width="3*" Binding="{Binding InStock, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Sold" Width="3*" Binding="{Binding Sold, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Status" Width="3*" ElementStyle="{StaticResource statusDataRow}">
+                            <DataGridTextColumn 
+                                HeaderStyle="{StaticResource RightHeader}"
+                                CellStyle="{StaticResource RightCell}"
+                                Header="InStock" 
+                                Width="3*" 
+                                Binding="{Binding InStock, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn
+                                HeaderStyle="{StaticResource RightHeader}"
+                                CellStyle="{StaticResource RightCell}"
+                                Header="Sold" 
+                                Width="3*" 
+                                Binding="{Binding Sold, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn 
+                                HeaderStyle="{StaticResource CenterHeader}"
+                                CellStyle="{StaticResource CenterCell}"
+                                Header="Status" 
+                                Width="3*" 
+                                ElementStyle="{StaticResource statusDataRow}">
                                 <DataGridTextColumn.Binding>
                                     <MultiBinding Converter="{StaticResource ShopProductStatusConverter}" >
                                         <Binding Path="BanLevel"/>
