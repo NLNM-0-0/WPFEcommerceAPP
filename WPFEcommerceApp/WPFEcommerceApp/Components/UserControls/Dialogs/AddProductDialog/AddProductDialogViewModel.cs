@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 using WPFEcommerceApp.Models;
 using WPFEcommerceApp.UserControls.Dialogs.AddProductDialog;
 
@@ -35,8 +36,8 @@ namespace WPFEcommerceApp
         public ICommand OpenChangeImageDialogCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
-        private ObservableCollection<BitmapImage> imageProducts;
-        public ObservableCollection<BitmapImage> ImageProducts
+        private ObservableCollection<MImageProuct> imageProducts;
+        public ObservableCollection<MImageProuct> ImageProducts
         {
             get => imageProducts;
             set
@@ -350,7 +351,7 @@ namespace WPFEcommerceApp
                 closeDialog.Execute(null, null);
                 MainViewModel.IsLoading = true;
                 string id = await GenerateID.Gen(typeof(Product));
-                await productRepository.Add(new Models.Product()
+                Models.Product product = new Models.Product()
                 {
                     Id = id,
                     Name = ProductName.Trim(),
@@ -372,12 +373,24 @@ namespace WPFEcommerceApp
                     DateOfSale = DateTime.Now,
                     //ATCMT
                     BanLevel = 0
-                });
-                foreach (BitmapImage source in ImageProducts)
+                };
+                await productRepository.Add(product);
+                foreach (MImageProuct source in ImageProducts)
                 {
-                    string link = await FireStorageAPI.PushFromImage(source, "Product", "Image", null, $"{id}");
+                    string link = await FireStorageAPI.PushFromImage(source.BMImage, "Product", "Image", null, $"{id}");
+                    source.Source = link;
                     await imageProductRepository.Add(new Models.ImageProduct() { IdProduct = id, Source = link });
                 }
+                product.MUser = AccountStore.instance.CurrentAccount;
+                product.Brand = SelectedBrand;
+                product.Category = SelectedCategory;
+                HeaderViewModel.AllItems.Add(new SearchItemViewModel
+                {
+                    Name = ProductName.Trim(),
+                    SourceImage = ImageProducts.Count() != 0 ? ImageProducts.FirstOrDefault().Source : null,
+                    IsProduct = true,
+                    Model = product
+                });
                 MainViewModel.IsLoading = false;
                 OnClosedDialog();
             });
@@ -401,7 +414,7 @@ namespace WPFEcommerceApp
 
         public async void LoadData()
         {
-            ImageProducts = new ObservableCollection<BitmapImage>();
+            ImageProducts = new ObservableCollection<MImageProuct>();
             IsHadSizeS = false;
             IsHadSizeM = false;
             IsHadSizeL = false;

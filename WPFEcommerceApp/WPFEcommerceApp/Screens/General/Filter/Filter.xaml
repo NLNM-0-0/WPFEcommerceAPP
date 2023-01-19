@@ -267,7 +267,8 @@
         </ScrollViewer>
 
         <Grid 
-            Grid.Column="1">
+            Grid.Column="1"
+            HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -415,10 +416,13 @@
                 BorderThickness="0"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 ScrollViewer.CanContentScroll="True"
-                Grid.Row="1">
+                Grid.Row="1"
+                HorizontalContentAlignment="Center">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel/>
+                        <WrapPanel
+                            HorizontalAlignment="Center"
+                            Width="{c:Binding 'Math.Floor((ActualWidth - 40) / 290) * 290',  ElementName=Grid}"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
 
@@ -430,10 +434,10 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:ProductBlock 
-                            Height="500" 
-                            Width="350"
-                            DataContext="{Binding}"/>
+                        <local:ProductBlock
+                            DataContext="{Binding}"
+                            Width="280"
+                            Height="400"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

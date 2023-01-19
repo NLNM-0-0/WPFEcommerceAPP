@@ -301,24 +301,25 @@
             </Grid.ColumnDefinitions>
             <StackPanel
                 Background="{StaticResource BackgroundColorBrush}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="7*"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="1">
-                        <local:AsyncImage
+                    <Grid
+                    Background="{StaticResource WhiteColorBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="7*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1">
+                            <local:AsyncImage
                             Background="White"
                             Source="{Binding SelectedImage}"
                             Margin="20,30,20,0"
                             Width="750"
                             Height="500">
 
-                        </local:AsyncImage>
+                            </local:AsyncImage>
 
-                    </StackPanel>
-                    <Button Grid.Column="0"
+                        </StackPanel>
+                        <Button Grid.Column="0"
                                 Width="30"
                                 Height="30"
                                 Style="{StaticResource TransparentButton}"
@@ -328,11 +329,11 @@
                                 Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
                                 Opacity="0.5"
                                 Margin="30 0 0 0">
-                        <fa:ImageAwesome
+                            <fa:ImageAwesome
                                 Icon="ChevronCircleLeft"
                                 Foreground="{StaticResource BlackColorBrush}"/>
-                    </Button>
-                    <Button Grid.Column="2"
+                        </Button>
+                        <Button Grid.Column="2"
                                 VerticalAlignment="Center"
                                 Width="30"
                                 Height="30"
@@ -343,49 +344,64 @@
                                 Visibility="{i:Binding 'SelectedImageIndex!=-1', FalseToVisibility=Hidden}"
                                 Opacity="0.5"
                                 Margin="0 0 30 0">
-                        <fa:ImageAwesome
+                            <fa:ImageAwesome
                                 Icon="ChevronCircleRight"
                                 Foreground="{StaticResource BlackColorBrush}"/>
+                        </Button>
+                    </Grid>
+                    <materialDesign:Card
+                        Margin="20">
+                        <StackPanel
+                            Margin="10">
+                            <TextBlock 
+                                Text="COLOR"
+                                FontWeight="Bold"
+                                Foreground="{StaticResource BlackColorBrush}"
+                                FontSize="{StaticResource FontSizeHeadline3}"
+                                Margin="0 0 0 20">
 
+                            </TextBlock>
+                            <Border
+                                HorizontalAlignment="Stretch"
+                                Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}">
+                                <TextBlock 
+                                    MaxWidth="{i:Binding '(ActualWidth less 420)?0:(ActualWidth - 420)', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                                    Text="{Binding SelectedProduct.Color}"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    HorizontalAlignment="Left"
+                                    TextWrapping="Wrap"/>
+                            </Border>
+                        </StackPanel>
+                    </materialDesign:Card>
 
-                    </Button>
-                </Grid>
-                <TextBlock Text="COLOR"
-                    FontWeight="Bold"
-                    Margin="20"
-                    Foreground="{StaticResource BlackColorBrush}"
-                    FontSize="{StaticResource FontSizeHeadline3}">
+                    <materialDesign:Card
+                        Margin="20">
+                        <StackPanel
+                            Margin="10"
+                            HorizontalAlignment="Stretch">
+                            <TextBlock 
+                                Text="DESCRIPTION"
+                                FontWeight="Bold"
+                                Margin="0 0 0 20"
+                                Foreground="{StaticResource BlackColorBrush}"
+                                FontSize="{StaticResource FontSizeHeadline3}">
+                            </TextBlock>
+                            <Border
+                                HorizontalAlignment="Stretch"
+                                Padding="20, 0"
+                                Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}">
+                                <TextBlock 
+                                    MaxWidth="{i:Binding '(ActualWidth less 420)?0:(ActualWidth - 420)', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                                    Text="{Binding SelectedProduct.Description}"
+                                    FontSize="{StaticResource FontSizeText}"
+                                    HorizontalAlignment="Left"
+                                    TextWrapping="Wrap"/>
+                            </Border>
+                        </StackPanel>
+                    </materialDesign:Card>
 
-                </TextBlock>
-                <Border
-                    HorizontalAlignment="Stretch"
-                    Padding="20, 0"
-                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}">
-                        <TextBlock 
-                        MaxWidth="{i:Binding '(ActualWidth less 420)?0:(ActualWidth - 420)', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
-                        Text="{Binding SelectedProduct.Color}"
-                        FontSize="{StaticResource FontSizeText}"
-                        HorizontalAlignment="Left"
-                        TextWrapping="Wrap"/>
-                </Border>
-                <TextBlock Text="DESCRIPTION"
-                    FontWeight="Bold"
-                    Margin="20"
-                    Foreground="{StaticResource BlackColorBrush}"
-                    FontSize="{StaticResource FontSizeHeadline3}">
-
-                </TextBlock>
-                <Border
-                    HorizontalAlignment="Stretch"
-                    Padding="20, 0"
-                    Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth}">
-                    <TextBlock 
-                        MaxWidth="{i:Binding '(ActualWidth less 420)?0:(ActualWidth - 420)', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
-                        Text="{Binding SelectedProduct.Description}"
-                        FontSize="{StaticResource FontSizeText}"
-                        HorizontalAlignment="Left"
-                        TextWrapping="Wrap"/>
-                </Border>
+                    
+                
                
                 <TextBlock Text="SHOP INFORMATION"
                        FontWeight="Bold"

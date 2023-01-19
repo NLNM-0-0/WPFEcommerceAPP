@@ -25,19 +25,19 @@ namespace WPFEcommerceApp
                 }
                 (DataContext as AdsDialogViewModel).HeightImage *= ratio;
                 (DataContext as AdsDialogViewModel).WidthImage *= ratio;
-                if (Canvas.GetLeft(content) * ratio - 300 * (ratio - 1) > 0)
+                if (Canvas.GetLeft(content) * ratio - 350 * (ratio - 1) > 0)
                 {
                     Canvas.SetLeft(content, 0);
                 }
                 else
                 {
-                    if (Canvas.GetLeft(content) * ratio - 300 * (ratio - 1) < 600 - (DataContext as AdsDialogViewModel).WidthImage)
+                    if (Canvas.GetLeft(content) * ratio - 350 * (ratio - 1) < 700 - (DataContext as AdsDialogViewModel).WidthImage)
                     {
-                        Canvas.SetLeft(content, 600 - (DataContext as AdsDialogViewModel).WidthImage);
+                        Canvas.SetLeft(content, 700 - (DataContext as AdsDialogViewModel).WidthImage);
                     }
                     else
                     {
-                        Canvas.SetLeft(content, Canvas.GetLeft(content) * ratio - 300 * (ratio - 1));
+                        Canvas.SetLeft(content, Canvas.GetLeft(content) * ratio - 350 * (ratio - 1));
                     }
                 }
                 if (Canvas.GetTop(content) * ratio - 105 * (ratio - 1) > 0)
@@ -46,9 +46,9 @@ namespace WPFEcommerceApp
                 }
                 else
                 {
-                    if (Canvas.GetTop(content) * ratio - 105 * (ratio - 1) < 300 - (DataContext as AdsDialogViewModel).HeightImage)
+                    if (Canvas.GetTop(content) * ratio - 105 * (ratio - 1) < 210 - (DataContext as AdsDialogViewModel).HeightImage)
                     {
-                        Canvas.SetTop(content, 300 - (DataContext as AdsDialogViewModel).HeightImage);
+                        Canvas.SetTop(content, 210 - (DataContext as AdsDialogViewModel).HeightImage);
                     }
                     else
                     {

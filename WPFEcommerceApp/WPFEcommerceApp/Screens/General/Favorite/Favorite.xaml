@@ -20,7 +20,7 @@
         <ListView ItemsSource="{Binding Products}" Height="700" Margin="0 0"
                   SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                   BorderThickness="0" HorizontalAlignment="Center"
                   Visibility="{cal:Binding '(Products.Count!=0)', FalseToVisibility=Hidden}"
                   >

@@ -77,8 +77,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private long amount;
-        public long Amount
+        private int amount;
+        public int Amount
         {
             get => amount;
             set
@@ -94,6 +94,16 @@ namespace WPFEcommerceApp
             set
             {
                 price = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isBanned;
+        public bool IsBanned
+        {
+            get => isBanned;
+            set
+            {
+                isBanned = value;
                 OnPropertyChanged();
             }
         }

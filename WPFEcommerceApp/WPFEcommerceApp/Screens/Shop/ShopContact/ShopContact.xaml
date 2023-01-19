@@ -51,7 +51,8 @@
                 Width="500"
                 materialDesign:HintAssist.Hint="Email"
                 VerticalAlignment="Center"
-                IsReadOnly="True">
+                IsReadOnly="True"
+                IsHitTestVisible="False">
                 <Binding Path="Shop.Email" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <local:NotEmptyValidationRule
@@ -65,8 +66,9 @@
                 Width="500"
                 materialDesign:HintAssist.Hint="Phone Number"
                 VerticalAlignment="Center"
-                IsReadOnly="True">
-                <Binding Path="Address.PhoneNumber" UpdateSourceTrigger="PropertyChanged">
+                IsReadOnly="True"
+                IsHitTestVisible="False">
+                <Binding Path="Shop.PhoneNumber" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <local:PhoneValidateRule
                                 ValidatesOnTargetUpdated="True"/>

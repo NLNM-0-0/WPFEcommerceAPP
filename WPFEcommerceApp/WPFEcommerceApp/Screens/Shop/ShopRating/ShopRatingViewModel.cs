@@ -548,6 +548,7 @@ namespace WPFEcommerceApp
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
                     DisplayShopRatingBlockModels = ShopRatingBlockModelsAll;
+                    ShopRatingBlockModelFilter = ShopRatingBlockModelsAll;
                     lock (IsLoadingCheck.IsLoading as object)
                     {
                         IsLoadingCheck.IsLoading--;

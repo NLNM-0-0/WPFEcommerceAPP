@@ -93,15 +93,15 @@
                         Width="100"
                         Height="100">
                     <local:AsyncImage 
-                            Height="98"
-                            Width="98"
+                            Height="96"
+                            Width="96"
                             Stretch="UniformToFill"
                             Source="{Binding SourceImageAva, UpdateSourceTrigger=PropertyChanged}">
                         <local:AsyncImage.Clip>
                             <EllipseGeometry
-                                    Center="49 49"
-                                    RadiusX="49"
-                                    RadiusY="49"/>
+                                    Center="48 48"
+                                    RadiusX="48"
+                                    RadiusY="48"/>
                         </local:AsyncImage.Clip>
                     </local:AsyncImage>
                 </Border>
@@ -135,14 +135,17 @@
         <TabControl Grid.Row="1" Margin="50 20 50 20" x:Name="tabcontrol">
             <TabItem Style="{StaticResource RadioTabItem}"
                      Header="My Profile" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}">
-                <Border Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth}"
-                            Height="{c:Binding ElementName=tabcontrol, Path=ActualHeight}">
-                    <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                              PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                    <Border Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth}"
+                            Height="{c:Binding 'ActualHeight + 20',Path=tabcontrol}"
+                            Padding="1">
+                        <Grid>
                         <local:ProfileControl 
-                            Margin="0 30 0 0"
                             HorizontalAlignment="Stretch"/>
                     </Grid>
                 </Border>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem Header="My Address" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}"
@@ -154,8 +157,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <local:AddressesControl Grid.Row="0" Margin="0 0 0 20"
-                        Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth*0.6}"
-                                        />
+                        Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth*0.6}"/>
 
                     <Grid Grid.Row="1">
                         <Button Content="Add new address"
@@ -170,11 +172,13 @@
             <TabItem Header="My Password" Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth/3}"
                      Style="{StaticResource RadioTabItem}"
                      Visibility="{i:Binding Path=!IsGoogle, FalseToVisibility=Collapsed}">
-                <Border Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth}"
-                            Height="{c:Binding ElementName=tabcontrol, Path=ActualHeight}">
-                    <local:MyPassword
-                        Margin="0 30 0 0"/>
-                </Border>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                              PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                    <Border Width="{c:Binding ElementName=tabcontrol, Path=ActualWidth}"
+                            Height="{c:Binding 'ActualHeight + 20',Path=tabcontrol}">
+                        <local:MyPassword/>
+                    </Border>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         <Grid.InputBindings>

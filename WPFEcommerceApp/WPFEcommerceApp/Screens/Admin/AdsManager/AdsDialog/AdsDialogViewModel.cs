@@ -34,7 +34,7 @@ namespace WPFEcommerceApp
             set
             {
                 _imageAds = value;
-                if (_imageAds.Height*20 >= _imageAds.Width*7)
+                if (_imageAds.Height*10 >= _imageAds.Width*3)
                 {
                     WidthImage = 700;
                     HeightImage = _imageAds.Height * 700 / _imageAds.Width;

@@ -307,12 +307,21 @@
                     Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Button
+                        Grid.Column="0"
+                        Style="{StaticResource WhiteButton}"
+                        Width="100"
+                        Content="Cancel"
+                        HorizontalAlignment="Right"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                    </Button>
+                    <Button
                         x:Name="SaveButton"
                         Command="{Binding SaveProfileShopCommand}"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Width="100"
                         Content="Save"
                         HorizontalAlignment="Right">

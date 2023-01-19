@@ -184,12 +184,17 @@ namespace WPFEcommerceApp
                 });
                 BuyCommand = new RelayCommand<object>((p) =>
                 {
+                    bool isCanBuy = false;
                     foreach (BagBlock bag in Bags)
                     {
-                        if (bag.IsChecked == true)
-                            return true;
+                        if (bag.IsChecked == true && bag.IsBanned == true)
+                            return false;
+                        else if(bag.IsChecked)
+                        {
+                            isCanBuy = true;
+                        }
                     }
-                    return false;
+                    return isCanBuy;
                 }, async (p) =>
                 {
                     Dictionary<string, Tuple<MUser, List<Product>>> prdList = new Dictionary<string, Tuple<MUser, List<Product>>>();
@@ -261,11 +266,11 @@ namespace WPFEcommerceApp
         private async Task Load()
         {
             MainViewModel.IsLoading = true;
-            var cartList = new ObservableCollection<Models.Cart>(await CartRepo.GetListAsync(item => item.IdUser == AccountStore.instance.CurrentAccount.Id,
+            var cartList = new ObservableCollection<Models.Cart>((await CartRepo.GetListAsync(item => item.IdUser == AccountStore.instance.CurrentAccount.Id,
                                                         item => item.Product,
                                                         item => item.Product.MUser,
                                                         item => item.Product.ImageProducts
-                                                        ));
+                                                        )).OrderBy(c => c.Product.BanLevel != 0));
 
             Bags = new ObservableCollection<BagBlock>(cartList.Select(item => new BagBlock
             {
@@ -277,10 +282,11 @@ namespace WPFEcommerceApp
                 ShopName = item.Product.MUser.Name,
                 ProductSize = item.Size,
                 UnitPrice = item.Product.Price,
-                Amount = item.Amount ?? 0,
+                Amount = (item.Amount == null || item.Product.BanLevel != 0)?0:(int)item.Amount,
                 Price = (item.Amount * item.Product.Price) ?? 0,
                 Tamount = Tamount,
-                Plusamount = Plusamount
+                Plusamount = Plusamount, 
+                IsBanned = (item.Product.BanLevel != 0)
             }));
             MainViewModel.IsLoading = false;
         }

@@ -57,8 +57,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private BitmapImage selectedImage;
-        public BitmapImage SelectedImage
+        private MImageProuct selectedImage;
+        public MImageProuct SelectedImage
         {
             get
             {
@@ -82,9 +82,9 @@ namespace WPFEcommerceApp
             }
         }
 
-        private ObservableCollection<BitmapImage> imageProducts;
+        private ObservableCollection<MImageProuct> imageProducts;
 
-        public ObservableCollection<BitmapImage> ImageProducts
+        public ObservableCollection<MImageProuct> ImageProducts
         {
             get
             {
@@ -150,7 +150,7 @@ namespace WPFEcommerceApp
         public ProductInfoPortraitViewModel(Models.Product product)
         {
             SelectedProduct = product;
-            ImageProducts = new ObservableCollection<BitmapImage>();
+            ImageProducts = new ObservableCollection<MImageProuct>();
             if (SelectedProduct.ImageProducts.Count != 0)
             {
                 foreach (var item in SelectedProduct.ImageProducts)
@@ -160,21 +160,22 @@ namespace WPFEcommerceApp
                     bitmapImage.UriSource = new Uri(item.Source);
                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                     bitmapImage.EndInit();
-                    ImageProducts.Add(bitmapImage);
+                    ImageProducts.Add(new MImageProuct() { BMImage = bitmapImage, Source = item.Source });
                 }
             }
-            BitmapImage bitmap = new BitmapImage();
+            
             if (ImageProducts.Count == 0)
             {
+                BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri(Properties.Resources.DefaultProductImage);
                 bitmap.EndInit();
+                SelectedImage = new MImageProuct() { BMImage=bitmap, Source=Properties.Resources.DefaultProductImage};
             }
             else
             {
-                bitmap = ImageProducts.First();
+                SelectedImage = ImageProducts.First();
             }
-            SelectedImage = bitmap;
             Task.Run(async () =>
             {
                 await LoadBrands();
@@ -234,12 +235,8 @@ namespace WPFEcommerceApp
 
                 ChangeSelectedImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
                 {
-                    AsyncImage image = p as AsyncImage;
-                    if (image == null || image.Source == null)
-                    {
-                        return;
-                    }
-                    SelectedImage = (BitmapImage)image.Source;
+                    MImageProuct image = p as MImageProuct;
+                    SelectedImage = image;
                 });
 
                 OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
@@ -312,17 +309,17 @@ namespace WPFEcommerceApp
             foreach (var item in SelectedProduct.ImageProducts)
             {
                 BitmapImage bitmap = new BitmapImage(new Uri(item.Source));
-                ImageProducts.Add(bitmap);
+                ImageProducts.Add(new MImageProuct() { BMImage = bitmap, Source = item.Source});
             }
-            if (ImageProducts.Count > 0 && SelectedImage.UriSource.ToString() == Properties.Resources.DefaultProductImage)
+            if (ImageProducts.Count > 0 && SelectedImage.BMImage.UriSource.ToString() == Properties.Resources.DefaultProductImage)
             {
                 SelectedImage = ImageProducts.First();
             }
-            else if (SelectedImage.UriSource.ToString() != Properties.Resources.DefaultProductImage && !ImageProducts.Contains(SelectedImage))
+            else if (SelectedImage.BMImage.UriSource.ToString() != Properties.Resources.DefaultProductImage && !ImageProducts.Contains(SelectedImage))
             {
                 if (ImageProducts.Count == 0)
                 {
-                    SelectedImage = new BitmapImage(new Uri(Properties.Resources.DefaultProductImage));
+                    SelectedImage = new MImageProuct() { BMImage = new BitmapImage(new Uri(Properties.Resources.DefaultProductImage)), Source = Properties.Resources.DefaultProductImage };
                 }
                 else
                 {
@@ -378,22 +375,22 @@ namespace WPFEcommerceApp
             {
                 foreach (var imageproduct in imageproducts)
                 {
-                    if (imageproduct.Source.Contains("https://firebasestorage.googleapis.com") && !ImageProducts.Any(p => (p.UriSource != null && p.UriSource.ToString() == imageproduct.Source)))
+                    if (imageproduct.Source.Contains("https://firebasestorage.googleapis.com") && !ImageProducts.Any(p => (p.BMImage.UriSource != null && p.BMImage.UriSource.ToString() == imageproduct.Source)))
                     {
                         await FireStorageAPI.Delete(imageproduct.Source);
                         await repository.Remove(imageproduct);
                     }
                 }
             }
-            foreach (BitmapImage imageProductSource in ImageProducts)
+            foreach (MImageProuct imageProductSource in ImageProducts)
             {
-                if (imageProductSource.UriSource != null && imageProductSource.UriSource.ToString().Contains("https://firebasestorage.googleapis.com"))
+                if (imageProductSource.Source.Contains("https://firebasestorage.googleapis.com"))
                 {
                     continue;
                 }
                 else
                 {
-                    string link = await FireStorageAPI.PushFromImage(imageProductSource, "Product", "Image", null, $"{SelectedProduct.Id}");
+                    string link = await FireStorageAPI.PushFromImage(imageProductSource.BMImage, "Product", "Image", null, $"{SelectedProduct.Id}");
                     Models.ImageProduct imageProduct;
                     imageProduct = new Models.ImageProduct() { Source = link, IdProduct = SelectedProduct.Id };
                     SelectedProduct.ImageProducts.Add(imageProduct);

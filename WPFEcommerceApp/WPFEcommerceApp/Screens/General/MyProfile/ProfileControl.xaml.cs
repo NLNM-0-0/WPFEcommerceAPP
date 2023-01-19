@@ -24,5 +24,14 @@ namespace WPFEcommerceApp
         {
             InitializeComponent();
         }
+
+        private void Emailtb_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if(!Emailtb.IsEnabled)
+            {
+                Binding binding = BindingOperations.GetBinding(Emailtb, TextBox.TextProperty);
+                binding.ValidationRules.Clear();
+            }
+        }
     }
 }

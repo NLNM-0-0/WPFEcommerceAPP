@@ -48,9 +48,10 @@
                             materialDesign:HintAssist.Hint="Email"
                             Grid.Row="0"
                             VerticalAlignment="Center"
-                            IsEnabled="{i:Binding Path=!IsGoogle}"
+                            IsEnabled="{i:Binding '!IsGoogle and EditUser.Role != &quot;Admin&quot;'}"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="200">
+                            MaxLength="200"
+                            IsEnabledChanged="Emailtb_IsEnabledChanged">
                     <Binding Path="EditUser.Email"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -66,7 +67,7 @@
                             Grid.Row="0"
                             VerticalAlignment="Center"
                             materialDesign:TextFieldAssist.CharacterCounterVisibility="{i:Binding Path=!IsReadOnly, RelativeSource={RelativeSource Mode=Self}, FalseToVisibility=Hidden}"
-                            MaxLength="10">
+                            MaxLength="15">
                     <Binding Path="EditUser.PhoneNumber"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>

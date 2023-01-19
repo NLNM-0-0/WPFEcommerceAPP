@@ -54,7 +54,7 @@
                     Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="Source"
-                    Text="{Binding SelectedImageSource}"
+                    Text="{Binding SelectedImageSource.Source}"
                     IsReadOnly="True"
                     materialDesign:TextFieldAssist.SuffixText="         ">
                 </TextBox>
@@ -104,9 +104,9 @@
                                         Margin="0 0 0 10"
                                         IsHitTestVisible="True">
                                         <local:AsyncImage
-                                            Stretch="Fill"
+                                            Stretch="UniformToFill"
                                             x:Name="ImageProduct"
-                                            Source="{Binding}">
+                                            Source="{Binding BMImage}">
                                         </local:AsyncImage>
                                         <behavior:Interaction.Triggers>
                                             <behavior:EventTrigger EventName="MouseEnter">
@@ -114,7 +114,7 @@
                                                     Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                     AncestorType={x:Type UserControl}}, 
                                                     Path=DataContext.ChangeSelectedImageCommand}" 
-                                                    CommandParameter="{Binding ElementName=ImageProduct}"/>
+                                                    CommandParameter="{Binding}"/>
                                             </behavior:EventTrigger>
                                         </behavior:Interaction.Triggers>
                                     </Grid>
@@ -131,8 +131,8 @@
                 Margin="0 0 30 0"
                 Background="{StaticResource BoxShadowColorBrush}">
                 <local:AsyncImage x:Name="ImageMainProduct"
-                                  Stretch="Fill"
-                    Source="{Binding SelectedImageSource, UpdateSourceTrigger=PropertyChanged}"/>
+                                  Stretch="UniformToFill"
+                    Source="{Binding SelectedImageSource.BMImage, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Button
