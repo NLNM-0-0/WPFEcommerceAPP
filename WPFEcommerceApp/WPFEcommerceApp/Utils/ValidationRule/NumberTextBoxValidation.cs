@@ -76,7 +76,6 @@ namespace WPFEcommerceApp
         {
             if (IsNotCheckFirstTime)
             {
-                Regex regex = new Regex("[^0-9.-]+");
                 if (string.IsNullOrEmpty((value ?? "").ToString()))
                 {
                     if (!IsCanEmpty)
@@ -103,6 +102,10 @@ namespace WPFEcommerceApp
                     {
                         if (type == NumberType.IntergerType)
                         {
+                            if(resultString.Any(c=>c < '0' || c > '9'))
+                            {
+                                return new ValidationResult(false, ErrorMinMaxMessage);
+                            }
                             if (Min == double.MinValue)
                             {
                                 min = int.MinValue;

@@ -47,11 +47,11 @@ namespace WPFEcommerceApp
             set { _itemsSource = value; OnPropertyChanged(); }
         }
 
-        private ObservableCollection<SearchItemViewModel> _allItems;
-        public ObservableCollection<SearchItemViewModel> AllItems
+        static private ObservableCollection<SearchItemViewModel> _allItems;
+        static public ObservableCollection<SearchItemViewModel> AllItems
         {
             get { return _allItems; }
-            set { _allItems = value; OnPropertyChanged(); }
+            set { _allItems = value;}
         }
         public ObservableCollection<SearchItemViewModel> DefaultItems { get; set; }
 
@@ -132,6 +132,7 @@ namespace WPFEcommerceApp
 
             FilterSearchCommand = new ImmediateCommand<object>(p => {
                 IsSearchOpen = false;
+                SearchText = "";
                 FilterObject filter = new FilterObject(SearchText, null, null, null, FilterStatus.All);
                 NavigateProvider.FilterScreen().Navigate(filter);
             });

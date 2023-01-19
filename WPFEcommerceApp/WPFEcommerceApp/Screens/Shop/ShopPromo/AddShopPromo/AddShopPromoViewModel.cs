@@ -40,7 +40,7 @@ namespace WPFEcommerceApp
                 isMaxSale = value;
                 if(!value)
                 {
-                    MaxSale = "";
+                    MaxSale = "0";
                 }    
                 OnPropertyChanged();
             }
@@ -110,6 +110,16 @@ namespace WPFEcommerceApp
             set
             {
                 isNewCustomer = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool isAllCustomer;
+        public bool IsAllCustomer
+        {
+            get => isAllCustomer;
+            set
+            {
+                isAllCustomer = value;
                 OnPropertyChanged();
             }
         }
@@ -216,6 +226,9 @@ namespace WPFEcommerceApp
                 FilterProductPromos = SelectedProductPromos;
                 SearchBy = "Id";
                 IsNewCustomer = true;
+                IsAllCustomer = false;
+                Amount = "1";
+                MaxSale = "0";
                 AddNewProductCommand = new RelayCommandWithNoParameter( async() =>
                 {
                     MainViewModel.IsLoading = true;
@@ -238,7 +251,23 @@ namespace WPFEcommerceApp
                             (DateBegin <= DateEnd);
                 },async (p) =>
                 {
-                    await SaveProduct();
+                    if (DateEnd.Value.Date < DateTime.Now.Date)
+                    {
+                        MainViewModel.IsLoading = true;
+                        ConfirmDialog confirmDialog = new ConfirmDialog()
+                        {
+                            Header = "Oops",
+                            Content = "Please input Date End of promo bigger than Today"
+                        };
+                        MainViewModel.IsLoading = false;
+                        await DialogHost.Show(confirmDialog, "Main");
+                    }
+                    else
+                    {
+                        MainViewModel.IsLoading = true;
+                        await SaveProduct();
+                        MainViewModel.IsLoading = false;
+                    }
                 });
                 DeleteProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
                 {
@@ -272,13 +301,14 @@ namespace WPFEcommerceApp
         private async Task SaveProduct()
         {
             GenericDataRepository<Models.Promo> promoRepository = new GenericDataRepository<Promo>();
-            IList<Models.Promo> promos = await promoRepository.GetAllAsync();
+            Models.Promo promo = await promoRepository.GetSingleAsync(p=> (p.IdShop == AccountStore.instance.CurrentAccount.Id && p.Code.Trim() == Code.Trim() && (p.DateEnd >= DateTime.Now)));
             NotificationDialog notification = new NotificationDialog();
-            if (promos.Any(p => p.Code == Code && p.Status != 2 && (p.DateEnd < DateTime.Now)))
+            if (promo != null)
             {
                 notification = new NotificationDialog();
                 notification.Header = "Oops";
                 notification.ContentDialog = "This promo is already in process or in our promo request list. Please check again.";
+                MainViewModel.IsLoading = false;
                 await DialogHost.Show(notification, "Main");
                 return;
             }
@@ -287,16 +317,16 @@ namespace WPFEcommerceApp
             {
                 Id = id,
                 IdShop = AccountStore.instance.CurrentAccount.Id,
-                Code = this.Code,
-                Description = this.Description,
+                Code = this.Code.Trim(),
+                Description = this.Description.Trim(),
                 DateBegin = this.DateBegin.Value.Subtract(new TimeSpan(12, 0, 0)),
                 DateEnd = this.DateEnd.Value.Add(new TimeSpan(12, 0, 0)),
-                Amount = (IsLimitedAmount? int.Parse(this.Amount) : -1),
+                Amount = (IsLimitedAmount ? int.Parse(this.Amount) : -1),
                 AmountUsed = 0,
-                MaxSale = (IsMaxSale?double.Parse(this.MaxSale) :double.MaxValue),
+                MaxSale = (IsMaxSale ? double.Parse(this.MaxSale) : double.MaxValue),
                 MinCost = double.Parse(this.MinCost),
                 Sale = double.Parse(this.Sale),
-                CustomerType = IsNewCustomer?0:1,
+                CustomerType = IsNewCustomer ? 0 : 1,
                 Status = 0,
                 Name = this.Name
             }) ;
@@ -306,6 +336,7 @@ namespace WPFEcommerceApp
             }
             notification.Header = "Notification";
             notification.ContentDialog = "This promo is requested successfully. Please wait for us to accept.";
+            MainViewModel.IsLoading = false;
             await DialogHost.Show(notification, "Main");
             NavigateProvider.ShopPromoScreen().Navigate();
         }

@@ -682,6 +682,7 @@ namespace WPFEcommerceApp
                 {
                     Models.Product product = await productRepository.GetSingleAsync(p => p.Id == orderInfo.IdProduct);
                     product.Sold += orderInfo.Count;
+                    product.InStock -= orderInfo.Count;
                     await productRepository.Update(product);
                 }    
             }

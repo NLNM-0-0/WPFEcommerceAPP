@@ -255,7 +255,7 @@
                     Foreground="{StaticResource NotAvailableColorBrush}"
                     FontSize="20"
                     VerticalAlignment="Center"
-                    Visibility="{c:Binding 'MiniImagesProduct.Count > 4'}"/>
+                    Visibility="{c:Binding 'Images.Count > 4'}"/>
                 </Grid>
             </Grid>
             <Grid Margin="10" Grid.Row="1">

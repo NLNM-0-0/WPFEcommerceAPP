@@ -80,7 +80,7 @@
                             HorizontalAlignment="Stretch"
                             OverlayBackground="#abc4ff"
                             ContentPromoBlock="New customer"
-                            IsChecked="{c:Binding IsNewCustomer, UpdateSourceTrigger=PropertyChanged}"
+                            IsChecked="{c:Binding IsNewCustomer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Margin="0 0 30 0"
                             GroupName="targetCustomer"
                             Width="200"
@@ -94,6 +94,7 @@
                             ContentPromoBlock="All customers"
                             GroupName="targetCustomer"
                             Width="200"
+                            IsChecked="{c:Binding IsAllCustomer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             IsHitTestVisible="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
@@ -534,6 +535,8 @@
                                     <Binding ElementName="descriptionTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="minCostTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="saleTextBox" Path="(Validation.HasError)"/>
+                                    <Binding ElementName="maxSaleTextBox" Path="(Validation.HasError)"/>
+                                    <Binding ElementName="amountTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="dateFromTextBox" Path="(Validation.HasError)"/>
                                     <Binding ElementName="dateToTextBox" Path="(Validation.HasError)"/>
                                 </MultiBinding> 

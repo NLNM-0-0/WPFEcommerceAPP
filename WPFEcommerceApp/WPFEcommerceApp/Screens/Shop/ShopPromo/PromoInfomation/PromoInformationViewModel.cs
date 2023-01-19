@@ -62,7 +62,7 @@ namespace WPFEcommerceApp
                 isLimitedAmount = value;
                 if (!isLimitedAmount)
                 {
-                    SelectedPromo.Amount = null;
+                    SelectedPromo.Amount = 0;
                     OnPropertyChanged(nameof(SelectedPromo));
                 }
                 OnPropertyChanged();
@@ -129,6 +129,16 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private bool isAllCustomer;
+        public bool IsAllCustomer
+        {
+            get => isAllCustomer;
+            set
+            {
+                isAllCustomer = value;
+                OnPropertyChanged();
+            }
+        }
         private Models.Promo initialPromo;
         public PromoInformationViewModel(PromoVMConstructor param)
         {
@@ -147,7 +157,12 @@ namespace WPFEcommerceApp
                 MainViewModel.IsLoading = false;
             }).ContinueWith((first) =>
             {
-                IsNewCustomer = SelectedPromo.CustomerType == 0;
+                IsNewCustomer = (SelectedPromo.CustomerType == 0);
+                IsAllCustomer = (SelectedPromo.CustomerType == 1);
+                if(SelectedPromo.Amount == -1)
+                {
+                    SelectedPromo.Amount = 1;
+                }    
                 AddNewProductCommand = new RelayCommandWithNoParameter(async() =>
                 {
                     MainViewModel.IsLoading = true;
@@ -170,9 +185,22 @@ namespace WPFEcommerceApp
                             (SelectedPromo.DateBegin <= SelectedPromo.DateEnd);
                 }, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
-                    await SaveProduct();
-                    MainViewModel.IsLoading = false;
+                    if (SelectedPromo.DateEnd.Value.Date < DateTime.Now.Date)
+                    {
+                        MainViewModel.IsLoading = true;
+                        ConfirmDialog confirmDialog = new ConfirmDialog()
+                        {
+                            Header = "Oops",
+                            Content = "Please input DateEnd of promo bigger than Today"
+                        };
+                        MainViewModel.IsLoading = false;
+                        await DialogHost.Show(confirmDialog, "Main");
+                    }
+                    else
+                    {
+                        MainViewModel.IsLoading = true;
+                        await SaveProduct();
+                    }
                 });
                 DeleteProductCommand = new RelayCommand<object>((p) => p != null, (p) =>
                 {
@@ -254,6 +282,7 @@ namespace WPFEcommerceApp
             NotificationDialog notification = new NotificationDialog();
             notification.Header = "Notification";
             notification.ContentDialog = "This promo has been removed successfully.";
+            MainViewModel.IsLoading = false;
             await DialogHost.Show(notification, "Main");
             NavigateProvider.AdminPromoScreen().Navigate();
         }
@@ -265,7 +294,7 @@ namespace WPFEcommerceApp
             promo.Description = SelectedPromo.Description;
             promo.DateBegin = SelectedPromo.DateBegin;
             promo.DateEnd = SelectedPromo.DateEnd;
-            promo.Amount = SelectedPromo.Amount??-1;
+            promo.Amount = (IsLimitedAmount ? SelectedPromo.Amount : -1);
             promo.AmountUsed = 0;
             promo.MaxSale = (IsMaxSale ? SelectedPromo.MaxSale : double.MaxValue);
             promo.MinCost = SelectedPromo.MinCost;
@@ -275,7 +304,7 @@ namespace WPFEcommerceApp
             {
                 promo.CustomerType = 0;
             }
-            else
+            if(IsAllCustomer)
             {
                 promo.CustomerType = 1;
             }    
@@ -294,6 +323,7 @@ namespace WPFEcommerceApp
             NotificationDialog notification = new NotificationDialog();
             notification.Header = "Notification";
             notification.ContentDialog = "This promo has been updated successfully. Please wait for us to accept.";
+            MainViewModel.IsLoading = false;
             await DialogHost.Show(notification, "Main");
             NavigateProvider.ShopPromoScreen().Navigate();
         }

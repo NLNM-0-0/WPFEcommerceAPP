@@ -221,21 +221,28 @@ namespace WPFEcommerceApp
             bannedShops = new ObservableCollection<MUser>(await userRepo.
                 GetListAsync(item => item.Role.Equals("Shop") && item.StatusShop.Equals(Status.Banned.ToString())));
             var query = await requestRepo.GetAllAsync(s => s.MUser);
-
+            var addressRepo = new GenericDataRepository<Models.Address>();
+            RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>();
+            foreach (Models.ShopRequest request in query)
+            {
+                Models.Address address = await addressRepo.GetSingleAsync(a => a.IdUser == request.IdUser && a.Id == request.MUser.DefaultAddress);
+                ShopRequestItemViewModel item = new ShopRequestItemViewModel
+                {
+                    RequestId = request.Id,
+                    Id = request.IdUser,
+                    Name = request.MUser.Name,
+                    Description = request.Description,
+                    SourceImageAva = request.MUser.SourceImageAva,
+                    Email = request.MUser.Email,
+                    PhoneNumber = request.MUser.PhoneNumber,
+                    Address = address.Address1
+                };
+                RequestList.Items.Add(item);
+            }
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
                 FilteredShops = new ObservableCollection<MUser>(FilteredShops);
-                RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(
-                query.Select(item => new ShopRequestItemViewModel
-                {
-                    RequestId = item.Id,
-                    Id = item.IdUser,
-                    Name = item.MUser.Name,
-                    Description = item.Description,
-                    SourceImageAva = item.MUser.SourceImageAva,
-                    Email = item.MUser.Email,
-                    PhoneNumber = item.MUser.PhoneNumber,
-                }));
+                RequestList.Items = new ObservableCollection<ShopRequestItemViewModel>(RequestList.Items);
             }));
         }
 

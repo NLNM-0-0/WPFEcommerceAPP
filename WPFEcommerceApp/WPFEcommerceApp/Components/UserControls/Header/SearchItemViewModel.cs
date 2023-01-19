@@ -38,7 +38,7 @@ namespace WPFEcommerceApp
         private void ToProduct(object p) {
             var header = p as HeaderViewModel;
             header.IsSearchOpen = false;
-
+            header.SearchText = "";
             if(IsProduct) {
                 NavigateProvider.ProductDetailScreen().Navigate(Model);
             }

@@ -81,7 +81,7 @@
                             HorizontalAlignment="Stretch"
                             OverlayBackground="#abc4ff"
                             ContentPromoBlock="New customer"
-                            IsChecked="{c:Binding IsNewCustomer, UpdateSourceTrigger=PropertyChanged}"
+                            IsChecked="{Binding IsNewCustomer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Margin="0 0 30 0"
                             GroupName="targetCustomer"
                             Width="200"
@@ -95,7 +95,7 @@
                             ContentPromoBlock="All customers"
                             GroupName="targetCustomer"
                             Width="200"
-                            IsChecked="{c:Binding !IsNewCustomer, UpdateSourceTrigger=PropertyChanged}"
+                            IsChecked="{Binding IsAllCustomer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             IsHitTestVisible="{c:Binding '!IsAdmin', UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 

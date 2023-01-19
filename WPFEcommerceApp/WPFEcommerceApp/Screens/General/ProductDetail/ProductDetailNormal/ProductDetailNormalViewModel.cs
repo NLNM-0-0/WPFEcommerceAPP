@@ -443,6 +443,7 @@ namespace WPFEcommerceApp
         public ProductDetailNormalViewModel(Models.Product product)
         {
             SelectedProduct = product;
+            Rating = 0;
             Task.Run(async () =>
             {
                 ImageProducts = new List<string>();
@@ -456,10 +457,10 @@ namespace WPFEcommerceApp
                 await LoadAlso();
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    AllShopRatingBlockModels = new List<ShopRatingBlockModel>(AllShopRatingBlockModels); 
+                    AllShopRatingBlockModels = new List<ShopRatingBlockModel>(AllShopRatingBlockModels);
                     lock (IsLoadingCheck.IsLoading as object)
                     {
-                        IsLoadingCheck.IsLoading--;
+                        IsLoadingCheck.IsLoading += AllShopRatingBlockModels.Count - 1;
                     }
                 }));
             }).ContinueWith((second) =>
@@ -815,7 +816,7 @@ namespace WPFEcommerceApp
         {
             GenericDataRepository<Models.MOrder> orderReposition = new GenericDataRepository<MOrder>();
             GenericDataRepository<Models.OrderInfo> orderInfoReposition = new GenericDataRepository<OrderInfo>();
-            List<Models.MOrder> orders = new List<Models.MOrder>((await orderReposition.GetListAsync(r => (r != null && r.Status == "Completed"),
+            List<Models.MOrder> orders = new List<Models.MOrder>((await orderReposition.GetListAsync(r => (r != null && r.Status == "Completed" && r.IdShop == SelectedProduct.IdShop),
                                                                                                                                     r => r.MUser)));
             foreach (Models.MOrder order in orders)
             {
@@ -834,8 +835,8 @@ namespace WPFEcommerceApp
                     ShopRatingBlockModel shopRatingBlockModel = new ShopRatingBlockModel(orderInfos[i]);
                     AllShopRatingBlockModels.Add(shopRatingBlockModel);
                 }
-                Rating /= RatingTimes;
             }
+            Rating /= RatingTimes;
         }
         public void Search()
         {
