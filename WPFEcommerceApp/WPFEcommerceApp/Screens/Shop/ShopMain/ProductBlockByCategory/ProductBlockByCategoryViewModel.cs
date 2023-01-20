@@ -23,7 +23,7 @@ namespace WPFEcommerceApp
                 }
                 else
                 {
-                    return 1100;
+                    return 900;
                 }
             }
         }

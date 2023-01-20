@@ -66,15 +66,15 @@
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel
-                            Width="{c:Binding 'Math.Floor(ActualWidth / 360) * 360',  ElementName=productBlockByCategory}"/>
+                            Width="{c:Binding 'Math.Floor(ActualWidth / 290) * 290',  ElementName=productBlockByCategory}"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <local:ProductBlock
                             DataContext="{Binding}"
-                            Height="500"
-                            Width="350"/>
+                            Height="400"
+                            Width="280"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
