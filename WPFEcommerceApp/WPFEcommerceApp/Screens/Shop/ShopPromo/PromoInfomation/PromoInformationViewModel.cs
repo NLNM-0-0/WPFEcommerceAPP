@@ -62,7 +62,7 @@ namespace WPFEcommerceApp
                 isLimitedAmount = value;
                 if (!isLimitedAmount)
                 {
-                    SelectedPromo.Amount = 0;
+                    SelectedPromo.Amount = 1;
                     OnPropertyChanged(nameof(SelectedPromo));
                 }
                 OnPropertyChanged();
@@ -158,11 +158,7 @@ namespace WPFEcommerceApp
             }).ContinueWith((first) =>
             {
                 IsNewCustomer = (SelectedPromo.CustomerType == 0);
-                IsAllCustomer = (SelectedPromo.CustomerType == 1);
-                if(SelectedPromo.Amount == -1)
-                {
-                    SelectedPromo.Amount = 1;
-                }    
+                IsAllCustomer = (SelectedPromo.CustomerType == 1);  
                 AddNewProductCommand = new RelayCommandWithNoParameter(async() =>
                 {
                     MainViewModel.IsLoading = true;

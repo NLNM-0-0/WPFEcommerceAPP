@@ -126,20 +126,22 @@ namespace WPFEcommerceApp
             {
                 CartRepo = new GenericDataRepository<Models.Cart>();
                 Bags = new ObservableCollection<BagBlock>();
-                Plusamount = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+                Plusamount = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
                     BagBlock bagBlock = p as BagBlock;
                     bagBlock.Amount += 1;
+                    await UpdateAmount(bagBlock.Product.Id, bagBlock.ProductSize, bagBlock.Amount);
                     OnPropertyChanged(nameof(Total));
                 });
                 Tamount = new RelayCommand<object>((p) =>
                 {
                     BagBlock bagBlock = p as BagBlock;
                     return bagBlock != null && bagBlock.Amount >= 2;
-                }, (p) =>
+                }, async (p) =>
                 {
                     BagBlock bagBlock = p as BagBlock;
                     bagBlock.Amount -= 1;
+                    await UpdateAmount(bagBlock.Product.Id, bagBlock.ProductSize, bagBlock.Amount);
                     OnPropertyChanged(nameof(Total));
                 });
                 await Load();
@@ -289,6 +291,13 @@ namespace WPFEcommerceApp
                 IsBanned = (item.Product.BanLevel != 0)
             }));
             MainViewModel.IsLoading = false;
+        }
+        private async Task UpdateAmount(string idProduct, string size, int amount)
+        {
+            Models.Cart cart = await CartRepo.GetSingleAsync(c => (c.IdUser == AccountStore.instance.CurrentAccount.Id &&
+                                                                c.Size == size));
+            cart.Amount = amount;
+            await CartRepo.Update(cart);
         }
     }
 }

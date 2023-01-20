@@ -613,7 +613,7 @@
                     </Grid>
                     <Grid 
                         Background="Transparent"
-                        Margin="50 0"
+                        Margin="50 20"
                         ScrollViewer.CanContentScroll="True">
                         <StackPanel 
                             IsHitTestVisible="True">
@@ -621,7 +621,6 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <local:ShopRatingBlock
-                                        Margin="0 0 0 20"
                                         DataContext="{Binding}"
                                         Grid.Column="0"/>
                                     </DataTemplate>
@@ -631,7 +630,7 @@
                     </Grid>
                     <materialDesign:Card
                         Height="300"
-                        Margin="20"
+                        Margin="50 20"
                         Visibility="{i:Binding 'DisplayShopRatingBlockModels == null or DisplayShopRatingBlockModels.Count == 0', UpdateSourceTrigger=PropertyChanged}">
                         <Grid
                             VerticalAlignment="Center">

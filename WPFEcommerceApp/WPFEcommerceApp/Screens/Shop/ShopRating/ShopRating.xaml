@@ -464,7 +464,9 @@
                 x:Name="status"
                 Background="{StaticResource WhiteColorBrush}"
                 Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}"
-                VerticalAlignment="Stretch">
+                VerticalAlignment="Stretch"
+                ScrollViewer.CanContentScroll="False"
+                PreviewMouseWheel="Scroll_PreviewMouseWheel">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
