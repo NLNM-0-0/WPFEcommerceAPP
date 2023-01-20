@@ -206,7 +206,9 @@
                     Grid.Row="2"
                     Canvas.Top="250"
                     Background="{StaticResource WhiteColorBrush}"
-                    Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}">
+                    Width="{c:Binding '(ActualWidth - 20 less 0)?0:(ActualWidth - 20)', ElementName=contentGrid}"
+                    ScrollViewer.CanContentScroll="False"
+                    PreviewMouseWheel="Scroll_PreviewMouseWheel">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
