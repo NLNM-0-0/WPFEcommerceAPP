@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
@@ -25,7 +26,8 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           materialDesign:ScrollBarAssist.ThumbCornerRadius="20">
                 <ListView ItemsSource="{Binding RequestList.Items}"  
-                          HorizontalContentAlignment="Stretch" BorderThickness="0">
+                          HorizontalContentAlignment="Stretch" BorderThickness="0"
+                          MaxWidth="{c:Binding ActualWidth, RelativeSource={RelativeSource AncestorType=local:CategoryRequestList, Mode=FindAncestor}}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
                             <Setter Property="Margin" Value="5"/>
@@ -34,7 +36,8 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <DockPanel Margin="5" LastChildFill="False">
-                                <local:CategoryRequestItem DockPanel.Dock="Left" x:Name="selectedItem"/>
+                                <local:CategoryRequestItem DockPanel.Dock="Left" x:Name="selectedItem"
+                                                           Width="{c:Binding ActualWidth - 60, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
 
                                 <local:DropDown DockPanel.Dock="Right"/>
                             </DockPanel>

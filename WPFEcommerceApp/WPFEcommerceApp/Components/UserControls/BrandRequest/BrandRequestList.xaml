@@ -7,6 +7,7 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="1250"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:materialDesign ="http://materialdesigninxaml.net/winfx/xaml/themes"
              >
 
@@ -27,7 +28,8 @@
                           materialDesign:ScrollBarAssist.ThumbCornerRadius="20">
                 <ListView ItemsSource="{Binding RequestList.Items}" x:Name="itemList" 
                           HorizontalContentAlignment="Stretch"
-                          BorderThickness="0">
+                          BorderThickness="0"
+                          MaxWidth="{c:Binding ActualWidth, RelativeSource={RelativeSource AncestorType=local:BrandRequestList, Mode=FindAncestor}}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
                             <Setter Property="Margin" Value="5"/>
@@ -36,8 +38,10 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <DockPanel Margin="5" LastChildFill="False">
-                                <local:BrandRequestItem DockPanel.Dock="Left" x:Name="selectedItem"/>
-
+                                <local:BrandRequestItem 
+                                    DockPanel.Dock="Left" 
+                                    x:Name="selectedItem"
+                                    Width="{c:Binding ActualWidth - 60, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"/>
                                 <local:DropDown DockPanel.Dock="Right"/>
                             </DockPanel>
                         </DataTemplate>
