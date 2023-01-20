@@ -249,13 +249,18 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-                    <TextBlock
-                    Grid.Column="1"
-                    Text="{Binding NumberProductRemainder}"
-                    Foreground="{StaticResource NotAvailableColorBrush}"
-                    FontSize="20"
-                    VerticalAlignment="Center"
-                    Visibility="{c:Binding 'Images.Count > 4'}"/>
+                    <Grid
+                        VerticalAlignment="Stretch"
+                        Grid.Column="1"
+                        Margin="0 5 0 0">
+                        <TextBlock
+                            Text="{Binding NumberProductRemainder}"
+                            Foreground="{StaticResource NotAvailableColorBrush}"
+                            FontSize="20"
+                            VerticalAlignment="Center"
+                            Visibility="{c:Binding 'Images.Count > 4'}"/>   
+                    </Grid>
+                    
                 </Grid>
             </Grid>
             <Grid Margin="10" Grid.Row="1">
