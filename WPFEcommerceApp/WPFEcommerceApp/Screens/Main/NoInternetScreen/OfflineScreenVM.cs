@@ -11,14 +11,14 @@ namespace WPFEcommerceApp {
         public ICommand OnReconnect { get; set; }
         public OfflineScreenVM() {
             OnReconnect = new RelayCommand<object>(p => true, async p => {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 if(Internet.CheckConnection()) {
                     Internet.OnlineNav();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     return;
                 }
                 await Task.Delay(600);
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             });
         }
     }

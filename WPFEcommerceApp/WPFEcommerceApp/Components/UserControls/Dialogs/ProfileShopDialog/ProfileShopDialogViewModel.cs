@@ -132,25 +132,25 @@ namespace WPFEcommerceApp
             OpenProfileShopBackgroundDialog = new RelayCommandWithNoParameter(async () =>
             {
                 PreviousItem = MainViewModel.UpdateDialog("Main");
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 ProfileShopBackgroundDialog profileShopBackgroundDialog = new ProfileShopBackgroundDialog();
                 profileShopBackgroundDialog.DataContext = new ProfileShopBackgroundDialogViewModel(ImageBackground, PreviousItem);
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(profileShopBackgroundDialog, "Main");
             });
             OpenProfileShopAvaDialog = new RelayCommandWithNoParameter(async () =>
             {
                 PreviousItem = MainViewModel.UpdateDialog("Main");
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 ProfileShopAvaDialog profileShopAvaDialog = new ProfileShopAvaDialog();
                 profileShopAvaDialog.DataContext = new ProfileShopAvaDialogViewModel(ImageAva, PreviousItem);
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(profileShopAvaDialog, "Main");
             });
             SaveProfileShopCommand = new RelayCommandWithNoParameter(async () =>
             {
                 PreviousItem = MainViewModel.UpdateDialog("Main");
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 IsEditing = false;
                 await SaveImage();
                 Shop.Email = Shop.Email.Trim();
@@ -175,11 +175,11 @@ namespace WPFEcommerceApp
             {
                 if (IsEditing && (p ?? false))
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     IsEditing = false;
                     await AccountStore.instance.Update(Shop);
                     await LoadTempData();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 }
                 else if (!isEditing)
                 {
@@ -219,7 +219,7 @@ namespace WPFEcommerceApp
                     userlogin.Username = Shop.Email;
                     AccountStore.instance.CurrentAccount.UserLogin = userlogin;
                     await loginRepo.Update(userlogin);
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 }
                 else
                 {
@@ -236,7 +236,7 @@ namespace WPFEcommerceApp
                             }
                         })
                     };
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(dl, "Main");
                     return;
                 }
@@ -244,7 +244,7 @@ namespace WPFEcommerceApp
             else {
                 await AccountStore.instance.Update(Shop);
             }
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         public async Task SaveImage()
         {

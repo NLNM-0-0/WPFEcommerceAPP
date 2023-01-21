@@ -127,7 +127,7 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminUserManagerViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             userRepo = new GenericDataRepository<MUser>();
             SearchByOptions = new List<string> { "ID", "Name" };
             RoleOptions = new List<string> { "User", "Shop", "Admin" };
@@ -140,11 +140,11 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((first) =>
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
             });
         }
@@ -180,7 +180,7 @@ namespace WPFEcommerceApp
 
         public async Task RemoveUser(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var removeUser = obj as MUser;
             if (removeUser == null)
@@ -202,13 +202,13 @@ namespace WPFEcommerceApp
 
             await userRepo.Update(removeUser);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
         public async Task Search()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             await Task.Run(() =>
             {
                 if (string.IsNullOrEmpty(SearchBy))
@@ -237,7 +237,7 @@ namespace WPFEcommerceApp
                     FilteredUsers = new ObservableCollection<MUser>(usersToSearch.Where(br => br.Id.ToLower().Contains(SearchText.ToLower())));
                 }
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         public void CloseSearch()
@@ -247,7 +247,7 @@ namespace WPFEcommerceApp
 
         public async Task AddUser(object p)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             var user = p as MUser;
 
             var check = await loginRepo.GetSingleAsync(d => d.Username == user.Email);
@@ -257,7 +257,7 @@ namespace WPFEcommerceApp
                     Content = "This username/email already exists"
                 };
                 await DialogHost.Show(dl, "AddUser");
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 return;
             }
 
@@ -284,7 +284,7 @@ namespace WPFEcommerceApp
             await userRepo.Add(user);
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
             Role = null;
             NewUser = new MUser();

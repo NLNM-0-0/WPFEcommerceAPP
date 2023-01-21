@@ -241,10 +241,10 @@ namespace WPFEcommerceApp
             {
                 OpenEditProfileCommand = new RelayCommandWithNoParameter(async () =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ProfileShopDialog profileShopDialog = new ProfileShopDialog();
                     profileShopDialog.DataContext = new ProfileShopDialogViewModel();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(profileShopDialog, "Main");
                 });
                 LoadedCommand = new RelayCommand<Tuple<double, double, double>>((p) => { return p != null; }, p =>

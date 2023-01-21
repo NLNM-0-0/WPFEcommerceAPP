@@ -77,13 +77,13 @@ namespace WPFEcommerceApp {
 
 
             ICommand CanCelCM = new ImmediateCommand<object>(async (p) => {
-				MainViewModel.IsLoading = true;
+				MainViewModel.SetLoading(true);
 
                 (p as Order).Status = "Cancelled";
                 await OrderStore.instance.Update(p as Order);
                 NavigateProvider.OrderScreen().Navigate();
 
-				MainViewModel.IsLoading = false;
+				MainViewModel.SetLoading(false);
 
 			});
 			OnCancel = new ImmediateCommand<object>(async p => {

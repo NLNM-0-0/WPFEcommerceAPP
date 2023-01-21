@@ -17,11 +17,11 @@ namespace WPFEcommerceApp
                 isLoading = value;
                 if(isLoading > 0)
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                 }
                 else
                 {
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 }
             }
         }

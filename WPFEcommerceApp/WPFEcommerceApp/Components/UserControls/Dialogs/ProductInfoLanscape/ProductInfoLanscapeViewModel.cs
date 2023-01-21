@@ -351,7 +351,7 @@ namespace WPFEcommerceApp
                 {
                     var closeDialog = DialogHost.CloseDialogCommand;
                     closeDialog.Execute(null, null);
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     WPFEcommerceApp.Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
                     SelectedProduct.Name = productTemp.Name.Trim();
                     SelectedProduct.Price = productTemp.Price;
@@ -379,7 +379,7 @@ namespace WPFEcommerceApp
                     searchItemViewModel.Model = SelectedProduct;
                     searchItemViewModel.Name = SelectedProduct.Name;
                     searchItemViewModel.SourceImage = (SelectedProduct.ImageProducts.Count == 0) ? null : SelectedProduct.ImageProducts.ElementAt(0).Source;
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
 
                 EditProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
@@ -389,7 +389,7 @@ namespace WPFEcommerceApp
                 OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
                     PreviousItem = MainViewModel.UpdateDialog("Main");
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
                     changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts)
                     {
@@ -402,25 +402,25 @@ namespace WPFEcommerceApp
                             }
                         })
                     };
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(changeImageProductDialog, "Main");
                 });
                 OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
                     PreviousItem = MainViewModel.UpdateDialog("Main");
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     AddBrandDialog addBrandDialog = new AddBrandDialog();
                     addBrandDialog.DataContext = new AddBrandDialogViewModel(PreviousItem);
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(addBrandDialog, "Main");
                 });
                 OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
                     PreviousItem = MainViewModel.UpdateDialog("Main");
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
                     addCategoryDialog.DataContext = new AddCategoryDialogViewModel(PreviousItem);
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(addCategoryDialog, "Main");
                 });
                 ContactCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
@@ -467,7 +467,7 @@ namespace WPFEcommerceApp
         private async Task OpenContact()
         {
             PreviousItem = MainViewModel.UpdateDialog("Main");
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             NotificationDialog notificationDialog = new NotificationDialog();
             notificationDialog.Header = "Contact Info";
             notificationDialog.ContentDialog = $"Please contact us with phone number {Properties.Resources.PhoneNumber} or email {Properties.Resources.Email}.";
@@ -479,7 +479,7 @@ namespace WPFEcommerceApp
                     DialogHost.Show(PreviousItem, "Main");
                 }
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
             await DialogHost.Show(notificationDialog, "Main");
         }
 

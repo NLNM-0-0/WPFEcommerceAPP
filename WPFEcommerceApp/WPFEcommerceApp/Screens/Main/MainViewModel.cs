@@ -31,6 +31,29 @@ namespace WPFEcommerceApp {
         private static void NotifyStaticPropertyChanged([CallerMemberName] string name = null) {
             StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(name));
         }
+
+        public static async void SetLoading(bool value, int delay = 3000, string header = null, string message = null) {
+            IsLoading = value;
+            if(value == true) {
+                await Task.Delay(delay);
+                bool flag = false;
+                if(IsLoading == true) flag = true;
+                IsLoading = false;
+                if(flag) {
+                    if(message == null) message = "We are working on your request.\n It may take a while to update!";
+                    if(header == null) header = "On the way";
+                    App.Current.Dispatcher.Invoke(() => {
+                        var dl = new ConfirmDialog() {
+                            Content = message,
+                            Header = header,
+                        };
+                        var t = DialogHost.GetDialogSession("App");
+                        if(t != null) DialogHost.Close("App");
+                        DialogHost.Show(dl, "App");
+                    });
+                }
+            }
+        }
         #endregion
 
         private readonly NavigationStore _navigationStore;

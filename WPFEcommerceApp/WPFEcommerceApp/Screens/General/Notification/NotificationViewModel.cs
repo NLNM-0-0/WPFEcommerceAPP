@@ -36,7 +36,7 @@ namespace WPFEcommerceApp
         }
         private async Task Load()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             var noteList = new ObservableCollection<Models.Notification>((await NoteRepo.GetListAsync(item => item.IdReceiver == AccountStore.instance.CurrentAccount.Id,
                                                         item => item.MUser1
                                                         )).OrderByDescending(n => n.Date));
@@ -47,7 +47,7 @@ namespace WPFEcommerceApp
                 Date = item.Date.ToString(),
                 NotificationContent = item.Content
             }));
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
     }
 }

@@ -101,10 +101,10 @@ namespace WPFEcommerceApp
 
         public async Task Load()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             if(AccountStore.instance.CurrentAccount == null) {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 return;
             }
 
@@ -279,7 +279,7 @@ namespace WPFEcommerceApp
             };
             #endregion
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
     }
 }

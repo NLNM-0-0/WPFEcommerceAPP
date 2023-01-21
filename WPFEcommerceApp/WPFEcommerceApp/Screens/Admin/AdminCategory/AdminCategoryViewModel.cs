@@ -138,7 +138,7 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminCategoryViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             cateRepo = new GenericDataRepository<Category>();
             cateRequestRepo = new GenericDataRepository<CategoryRequest>();
             noteRepo = new GenericDataRepository<Models.Notification>();
@@ -158,11 +158,11 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((first) =>
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
             });
         }
@@ -207,7 +207,7 @@ namespace WPFEcommerceApp
 
         public async Task AddNewCategory(string cateName)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             cateName = cateName.Trim();
             NewName = string.Empty;
             var cate = await cateRepo.GetSingleAsync(item => item.Name.ToLower().Equals(cateName.ToLower()));
@@ -225,14 +225,14 @@ namespace WPFEcommerceApp
             }
 
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public async Task RemoveCategory(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var removeCate = obj as Category;
             if (removeCate == null)
@@ -259,13 +259,13 @@ namespace WPFEcommerceApp
             await prodRepo.Update(list.ToArray());
             await cateRepo.Update(removeCate);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
         public async Task RemoveRequest(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             var request = obj as CategoryRequestItemViewModel;
             if (request == null)
                 return;
@@ -284,12 +284,12 @@ namespace WPFEcommerceApp
             await noteRepo.Add(note);
             await cateRequestRepo.Remove(removeRequest);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         public async Task AddRequest(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var request = obj as CategoryRequestItemViewModel;
             if (request == null)
@@ -324,7 +324,7 @@ namespace WPFEcommerceApp
             await cateRequestRepo.Remove(removeRequest);
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
@@ -332,7 +332,7 @@ namespace WPFEcommerceApp
         {
             await Task.Run(() =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 if (string.IsNullOrEmpty(SearchBy))
                     FilteredCategories = categoriesToSearch;
 
@@ -364,7 +364,7 @@ namespace WPFEcommerceApp
                 }));
 
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 

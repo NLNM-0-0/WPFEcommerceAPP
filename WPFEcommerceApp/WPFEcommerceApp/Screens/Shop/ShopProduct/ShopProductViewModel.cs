@@ -307,28 +307,28 @@ namespace WPFEcommerceApp
             {
                 OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     AddBrandDialog addBrandDialog = new AddBrandDialog();
                     addBrandDialog.DataContext = new AddBrandDialogViewModel(null);
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(addBrandDialog, "Main");
                 });
                 OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
                     addCategoryDialog.DataContext = new AddCategoryDialogViewModel(null);
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(addCategoryDialog, "Main");
                 });
                 OpenAddProductDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     AddProductDialog addProductDialog = new AddProductDialog();
                     AddProductDialogViewModel addProductDialogViewModel = new AddProductDialogViewModel();
                     addProductDialogViewModel.ClosedDialog += AddProductDialogViewModel_ClosedDialog;
                     addProductDialog.DataContext = addProductDialogViewModel;
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(addProductDialog, "Main");
                 });
                 SearchProductCommand = new RelayCommandWithNoParameter(async () =>
@@ -355,34 +355,34 @@ namespace WPFEcommerceApp
                     }
                     if (minPrice > maxPrice)
                     {
-                        MainViewModel.IsLoading = true;
+                        MainViewModel.SetLoading(true);
                         NotificationDialog notification = new NotificationDialog();
                         notification.Header = "Error";
                         notification.ContentDialog = "Min price is bigger than max price";
                         await DialogHost.Show(notification, "Main");
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                         return;
                     }
                     else if (minInStock > maxInStock)
                     {
-                        MainViewModel.IsLoading = true;
+                        MainViewModel.SetLoading(true);
                         NotificationDialog notification = new NotificationDialog();
                         notification.Header = "Error";
                         notification.ContentDialog = "Min in stock is bigger than max in stock";
                         await DialogHost.Show(notification, "Main");
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                         return;
                     }
                     else
                     {
-                        MainViewModel.IsLoading = true;
+                        MainViewModel.SetLoading(true);
                         LoadProducts();
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                     }
                 });
                 ResetCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ProductNameSearch = "";
                     MinPriceSearch = "";
                     MaxPriceSearch = "";
@@ -391,7 +391,7 @@ namespace WPFEcommerceApp
                     BrandSearch = null;
                     CategorySearch = null;
                     LoadProducts();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 }); 
                 ProductNameSearch = "";
                 StatusAllSearch = true;

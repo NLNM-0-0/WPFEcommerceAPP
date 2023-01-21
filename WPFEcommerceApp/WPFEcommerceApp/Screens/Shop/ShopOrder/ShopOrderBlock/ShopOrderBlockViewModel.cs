@@ -174,11 +174,11 @@ namespace WPFEcommerceApp
         {
             PrintCommand = new RelayCommandWithNoParameter(()=>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 OrderInfoPdf pdf = new OrderInfoPdf();
                 pdf.DataContext = new OrderInfoPdfViewModel(Order);
                 pdf.Print();
-                MainViewModel.IsLoading = false; 
+                MainViewModel.SetLoading(false); 
             });
         }
     }

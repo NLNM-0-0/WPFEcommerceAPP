@@ -69,7 +69,7 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((first) =>
             {
@@ -101,7 +101,7 @@ namespace WPFEcommerceApp
                     
                 });
                 CloseSearchCommand = new RelayCommandWithNoParameter(() => { SearchText = ""; });
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             });
         }
 
@@ -137,7 +137,7 @@ namespace WPFEcommerceApp
 
         public async Task AcceptPromo(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var pro = obj as ShopPromoBlockViewModel;
             if (pro == null)
@@ -159,12 +159,12 @@ namespace WPFEcommerceApp
 
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
         public async Task RemovePromo(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var pro = obj as ShopPromoBlockViewModel;
             if (pro == null)
@@ -186,7 +186,7 @@ namespace WPFEcommerceApp
 
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         public async Task BanPromo(object obj)
@@ -206,7 +206,7 @@ namespace WPFEcommerceApp
             }
             else
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
 
                 pro.Promo.Status = 2;
                 var note = new Models.Notification
@@ -221,17 +221,17 @@ namespace WPFEcommerceApp
                 await promoRepo.Update(pro.Promo);
                 await noteRepo.Add(note);
             }
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
 
         }
         public async Task Search()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             await Task.Run(() =>
             {
                 if (string.IsNullOrEmpty(SearchBy))
@@ -277,7 +277,7 @@ namespace WPFEcommerceApp
                 if (timer.IsEnabled)
                     timer.Stop();
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 

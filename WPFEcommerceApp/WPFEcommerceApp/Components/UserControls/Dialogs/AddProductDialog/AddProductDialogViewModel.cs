@@ -300,7 +300,7 @@ namespace WPFEcommerceApp
             OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
                 PreviousItem = MainViewModel.UpdateDialog("Main");
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
                 changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts) 
                 {
@@ -313,25 +313,25 @@ namespace WPFEcommerceApp
                         }
                     })
                 };
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(changeImageProductDialog, "Main");
             });
             OpenAddBrandDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
                 PreviousItem = MainViewModel.UpdateDialog("Main");
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 AddBrandDialog addBrandDialog = new AddBrandDialog();
                 addBrandDialog.DataContext = new AddBrandDialogViewModel(PreviousItem);
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(addBrandDialog, "Main");
             });
             OpenAddCategoryDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
             {
                 PreviousItem = MainViewModel.UpdateDialog("Main");
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 AddCategoryDialog addCategoryDialog = new AddCategoryDialog();
                 addCategoryDialog.DataContext = new AddCategoryDialogViewModel(PreviousItem);
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(addCategoryDialog, "Main");
             });
             RequestProductCommand = new RelayCommand<object>((p) =>
@@ -349,7 +349,7 @@ namespace WPFEcommerceApp
             {
                 var closeDialog = DialogHost.CloseDialogCommand;
                 closeDialog.Execute(null, null);
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 string id = await GenerateID.Gen(typeof(Product));
                 Models.Product product = new Models.Product()
                 {
@@ -391,7 +391,7 @@ namespace WPFEcommerceApp
                     IsProduct = true,
                     Model = product
                 });
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 OnClosedDialog();
             });
             CheckOneSizeCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>

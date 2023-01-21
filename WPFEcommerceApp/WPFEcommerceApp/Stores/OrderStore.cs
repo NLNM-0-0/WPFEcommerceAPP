@@ -47,7 +47,7 @@ namespace WPFEcommerceApp {
             Debug.WriteLine("Thread x");
             OrderList = new List<Order>();
             if(user == null) {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 return;
             }
 
@@ -167,26 +167,26 @@ namespace WPFEcommerceApp {
 
         #region Api
         public async Task Add(Order p) {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             p.ID = await GenerateID.Gen(typeof(MOrder));
             OrderList.Add(p);
             MOrder temp = GenerateOrder(p);
             await orderRepo.Add(temp);
 
             await genOrderInfor(p, "Add");
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         public async Task Remove(Order p) {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             OrderList.Remove(p);
             MOrder temp = GenerateOrder(p);
             await orderRepo.Remove(temp);
 
             await genOrderInfor(p, "Remove");
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         public async Task Update(Order p) {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             for(int i = 0; i < OrderList.Count; i++) {
                 if(OrderList[i].ID == p.ID) OrderList[i] = p;
             }
@@ -201,7 +201,7 @@ namespace WPFEcommerceApp {
             temp.ShippingSpeedMethod = p.ShippingSpeedMethod;
             await orderRepo.Update(temp);
             OrderListChanged?.Invoke();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         public Order GetOrder(string id) {
             foreach(Order p in OrderList) {

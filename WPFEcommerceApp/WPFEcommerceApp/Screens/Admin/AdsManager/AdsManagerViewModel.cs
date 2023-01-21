@@ -92,14 +92,14 @@ namespace WPFEcommerceApp
         #region Construstor
         public AdsManagerViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             adsRepo = new GenericDataRepository<Advertisement>();
             adInUseRepo = new GenericDataRepository<AdInUse>();
             SourceImageAds=string.Empty;
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
 
                 await Load();
             }).ContinueWith((first) =>
@@ -111,7 +111,7 @@ namespace WPFEcommerceApp
                 CancelAdsCommand = new RelayCommandWithNoParameter(CancelAds);
                 OpenAdsDialogCommand = new RelayCommandWithNoParameter(async () => await OpenAdsDialog());
 
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             });
 
         }
@@ -168,7 +168,7 @@ namespace WPFEcommerceApp
                 {
                     CM = new RelayCommandWithNoParameter(async () =>
                     {
-                        MainViewModel.IsLoading = true;
+                        MainViewModel.SetLoading(true);
                         await adInUseRepo.Remove(SelectedItem.AdInUses.ToArray());
                         await RemoveAdsDB();
                         CommandManager.InvalidateRequerySuggested();
@@ -193,7 +193,7 @@ namespace WPFEcommerceApp
             {
                 CM = new RelayCommandWithNoParameter(async () =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     await RemoveInUseAdsDB();
                     CommandManager.InvalidateRequerySuggested();
                 }),
@@ -206,18 +206,18 @@ namespace WPFEcommerceApp
 
         public async Task RemoveAdsDB()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             await adsRepo.Remove(_selectedItem);
             await FireStorageAPI.Delete(_selectedItem.Image);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
         public async Task RemoveInUseAdsDB()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var current = await adInUseRepo.GetSingleAsync(item => item.Id == _inUseSelected.Id);
 
@@ -225,7 +225,7 @@ namespace WPFEcommerceApp
                 await adInUseRepo.Remove(current);
 
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
@@ -269,23 +269,23 @@ namespace WPFEcommerceApp
                             Content = "The position chosen has already had a banner, are you sure you want to replace it?",
                             CM = new RelayCommandWithNoParameter(async () =>
                             {
-                                MainViewModel.IsLoading = true;
+                                MainViewModel.SetLoading(true);
                                 await adInUseRepo.Remove(item);
                                 await SetAds(ad);
                             })
                         };
                         await DialogHost.Show(view, "adsView");
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
 
                         return;
                     }
                 }
                 
             }
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             await SetAds(ad);
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
@@ -299,7 +299,7 @@ namespace WPFEcommerceApp
 
             await adInUseRepo.Add(adInUse);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
 
         }
@@ -332,7 +332,7 @@ namespace WPFEcommerceApp
 
         private async void SaveAds(object sender, DialogClosedEventArgs eventArgs)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
                 ImageAds = (eventArgs.Parameter as CroppedBitmap);
@@ -345,7 +345,7 @@ namespace WPFEcommerceApp
                 await Load();
             }
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         #endregion
     }

@@ -84,7 +84,7 @@ namespace WPFEcommerceApp
 
         public HeaderViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             if (AccountStore.instance != null)
                 AccountStore.instance.AccountChanged += OnAccountChange;
 
@@ -136,15 +136,15 @@ namespace WPFEcommerceApp
 
             var task=Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             });
             while (!task.IsCompleted) ;
 
             SearchText = string.Empty;
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         private async void OnAccountChange()
