@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,13 +33,22 @@ namespace WPFEcommerceApp {
             StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(name));
         }
 
-        public static async void SetLoading(bool value, int delay = 3000, string header = null, string message = null) {
+        static CancellationTokenSource cts = new CancellationTokenSource();
+        public static async void SetLoading(bool value, int delay = 2003, string header = null, string message = null) {
             IsLoading = value;
+            if(value == false) {
+                cts.Cancel();
+                cts = new CancellationTokenSource();
+            }
             if(value == true) {
-                await Task.Delay(delay);
+                try {
+                    await Task.Delay(delay, cts.Token);
+                } catch { return; }
                 bool flag = false;
-                if(IsLoading == true) flag = true;
-                IsLoading = false;
+                if(IsLoading == true) {
+                    flag = true;
+                    IsLoading = false;
+                }
                 if(flag) {
                     if(message == null) message = "We are working on your request.\n It may take a while to update!";
                     if(header == null) header = "On the way";
