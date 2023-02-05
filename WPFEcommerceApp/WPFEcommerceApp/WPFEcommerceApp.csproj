@@ -517,8 +517,6 @@
     <Compile Include="Utils\Converters\NumberToBooleanConverter.cs" />
     <Compile Include="Utils\Converters\ProdcutInfoConverter.cs" />
     <Compile Include="Utils\Converters\ScrollViewerShopMainConverter.cs" />
-    <Compile Include="Utils\Converters\ShopProductStatusColorConverter.cs" />
-    <Compile Include="Utils\Converters\ShopProductStatusConverter.cs" />
     <Compile Include="Utils\Converters\StringToImageSourceConverter.cs" />
     <Compile Include="Utils\Converters\TrueFromBooleansToFalseConverter.cs" />
     <Compile Include="DataAccessLayer\DbContextExtensions.cs" />
