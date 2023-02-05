@@ -702,11 +702,7 @@ namespace WPFEcommerceApp
                 }
             }
             int maxLength = FilterProducts.Count;
-            if(!IsAllFilter)
-            {
-                maxLength = Math.Min(50, FilterProducts.Count);
-            }
-            DisplayedProducts.Clear();
+            IList<ProductBlockViewModel> tempProducts = new List<ProductBlockViewModel>();
             if (isHasSize)
             {
                 if (SearchBy == "In WANO")
@@ -720,7 +716,7 @@ namespace WPFEcommerceApp
                                                                     ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
                                                                     (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))))
                         {
-                            DisplayedProducts.Add(p);
+                            tempProducts.Add(p);
                         }
                     }
                     IsNeedSearchBy = false;
@@ -736,7 +732,7 @@ namespace WPFEcommerceApp
                                                                     ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
                                                                     (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5])))))
                         {
-                            DisplayedProducts.Add(p);
+                            tempProducts.Add(p);
                         }
                     }
                 }
@@ -752,7 +748,7 @@ namespace WPFEcommerceApp
                                                                     (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
                                                                     (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))
                         {
-                            DisplayedProducts.Add(p);
+                            tempProducts.Add(p);
                         }
                     }
                     IsNeedSearchBy = false;
@@ -766,11 +762,19 @@ namespace WPFEcommerceApp
                                                                     (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
                                                                     (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))
                         {
-                            DisplayedProducts.Add(p);
+                            tempProducts.Add(p);
                         }
                     }
                 }
             }
+            if (!IsAllFilter)
+            {
+                DisplayedProducts = tempProducts.Take(50).ToList();
+            }
+            else
+            {
+                DisplayedProducts = tempProducts;
+            }    
         }
         private async Task Load()
         {
