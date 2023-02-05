@@ -106,18 +106,18 @@ namespace WPFEcommerceApp
             LabelExcuteContent = "Register now.";
             UnShopCommand = new RelayCommand<bool>(p=>p,async p=>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 RegisterShopDialog registerShopDialog = new RegisterShopDialog();
                 registerShopDialog.DataContext = new RegisterShopDialogViewModel();
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(registerShopDialog, "Main", null, null, ClosedRegisterShopDialog);
             });
         }
         private async Task Load()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             isRequest = (await shopRequestRepository.GetSingleAsync(sr => sr.IdUser == AccountStore.instance.CurrentAccount.Id) == null)?false:true;
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
     }
 }

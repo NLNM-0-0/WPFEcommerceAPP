@@ -630,7 +630,7 @@ namespace WPFEcommerceApp
                 }
                 SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     Task.Run(() => { }).ContinueWith((second) =>
                     {
                         Search();
@@ -638,7 +638,7 @@ namespace WPFEcommerceApp
                         {
                             DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts);
                         }));
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                     });
                 });
                 OpenAllBrands = new RelayCommandWithNoParameter(() =>

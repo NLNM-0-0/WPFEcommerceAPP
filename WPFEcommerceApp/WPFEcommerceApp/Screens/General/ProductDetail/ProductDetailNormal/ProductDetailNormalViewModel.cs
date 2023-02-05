@@ -653,7 +653,7 @@ namespace WPFEcommerceApp
                     }
                     else
                     {
-                        MainViewModel.IsLoading = true;
+                        MainViewModel.SetLoading(true);
                         await LoadAddToBag();
                         var dl = new ConfirmDialog()
                         {
@@ -665,17 +665,17 @@ namespace WPFEcommerceApp
                             }),
                             Param = ""
                         };
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                         await DialogHost.Show(dl, "Main");
                     }
                 });
                 SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     Task.Run(() => { }).ContinueWith((third) =>
                     {
                         Search();
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                     });
                 });
                 ViewShopCommand = new RelayCommandWithNoParameter(() =>
@@ -695,7 +695,7 @@ namespace WPFEcommerceApp
         }
         private async Task LoadAddToBag()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             GenericDataRepository<Models.Cart> dataRepository = new GenericDataRepository<Models.Cart>();
             var product = await dataRepository.GetSingleAsync(
                 d => d.IdProduct == SelectedProduct.Id &&
@@ -704,7 +704,7 @@ namespace WPFEcommerceApp
             if(product != null) {
                 product.Amount += Amount;
                 await dataRepository.Update(product);
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 return;
             }
             await dataRepository.Add(new Models.Cart
@@ -714,7 +714,7 @@ namespace WPFEcommerceApp
                 Amount = Amount,
                 Size = Size
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         private async Task Load()
         {

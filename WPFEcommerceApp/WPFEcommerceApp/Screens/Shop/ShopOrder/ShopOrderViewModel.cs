@@ -433,15 +433,15 @@ namespace WPFEcommerceApp
             {
                 ChooseShippingMethodCommand = new RelayCommand<object>((p) => p != null, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ChooseShippingMethodDialog dialog = new ChooseShippingMethodDialog();
                     dialog.DataContext = new ChooseShippingMethodDialogViewModel(p as ShopOrderBlockViewModel);
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(dialog, "Main", null, null, ClosedChooseShippingDialog);
                 });
                 ChangeToDeliveredCommand = new RelayCommand<object>((p) => p != null, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
                     await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Delivered");
                     DeliveringShopOrderBlockModels.Remove(shopOrderBlockViewModel);
@@ -459,13 +459,13 @@ namespace WPFEcommerceApp
                     LoadAllShopOrderBlockViewModel();
                     Search();
                     OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 ChangeToCompletedCommand = new RelayCommand<object>((p) => p != null, async (p) =>
                 {
                     try
                     {
-                        MainViewModel.IsLoading = true;
+                        MainViewModel.SetLoading(true);
                         ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
                         await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Completed");
                         DeliveredShopOrderBlockModels.Remove(shopOrderBlockViewModel);
@@ -482,22 +482,22 @@ namespace WPFEcommerceApp
                         LoadAllShopOrderBlockViewModel();
                         Search();
                         OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                     }
                     catch
                     {
-                        MainViewModel.IsLoading = true;
+                        MainViewModel.SetLoading(true);
                         NotificationDialog notificationDialog = new NotificationDialog();
                         notificationDialog.Header = "Error";
                         notificationDialog.ContentDialog = "The status of order is changed before. Please reload this page!";
-                        MainViewModel.IsLoading = false;
+                        MainViewModel.SetLoading(false);
                         await DialogHost.Show(notificationDialog, "Main");
                     }
 
                 });
                 ChangeToCancelledCommand = new RelayCommand<object>((p) => p != null, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ShopOrderBlockViewModel shopOrderBlockViewModel = p as ShopOrderBlockViewModel;
                     await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Cancelled");
                     ProcessingShopOrderBlockModels.Remove(shopOrderBlockViewModel);
@@ -514,7 +514,7 @@ namespace WPFEcommerceApp
                     LoadAllShopOrderBlockViewModel();
                     Search();
                     OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
@@ -527,9 +527,9 @@ namespace WPFEcommerceApp
                         return;
                     }
 
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     Search();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 ResetCommand = new RelayCommandWithNoParameter(() =>
                 {
@@ -537,9 +537,9 @@ namespace WPFEcommerceApp
                     DateTo = null;
                     SearchByValue = "";
                     SearchBy = "Id";
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     Search();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 ScrollToHome = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {
@@ -583,7 +583,7 @@ namespace WPFEcommerceApp
                 {
                     return;
                 }
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 ShopOrderBlockViewModel shopOrderBlockViewModel = tuple.Item2;
                 await UpdateStatus(shopOrderBlockViewModel.Order.Id, "Delivering");
                 ProcessingShopOrderBlockModels.Remove(shopOrderBlockViewModel);
@@ -602,15 +602,15 @@ namespace WPFEcommerceApp
                 LoadAllShopOrderBlockViewModel();
                 Search();
                 OnPropertyChanged(nameof(SearchedShopOrderBlockModels));
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             }
             catch
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 NotificationDialog notificationDialog = new NotificationDialog();
                 notificationDialog.Header = "Error";
                 notificationDialog.ContentDialog = "The status of order is changed before. Please reload this page!";
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(notificationDialog, "Main");
             }
         }

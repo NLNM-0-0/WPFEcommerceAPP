@@ -51,10 +51,10 @@ namespace WPFEcommerceApp
             }
             set
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 selectedProduct = value;
                 LoadRating();
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 OnPropertyChanged();
             }
         }
@@ -201,7 +201,7 @@ namespace WPFEcommerceApp
                 IsEditting = false;
                 SaveProductInfoCommand = new RelayCommand<Models.Product>((p) => { return p != null; }, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     Models.Product productTemp = p as WPFEcommerceApp.Models.Product;
                     SelectedProduct.Name = productTemp.Name;
                     SelectedProduct.Price = productTemp.Price;
@@ -228,7 +228,7 @@ namespace WPFEcommerceApp
                     searchItemViewModel.Model = SelectedProduct;
                     searchItemViewModel.Name = SelectedProduct.Name;
                     searchItemViewModel.SourceImage = (SelectedProduct.ImageProducts.Count == 0) ? null : SelectedProduct.ImageProducts.ElementAt(0).Source;
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
 
                 EditProductInfoCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
@@ -245,7 +245,7 @@ namespace WPFEcommerceApp
                 OpenChangeImageDialogCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
                     PreviousItem = MainViewModel.UpdateDialog("Main");
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ChangeImageProductDialog changeImageProductDialog = new ChangeImageProductDialog();
                     changeImageProductDialog.DataContext = new ChangeImageProductDialogViewModel(ImageProducts)
                     {
@@ -270,13 +270,13 @@ namespace WPFEcommerceApp
                             }    
                         })
                     };
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     await DialogHost.Show(changeImageProductDialog, "Main");
                 });
 
                 OpenProductInfoLandscapeCommand = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ProductInfoLandscape productInfoLandscape = new ProductInfoLandscape();
                     ProductInfoLandscapeViewModel productInfoLandscapeViewModel = new ProductInfoLandscapeViewModel(SelectedProduct);
                     productInfoLandscapeViewModel.ProductImageChanged += ProductInfoLandscapeViewModel_ProductImageChanged;

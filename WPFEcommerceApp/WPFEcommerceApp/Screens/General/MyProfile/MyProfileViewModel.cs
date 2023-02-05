@@ -142,7 +142,7 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((task) =>
             {
@@ -182,7 +182,7 @@ namespace WPFEcommerceApp
                     NewPassword = "";
                     ConfirmNewPassword ="";
                 });
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             });
             
         }
@@ -225,7 +225,7 @@ namespace WPFEcommerceApp
         }
         private async void SaveAva(object sender, DialogClosedEventArgs eventArgs)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
                 ImageAva = (eventArgs.Parameter as CroppedBitmap);
@@ -252,11 +252,11 @@ namespace WPFEcommerceApp
                 await Load();
             }
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         private async void SaveBackground(object sender, DialogClosedEventArgs eventArgs)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             if (eventArgs.Parameter != null && eventArgs.Parameter.GetType() == typeof(CroppedBitmap))
             {
                 ImageBackground = (eventArgs.Parameter as CroppedBitmap);
@@ -277,11 +277,11 @@ namespace WPFEcommerceApp
                 await Load();
             }
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         public async Task SaveProfile(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var userlogin = AccountStore.instance.CurrentAccount.UserLogin;
 
@@ -309,7 +309,7 @@ namespace WPFEcommerceApp
                         Header = "Oops"
                     };
                     await DialogHost.Show(dl, "Main");
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                     return;
                 }
             }
@@ -324,19 +324,19 @@ namespace WPFEcommerceApp
                 }
             }
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
         public async Task CancelProfile(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var user = obj as MUser;
             if (user == null)
                 return;
 
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
         public async Task OpenAddAddressDialog()
@@ -381,7 +381,7 @@ namespace WPFEcommerceApp
         {
             DialogHost.CloseDialogCommand.Execute(null, null);
 
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             var ad = obj as AddressDialogViewModel;
             if (ad == null)
                 return;
@@ -407,13 +407,13 @@ namespace WPFEcommerceApp
             }
 
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
         public async Task RemoveAddress(object obj)
         {
             DialogHost.CloseDialogCommand.Execute(null, null);
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var add = obj as AddressDialogViewModel;
             if (add == null)
@@ -421,7 +421,7 @@ namespace WPFEcommerceApp
 
             if (add.IsDefault)
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
                 var view = new ConfirmDialog
                 {
@@ -436,7 +436,7 @@ namespace WPFEcommerceApp
                 await addressRepo.Update(add.Address);
                 await Load();
             }
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
         #endregion

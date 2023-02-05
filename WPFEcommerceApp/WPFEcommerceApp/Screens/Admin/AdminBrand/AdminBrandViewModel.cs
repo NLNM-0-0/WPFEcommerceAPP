@@ -147,7 +147,7 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminBrandViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             BrandRepository = new GenericDataRepository<Brand>();
             RequestRepo = new GenericDataRepository<BrandRequest>();
@@ -169,11 +169,11 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((first) =>
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
             });
 
@@ -220,7 +220,7 @@ namespace WPFEcommerceApp
         {
             DialogHost.CloseDialogCommand.Execute(null, null);
 
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             brandName=brandName.Trim();
             NewBrandName = string.Empty;
@@ -239,13 +239,13 @@ namespace WPFEcommerceApp
             }
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
         public async Task RemoveBrand(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var removeBrand = obj as Brand;
             if (removeBrand == null)
@@ -272,13 +272,13 @@ namespace WPFEcommerceApp
             await ProdRepo.Update(list.ToArray());
             await BrandRepository.Update(removeBrand);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
         public async Task RemoveRequest(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var request = obj as BrandRequestItemViewModel;
             if (request == null)
@@ -301,13 +301,13 @@ namespace WPFEcommerceApp
             await RequestRepo.Remove(removeRequest);
             await NoteRepo.Add(note);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
         public async Task AddRequest(object obj)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             if (AccountStore.instance.CurrentAccount == null)
                 return;
@@ -344,14 +344,14 @@ namespace WPFEcommerceApp
             await NoteRepo.Add(note);
             await RequestRepo.Remove(removeRequest);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
 
         }
 
         public async Task Search()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             await Task.Run(async () =>
             {
@@ -385,7 +385,7 @@ namespace WPFEcommerceApp
                     FilteredBrands = new ObservableCollection<Brand>(FilteredBrands);
                 }));
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 

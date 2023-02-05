@@ -31,7 +31,7 @@ namespace WPFEcommerceApp
         public ICommand TestCommand { get; set; }
         public FavoriteViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             proRepo = new GenericDataRepository<Models.Product>();
             userRepo = new GenericDataRepository<MUser>();
             TestCommand = new RelayCommandWithNoParameter(Test);
@@ -40,15 +40,15 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((first) =>
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
             });
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         private async void OnFavoriteListChanged()
@@ -63,7 +63,7 @@ namespace WPFEcommerceApp
 
         public async Task Load()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             var favProducts = await userRepo.GetSingleAsync(
                 item=>item.Id==AccountStore.instance.CurrentAccount.Id, 
                 item=>item.Products1);
@@ -89,7 +89,7 @@ namespace WPFEcommerceApp
                 Products = new ObservableCollection<ProductBlockViewModel>(pro);
             }));
             
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         public override void Dispose()

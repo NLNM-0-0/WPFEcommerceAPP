@@ -65,7 +65,7 @@ namespace WPFEcommerceApp
             }, (async (p) =>
             {
                 DialogHost.CloseDialogCommand.Execute(true, null);
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await AddCategoryRequest();
                 NotificationDialog notification = new NotificationDialog()
                 {
@@ -73,7 +73,7 @@ namespace WPFEcommerceApp
                     ContentDialog = stringCloseDialog,
                     CloseCommand = CloseNotification
                 };
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(notification, "Main");
             }));
             KeyDownEnterCommand = new RelayCommand<object>((p) => p != null, (p) =>

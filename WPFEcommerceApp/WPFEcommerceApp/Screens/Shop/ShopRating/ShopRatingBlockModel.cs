@@ -126,9 +126,9 @@ namespace WPFEcommerceApp
                 return !String.IsNullOrEmpty(NewRelayblockViewModel.Comment);
             },(async (p) =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await ReplyComment();
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             }));
             OpenAllCommands = new RelayCommandWithNoParameter(() =>
             {
@@ -137,7 +137,7 @@ namespace WPFEcommerceApp
 
                 }).ContinueWith((temp) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     IsShowAll = false;
                     int index = DisplayedBlocksViewModels.Count;
                     for (int i = 0; i < OrderInfo.Rating.RatingInfoes.Count - 1; i++)
@@ -147,7 +147,7 @@ namespace WPFEcommerceApp
                             DisplayedBlocksViewModels.Insert(index, new ReplyBlockViewModel(OrderInfo.Rating.RatingInfoes.ElementAt(i)));
                         }));
                     }
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 
             });

@@ -68,9 +68,9 @@ namespace WPFEcommerceApp {
             Debug.WriteLine("OrderScreenVM Created");
 
             Task.Run(async () => {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await _orderStore.Load();
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
             });
 
             ICommand CanCelCM = new ImmediateCommand<object>(async (p) => {

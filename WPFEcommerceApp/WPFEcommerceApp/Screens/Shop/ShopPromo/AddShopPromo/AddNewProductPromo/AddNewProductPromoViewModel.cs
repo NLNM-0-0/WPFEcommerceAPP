@@ -281,7 +281,7 @@ namespace WPFEcommerceApp
                 });
                 ResetCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     SearchBy = "Id";
                     SearchByValue = "";
                     SelectedBrand = null;
@@ -295,13 +295,13 @@ namespace WPFEcommerceApp
                     {
                         IsShowSelectedProductOnly = true;
                     }
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 SearchCommand = new RelayCommandWithNoParameter(() =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     Search();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 FilterPromoProductBlocks = new ObservableCollection<PromoProductBlockViewModel>(AllPromoProductBlocks);
                 TotalProducts = SelectedPromoProductBlocks.Count();

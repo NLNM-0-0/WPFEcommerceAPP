@@ -155,7 +155,7 @@ namespace WPFEcommerceApp {
                     IsLoading = false;
                     AccountStore.instance.CurrentAccount = user;
                     if(KeepSignIn) {
-                        WPFEcommerceApp.Properties.Settings.Default.Cookie = user.Id;
+                        WPFEcommerceApp.Properties.Settings.Default.Cookie = Hashing.Base64Encode(user.Id);
                         WPFEcommerceApp.Properties.Settings.Default.Save();
                     }
                     else {
@@ -274,7 +274,7 @@ namespace WPFEcommerceApp {
                 AccountStore.instance.CurrentAccount = user;
 
                 if(KeepSignIn) {
-                    WPFEcommerceApp.Properties.Settings.Default.Cookie = user.Id;
+                    WPFEcommerceApp.Properties.Settings.Default.Cookie = Hashing.Base64Encode(user.Id);
                     WPFEcommerceApp.Properties.Settings.Default.Save();
                 }
                 else {

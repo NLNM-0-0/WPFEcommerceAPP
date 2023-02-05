@@ -213,10 +213,10 @@ namespace WPFEcommerceApp
             });
             OpenDialogCommand = new RelayCommandWithNoParameter(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 ProductDetailMini productDetail = new ProductDetailMini();
                 productDetail.DataContext = new ProductDetailNormalViewModel(SelectedProduct);
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 await DialogHost.Show(productDetail, "App");
             });
             OpenPageCommand = new RelayCommandWithNoParameter(() =>

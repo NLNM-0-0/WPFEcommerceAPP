@@ -217,7 +217,7 @@ namespace WPFEcommerceApp {
             });
 			OnSuccessPayment = new ImmediateCommand<object>(async (p) => {
                 //Do something with store here
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
 
                 foreach(var order in orders) {
                     var temp = new Order(order);
@@ -236,7 +236,7 @@ namespace WPFEcommerceApp {
 				NavigationStore.instance.clearHistory();
 				NavigationStore.instance.stackScreen.Add(new Tuple<INavigationService, object>(NavigateProvider.OrderScreen(), null));
                 NavigateProvider.SuccessScreen().Navigate();
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
             });
             #region Test Feature
@@ -316,7 +316,7 @@ namespace WPFEcommerceApp {
         public List<string> productList = new List<string>();
         public Dictionary<string, bool> ValidVoucherList = new Dictionary<string, bool>();
         public async Task Load() {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id && d.Status == true);
             foreach(var o in list) {
@@ -377,7 +377,7 @@ namespace WPFEcommerceApp {
                     address = ListAddress[CurrentUser.DefaultAddress];
                 } catch { address = null; }
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         private async void PaymentAlertDialog(object p) {
 			var view = new ConfirmDialog() {

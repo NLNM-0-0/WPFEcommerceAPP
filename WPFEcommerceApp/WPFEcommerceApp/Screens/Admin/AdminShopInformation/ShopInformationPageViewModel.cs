@@ -164,7 +164,7 @@ namespace WPFEcommerceApp
         #region Constructor
         public ShopInformationPageViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             userRepo = new GenericDataRepository<MUser>();
             requestRepo = new GenericDataRepository<ShopRequest>();
@@ -183,11 +183,11 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((first) =>
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
             });
 
@@ -252,7 +252,7 @@ namespace WPFEcommerceApp
 
         public async Task Search()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             await Task.Run(() =>
             {
                 if (string.IsNullOrEmpty(SearchBy))
@@ -286,7 +286,7 @@ namespace WPFEcommerceApp
                     FilteredShops = new ObservableCollection<MUser>(shopsToSearch.Where(br => br.Description.ToLower().Contains(SearchText.ToLower())));
                 }
             });
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         public void CloseSearch()
@@ -314,7 +314,7 @@ namespace WPFEcommerceApp
                 await DialogHost.Show(view, "Main");
                 return;
             }
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             if (removeShop.StatusShop == Status.Banned.ToString())
             {
                 removeShop.StatusShop = Status.NotBanned.ToString();
@@ -341,7 +341,7 @@ namespace WPFEcommerceApp
                 };
                 notes.Add(note);
             }
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             await BanShop(removeShop);
             await userRepo.Update(removeShop);
@@ -349,13 +349,13 @@ namespace WPFEcommerceApp
 
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
         }
 
         public async Task RemoveRequest()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             if (AccountStore.instance.CurrentAccount == null)
                 return;
 
@@ -375,7 +375,7 @@ namespace WPFEcommerceApp
 
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
@@ -387,7 +387,7 @@ namespace WPFEcommerceApp
                 return;
             }
 
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
 
             var item = await requestRepo.GetSingleAsync(t => t.Id.Equals(RequestSelectedItem.RequestId));
 
@@ -410,7 +410,7 @@ namespace WPFEcommerceApp
             await noteRepo.Add(note);
             await Load();
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
             DialogHost.CloseDialogCommand.Execute(null, null);
         }

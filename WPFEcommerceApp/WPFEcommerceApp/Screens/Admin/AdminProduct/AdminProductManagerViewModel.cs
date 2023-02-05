@@ -111,7 +111,7 @@ namespace WPFEcommerceApp
         {
             await Task.Run(() =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 if (string.IsNullOrEmpty(SearchBy))
                     FilteredProducts = _productsToSearch;
 
@@ -158,7 +158,7 @@ namespace WPFEcommerceApp
                 }));
             });
 
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
 
 
         }
@@ -190,10 +190,10 @@ namespace WPFEcommerceApp
                 }
                 removeProduct.BanLevel = 0;
             }
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             await productRepo.Update(removeProduct);
             await Load();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
 
         #endregion
@@ -201,7 +201,7 @@ namespace WPFEcommerceApp
         #region Constructor
         public AdminProductManagerViewModel()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             productRepo=new GenericDataRepository<Models.Product>();
             SearchByOptions = new List<string> { "ID", "ShopID", "Name", "Category", "Brand" };
 
@@ -211,11 +211,11 @@ namespace WPFEcommerceApp
 
             Task.Run(async () =>
             {
-                MainViewModel.IsLoading = true;
+                MainViewModel.SetLoading(true);
                 await Load();
             }).ContinueWith((first) =>
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
 
             });
 

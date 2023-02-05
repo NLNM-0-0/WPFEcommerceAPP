@@ -506,13 +506,13 @@ namespace WPFEcommerceApp
                         DialogHost.Show(notification, "Main");
                         return;
                     }
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     Search();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 ResetCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ProductName = "";
                     UserName = "";
                     DateFrom = null;
@@ -533,7 +533,7 @@ namespace WPFEcommerceApp
                         StatusSearch2Star = false;
                         StatusSearch1Star = false;
                     }
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 ScrollToHome = new RelayCommand<object>((p) => { return p != null; }, p =>
                 {

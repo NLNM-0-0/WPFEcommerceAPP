@@ -309,7 +309,7 @@ namespace WPFEcommerceApp
                 });
                 RemovePromoCommand = new RelayCommand<object>((p) => p != null,async (p) =>
                 {
-                    MainViewModel.IsLoading = true;
+                    MainViewModel.SetLoading(true);
                     ShopPromoBlockViewModel shopPromoBlockViewModel = p as ShopPromoBlockViewModel;
                     await DeletePromo(shopPromoBlockViewModel.Promo);
                     if (StatusInProcess)
@@ -357,7 +357,7 @@ namespace WPFEcommerceApp
                     DeletedPromos.Insert(0, shopPromoBlockViewModel);
                     shopPromoBlockViewModel.Promo.Status = 2;
                     shopPromoBlockViewModel.ChangeStatus();
-                    MainViewModel.IsLoading = false;
+                    MainViewModel.SetLoading(false);
                 });
                 AddPromoCommand = new RelayCommandWithNoParameter(() =>
                 {

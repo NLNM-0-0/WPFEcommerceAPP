@@ -41,7 +41,7 @@ namespace WPFEcommerceApp
             FavoriteProductList = new List<Models.Product>();
             if (AccountStore.instance.CurrentAccount == null)
             {
-                MainViewModel.IsLoading = false;
+                MainViewModel.SetLoading(false);
                 return;
             }
             else
@@ -52,15 +52,15 @@ namespace WPFEcommerceApp
         }
         public async Task Add(Models.Product p)
         {
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
             await FavouriteApi.Add(AccountStore.instance.CurrentAccount.Id, p.Id);
             FavoriteProductList.Add(p);
             FavoriteListChanged?.Invoke();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         public async Task Delete(Models.Product p)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             await FavouriteApi.Delete(AccountStore.instance.CurrentAccount.Id, p.Id);
             for(int i = 0; i < FavoriteProductList.Count; i++)
             {
@@ -71,7 +71,7 @@ namespace WPFEcommerceApp
                 }
             }    
             FavoriteListChanged?.Invoke();
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
     }
 }

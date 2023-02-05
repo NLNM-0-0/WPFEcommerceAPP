@@ -259,15 +259,15 @@ namespace WPFEcommerceApp
         }
         private async Task RemoveBag(string idProduct)
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             GenericDataRepository<Cart> genericData = new GenericDataRepository<Cart>();
             Models.Cart cart = await genericData.GetSingleAsync(p => p.IdProduct == idProduct && p.IdUser == AccountStore.instance.CurrentAccount.Id);
             await genericData.Remove(cart);
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         private async Task Load()
         {
-            MainViewModel.IsLoading = true;
+            MainViewModel.SetLoading(true);
             var cartList = new ObservableCollection<Models.Cart>((await CartRepo.GetListAsync(item => item.IdUser == AccountStore.instance.CurrentAccount.Id,
                                                         item => item.Product,
                                                         item => item.Product.MUser,
@@ -290,7 +290,7 @@ namespace WPFEcommerceApp
                 Plusamount = Plusamount, 
                 IsBanned = (item.Product.BanLevel != 0)
             }));
-            MainViewModel.IsLoading = false;
+            MainViewModel.SetLoading(false);
         }
         private async Task UpdateAmount(string idProduct, string size, int amount)
         {
