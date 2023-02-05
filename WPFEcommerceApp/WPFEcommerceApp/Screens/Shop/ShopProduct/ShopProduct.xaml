@@ -131,24 +131,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="statusDataRow" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="Padding" Value="5 0"/>
-            <Setter Property="Foreground">
-                <Setter.Value>
-                    <MultiBinding Converter="{StaticResource ShopProductStatusColorConverter}">
-                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}" Path="Item.BanLevel" />
-                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}" Path="Item.InStock"/>
-                    </MultiBinding>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <local:DoubleToCurrencyConverter x:Key="DoubleToCurrencyConverter"/>
         <Style TargetType="{x:Type DataGridCell}" x:Key="RightCell">
-            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Right"/>
             <Setter Property="FontFamily" Value="{StaticResource Medium}"/>
             <Setter Property="FontSize" Value="{StaticResource FontSizeText}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="5 0"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -159,10 +147,10 @@
                         BorderThickness="{TemplateBinding BorderThickness}" 
                         SnapsToDevicePixels="True">
                             <ContentPresenter 
-                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            Margin="{TemplateBinding Padding}"/>
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -173,9 +161,6 @@
                     <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
                     <Setter Property="BorderBrush" Value="{StaticResource BoxLineColorBrush}"/>
                 </Trigger>
-                <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}"/>
-                </Trigger>
                 <Trigger Property="IsEnabled" Value="false">
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                 </Trigger>
@@ -185,7 +170,9 @@
         <Style TargetType="{x:Type DataGridCell}" x:Key="CenterCell" BasedOn="{StaticResource RightCell}">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
-
+        <Style TargetType="{x:Type DataGridCell}" x:Key="LeftCell" BasedOn="{StaticResource RightCell}">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
         <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="CenterHeader">
             <Setter Property="Padding" Value="5 0"/>
             <Setter Property="Background" Value="{StaticResource NotAvailableColorBrush}"/>
@@ -634,7 +621,7 @@
                     Grid.Row="3"
                     Background="Transparent">
                     <DataGrid
-                            x:Name="dataGrid"
+                            x:Name="dataGridShopProduct"
                             Padding="50 0" 
                             ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
                             SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
@@ -644,50 +631,101 @@
                             ScrollViewer.VerticalScrollBarVisibility="Auto"
                             ScrollViewer.HorizontalScrollBarVisibility="Auto">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Width="2*" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Name" Width="4*" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn 
+                                Header="ID"
+                                Width="2*" 
+                                CellStyle="{StaticResource LeftCell}"
+                                Binding="{Binding Product.Id, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn 
+                                Header="Name" 
+                                Width="4*" 
+                                CellStyle="{StaticResource LeftCell}"
+                                Binding="{Binding Product.Name, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn
                                 HeaderStyle="{StaticResource CenterHeader}"
                                 CellStyle="{StaticResource CenterCell}"
                                 Header="Category" 
                                 Width="3*" 
-                                Binding="{Binding Category.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                Binding="{Binding Product.Category.Name, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn
                                 HeaderStyle="{StaticResource CenterHeader}"
                                 CellStyle="{StaticResource CenterCell}"
                                 Header="Brand" 
                                 Width="3*" 
-                                Binding="{Binding Brand.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                Binding="{Binding Product.Brand.Name, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn 
                                 HeaderStyle="{StaticResource RightHeader}"
                                 CellStyle="{StaticResource RightCell}"
                                 Header="Price" 
                                 Width="3*" 
-                                Binding="{i:Binding '(Price * (100 - Sale) / 100).ToString() + &quot; $&quot;', UpdateSourceTrigger=PropertyChanged}"/>
+                                Binding="{i:Binding '(Product.Price * (100 - Product.Sale) / 100).ToString() + &quot; $&quot;', UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn 
                                 HeaderStyle="{StaticResource RightHeader}"
                                 CellStyle="{StaticResource RightCell}"
                                 Header="InStock" 
                                 Width="3*" 
-                                Binding="{Binding InStock, UpdateSourceTrigger=PropertyChanged}"/>
+                                Binding="{Binding Product.InStock, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn
                                 HeaderStyle="{StaticResource RightHeader}"
                                 CellStyle="{StaticResource RightCell}"
                                 Header="Sold" 
                                 Width="3*" 
-                                Binding="{Binding Sold, UpdateSourceTrigger=PropertyChanged}"/>
+                                Binding="{Binding Product.Sold, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn 
                                 HeaderStyle="{StaticResource CenterHeader}"
                                 CellStyle="{StaticResource CenterCell}"
                                 Header="Status" 
                                 Width="3*" 
-                                ElementStyle="{StaticResource statusDataRow}">
-                                <DataGridTextColumn.Binding>
-                                    <MultiBinding Converter="{StaticResource ShopProductStatusConverter}" >
-                                        <Binding Path="BanLevel"/>
-                                        <Binding Path="InStock"/>
-                                    </MultiBinding>
-                                </DataGridTextColumn.Binding>
+                                SortMemberPath="StatusIndex"
+                                Binding="{Binding Status, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                        <Setter Property="TextBlock.Foreground" Value="{Binding StatusColor, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -723,7 +761,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <ToggleButton
-                IsEnabled="{i:Binding '(SelectedIndex!=-1)', ElementName=dataGrid}"
+                IsEnabled="{i:Binding '(SelectedIndex!=-1)', ElementName=dataGridShopProduct}"
                 IsChecked="{Binding IsOpenProductInfoPortrait}"
                 x:Name="OpenDrawerToggleButton"
                 Grid.Column="0"

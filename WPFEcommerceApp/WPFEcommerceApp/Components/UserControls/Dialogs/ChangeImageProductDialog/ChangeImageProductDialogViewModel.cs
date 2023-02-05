@@ -93,34 +93,38 @@ namespace WPFEcommerceApp
             });
             AddImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
             {
-                OpenFileDialog op = new OpenFileDialog();
+                OpenFileDialog op = new OpenFileDialog() { Multiselect = true};
                 op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png";
                 op.ShowDialog();
-                if (op.FileName != "")
+                if(op.FileNames!=null)
                 {
-                    var stream = File.Open(op.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    System.Drawing.Image img = new Bitmap(stream);
-                    Bitmap copy = new Bitmap(img.Width, img.Height);
-                    copy.SetResolution(img.HorizontalResolution, img.VerticalResolution);
-                    using (var graphic = Graphics.FromImage(copy))
+                    int theNumberImageNeed = Math.Min(op.FileNames.Count(), 10 - ImageProducts.Count);
+                    for (int i = 0; i < theNumberImageNeed; i++)
                     {
-                        graphic.Clear(System.Drawing.Color.White);
-                        graphic.DrawImageUnscaled(img, 0, 0);
-                    }
-                    using (var memory = new MemoryStream()) 
-                    {
-                        copy.Save(memory, ImageFormat.Jpeg);
-                        memory.Position = 0;
-                        var bitmapImage = new BitmapImage();
-                        bitmapImage.BeginInit();
-                        bitmapImage.StreamSource = memory;
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.EndInit();
-                        bitmapImage.Freeze();
-
-                        ImageProducts.Add(new MImageProuct() {BMImage= bitmapImage, Source =op.FileName });
-                    }
-                }
+                        string fileName = op.FileNames[i];
+                        var stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        System.Drawing.Image img = new Bitmap(stream);
+                        Bitmap copy = new Bitmap(img.Width, img.Height);
+                        copy.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+                        using (var graphic = Graphics.FromImage(copy))
+                        {
+                            graphic.Clear(System.Drawing.Color.White);
+                            graphic.DrawImageUnscaled(img, 0, 0);
+                        }
+                        using (var memory = new MemoryStream())
+                        {
+                            copy.Save(memory, ImageFormat.Jpeg);
+                            memory.Position = 0;
+                            var bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.StreamSource = memory;
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.EndInit();
+                            bitmapImage.Freeze();
+                            ImageProducts.Add(new MImageProuct() { BMImage = bitmapImage, Source = fileName });
+                        }
+                    }    
+                }    
                 if (ImageProducts.Count == 1)
                 {
                     SelectedImageSource = ImageProducts.First();

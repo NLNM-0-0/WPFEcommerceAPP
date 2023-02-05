@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -32,8 +34,8 @@ namespace WPFEcommerceApp
         private GenericDataRepository<Models.Category> CategoryRepository = new GenericDataRepository<Models.Category>();
         #endregion
         #region Field
-        private Models.Product selectedProduct;
-        public Models.Product SelectedProduct
+        private ProductViewModel selectedProduct;
+        public ProductViewModel SelectedProduct
         {
             get => selectedProduct;
             set
@@ -74,8 +76,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<Models.Product> products;
-        public ObservableCollection<Models.Product> Products
+        private ObservableCollection<ProductViewModel> products;
+        public ObservableCollection<ProductViewModel> Products
         {
             get => products;
             set
@@ -84,11 +86,11 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<Models.Product> AllProducts { get; set; }
-        private ObservableCollection<Models.Product> OnSaleProducts { get; set; }
-        private ObservableCollection<Models.Product> OutOfStockProducts { get; set; }
-        private ObservableCollection<Models.Product> BannedProducts { get; set; }
-        private ObservableCollection<Models.Product> FilterProducts { get; set; }
+        private ObservableCollection<ProductViewModel> AllProducts { get; set; }
+        private ObservableCollection<ProductViewModel> OnSaleProducts { get; set; }
+        private ObservableCollection<ProductViewModel> OutOfStockProducts { get; set; }
+        private ObservableCollection<ProductViewModel> BannedProducts { get; set; }
+        private ObservableCollection<ProductViewModel> FilterProducts { get; set; }
         public MainItem StyleProductInfoPortrait
         {
             get
@@ -98,23 +100,49 @@ namespace WPFEcommerceApp
                 {
                     return mainItem;
                 }
-                if (SelectedProduct.BanLevel == 0)
+                if (SelectedProduct.Product.BanLevel == 0)
                 {
                     IsLoadingCheck.IsLoading = 3;
-                    ProductInfoPortraitViewModel productInfoPortraitViewModel = new ProductInfoPortraitViewModel(SelectedProduct);
-                    productInfoPortraitViewModel.SelectedProductChanged += LoadDataFromModel;
+                    ProductInfoPortraitViewModel productInfoPortraitViewModel = new ProductInfoPortraitViewModel(SelectedProduct.Product);
+                    productInfoPortraitViewModel.SelectedProductChanged += ProductInfoPortraitViewModel_SelectedProductChanged;
                     mainItem = new MainItem("NotBannedProductInfoPortrait", typeof(ProductInfoPortrait), productInfoPortraitViewModel);
                     IsLoadingCheck.IsLoading--;
                 }
                 else
                 {
                     IsLoadingCheck.IsLoading = 2;
-                    ProductInfoPortraitBannedViewModel productInfoPortraitBannedViewModel = new ProductInfoPortraitBannedViewModel(SelectedProduct);
+                    ProductInfoPortraitBannedViewModel productInfoPortraitBannedViewModel = new ProductInfoPortraitBannedViewModel(SelectedProduct.Product);
                     mainItem = new MainItem("BannedProductInfoPortrait", typeof(ProductInfoPortraitBanned), productInfoPortraitBannedViewModel);
                     IsLoadingCheck.IsLoading--;
                 }
                 return mainItem;
             }
+        }
+
+        private void ProductInfoPortraitViewModel_SelectedProductChanged()
+        {
+            if(SelectedProduct.Product.InStock == 0)
+            {
+                if(!OutOfStockProducts.Contains(SelectedProduct))
+                {
+                    OutOfStockProducts.Add(SelectedProduct);
+                    OnSaleProducts.Remove(SelectedProduct);
+                }
+            }
+            else
+            {
+                if (!OnSaleProducts.Contains(SelectedProduct))
+                {
+                    OnSaleProducts.Add(SelectedProduct);
+                    OutOfStockProducts.Remove(SelectedProduct);
+                }
+            }
+            string id = SelectedProduct.Product.Id;
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                Products = new ObservableCollection<ProductViewModel>(Products);
+            }));
+            SelectedProduct = Products.Where(p => p.Product.Id.Equals(id)).First();
         }
 
         private string productNameSearch;
@@ -194,10 +222,10 @@ namespace WPFEcommerceApp
             set
             {
                 statusAllSearch = value;
-                if (value)
+                if (value == true)
                 {
-                    FilterProducts = AllProducts;
-                    LoadAllProduct();
+                    FilterProducts = AllProducts??new ObservableCollection<ProductViewModel>();
+                    LoadProducts();
                 }
                 OnPropertyChanged();
             }
@@ -211,8 +239,8 @@ namespace WPFEcommerceApp
                 statusOnSaleSearch = value;
                 if (value)
                 {
-                    FilterProducts = OnSaleProducts;
-                    LoadOnSaleProduct();
+                    FilterProducts = OnSaleProducts ?? new ObservableCollection<ProductViewModel>();
+                    LoadProducts();
                 }
                 OnPropertyChanged();
             }
@@ -226,8 +254,8 @@ namespace WPFEcommerceApp
                 statusOutOfStockSearch = value;
                 if (value)
                 {
-                    FilterProducts = OutOfStockProducts;
-                    LoadOutOfStockProduct();
+                    FilterProducts = OutOfStockProducts ?? new ObservableCollection<ProductViewModel>();
+                    LoadProducts();
                 }
                 OnPropertyChanged();
             }
@@ -241,8 +269,8 @@ namespace WPFEcommerceApp
                 statusBannedSearch = value;
                 if (value)
                 {
-                    FilterProducts = BannedProducts;
-                    LoadBannedProduct();
+                    FilterProducts = BannedProducts ?? new ObservableCollection<ProductViewModel>();
+                    LoadProducts();
                 }
                 OnPropertyChanged();
             }
@@ -373,7 +401,7 @@ namespace WPFEcommerceApp
                 while (IsLoadingCheck.IsLoading >= 2) ;
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    Products = new ObservableCollection<Models.Product>(FilterProducts);
+                    Products = new ObservableCollection<ProductViewModel>(FilterProducts);
                     lock (IsLoadingCheck.IsLoading as object)
                     {
                         IsLoadingCheck.IsLoading--;
@@ -383,27 +411,6 @@ namespace WPFEcommerceApp
         }
         #endregion  
         private void AddProductDialogViewModel_ClosedDialog()
-        {
-            LoadDataFromModel();
-        }
-
-        private void LoadAllProducts()
-        {
-            AllProducts = new ObservableCollection<Models.Product>();
-            foreach (var product in OnSaleProducts)
-            {
-                AllProducts.Add(product);
-            }
-            foreach (var product in OutOfStockProducts)
-            {
-                AllProducts.Add(product);
-            }
-            foreach (var product in BannedProducts)
-            {
-                AllProducts.Add(product);
-            }
-        }
-        private void LoadAgainAfterAdding(object sender, DialogClosingEventArgs eventArgs)
         {
             LoadDataFromModel();
         }
@@ -443,25 +450,6 @@ namespace WPFEcommerceApp
         }
         private void LoadProducts()
         {
-            if (StatusAllSearch)
-            {
-                LoadAllProduct();
-            }
-            else if (StatusOnSaleSearch)
-            {
-                LoadOnSaleProduct();
-            }
-            else if (StatusOutOfStockSearch)
-            {
-                LoadOutOfStockProduct();
-            }
-            else if (StatusBannedSearch)
-            {
-                LoadBannedProduct();
-            }
-        }
-        private void LoadOutOfStockProduct()
-        {
             double maxPrice = double.MaxValue;
             double minPrice = 0;
             int maxInStock = int.MaxValue;
@@ -482,134 +470,158 @@ namespace WPFEcommerceApp
             {
                 int.TryParse(MinInStockSearch, out minInStock);
             }
-            
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
-                                                                                                        ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
-                                                                                                        ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
-                                                                                                        p.Price <= maxPrice && p.Price >= minPrice &&
-                                                                                                        p.InStock == 0))));
+
+            Products = new ObservableCollection<ProductViewModel>(FilterProducts.Where(p => ((p.Product.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
+                                                                                                        ((CategorySearch == null) ? true : p.Product.Category.Id == CategorySearch.Id) &&
+                                                                                                        ((BrandSearch == null) ? true : p.Product.Brand.Id == BrandSearch.Id) &&
+                                                                                                        p.Product.Price <= maxPrice && p.Product.Price >= minPrice))));
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
-                Products = new ObservableCollection<Models.Product>(Products);
+                Products = new ObservableCollection<ProductViewModel>(Products);
             }));
             if (Products.Count == 0)
             {
                 IsOpenProductInfoPortrait = false;
             }
         }
-        private void LoadOnSaleProduct()
-        {
-            double maxPrice = double.MaxValue;
-            double minPrice = 0;
-            int maxInStock = int.MaxValue;
-            int minInStock = 0;
-            if (!String.IsNullOrEmpty(MaxPriceSearch))
-            {
-                double.TryParse(MaxPriceSearch, out maxPrice);
-            }
-            if (!String.IsNullOrEmpty(MinPriceSearch))
-            {
-                double.TryParse(MinPriceSearch, out minPrice);
-            }
-            if (!String.IsNullOrEmpty(MaxInStockSearch))
-            {
-                int.TryParse(MaxInStockSearch, out maxInStock);
-            }
-            if (!String.IsNullOrEmpty(MinInStockSearch))
-            {
-                int.TryParse(MinInStockSearch, out minInStock);
-            }   
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
-                                                                                                        ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
-                                                                                                        ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
-                                                                                                        p.Price <= maxPrice && p.Price >= minPrice &&
-                                                                                                        p.InStock > 0))));
-            if (Products.Count == 0)
-            {
-                IsOpenProductInfoPortrait = false;
-            }
-        }
-        private void LoadAllProduct()
-        {
-            double maxPrice = double.MaxValue;
-            double minPrice = 0;
-            int maxInStock = int.MaxValue;
-            int minInStock = 0;
-            if (!String.IsNullOrEmpty(MaxPriceSearch))
-            {
-                double.TryParse(MaxPriceSearch, out maxPrice);
-            }
-            if (!String.IsNullOrEmpty(MinPriceSearch))
-            {
-                double.TryParse(MinPriceSearch, out minPrice);
-            }
-            if (!String.IsNullOrEmpty(MaxInStockSearch))
-            {
-                int.TryParse(MaxInStockSearch, out maxInStock);
-            }
-            if (!String.IsNullOrEmpty(MinInStockSearch))
-            {
-                int.TryParse(MinInStockSearch, out minInStock);
-            }
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => (p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
-                                                                                                    ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
-                                                                                                    ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
-                                                                                                    p.Price <= maxPrice && p.Price >= minPrice &&
-                                                                                                    p.InStock <= maxInStock && p.InStock >= minInStock)));
-            if (Products.Count == 0)
-            {
-                IsOpenProductInfoPortrait = false;
-            }
-        }
-        private void LoadBannedProduct()
-        {
-            double maxPrice = double.MaxValue;
-            double minPrice = 0;
-            int maxInStock = int.MaxValue;
-            int minInStock = 0;
-            if (!String.IsNullOrEmpty(MaxPriceSearch))
-            {
-                double.TryParse(MaxPriceSearch, out maxPrice);
-            }
-            if (!String.IsNullOrEmpty(MinPriceSearch))
-            {
-                double.TryParse(MinPriceSearch, out minPrice);
-            }
-            if (!String.IsNullOrEmpty(MaxInStockSearch))
-            {
-                int.TryParse(MaxInStockSearch, out maxInStock);
-            }
-            if (!String.IsNullOrEmpty(MinInStockSearch))
-            {
-                int.TryParse(MinInStockSearch, out minInStock);
-            }
-            Products = new ObservableCollection<Models.Product>(FilterProducts.Where(p => ((p.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim())) &&
-                                                                                                        ((CategorySearch == null) ? true : p.Category.Id == CategorySearch.Id) &&
-                                                                                                        ((BrandSearch == null) ? true : p.Brand.Id == BrandSearch.Id) &&
-                                                                                                        p.Price <= maxPrice && p.Price >= minPrice &&
-                                                                                                        p.InStock <= maxPrice && p.InStock >= minPrice &&
-                                                                                                        p.BanLevel != 0)));
-            if (Products.Count == 0)
-            {
-                IsOpenProductInfoPortrait = false;
-            }
-        }
+
         private async Task LoadListProducts()
         {
-            AllProducts = new ObservableCollection<Models.Product>((await ProductRepository.GetListAsync(p => p.IdShop == Shop.Id,
-                                                                                                        p => p.Category,
-                                                                                                        p => p.Brand,
-                                                                                                        p => p.ImageProducts)).OrderByDescending(p=>p.BanLevel == 0).
-                                                                                                                                ThenByDescending(p=>(p.InStock > 0)).
-                                                                                                                                ThenByDescending(p=>p.DateOfSale));
-            BannedProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel != 0));
-            OnSaleProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel == 0 && p.InStock > 0));
-            OutOfStockProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.BanLevel == 0 && p.InStock == 0));
+            ObservableCollection<Models.Product> listProducts = new ObservableCollection<Models.Product>((await ProductRepository.GetListAsync(p => p.IdShop == Shop.Id,
+                                                                                                                                                p => p.Category,
+                                                                                                                                                p => p.Brand,
+                                                                                                                                                p => p.ImageProducts, 
+                                                                                                                                                p => p.MUser)).OrderByDescending(p => p.BanLevel == 0).
+                                                                                                                                                                ThenByDescending(p => (p.InStock > 0)).
+                                                                                                                                                                ThenByDescending(p => p.DateOfSale));
+            AllProducts = new ObservableCollection<ProductViewModel>();
+            BannedProducts = new ObservableCollection<ProductViewModel>();
+            OnSaleProducts = new ObservableCollection<ProductViewModel>();
+            OutOfStockProducts = new ObservableCollection<ProductViewModel>();
+            foreach(Models.Product product in listProducts)
+            {
+                ProductViewModel productViewModel = new ProductViewModel(product);
+                AllProducts.Add(productViewModel);
+                if(product.BanLevel == 0)
+                {
+                    if(product.InStock > 0)
+                    {
+                        OnSaleProducts.Add(productViewModel);
+                    }
+                    else
+                    {
+                        OutOfStockProducts.Add(productViewModel);
+                    }
+                }
+                else
+                {
+                    BannedProducts.Add(productViewModel);
+                }
+            }
         }
     }
     public class MImageProuct
     {
         public BitmapImage BMImage { get; set; }
         public string Source { get; set; }
+    }
+    public class ProductViewModel : BaseViewModel
+    {
+        private Models.Product product;
+        public Models.Product Product
+        {
+            get => product;
+            set
+            {
+                product = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Status));
+                OnPropertyChanged(nameof(StatusColor));
+                OnPropertyChanged(nameof(StatusIndex));
+            }
+        }
+        public string Status
+        {
+            get
+            {
+                if (product == null)
+                {
+                    return "Error";
+                }
+                if (product.BanLevel == 0)
+                {
+                    if (product.InStock > 0)
+                    {
+                        return "On Sale";
+                    }
+                    else
+                    {
+                        return "Out Of Stock";
+                    }
+                }
+                else
+                {
+                    return "Banned";
+                }
+            }
+        }
+        public int StatusIndex
+        {
+            get
+            {
+                if (product == null)
+                {
+                    return 0;
+                }
+                if (product.BanLevel == 0)
+                {
+                    if (product.InStock > 0)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 2;
+                    }
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+        }
+        public System.Windows.Media.Brush StatusColor
+        {
+            get
+            {
+                if (product == null)
+                {
+                    return (System.Windows.Media.Brush)new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                }
+                else
+                {
+                    if (product.BanLevel == 0)
+                    {
+                        if (product.InStock > 0)
+                        {
+                            return (System.Windows.Media.Brush)new SolidColorBrush(System.Windows.Media.Color.FromRgb(42, 169, 82));
+                        }
+                        else
+                        {
+                            return (System.Windows.Media.Brush)new SolidColorBrush(System.Windows.Media.Color.FromRgb(253, 197, 0));
+                        }
+                    }
+                    else
+                    {
+                        return (System.Windows.Media.Brush)new SolidColorBrush(System.Windows.Media.Color.FromRgb(219, 48, 34));
+                    }
+                }
+            }
+        }
+        public ProductViewModel() { }
+        public ProductViewModel(Models.Product product)
+        {
+            Product = product;
+        }
     }
 }

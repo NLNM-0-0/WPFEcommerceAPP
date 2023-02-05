@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WPFEcommerceApp.Models;
+using static System.Windows.Forms.LinkLabel;
 
 namespace WPFEcommerceApp
 {
@@ -157,6 +158,14 @@ namespace WPFEcommerceApp
                 Shop.Description = Shop.Description.Trim();
                 await UpdateShop();
                 await LoadTempData();
+                List<SearchItemViewModel> searchItemViewModels = new List<SearchItemViewModel>(HeaderViewModel.AllItems.Where(p => p.IsProduct == false && (p.Model as MUser).Id == Shop.Id));
+                if (searchItemViewModels != null && searchItemViewModels.Count != 0)
+                {
+                    SearchItemViewModel searchItemViewModel = searchItemViewModels.First();
+                    searchItemViewModel.Model = Shop;
+                    searchItemViewModel.Name = Shop.Name;
+                    searchItemViewModel.SourceImage = String.IsNullOrEmpty(Shop.SourceImageAva) ? null : Shop.SourceImageAva;
+                }
             });
             EditProfileShopCommand = new RelayCommandWithNoParameter(() =>
             {

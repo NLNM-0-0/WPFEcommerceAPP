@@ -300,22 +300,20 @@
                 <ColumnDefinition Width="385"/>
             </Grid.ColumnDefinitions>
             <StackPanel
-                Background="{StaticResource BackgroundColorBrush}">
+                    Background="{StaticResource BackgroundColorBrush}">
                     <Grid
-                    Background="{StaticResource WhiteColorBrush}">
+                        Background="{StaticResource WhiteColorBrush}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="7*"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="70"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="70"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="1">
                             <local:AsyncImage
-                            Background="White"
-                            Source="{Binding SelectedImage}"
-                            Margin="20,30,20,0"
-                            Width="750"
-                            Height="500">
-
+                                Background="White"
+                                Source="{Binding SelectedImage}"
+                                Margin="20,30"
+                                Height="500">
                             </local:AsyncImage>
 
                         </StackPanel>

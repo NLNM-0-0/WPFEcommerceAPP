@@ -121,7 +121,7 @@
             <DockPanel 
                 x:Name="dockPanelImages"
                 Height="250"
-                Margin="0 0 20 0">
+                Margin="0 0 10 0">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <ItemsControl
                         x:Name="ImagesPanel"
@@ -133,10 +133,13 @@
                                     Background="{StaticResource BoxShadowColorBrush}"
                                     Width="40"
                                     Height="40"
+                                    MaxWidth="40"
                                     Margin="0 0 0 10"
                                     IsHitTestVisible="True">
                                     <local:AsyncImage 
                                         x:Name="ImageProduct"
+                                        Width="40"
+                                        Height="40"
                                         Source="{Binding BMImage}"
                                         Stretch="UniformToFill"/>
                                     <behavior:Interaction.Triggers>

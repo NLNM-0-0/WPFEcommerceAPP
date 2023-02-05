@@ -161,6 +161,7 @@
     <Compile Include="Models\UserLogin.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Components\UserControls\ProductPanel.cs" />
     <Compile Include="Screens\General\Order\components\DescriptionConverter.cs" />
     <Compile Include="Screens\General\Payment\Checkout\VoucherFilterConverter.cs" />
     <Compile Include="Screens\General\Payment\components\Dialogs\EditInforDialogVM.cs" />

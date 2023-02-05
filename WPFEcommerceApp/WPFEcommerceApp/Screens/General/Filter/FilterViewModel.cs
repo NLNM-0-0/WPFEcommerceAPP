@@ -662,8 +662,7 @@ namespace WPFEcommerceApp
         }
         private void Search()
         {
-            List<string> listCategoryId = new List<string>();
-            List<string> allCategoryId = new List<string>();
+            SortedSet<string> listCategoryId = new SortedSet<string>();
             foreach (CategoryCheckBoxViewModel categoryCheckBoxViewModel in DislayedCategoryCheckBoxViewModels)
             {
                 if (categoryCheckBoxViewModel.IsChecked)
@@ -675,27 +674,23 @@ namespace WPFEcommerceApp
             {
                 foreach (CategoryCheckBoxViewModel categoryCheckBoxViewModel in CategoryCheckBoxViewModels)
                 {
-                    allCategoryId.Add(categoryCheckBoxViewModel.Category.Id);
+                    listCategoryId.Add(categoryCheckBoxViewModel.Category.Id);
                 }
-                listCategoryId = allCategoryId;
             }
-            List<string> listBrandId = new List<string>();
-            List<string> allBrandId = new List<string>();
+            SortedSet<string> listBrandId = new SortedSet<string>();
             foreach (BrandCheckViewModel brandCheckViewModel in DislayedBrandCheckBoxViewModels)
             {
                 if (brandCheckViewModel.IsChecked)
                 {
                     listBrandId.Add(brandCheckViewModel.Brand.Id);
                 }
-                allBrandId.Add(brandCheckViewModel.Brand.Id);
             }
             if (listBrandId.Count == 0)
             {
                 foreach (BrandCheckViewModel brandCheckViewModel in BrandCheckBoxViewModels)
                 {
-                    allBrandId.Add(brandCheckViewModel.Brand.Id);
+                    listBrandId.Add(brandCheckViewModel.Brand.Id);
                 }
-                listBrandId = allBrandId;
             }
             bool isHasSize = false;
             foreach (bool size in CheckSize)
@@ -706,45 +701,75 @@ namespace WPFEcommerceApp
                     break;
                 }
             }
+            int maxLength = FilterProducts.Count;
+            if(!IsAllFilter)
+            {
+                maxLength = Math.Min(50, FilterProducts.Count);
+            }
+            DisplayedProducts.Clear();
             if (isHasSize)
             {
                 if (SearchBy == "In WANO")
                 {
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => ((p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim())) &&
-                                                                                                            ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100) <= MaxPrice) && ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                            (listBrandId.Contains(p.SelectedProduct.IdBrand)) && (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
-                                                                                                            ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
-                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5])))))));
+                    for(int i = 0; i < maxLength; i++)
+                    {
+                        ProductBlockViewModel p = FilterProducts[i];
+                        if(((p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim())) &&
+                                                                    ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100) <= MaxPrice) && ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                    (listBrandId.Contains(p.SelectedProduct.IdBrand)) && (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
+                                                                    ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
+                                                                    (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5]))))))
+                        {
+                            DisplayedProducts.Add(p);
+                        }
+                    }
                     IsNeedSearchBy = false;
                 }
                 else
                 {
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => ((p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim())) && (p.SelectedProduct.IdShop == Condition.ShopText) &&
-                                                                                                            ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100) <= MaxPrice) && ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                            (listBrandId.Contains(p.SelectedProduct.IdBrand)) && (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
-                                                                                                            ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
-                                                                                                            (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5])))))));
+                    for (int i = 0; i < maxLength; i++)
+                    {
+                        ProductBlockViewModel p = FilterProducts[i];
+                        if ((p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim())) && (p.SelectedProduct.IdShop == Condition.ShopText) &&
+                                                                    ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100) <= MaxPrice) && ((p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                    (listBrandId.Contains(p.SelectedProduct.IdBrand)) && (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && ((CheckSize[0] && (p.SelectedProduct.IsOneSize == CheckSize[0])) ||
+                                                                    ((CheckSize[1] && p.SelectedProduct.IsHadSizeS == CheckSize[1])) || (CheckSize[2] && (p.SelectedProduct.IsHadSizeM == CheckSize[2])) || (CheckSize[3] && (p.SelectedProduct.IsHadSizeL == CheckSize[3])) ||
+                                                                    (CheckSize[4] && (p.SelectedProduct.IsHadSizeXL == CheckSize[4])) || (CheckSize[5] && (p.SelectedProduct.IsHadSizeXXL == CheckSize[5])))))
+                        {
+                            DisplayedProducts.Add(p);
+                        }
+                    }
                 }
             }
             else
             {
                 if (SearchBy == "In WANO")
                 {
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim()) &&
-                                                                                                        (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))));
+                    for (int i = 0; i < maxLength; i++)
+                    {
+                        ProductBlockViewModel p = FilterProducts[i];
+                        if (p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim()) &&
+                                                                    (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                    (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))
+                        {
+                            DisplayedProducts.Add(p);
+                        }
+                    }
                     IsNeedSearchBy = false;
                 }
                 else
-                { 
-                    DisplayedProducts = new List<ProductBlockViewModel>(FilterProducts.Where(p => (p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim()) && (p.SelectedProduct.IdShop == Condition.ShopText) &&
-                                                                                                        (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
-                                                                                                        (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))));
+                {
+                    for (int i = 0; i < maxLength; i++)
+                    {
+                        ProductBlockViewModel p = FilterProducts[i];
+                        if (p.SelectedProduct.Name.ToLower().Contains(SearchByValue.ToLower().Trim()) && (p.SelectedProduct.IdShop == Condition.ShopText) &&
+                                                                    (p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 <= MaxPrice && p.SelectedProduct.Price * (100 - p.SelectedProduct.Sale) / 100 >= MinPrice) &&
+                                                                    (listCategoryId.Contains(p.SelectedProduct.IdCategory)) && (listBrandId.Contains(p.SelectedProduct.IdBrand)))
+                        {
+                            DisplayedProducts.Add(p);
+                        }
+                    }
                 }
-            }
-            if (!IsAllFilter)
-            {
-                DisplayedProducts = new List<ProductBlockViewModel>(DisplayedProducts.Take(50));
             }
         }
         private async Task Load()

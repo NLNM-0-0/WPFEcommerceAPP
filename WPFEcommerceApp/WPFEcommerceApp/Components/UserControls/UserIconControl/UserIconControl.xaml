@@ -33,15 +33,28 @@
                    Margin="5 4 5 2"
                    HorizontalAlignment="Center"
                    FontWeight="Medium"
-                   FontSize="{StaticResource FontSizeDescription}"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <TextBlock Text="ID: " 
+                   FontSize="{StaticResource FontSizeDescription}"
+                   TextWrapping="Wrap"/>
+        <Grid
+            HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="ID:" 
                    HorizontalAlignment="Center"
                    FontSize="12"/>
-            <TextBlock Text="{Binding Id}" 
-                   HorizontalAlignment="Center"
-                   FontSize="12"/>
-        </StackPanel>
+            <Border
+                Grid.Column="2">
+                <TextBlock
+                    Text="{Binding Id}" 
+                    HorizontalAlignment="Center"
+                    FontSize="12"
+                    TextWrapping="Wrap"/>
+            </Border>
+            
+        </Grid>
         
     </StackPanel>
 </UserControl>

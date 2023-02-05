@@ -243,6 +243,12 @@ namespace WPFEcommerceApp
                 AccountStore.instance.CurrentAccount.SourceImageAva = link;
                 OnPropertyChanged(nameof(SourceImageAva));
                 await AccountStore.instance.Update(AccountStore.instance.CurrentAccount);
+                List<SearchItemViewModel> searchItemViewModels = new List<SearchItemViewModel>(HeaderViewModel.AllItems.Where(p => p.IsProduct == false && (p.Model as MUser).Id == AccountStore.instance.CurrentAccount.Id));
+                if (searchItemViewModels != null && searchItemViewModels.Count != 0)
+                {
+                    SearchItemViewModel searchItemViewModel = searchItemViewModels.First();
+                    searchItemViewModel.SourceImage = String.IsNullOrEmpty(link) ? null : link;
+                }
                 await Load();
             }
 
@@ -288,6 +294,13 @@ namespace WPFEcommerceApp
                     await AccountStore.instance.Update(user);
                     userlogin.Username = EditUser.Email;
                     AccountStore.instance.CurrentAccount.UserLogin = userlogin;
+                    List<SearchItemViewModel> searchItemViewModels =new List<SearchItemViewModel>(HeaderViewModel.AllItems.Where(p => p.IsProduct == false && (p.Model as MUser).Id == user.Id));
+                    if(searchItemViewModels != null && searchItemViewModels.Count!=0)
+                    {
+                        SearchItemViewModel searchItemViewModel = searchItemViewModels.First();
+                        searchItemViewModel.Model = user;
+                        searchItemViewModel.Name = user.Name;
+                    }    
                     await loginRepo.Update(userlogin);
                 } 
                 else {
@@ -302,6 +315,13 @@ namespace WPFEcommerceApp
             }
             else {
                 await AccountStore.instance.Update(user);
+                List<SearchItemViewModel> searchItemViewModels = new List<SearchItemViewModel>(HeaderViewModel.AllItems.Where(p => p.IsProduct == false && (p.Model as MUser).Id == user.Id));
+                if (searchItemViewModels != null && searchItemViewModels.Count != 0)
+                {
+                    SearchItemViewModel searchItemViewModel = searchItemViewModels.First();
+                    searchItemViewModel.Model = user;
+                    searchItemViewModel.Name = user.Name;
+                }
             }
             await Load();
             MainViewModel.IsLoading = false;

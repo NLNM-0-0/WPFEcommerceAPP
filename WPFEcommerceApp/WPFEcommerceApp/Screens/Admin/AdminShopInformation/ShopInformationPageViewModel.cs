@@ -235,7 +235,7 @@ namespace WPFEcommerceApp
                     SourceImageAva = request.MUser.SourceImageAva,
                     Email = request.MUser.Email,
                     PhoneNumber = request.MUser.PhoneNumber,
-                    Address = address.Address1
+                    Address = (address == null || String.IsNullOrEmpty(address.Address1))?"":address.Address1
                 };
                 RequestList.Items.Add(item);
             }

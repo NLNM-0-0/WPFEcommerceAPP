@@ -38,7 +38,8 @@
         </Style>
     </UserControl.Resources>
     <StackPanel
-        Margin="30">
+        Margin="30"
+        Width="700">
         <Grid
             Margin="0 0 0 30">
             <Grid.ColumnDefinitions>
@@ -130,7 +131,7 @@
             Style="{StaticResource MaterialDesignDiscreteSlider}"
             ToolTip="MaterialDesignDiscreteSlider"
             Value="100"
-            Width="680"
+            Width="700"
             Foreground="Black"
             x:Name="slider"
             ValueChanged="slider_ValueChanged"/>

@@ -8,6 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.IO;
 
 namespace WPFEcommerceApp
 {
@@ -23,7 +26,6 @@ namespace WPFEcommerceApp
             set
             {
                 _sourceImageAds = value;
-                ImageAds = new CroppedBitmap(new BitmapImage(new Uri(SourceImageAds)), new Int32Rect(0, 0, 0, 0));
                 OnPropertyChanged();
             }
         }
@@ -102,6 +104,28 @@ namespace WPFEcommerceApp
                 if (op.FileName != "")
                 {
                     SourceImageAds = op.FileName;
+                    var stream = File.Open(op.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    System.Drawing.Image img = new Bitmap(stream);
+                    Bitmap copy = new Bitmap(img.Width, img.Height);
+                    copy.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+                    using (var graphic = Graphics.FromImage(copy))
+                    {
+                        graphic.Clear(System.Drawing.Color.White);
+                        graphic.DrawImageUnscaled(img, 0, 0);
+                    }
+                    using (var memory = new MemoryStream())
+                    {
+                        copy.Save(memory, ImageFormat.Jpeg);
+                        memory.Position = 0;
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = memory;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+                        bitmapImage.Freeze();
+
+                        ImageAds = new CroppedBitmap(bitmapImage as BitmapSource, new Int32Rect(0, 0, 0, 0));
+                    }
                 }
             });
 

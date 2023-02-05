@@ -733,7 +733,8 @@ namespace WPFEcommerceApp
             ProductAlsos = new List<Models.Product>((await ProductRepository.GetListAsync(p => p.BanLevel == 0 &&
                                                                                             p.Id != SelectedProduct.Id && 
                                                                                             (p.IdBrand == SelectedProduct.IdBrand || p.IdCategory == SelectedProduct.IdCategory) && 
-                                                                                            p.InStock != 0,
+                                                                                            p.InStock != 0 &&
+                                                                                            p.IdShop != SelectedProduct.IdShop,
                                                                                             p => p.Category,
                                                                                             p => p.Brand,
                                                                                             p => p.ImageProducts, 
