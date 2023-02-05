@@ -8,6 +8,21 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsChecked" Value="False"/>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="{StaticResource NotAvailableColorBrush}"/>
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -66,7 +81,7 @@
                 </ListView>
                 <Button
                     HorizontalAlignment="Left"
-                    Margin="20 5 0 0"
+                    Margin="20 -10 0 0"
                     Style="{StaticResource TransparentButton}"
                     materialDesign:ButtonAssist.CornerRadius="0"
                     FontSize="{StaticResource FontSizeText}"
@@ -111,7 +126,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <CheckBox
-                                MaxWidth="{c:Binding 'ActualWidth - 20', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"
+                                Width="{c:Binding 'ActualWidth - 20', RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}}"
                                 HorizontalAlignment="Stretch"
                                 IsChecked="{Binding IsChecked}"
                                 FontSize="{StaticResource FontSizeText}"
@@ -128,7 +143,7 @@
                 </ListView>
                 <Button
                     HorizontalAlignment="Left"
-                    Margin="20 5 0 0"
+                    Margin="20 -10 0 0"
                     Style="{StaticResource TransparentButton}"
                     materialDesign:ButtonAssist.CornerRadius="0"
                     FontSize="{StaticResource FontSizeText}"
@@ -276,7 +291,7 @@
             </Grid.RowDefinitions>
             <Border BorderBrush="{StaticResource BoxLineColorBrush}"
                     Margin="20,40,20,0"
-                    Height="60">
+                    Height="80">
                 <Grid Background="{StaticResource BackgroundColorBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -290,7 +305,8 @@
                         CornerRadius="5"
                         BorderThickness="1"
                         BorderBrush="{StaticResource BlackColorBrush}"
-                        Background="{StaticResource WhiteColorBrush}">
+                        Background="{StaticResource WhiteColorBrush}"
+                        Height="60">
                         <Grid 
                             Grid.Column="0">
                             <Grid.ColumnDefinitions>
@@ -310,7 +326,7 @@
                                     MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                                     materialDesign:HintAssist.Hint="Search"
                                     materialDesign:HintAssist.IsFloating="False"
-                                    Text="{Binding SearchByValue, UpdateSourceTrigger=PropertyChanged}">
+                                    Text="{Binding SearchByValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 </TextBox>
                             </Grid>
                             <TextBlock
@@ -408,6 +424,39 @@
                     </RadioButton>
                 </Grid>
             </Border>
+            <!--Bản mới-->
+            <!--<ScrollViewer
+                Grid.Row="1"
+                PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <ListView 
+                    ItemsSource="{Binding DisplayedProducts}"
+                    Margin="20"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    x:Name="ProductList"
+                    BorderThickness="0"
+                    ScrollViewer.CanContentScroll="True"
+                    HorizontalContentAlignment="Center">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <local:ProductPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                            <Setter Property="Margin" Value="5 20"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <local:ProductBlock
+                                DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>-->
+            <!--Bản cũ-->
             <ListView 
                 ItemsSource="{Binding DisplayedProducts}"
                 Margin="20"
