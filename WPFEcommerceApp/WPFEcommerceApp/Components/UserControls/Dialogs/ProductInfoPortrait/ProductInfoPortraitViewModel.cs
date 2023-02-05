@@ -19,6 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WPFEcommerceApp.Models;
+using static System.Windows.Forms.LinkLabel;
 
 namespace WPFEcommerceApp
 {
@@ -219,12 +220,14 @@ namespace WPFEcommerceApp
                     SelectedProduct.Description = productTemp.Description;
                     SelectedProduct.Color = productTemp.Color;
                     IsEditting = false;
-                    product = SelectedProduct;
                     await UpdateImageProduct();
                     await UpdateProduct();
                     product = SelectedProduct;
                     OnSelectedProductChange();
-
+                    SearchItemViewModel searchItemViewModel = HeaderViewModel.AllItems.Where(hvm => (hvm.IsProduct && (hvm.Model as Models.Product).Id == SelectedProduct.Id)).ElementAt(0);
+                    searchItemViewModel.Model = SelectedProduct;
+                    searchItemViewModel.Name = SelectedProduct.Name;
+                    searchItemViewModel.SourceImage = (SelectedProduct.ImageProducts.Count == 0) ? null : SelectedProduct.ImageProducts.ElementAt(0).Source;
                     MainViewModel.IsLoading = false;
                 });
 
@@ -253,6 +256,18 @@ namespace WPFEcommerceApp
                             {
                                 DialogHost.Show(PreviousItem, "Main");
                             }
+                            if(ImageProducts.Count == 0)
+                            {
+                                BitmapImage bitmap = new BitmapImage();
+                                bitmap.BeginInit();
+                                bitmap.UriSource = new Uri(Properties.Resources.DefaultProductImage);
+                                bitmap.EndInit();
+                                SelectedImage = new MImageProuct() { BMImage = bitmap, Source = Properties.Resources.DefaultProductImage };
+                            }    
+                            else
+                            {
+                                SelectedImage = ImageProducts[0];
+                            }    
                         })
                     };
                     MainViewModel.IsLoading = false;
@@ -386,6 +401,8 @@ namespace WPFEcommerceApp
             {
                 if (imageProductSource.Source.Contains("https://firebasestorage.googleapis.com"))
                 {
+                    Models.ImageProduct imageProduct = new Models.ImageProduct() { Source = imageProductSource.Source, IdProduct = SelectedProduct.Id };
+                    SelectedProduct.ImageProducts.Add(imageProduct);
                     continue;
                 }
                 else
@@ -393,14 +410,8 @@ namespace WPFEcommerceApp
                     string link = await FireStorageAPI.PushFromImage(imageProductSource.BMImage, "Product", "Image", null, $"{SelectedProduct.Id}");
                     Models.ImageProduct imageProduct;
                     imageProduct = new Models.ImageProduct() { Source = link, IdProduct = SelectedProduct.Id };
+                    await repository.Add(imageProduct);
                     SelectedProduct.ImageProducts.Add(imageProduct);
-                }
-            }
-            if (SelectedProduct.ImageProducts != null)
-            {
-                foreach (Models.ImageProduct imageproduct in SelectedProduct.ImageProducts)
-                {
-                    await repository.Add(imageproduct);
                 }
             }
         }
