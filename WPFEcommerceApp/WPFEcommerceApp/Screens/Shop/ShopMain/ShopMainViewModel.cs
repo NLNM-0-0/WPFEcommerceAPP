@@ -386,7 +386,7 @@ namespace WPFEcommerceApp
             }
             AverageRating = sumRating * 1.0 / number;
             BigDiscountProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p=>p.Sale > 0).OrderByDescending(p => p.Sale).Take(16));
-            BestSellerProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.OrderInfoes.Count > 0).OrderByDescending(p => p.OrderInfoes.Count).Take(16));
+            BestSellerProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => p.Sold > 0).OrderByDescending(p => p.Sold).Take(16));
             if (lastDateHasNewProduct != DateTime.MinValue)
             {
                 NewProducts = new ObservableCollection<Models.Product>(AllProducts.Where(p => (lastDateHasNewProduct - p.DateOfSale) <= new TimeSpan(7, 0, 0, 0)).ToList().OrderByDescending(p => p.DateOfSale).Take(16));

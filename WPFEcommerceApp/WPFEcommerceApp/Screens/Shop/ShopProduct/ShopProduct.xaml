@@ -10,8 +10,6 @@
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <local:ShopProductStatusConverter x:Key="ShopProductStatusConverter"/>
-        <local:ShopProductStatusColorConverter x:Key="ShopProductStatusColorConverter"/>
         <Style x:Key="RoundButtonAdd" TargetType="{x:Type ToggleButton}">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Width" Value="50"/>
