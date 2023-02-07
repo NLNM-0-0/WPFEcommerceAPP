@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -126,12 +127,27 @@ namespace WPFEcommerceApp
             {
                 CartRepo = new GenericDataRepository<Models.Cart>();
                 Bags = new ObservableCollection<BagBlock>();
-                Plusamount = new RelayCommand<object>((p) => { return p != null; }, async (p) =>
+                Plusamount = new RelayCommand<object>((p) => 
+                {
+                    return p!=null; 
+                }, async (p) =>
                 {
                     BagBlock bagBlock = p as BagBlock;
-                    bagBlock.Amount += 1;
-                    await UpdateAmount(bagBlock.Product.Id, bagBlock.ProductSize, bagBlock.Amount);
-                    OnPropertyChanged(nameof(Total));
+                    if (bagBlock.Amount > bagBlock.Product.InStock)
+                    {
+                        NotificationDialog notificationDialog = new NotificationDialog()
+                        {
+                            Header = "Oops",
+                            ContentDialog = $"There are only {bagBlock.Product.InStock} quantity remaining for this item"
+                        };
+                        await DialogHost.Show(notificationDialog, "Main");
+                    }
+                    else
+                    {
+                        bagBlock.Amount += 1;
+                        await UpdateAmount(bagBlock.Product.Id, bagBlock.ProductSize, bagBlock.Amount);
+                        OnPropertyChanged(nameof(Total));
+                    }
                 });
                 Tamount = new RelayCommand<object>((p) =>
                 {
@@ -189,7 +205,7 @@ namespace WPFEcommerceApp
                     bool isCanBuy = false;
                     foreach (BagBlock bag in Bags)
                     {
-                        if (bag.IsChecked == true && bag.IsBanned == true)
+                        if (bag.IsChecked == true && (bag.IsBanned == true || bag.IsOutOfSold))
                             return false;
                         else if(bag.IsChecked)
                         {
@@ -272,7 +288,7 @@ namespace WPFEcommerceApp
                                                         item => item.Product,
                                                         item => item.Product.MUser,
                                                         item => item.Product.ImageProducts
-                                                        )).OrderBy(c => c.Product.BanLevel != 0));
+                                                        )).OrderBy(c => c.Product.BanLevel != 0).ThenBy(c => (c.Product.InStock == 0)));
 
             Bags = new ObservableCollection<BagBlock>(cartList.Select(item => new BagBlock
             {
@@ -284,11 +300,12 @@ namespace WPFEcommerceApp
                 ShopName = item.Product.MUser.Name,
                 ProductSize = item.Size,
                 UnitPrice = item.Product.Price,
-                Amount = (item.Amount == null || item.Product.BanLevel != 0)?0:(int)item.Amount,
+                Amount = (item.Amount == null || item.Product.BanLevel != 0 || item.Product.InStock == 0) ?0:(int)item.Amount,
                 Price = (item.Amount * item.Product.Price) ?? 0,
                 Tamount = Tamount,
                 Plusamount = Plusamount, 
-                IsBanned = (item.Product.BanLevel != 0)
+                IsBanned = (item.Product.BanLevel != 0),
+                IsOutOfSold = (item.Product.InStock == 0)
             }));
             MainViewModel.SetLoading(false);
         }

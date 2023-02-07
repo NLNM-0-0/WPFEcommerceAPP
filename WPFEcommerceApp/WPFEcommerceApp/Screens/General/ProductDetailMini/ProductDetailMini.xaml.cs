@@ -30,11 +30,7 @@ namespace WPFEcommerceApp
         {
             int amount;
             int maxAmount;
-            if (String.IsNullOrEmpty((sender as TextBox).Text))
-            {
-                (sender as TextBox).Text = "1";
-            }
-            else if (int.TryParse((sender as TextBox).Text, out amount))
+            if (int.TryParse((sender as TextBox).Text, out amount))
             {
                 if (int.Parse((sender as TextBox).Text) == 0)
                 {
@@ -44,7 +40,7 @@ namespace WPFEcommerceApp
                 {
                     if (maxAmount == 0 && (sender as TextBox).Text == "1")
                     {
-                        return;
+                        maxAmount = int.Parse((sender as TextBox).Text);
                     }
                     if (amount > maxAmount)
                     {

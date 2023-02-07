@@ -125,7 +125,7 @@ namespace WPFEcommerceApp
                         }
                     }    
                 }    
-                if (ImageProducts.Count == 1)
+                if (ImageProducts.Count >= 1)
                 {
                     SelectedImageSource = ImageProducts.First();
                 }

@@ -118,8 +118,8 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
-        private int amount;
-        public int Amount
+        private string amount;
+        public string Amount
         {
             get => amount;
             set
@@ -465,7 +465,7 @@ namespace WPFEcommerceApp
                 }));
             }).ContinueWith((second) =>
             {
-                Amount = 1;
+                Amount = "1";
                 if (AccountStore.instance.CurrentAccount == null)
                 {
                     IsFavorite = null;
@@ -535,17 +535,20 @@ namespace WPFEcommerceApp
                 }
                 RightCommand = new RelayCommand<object>(p => true, Right);
                 LeftCommand = new RelayCommand<object>(p => true, Left);
-                Plusamount = new RelayCommand<object>((p) => { return p != null; }, (p) =>
+                Plusamount = new RelayCommand<object>((p) => 
                 {
-                    Amount += 1;
+                    return int.Parse(Amount) < SelectedProduct.InStock; 
+                }, (p) =>
+                {
+                    Amount = (int.Parse(Amount) + 1).ToString();
                     OnPropertyChanged();
                 });
                 Tamount = new RelayCommand<object>((p) =>
                 {
-                    return Amount >= 2;
+                    return int.Parse(Amount) >= 2;
                 }, (p) =>
                 {
-                    Amount -= 1;
+                    Amount = (int.Parse(Amount) - 1).ToString();
                     OnPropertyChanged();
                 });
                 NextImageCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
@@ -572,7 +575,7 @@ namespace WPFEcommerceApp
                 {
                     return (AccountStore.instance.CurrentAccount != null && 
                     SelectedProduct.IdShop != AccountStore.instance.CurrentAccount.Id) &&
-                    SelectedProduct.InStock >= Amount;
+                    SelectedProduct.InStock >= int.Parse(Amount);
                 }, async (p) =>
                 {
                     await FavoriteStore.instance.Delete(SelectedProduct);
@@ -581,8 +584,9 @@ namespace WPFEcommerceApp
                 BuyNowCommand = new RelayCommand<object>((p) => 
                 {
                     return ((IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize) &&
-                    (AccountStore.instance.CurrentAccount != null) ? (AccountStore.instance.CurrentAccount.Id != SelectedProduct.IdShop) : true) &&
-                    SelectedProduct.InStock >= Amount;
+                    ((AccountStore.instance.CurrentAccount != null) ? (AccountStore.instance.CurrentAccount.Id != SelectedProduct.IdShop) : true) &&
+                    !String.IsNullOrEmpty(Amount.Trim()) &&
+                    SelectedProduct.InStock >= int.Parse(Amount));
                 }, async (p) =>
                 {
                     if (AccountStore.instance.CurrentAccount == null)
@@ -605,7 +609,7 @@ namespace WPFEcommerceApp
                         var raw = p as Models.Product;
                         var raw2 = await productRepo.GetSingleAsync(d => d.Id == raw.Id, d => d.ImageProducts);
 
-                        Product prd = new Product(raw2, Size, Amount);
+                        Product prd = new Product(raw2, Size, int.Parse(Amount));
                         List<Product> list = new List<Product>();
                         list.Add(prd);
 
@@ -633,7 +637,9 @@ namespace WPFEcommerceApp
                 AddToBagCommand = new RelayCommand<object>((p) => 
                 { 
                     return ((IsHadSizeS || IsHadSizeM || IsHadSizeL || IsHadSizeXL || IsHadSizeXXL || IsHadOneSize) &&
-                    (AccountStore.instance.CurrentAccount != null)?(AccountStore.instance.CurrentAccount.Id != SelectedProduct.IdShop):true); 
+                    ((AccountStore.instance.CurrentAccount != null)?(AccountStore.instance.CurrentAccount.Id != SelectedProduct.IdShop):true) &&
+                    !String.IsNullOrEmpty(Amount.Trim()) &&
+                    SelectedProduct.InStock >= int.Parse(Amount)); 
                 }, async (p) =>
                 {
                     if (AccountStore.instance.CurrentAccount == null)
@@ -702,7 +708,7 @@ namespace WPFEcommerceApp
                     d.IdUser == AccountStore.instance.CurrentAccount.Id &&
                     d.Size == Size);
             if(product != null) {
-                product.Amount += Amount;
+                product.Amount += int.Parse(Amount);
                 await dataRepository.Update(product);
                 MainViewModel.SetLoading(false);
                 return;
@@ -711,7 +717,7 @@ namespace WPFEcommerceApp
             {
                 IdProduct = SelectedProduct.Id,
                 IdUser = AccountStore.instance.CurrentAccount.Id,
-                Amount = Amount,
+                Amount = int.Parse(Amount),
                 Size = Size
             });
             MainViewModel.SetLoading(false);

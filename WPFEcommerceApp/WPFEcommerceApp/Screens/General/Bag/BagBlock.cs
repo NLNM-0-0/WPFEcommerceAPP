@@ -107,6 +107,16 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        private bool isOutOfSold;
+        public bool IsOutOfSold
+        {
+            get => isOutOfSold;
+            set
+            {
+                isOutOfSold = value;
+                OnPropertyChanged();
+            }
+        }
         private string iD;
         public string ID
         {

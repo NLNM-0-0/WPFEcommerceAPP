@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              xmlns:i="clr-namespace:CalcBinding;assembly=CalcBinding"
              x:Name="bagBlock"
@@ -166,11 +167,62 @@
                 VerticalAlignment="Stretch"
                 Background="{StaticResource WhiteColorBrush}"
                 Visibility="{i:Binding 'IsBanned', UpdateSourceTrigger=PropertyChanged}">
-                <TextBlock
-                    Text="The product has been banned. Please delete it."
-                    Foreground="{StaticResource ErrorColorBrush}"
-                    VerticalAlignment="Center"
-                    Padding="20 5 0 5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon
+                        Kind="Dangerous"
+                        Foreground="{StaticResource ErrorColorBrush}"
+                        VerticalAlignment="Center"
+                        Padding="20 0 0 0"
+                        Margin="0 -2 0 0">
+                        
+                    </materialDesign:PackIcon>
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="The product has been banned. Please delete it."
+                        Foreground="{StaticResource ErrorColorBrush}"
+                        VerticalAlignment="Center"
+                        Padding="5 0 0 0"/>
+                </Grid>
+                
+                <behavior:Interaction.Triggers>
+                    <behavior:EventTrigger EventName="PreviewMouseDown">
+                        <behavior:InvokeCommandAction
+                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Bag}, Path=DataContext.ClickCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:BagBlockUC}, Path=DataContext}"/>
+                    </behavior:EventTrigger>
+                </behavior:Interaction.Triggers>
+            </Grid>
+            <Grid
+                Grid.Column="2"
+                Grid.ColumnSpan="5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{StaticResource WhiteColorBrush}"
+                Visibility="{i:Binding '!IsBanned and IsOutOfSold', UpdateSourceTrigger=PropertyChanged}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon
+                        Kind="Dangerous"
+                        Foreground="{StaticResource ErrorColorBrush}"
+                        VerticalAlignment="Center"
+                        Padding="20 0 0 0"
+                        Margin="0 -2 0 0">
+
+                    </materialDesign:PackIcon>
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="The product is out of sold. Please delete it."
+                        Foreground="{StaticResource ErrorColorBrush}"
+                        VerticalAlignment="Center"
+                        Padding="5 0 0 0"/>
+                </Grid>
                 <behavior:Interaction.Triggers>
                     <behavior:EventTrigger EventName="PreviewMouseDown">
                         <behavior:InvokeCommandAction
