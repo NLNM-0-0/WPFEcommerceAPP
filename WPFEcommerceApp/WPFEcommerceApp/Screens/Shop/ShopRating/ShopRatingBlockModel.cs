@@ -108,6 +108,7 @@ namespace WPFEcommerceApp
         public ShopRatingBlockModel(Models.OrderInfo orderInfo)
         {
             OrderInfo = orderInfo;
+            OrderInfo.Rating.RatingInfoes = new List<RatingInfo>(OrderInfo.Rating.RatingInfoes.OrderByDescending(ri => ri.DateReply));
             IsReplying = false;
             OpenReplyCommand = new RelayCommandWithNoParameter(() =>
             {
@@ -139,12 +140,11 @@ namespace WPFEcommerceApp
                 {
                     MainViewModel.SetLoading(true);
                     IsShowAll = false;
-                    int index = DisplayedBlocksViewModels.Count;
-                    for (int i = 0; i < OrderInfo.Rating.RatingInfoes.Count - 1; i++)
+                    for (int i = 1; i < OrderInfo.Rating.RatingInfoes.Count ; i++)
                     {
                         App.Current.Dispatcher.Invoke((Action)(() =>
                         {
-                            DisplayedBlocksViewModels.Insert(index, new ReplyBlockViewModel(OrderInfo.Rating.RatingInfoes.ElementAt(i)));
+                            DisplayedBlocksViewModels.Add(new ReplyBlockViewModel(OrderInfo.Rating.RatingInfoes.ElementAt(i)));
                         }));
                     }
                     MainViewModel.SetLoading(false);
@@ -163,13 +163,13 @@ namespace WPFEcommerceApp
             else if (OrderInfo.Rating.RatingInfoes.Count == 1)
             {
                 DisplayedBlocksViewModels = new ObservableCollection<ReplyBlockViewModel>();
-                DisplayedBlocksViewModels.Add(new ReplyBlockViewModel(OrderInfo.Rating.RatingInfoes.Last()));
+                DisplayedBlocksViewModels.Add(new ReplyBlockViewModel(OrderInfo.Rating.RatingInfoes.First()));
                 IsShowAll = false;
             }
             else
             {
                 DisplayedBlocksViewModels = new ObservableCollection<ReplyBlockViewModel>();
-                DisplayedBlocksViewModels.Add(new ReplyBlockViewModel(OrderInfo.Rating.RatingInfoes.Last()));
+                DisplayedBlocksViewModels.Add(new ReplyBlockViewModel(OrderInfo.Rating.RatingInfoes.First()));
                 IsShowAll = true;
             }
         }   
@@ -185,6 +185,19 @@ namespace WPFEcommerceApp
             };
             await ratingInfoRepository.Add(ratingInfo);
             ratingInfo.MUser = AccountStore.instance.CurrentAccount;
+            GenericDataRepository<Models.Notification> notificationRepository=new GenericDataRepository<Models.Notification>();
+            if (AccountStore.instance.CurrentAccount.Id != OrderInfo.MOrder.IdCustomer)
+            {
+                await notificationRepository.Add(new Models.Notification()
+                {
+                    Id = await GenerateID.Gen(typeof(Models.Notification)),
+                    IdSender = AccountStore.instance.CurrentAccount.Id,
+                    IdReceiver = OrderInfo.MOrder.IdCustomer,
+                    HaveSeen = false,
+                    Date = DateTime.Now,
+                    Content = $"{AccountStore.instance.CurrentAccount.Name} has commented in the product {OrderInfo.Product.Name}: {NewRelayblockViewModel.Comment}"
+                });
+            }
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
                 DisplayedBlocksViewModels.Insert(0, new ReplyBlockViewModel(ratingInfo));

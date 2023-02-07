@@ -271,6 +271,7 @@
         <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="RightHeader" BasedOn="{StaticResource CenterHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Right"/>
         </Style>
+        <local:FalsesToTrueConverters x:Key="FalsesToTrueConverters"/>
     </UserControl.Resources>
     <materialDesign:DialogHost
             CloseOnClickAway="True"
@@ -326,6 +327,11 @@
                                             Kind="Archive"
                                             Height="30"
                                             Width="30" />
+                                        <Button.InputBindings>
+                                            <MouseBinding 
+                                                MouseAction="LeftDoubleClick"
+                                                Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </Button.InputBindings>
                                     </Button>
                                     <TextBlock
                                         HorizontalAlignment="Center"
@@ -345,6 +351,11 @@
                                                 Kind="Shape"
                                                 Height="30"
                                                 Width="30"/>
+                                            <Button.InputBindings>
+                                                <MouseBinding 
+                                                    MouseAction="LeftDoubleClick"
+                                                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </Button.InputBindings>
                                         </Button>
                                         <TextBlock
                                             HorizontalAlignment="Center"
@@ -364,6 +375,11 @@
                                                 Kind="Watermark"
                                                 Height="30"
                                                 Width="30"/>
+                                            <Button.InputBindings>
+                                                <MouseBinding 
+                                                    MouseAction="LeftDoubleClick"
+                                                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </Button.InputBindings>
                                         </Button>
                                         <TextBlock
                                             HorizontalAlignment="Center"
@@ -431,6 +447,7 @@
                                         FontSize="{StaticResource FontSizeText}"/>
                                     <Grid Grid.Column="1">
                                         <TextBox 
+                                            x:Name="minPriceTextBox"
                                             Style="{StaticResource TextBoxHintBlackBorder}"
                                             MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                                             materialDesign:HintAssist.Hint="Min">
@@ -456,6 +473,7 @@
                                             FontSize="{StaticResource FontSizeHeadline}"/>
                                     <Grid Grid.Column="3">
                                         <TextBox 
+                                            x:Name="maxPriceTextBox"
                                             Style="{StaticResource TextBoxHintBlackBorder}"
                                             MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                                             materialDesign:HintAssist.Hint="Max">
@@ -523,6 +541,7 @@
                                     FontSize="{StaticResource FontSizeText}"/>
                                     <Grid Grid.Column="1">
                                         <TextBox 
+                                            x:Name="minInStockTextBox"
                                             Style="{StaticResource TextBoxHintBlackBorder}"
                                             MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                                             materialDesign:HintAssist.Hint="Min">
@@ -549,6 +568,7 @@
 
                                     <Grid Grid.Column="3">
                                         <TextBox 
+                                            x:Name="maxInStockTextBox"
                                             Style="{StaticResource TextBoxHintBlackBorder}"
                                             MaxWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}, Path=ActualWidth}"
                                             materialDesign:HintAssist.Hint="Max">
@@ -567,11 +587,21 @@
                                 </Grid>
                             </Grid>
                             <Button 
+                                x:Name="searchButton"
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 Margin="20 0 0 30"
                                 Content="Search"
-                                Command="{Binding SearchProductCommand}"/>
+                                Command="{Binding SearchProductCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                                        <Binding ElementName="maxPriceTextBox" Path="(Validation.HasError)"/>
+                                        <Binding ElementName="minPriceTextBox" Path="(Validation.HasError)"/>
+                                        <Binding ElementName="maxInStockTextBox" Path="(Validation.HasError)"/>
+                                        <Binding ElementName="minInStockTextBox" Path="(Validation.HasError)"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
                             <Button
                                 Grid.Column="1"
                                 Grid.Row="1"
@@ -781,6 +811,15 @@
     <UserControl.InputBindings>
         <KeyBinding
             Key="Enter"
-            Command="{Binding SearchProductCommand}"/>
+            Command="{Binding SearchProductCommand}">
+            <KeyBinding.CommandParameter>
+                <MultiBinding Converter="{StaticResource FalsesToTrueConverters}">
+                    <Binding ElementName="maxPriceTextBox" Path="(Validation.HasError)"/>
+                    <Binding ElementName="minPriceTextBox" Path="(Validation.HasError)"/>
+                    <Binding ElementName="maxInStockTextBox" Path="(Validation.HasError)"/>
+                    <Binding ElementName="minInStockTextBox" Path="(Validation.HasError)"/>
+                </MultiBinding>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
     </UserControl.InputBindings>
 </UserControl>
