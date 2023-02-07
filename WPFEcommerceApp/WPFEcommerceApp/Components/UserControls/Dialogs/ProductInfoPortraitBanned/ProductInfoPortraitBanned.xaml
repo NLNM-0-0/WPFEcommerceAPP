@@ -29,6 +29,11 @@
             Margin="0 30 0 0"
             Width="auto"
             Content="View product in the window">
+            <Button.InputBindings>
+                <MouseBinding 
+                    MouseAction="LeftDoubleClick"
+                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+            </Button.InputBindings>
         </Button>
         <StackPanel
             Margin="0 30 0 0"

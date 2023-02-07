@@ -109,6 +109,11 @@
             Margin="0 30 0 0"
             Width="auto"
             Content="View product in the window">
+            <Button.InputBindings>
+                <MouseBinding 
+                    MouseAction="LeftDoubleClick"
+                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+            </Button.InputBindings>
         </Button>
         <Grid
             Margin="0 30 0 0">
@@ -179,6 +184,11 @@
                     Width="70"
                     Command="{Binding OpenChangeImageDialogCommand}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                    <Button.InputBindings>
+                        <MouseBinding 
+                                    MouseAction="LeftDoubleClick"
+                                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Button.InputBindings>
                 </Button>
             </Grid>
 

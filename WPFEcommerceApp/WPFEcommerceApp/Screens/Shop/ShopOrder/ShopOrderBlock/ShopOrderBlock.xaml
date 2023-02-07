@@ -402,7 +402,13 @@
                         Padding="20 0"
                         Command="{Binding ShopOrderBlockCommand,UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{c:Binding IsCanCommandExcute}"
-                        CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}"/>
+                        CommandParameter="{Binding ElementName=shopRatingBlock, Path=DataContext}">
+                        <Button.InputBindings>
+                            <MouseBinding 
+                                 MouseAction="LeftDoubleClick"
+                                Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Button.InputBindings>
+                    </Button>
                     <Button 
                         Grid.Column="4"
                         Style="{StaticResource OutLineBlackButtonRectangle}"

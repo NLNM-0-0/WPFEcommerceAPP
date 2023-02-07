@@ -30,6 +30,7 @@ namespace WPFEcommerceApp
         public ICommand SaveProfileShopCommand { get; set; }
         public ICommand EditProfileShopCommand { get; set; }
         public ICommand ChangeEditStatusCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; }
         private Models.MUser shop;
         public Models.MUser Shop 
         {
@@ -185,6 +186,10 @@ namespace WPFEcommerceApp
                 {
                     IsEditing = true;
                 }
+            });
+            DoubleClickCommand = new RelayCommandWithNoParameter(() =>
+            {
+
             });
         }
         public void LoadBackground(CroppedBitmap croppedBitmap)

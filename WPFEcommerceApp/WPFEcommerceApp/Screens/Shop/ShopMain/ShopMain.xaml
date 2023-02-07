@@ -158,6 +158,11 @@
                                     HorizontalAlignment="Center"
                                     Text="Edit"/>
                             </StackPanel>
+                            <Button.InputBindings>
+                                <MouseBinding 
+                                    MouseAction="LeftDoubleClick"
+                                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Button.InputBindings>
                         </Button>
                         <Button 
                             Grid.Column="2"
@@ -185,6 +190,11 @@
                                     HorizontalAlignment="Center"
                                     Text="Contact"/>
                             </StackPanel>
+                            <Button.InputBindings>
+                                <MouseBinding 
+                                    MouseAction="LeftDoubleClick"
+                                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Button.InputBindings>
                         </Button>
                     </Grid>
 

@@ -17,6 +17,7 @@ namespace WPFEcommerceApp
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteProductCommand { get; set; }
         public ICommand SearchCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; } = new RelayCommandWithNoParameter(() => { });
 
         private string searchByValue;
         public string SearchByValue

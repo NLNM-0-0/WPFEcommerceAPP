@@ -32,6 +32,7 @@ namespace WPFEcommerceApp
         public ICommand ScrollChangedCommand { get; set; }
         public ICommand LoadedCommand { get; set; }
         public ICommand OpenContactInfoCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; }
         public string SourceImageBackground
         {
             get
@@ -327,6 +328,10 @@ namespace WPFEcommerceApp
                     shopContact.DataContext = new ShopContactViewModel(Shop);
                     IsLoadingCheck.IsLoading--;
                     await DialogHost.Show(shopContact, "Main");
+                });
+                DoubleClickCommand = new RelayCommandWithNoParameter(() =>
+                {
+
                 });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {

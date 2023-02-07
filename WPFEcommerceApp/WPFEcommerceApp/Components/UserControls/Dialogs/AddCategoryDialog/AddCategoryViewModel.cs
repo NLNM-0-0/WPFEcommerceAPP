@@ -47,6 +47,7 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        public ICommand DoubleClickCommand { get; set; } = new RelayCommandWithNoParameter(() => { });
         private System.Windows.Controls.UserControl PreviousItem;
         public AddCategoryDialogViewModel(System.Windows.Controls.UserControl item)
         {
