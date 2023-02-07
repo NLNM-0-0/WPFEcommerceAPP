@@ -509,6 +509,11 @@
                                         VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button.Content>
+                            <Button.InputBindings>
+                                <MouseBinding 
+                                    MouseAction="LeftDoubleClick"
+                                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Button.InputBindings>
                         </Button>
                         <Button
                             Grid.Column="3"

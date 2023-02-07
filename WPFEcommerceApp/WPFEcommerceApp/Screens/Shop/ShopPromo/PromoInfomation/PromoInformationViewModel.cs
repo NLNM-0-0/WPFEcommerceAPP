@@ -21,6 +21,7 @@ namespace WPFEcommerceApp
 
         public ICommand AcceptCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; } = new RelayCommandWithNoParameter(() => { });
 
         private string searchByValue;
         public string SearchByValue
@@ -147,6 +148,8 @@ namespace WPFEcommerceApp
             Task.Run(async () =>
             {
                 await Load();
+                SelectedPromo.DateBegin = SelectedPromo.DateBegin.Value.Add(new TimeSpan(12, 0, 0));
+                SelectedPromo.DateEnd = SelectedPromo.DateEnd.Value.Subtract(new TimeSpan(12, 0, 0));
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
                     lock (IsLoadingCheck.IsLoading as object)
@@ -288,8 +291,8 @@ namespace WPFEcommerceApp
             Models.Promo promo = await promoRepository.GetSingleAsync(p => p.Id == SelectedPromo.Id);
             promo.Code = SelectedPromo.Code;
             promo.Description = SelectedPromo.Description;
-            promo.DateBegin = SelectedPromo.DateBegin;
-            promo.DateEnd = SelectedPromo.DateEnd;
+            promo.DateBegin = SelectedPromo.DateBegin.Value.Subtract(new TimeSpan(12, 0, 0));
+            promo.DateEnd = SelectedPromo.DateEnd.Value.Add(new TimeSpan(12, 0, 0));
             promo.Amount = (IsLimitedAmount ? SelectedPromo.Amount : -1);
             promo.AmountUsed = 0;
             promo.MaxSale = (IsMaxSale ? SelectedPromo.MaxSale : double.MaxValue);

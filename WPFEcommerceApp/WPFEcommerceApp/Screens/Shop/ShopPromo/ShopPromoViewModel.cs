@@ -378,13 +378,13 @@ namespace WPFEcommerceApp
             {
                 FilterPromos = new ObservableCollection<ShopPromoBlockViewModel>(FilterPromos.Where(p => p.Promo.Code.ToLower().Trim().Contains(SearchByValue==null?"":SearchByValue.ToLower().Trim()) &&
                                                                                                     ((DateFrom == null) ? true : (p.Promo.DateBegin >= DateFrom.Value.Subtract(new TimeSpan(12,0,0)))) &&
-                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo.Value.Subtract(new TimeSpan(12, 0, 0))))));
+                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo.Value.Add(new TimeSpan(12, 0, 0))))));
             }
             else
             {
                 FilterPromos = new ObservableCollection<ShopPromoBlockViewModel>(FilterPromos.Where(p => p.Promo.Name.ToLower().Trim().Contains(SearchByValue == null ? "" : SearchByValue.ToLower().Trim())&&
                                                                                                     ((DateFrom == null) ? true : (p.Promo.DateBegin >= DateFrom.Value.Subtract(new TimeSpan(12, 0, 0)))) &&
-                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo.Value.Subtract(new TimeSpan(12, 0, 0))))));
+                                                                                                    ((DateTo == null) ? true : (p.Promo.DateEnd <= DateTo.Value.Add(new TimeSpan(12, 0, 0))))));
             }    
         }
         public async Task LoadPromos()

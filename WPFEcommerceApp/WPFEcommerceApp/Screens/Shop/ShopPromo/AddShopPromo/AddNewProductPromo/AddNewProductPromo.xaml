@@ -185,7 +185,7 @@
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
-                                    IsChecked="{Binding IsCheckedAll, UpdateSourceTrigger=PropertyChanged}"/>
+                                    IsChecked="{Binding IsCheckedAll, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 <TextBlock
                                     Text="Product Name"
                                     Grid.Column="1"
