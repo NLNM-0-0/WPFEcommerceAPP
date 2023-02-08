@@ -98,6 +98,7 @@ namespace WPFEcommerceApp {
                 try {
                     x = await auth.Authentication().AsCancellable(cts.Token);
                 } catch { }
+                if(AccountStore.instance.CurrentAccount != null) return;
 
                 (p as Window).WindowState = WindowState.Minimized;
                 (p as Window).WindowState = WindowState.Normal;

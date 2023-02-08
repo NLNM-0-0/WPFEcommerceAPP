@@ -73,21 +73,21 @@ namespace WPFEcommerceApp {
                         d => d.Product,
                         d => d.Rating
                     );
-                    Models.Product product = new Models.Product();
-                    product = productTemp.Product;
+                    var productRepo = new GenericDataRepository<Models.Product>();
+                    Models.Product product = await productRepo.GetSingleAsync(d => d.Id == productTemp.Product.Id, d => d.ImageProducts);
 
-                    Product tmp = new Product() {
-                        ID = oi.IdProduct,
-                        ProductImage = oi.ImageProduct,
-                        Name = product.Name,
-                        Size = oi.Size,
-                        Color = product.Color,
-                        Description = product.Description,
-                        Price = product.Price,
-                        Amount = oi.Count,
-                        Subtotal = oi.Count * product.Price,
-                        Discount = product.Sale
-                    };
+                    Product tmp = new Product(product, oi.Size, oi.Count);
+                    //    ID = oi.IdProduct,
+                    //    ProductImage = oi.ImageProduct,
+                    //    Name = product.Name,
+                    //    Size = oi.Size,
+                    //    Color = product.Color,
+                    //    Description = product.Description,
+                    //    Price = product.Price,
+                    //    Amount = oi.Count,
+                    //    Subtotal = oi.Count * product.Price,
+                    //    Discount = product.Sale
+                    //};
 
                     listProduct.Add(tmp);
                 }

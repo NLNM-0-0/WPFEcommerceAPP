@@ -251,14 +251,14 @@
                     IsReadOnly="True">
                 </TextBox>
                 <TextBox
-                    Text="{Binding ElementName=VoucherDialog, Path=Data.MaxSale}"
+                    Text="{c:Binding '(Data.MaxSale > 999999999 ? &quot;Unlimited&quot; : (Data.MaxSale).ToString())', ElementName=VoucherDialog}"
                         x:Name="maxSaleTextBox"
                         Grid.Column="6"
                         materialDesign:HintAssist.Hint="Max Sale"
                         Width="auto"
                         VerticalAlignment="Center"
                         Visibility="Visible"
-                        materialDesign:TextFieldAssist.SuffixText=" USD"
+                        materialDesign:TextFieldAssist.SuffixText="{c:Binding '(Data.MaxSale > 999999999 ? &quot;&quot; : &quot;USD&quot;)', ElementName=VoucherDialog}"
                         IsReadOnly="True">
                 </TextBox>
             </Grid>

@@ -6,27 +6,6 @@ using System.Threading.Tasks;
 
 namespace WPFEcommerceApp {
     public partial class Product {
-        public Product(
-            string productImage = "..\\..\\..\\..\\Assests\\Images\\2.jpg",
-            string name = "Nike Air Zoom Pegasus 39 Men’s Road Running Shoes",
-            string size = "12",
-            string color = "Dark smoke",
-            string description = "Nothing",
-            double price = 21.85,
-            int amount = 10,
-            string iD = null,
-            double discount = 0) {
-            ProductImage=productImage;
-            Name=name;
-            Size=size;
-            Color=color;
-            Description=description;
-            Price= price;
-            Amount=amount;
-            Subtotal=amount * price;
-            ID=iD;
-            Discount=discount;
-        }
 
         public Product(Models.Product p, string size, int amount) {
             if(p.ImageProducts.Count > 0)
@@ -39,6 +18,7 @@ namespace WPFEcommerceApp {
             Amount=amount;
             Subtotal = Price*amount;
             ID=p.Id;
+            Banned = p.BanLevel>0 || p.InStock < 1;
             Discount=p.Sale * Subtotal / 100;
         }
         public string ProductImage { get; set; }
@@ -51,6 +31,6 @@ namespace WPFEcommerceApp {
         public double Subtotal { get; set; }
         public string ID { get; set; }
         public double Discount { get; set; }
-
+        public bool Banned { get; set; }
     }
 }

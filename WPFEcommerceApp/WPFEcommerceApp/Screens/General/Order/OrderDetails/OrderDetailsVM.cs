@@ -38,9 +38,9 @@ namespace WPFEcommerceApp {
 		public ICommand OnReviewProduct { get; }
 		public ICommand OnVisitShop { get; }
 
-        public OrderDetailsVM(Order order) {
+		public OrderDetailsVM(Order order) {
 
-            OrderDetail = order;
+			OrderDetail = order;
 
 			ProductList = new ObservableCollection<Product>(OrderDetail.ProductList);
 
@@ -53,8 +53,20 @@ namespace WPFEcommerceApp {
 			//OnReOrder = new ReOrderCM(navigationStore, successNavService);
 			ICommand ReOrderCM = new ReOrderCM();
 			OnReOrder = new ImmediateCommand<object>(async p => {
-                var t = await userRepo.GetSingleAsync(d => d.Id == (p as Order).IDShop);
-                if(t.StatusShop == "Banned") {
+				var t = await userRepo.GetSingleAsync(d => d.Id == (p as Order).IDShop);
+
+				var rootOrder = p as Order;
+				bool bannedCheck = false;
+				foreach(var c in rootOrder.ProductList) {
+					if(c.Banned) {
+						bannedCheck = true;
+						break;
+					}
+				}
+
+				if(t.StatusShop == "Banned" ||
+				   t.StatusUser == "Banned" ||
+				   bannedCheck) {
                     var view = new ConfirmDialog() {
                         Header = "Oops",
                         Content = "This shop has been banned!"
@@ -63,7 +75,6 @@ namespace WPFEcommerceApp {
                     return;
                 }
                 else {
-					var rootOrder = p as Order;
                     var tempOrder = new Order(rootOrder.ProductList) {
                         DateBegin = DateTime.Now,
                         IDCustomer = rootOrder.IDCustomer,
