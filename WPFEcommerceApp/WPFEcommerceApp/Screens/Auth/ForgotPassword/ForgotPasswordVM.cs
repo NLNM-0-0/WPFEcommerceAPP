@@ -54,30 +54,30 @@ namespace WPFEcommerceApp {
                         Code = GenerateID.RandomID();
                         body = body.Replace("[SECRETCODE]", Code);
                         IsLoading = true;
-                        bool flag = true;
+                        //bool flag = true;
                         await Task.Run(async () => {
                             var cts = new CancellationTokenSource();
-                            cts.CancelAfter(5000);
+                            cts.CancelAfter(3000);
                             try {
                                 await new OAuth().SendEmail(Email, "[WANO] - Reset password Code", body).AsCancellable(cts.Token);
                             } catch {
-                                flag = false;
+                                //flag = false;
                             }
                         })
-                            .ContinueWith(async _ => {
-                                if(flag) {
+                            .ContinueWith(_ => {
+                                //if(flag) {
                                     FunctionName = "ENTER CODE";
                                     FunctionNumber++;
                                     IsLoading = false;
-                                }
-                                else {
-                                    var dl = new ConfirmDialog() {
-                                        Header = "Oops",
-                                        Content = "The progress took too long, please try again!"
-                                    };
-                                    await DialogHost.Show(dl, "ForgotPassword");
-                                    IsLoading = false;
-                                }
+                                //}
+                                //else {
+                                //    var dl = new ConfirmDialog() {
+                                //        Header = "Oops",
+                                //        Content = "The progress took too long, please try again!"
+                                //    };
+                                //    await DialogHost.Show(dl, "ForgotPassword");
+                                //    IsLoading = false;
+                                //}
                             }, TaskScheduler.FromCurrentSynchronizationContext());
                     }
                     else if(FunctionNumber == 2) {
