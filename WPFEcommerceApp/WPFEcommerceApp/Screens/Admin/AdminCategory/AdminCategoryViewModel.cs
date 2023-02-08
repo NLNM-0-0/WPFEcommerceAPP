@@ -279,6 +279,7 @@ namespace WPFEcommerceApp
                 IdReceiver = request.Id,
                 Content = "Your category request has been rejected. Contact us for further information.",
                 Date = DateTime.Now,
+                HaveSeen = false,
             };
 
             await noteRepo.Add(note);
@@ -318,6 +319,7 @@ namespace WPFEcommerceApp
                 IdReceiver = request.Id,
                 Content = "Your category request has been accepted.",
                 Date = DateTime.Now,
+                HaveSeen = false,
             };
 
             await noteRepo.Add(note);

@@ -869,6 +869,7 @@ namespace WPFEcommerceApp
             notification.Date = DateTime.Now;
             notification.IdSender = idSender;
             notification.IdReceiver = idReceiver;
+            notification.HaveSeen = false;
             await notificationRepposition.Add(notification);
         }
         private async Task UpdateShippingMethod(string idOrder, int method)

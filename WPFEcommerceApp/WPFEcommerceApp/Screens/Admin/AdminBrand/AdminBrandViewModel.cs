@@ -296,6 +296,7 @@ namespace WPFEcommerceApp
                 IdReceiver = request.Id,
                 Content = "Your brand request has been rejected. Contact us for further information.",
                 Date = DateTime.Now,
+                HaveSeen = false,
             };
 
             await RequestRepo.Remove(removeRequest);
@@ -338,6 +339,7 @@ namespace WPFEcommerceApp
                 IdReceiver = request.Id,
                 Content = "Your brand request has been accepted.",
                 Date = DateTime.Now,
+                HaveSeen = false,
             };
 
             var removeRequest = await RequestRepo.GetSingleAsync(item => item.Id.Equals(request.RequestId));

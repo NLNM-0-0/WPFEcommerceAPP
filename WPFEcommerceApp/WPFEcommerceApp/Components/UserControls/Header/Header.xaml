@@ -57,7 +57,7 @@
                     Background="{StaticResource WhiteColorBrush}"
                     Command="{Binding ToNoteCommand}"
                     CommandParameter="">
-                <fa:FontAwesome Icon="Bell" FontSize="20" />
+                <fa:FontAwesome Icon="Bell" FontSize="20" Foreground="{c:Binding '(HaveNewNoti ? &quot;Black&quot; : &quot;Gray&quot;)'}"/>
             </Button>
 
             <i:Interaction.Triggers>

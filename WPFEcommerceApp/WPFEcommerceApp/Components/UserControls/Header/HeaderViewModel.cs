@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Proxies;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using ThreadTimer = System.Threading.Timer;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using DataAccessLayer;
@@ -33,6 +34,7 @@ namespace WPFEcommerceApp
 
         private GenericDataRepository<MUser> userRepo;
         private GenericDataRepository<Models.Product> productRepo;
+        private readonly GenericDataRepository<Models.Notification> notiRepo = new GenericDataRepository<Models.Notification>();
         private bool _isSearchOpen = false;
         public bool IsSearchOpen
         {
@@ -80,8 +82,45 @@ namespace WPFEcommerceApp
             get => AccountStore.instance.CurrentAccount != null
                 && AccountStore.instance.CurrentAccount.Role == "Admin";
         }
+
+
         #endregion
 
+        #region NotiField
+        private Dictionary<bool?, List<Models.Notification>> ListNoti { get; set; } = new Dictionary<bool?, List<Models.Notification>>();
+        public bool HaveNewNoti { get; set; } = false;
+        private ThreadTimer notiTimer;
+
+        public async void NotiListener(object o) {
+            //Noti
+            var notilist = await notiRepo.GetAllAsync();
+            if(!ListNoti.ContainsKey(false))
+                ListNoti[false] = new List<Models.Notification>();
+            if(!ListNoti.ContainsKey(true))
+                ListNoti[true] = new List<Models.Notification>();
+            foreach(var item in notilist) {
+                if(!ListNoti[item.HaveSeen].Contains(item))
+                    ListNoti[item.HaveSeen].Add(item);
+            }
+            if(ListNoti[false].Count > 0) HaveNewNoti = true;
+        }
+
+        public void NotiStart() {
+            notiTimer = new ThreadTimer(NotiListener, null, new TimeSpan(0, 0, 0, 0, 1000), new TimeSpan(0, 0, 0, 0, 1000));
+        }
+
+        public async Task NotiSeen() {
+            for(int i = 0; i < ListNoti[false].Count;) {
+                var temp = ListNoti[false][i];
+                temp.HaveSeen = true;
+                await notiRepo.Update(temp);
+                ListNoti[true].Add(temp);
+                ListNoti[false].Remove(temp);
+            }
+            HaveNewNoti = false;
+        }
+
+        #endregion
         public HeaderViewModel()
         {
             MainViewModel.SetLoading(true);
@@ -123,7 +162,8 @@ namespace WPFEcommerceApp
             ToNoteCommand = new RelayCommand<object>(p => {
                 var temp = AccountStore.instance.CurrentAccount;
                 return temp != null && temp.Role != "Admin";
-            }, p => {
+            }, async p => {
+                await NotiSeen();
                 NavigateProvider.NotificationScreen().Navigate();
             });
 
@@ -143,6 +183,7 @@ namespace WPFEcommerceApp
             while (!task.IsCompleted) ;
 
             SearchText = string.Empty;
+            NotiStart();
 
             MainViewModel.SetLoading(false);
         }
@@ -205,8 +246,9 @@ namespace WPFEcommerceApp
                 DefaultItems = null;
 
             ItemsSource = DefaultItems;
-
         }
+
+        
 
         #region Command Methods
         public void OpenSearch()

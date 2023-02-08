@@ -152,6 +152,7 @@ namespace WPFEcommerceApp
                 IdReceiver = pro.Promo.IdShop,
                 Content = "Your promo request is accepted.",
                 Date = DateTime.Now,
+                HaveSeen = false
             };
 
             await promoRepo.Update(pro.Promo);
@@ -179,6 +180,7 @@ namespace WPFEcommerceApp
                 IdReceiver = pro.Promo.IdShop,
                 Content = "Your promo request is rejected. Contact us for more information.",
                 Date = DateTime.Now,
+                HaveSeen=false
             };
 
             await promoRepo.Update(pro.Promo);
@@ -216,6 +218,7 @@ namespace WPFEcommerceApp
                     IdReceiver = pro.Promo.IdShop,
                     Content = "Your promo is rejected. Contact us for more information.",
                     Date = DateTime.Now,
+                    HaveSeen = false
                 };
 
                 await promoRepo.Update(pro.Promo);
