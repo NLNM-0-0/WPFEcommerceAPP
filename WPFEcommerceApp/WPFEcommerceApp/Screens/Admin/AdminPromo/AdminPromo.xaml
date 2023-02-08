@@ -19,8 +19,7 @@
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Hidden" 
                       CanContentScroll="True" 
-                      Background="{StaticResource WhiteColorBrush}"
-                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                      Background="{StaticResource WhiteColorBrush}">
 
         <Grid Margin="50 20 50 50">
             <DockPanel LastChildFill="False">
@@ -108,7 +107,9 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <local:ShopPromoBlock Background="{StaticResource WhiteColorBrush}"/>
+                                <local:ShopPromoBlock 
+                                    Background="{StaticResource WhiteColorBrush}"
+                                    ScrollViewer.CanContentScroll="False"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -170,7 +171,7 @@
                     <ListView ItemsSource="{Binding RequestItems}" x:Name="reqList" 
                           HorizontalContentAlignment="Stretch" MaxHeight="700"
                           BorderThickness="0"
-                              ScrollViewer.CanContentScroll="True"
+                              ScrollViewer.CanContentScroll="False"
                               ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
@@ -180,7 +181,9 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <local:ShopPromoBlock Background="{StaticResource WhiteColorBrush}"/>
+                                <local:ShopPromoBlock 
+                                    Background="{StaticResource WhiteColorBrush}"
+                                    ScrollViewer.CanContentScroll="False"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

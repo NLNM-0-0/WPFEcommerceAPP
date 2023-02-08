@@ -211,6 +211,7 @@ namespace WPFEcommerceApp
                     SelectedProduct.IsHadSizeL = productTemp.IsHadSizeL;
                     SelectedProduct.IsHadSizeXL = productTemp.IsHadSizeXL;
                     SelectedProduct.IsHadSizeXXL = productTemp.IsHadSizeXXL;
+                    SelectedProduct.IsOneSize = productTemp.IsOneSize;
                     SelectedProduct.IdCategory = productTemp.Category.Id;
                     SelectedProduct.Category = productTemp.Category;
                     SelectedProduct.IdBrand = productTemp.Brand.Id;
