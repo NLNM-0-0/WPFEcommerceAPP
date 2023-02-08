@@ -38,6 +38,7 @@ namespace WPFEcommerceApp
         public ICommand ContactCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; } = new RelayCommandWithNoParameter(() => { });
 
         private Models.Product selectedProduct;
         public Models.Product SelectedProduct

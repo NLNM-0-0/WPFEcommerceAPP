@@ -348,7 +348,8 @@ namespace WPFEcommerceApp {
                 var flag = true;
                 //if(o.Products.Count == 0) flag = false;
                 //if(CurrentUser)
-                
+                o.DateEnd = o.DateEnd.Value.Subtract(new TimeSpan(12, 0, 0));
+                o.DateBegin = o.DateBegin.Value.Add(new TimeSpan(12, 0, 0));
                 if(o.Products.Count < productList.Count || 
                     o.Products.Count == 0 ||
                     (o.CustomerType == 0 && DateTime.Now - CurrentUser.UserLogin.CreatedDate > TimeSpan.FromDays(7)) ||

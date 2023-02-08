@@ -82,7 +82,11 @@
                                     VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button.Content>
-
+                    <Button.InputBindings>
+                        <MouseBinding 
+                            MouseAction="LeftDoubleClick"
+                            Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Button.InputBindings>
                 </Button>
                 <Border DockPanel.Dock="Top"
                         Grid.Row="1"
@@ -128,6 +132,11 @@
                                     VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button.Content>
+                    <Button.InputBindings>
+                        <MouseBinding 
+                            MouseAction="LeftDoubleClick"
+                            Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Button.InputBindings>
                 </Button>
             </DockPanel>
         </Grid>

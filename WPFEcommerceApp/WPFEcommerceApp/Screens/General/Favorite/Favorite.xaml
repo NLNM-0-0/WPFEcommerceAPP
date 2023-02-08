@@ -9,39 +9,49 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="uc">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
         <TextBlock Text="My Favorite" Margin="110 15 0 0"
                    FontSize="{StaticResource FontSizeHeadline}"
                    FontWeight="Normal"/>
-        <TextBlock Text="No favorite product" 
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontSize="{StaticResource FontSizeHeadline2}"
-                   />
-        <ListView ItemsSource="{Binding Products}" Height="700" Margin="0 0"
-                  SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  BorderThickness="0" HorizontalAlignment="Center"
-                  Visibility="{cal:Binding '(Products.Count!=0)', FalseToVisibility=Hidden}"
-                  >
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
-                    <Setter Property="Margin" Value="5 20"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Width="{cal:Binding 'Math.Floor(ActualWidth / 290) * 290',  ElementName=uc}"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
+        <TextBlock 
+            Grid.Row="1"
+            Text="No favorite product" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            FontSize="{StaticResource FontSizeHeadline2}"/>
+        <ScrollViewer
+            Grid.Row="1"
+            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+            <ListView 
+                    ItemsSource="{Binding Products}"
+                    SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    BorderThickness="0" HorizontalAlignment="Center"
+                    Margin="20"
+                    Visibility="{cal:Binding '(Products.Count!=0)', FalseToVisibility=Hidden}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignCardsListBoxItem}">
+                        <Setter Property="Margin" Value="5 20"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Width="{cal:Binding 'Math.Floor(ActualWidth / 290) * 290',  ElementName=uc}"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <local:ProductBlock Height="400" Width="280"
-                                   />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:ProductBlock
+                             Height="400" 
+                            Width="280"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
     </Grid>
-
 </UserControl>

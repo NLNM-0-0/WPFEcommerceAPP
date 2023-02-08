@@ -740,11 +740,13 @@
                         <Border>
                             <TextBlock 
                                 MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                                MaxHeight="300"
                                 Text="{Binding SelectedProduct.Name,UpdateSourceTrigger=PropertyChanged}"
                                 FontSize="{StaticResource FontSizeHeadline}"
                                 FontWeight="Normal"
                                 VerticalAlignment="Center"
-                                TextWrapping="Wrap">
+                                TextWrapping="Wrap"
+                                TextTrimming="CharacterEllipsis">
                             </TextBlock>
                         </Border>
                         <Grid
@@ -1075,7 +1077,7 @@
                                 Height="30"
                                 VerticalContentAlignment="Center"
                                 BorderBrush="{StaticResource BoxLineColorBrush}"
-                                Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                 TextChanged="TextBox_TextChanged"
                                 PreviewTextInput="TextBox_PreviewTextInput">
                             </TextBox>

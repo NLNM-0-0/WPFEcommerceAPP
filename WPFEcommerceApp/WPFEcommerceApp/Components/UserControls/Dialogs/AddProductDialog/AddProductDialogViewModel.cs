@@ -36,6 +36,7 @@ namespace WPFEcommerceApp
         public ICommand OpenChangeImageDialogCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
         public ICommand KeyDownEnterCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; } = new RelayCommandWithNoParameter(() => { });
         private ObservableCollection<MImageProuct> imageProducts;
         public ObservableCollection<MImageProuct> ImageProducts
         {

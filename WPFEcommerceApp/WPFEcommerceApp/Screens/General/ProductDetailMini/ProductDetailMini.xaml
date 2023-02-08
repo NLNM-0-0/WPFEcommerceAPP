@@ -349,12 +349,12 @@
             </Button>
         </Grid>
         <Grid
-                Grid.Column="1"
-                Background="{StaticResource WhiteColorBrush}"
-                Canvas.Right="10"
-                Margin="20 0 0 0"
-                Width="350"
-                ScrollViewer.CanContentScroll="False">
+            Grid.Column="1"
+            Background="{StaticResource WhiteColorBrush}"
+            Canvas.Right="10"
+            Margin="20 0 0 0"
+            Width="350"
+            ScrollViewer.CanContentScroll="False">
             <StackPanel
                     Width="350">
                 <Grid 
@@ -367,12 +367,14 @@
                     </Grid.ColumnDefinitions>
                     <Border>
                         <TextBlock 
-                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
-                                Text="{Binding SelectedProduct.Name,UpdateSourceTrigger=PropertyChanged}"
-                                FontSize="{StaticResource FontSizeHeadline}"
-                                FontWeight="Normal"
-                                VerticalAlignment="Center"
-                                TextWrapping="Wrap">
+                            MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}, Path=ActualWidth}"
+                            MaxHeight="300"
+                            Text="{Binding SelectedProduct.Name,UpdateSourceTrigger=PropertyChanged}"
+                            FontSize="{StaticResource FontSizeHeadline}"
+                            FontWeight="Normal"
+                            VerticalAlignment="Center"
+                            TextWrapping="Wrap"
+                            TextTrimming="CharacterEllipsis">
                         </TextBlock>
                     </Border>
                     <Grid
@@ -786,6 +788,9 @@
                             </it:EventTrigger>
                         </it:Interaction.Triggers>
                     </Button>
+                </Grid>
+                <Grid
+                    Height="20">
                 </Grid>
             </StackPanel>
         </Grid>

@@ -14,6 +14,7 @@ namespace WPFEcommerceApp
         private GenericDataRepository<Models.Product> productRepository = new GenericDataRepository<Models.Product>();
         public ICommand ContactUsCommand { get; set; }
         public ICommand OpenProductInfoLandscapeCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; } = new RelayCommandWithNoParameter(() => { });
         private Models.Product selectedProduct;
         public Models.Product SelectedProduct
         {

@@ -37,6 +37,7 @@ namespace WPFEcommerceApp
         public ICommand OpenProductInfoLandscapeCommand { get; set; }
         public ICommand CheckOneSizeCommand { get; set; }
         public ICommand ChangeStatusCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; } 
 
         private WPFEcommerceApp.Models.Product selectedProduct;
         public WPFEcommerceApp.Models.Product SelectedProduct
@@ -308,6 +309,7 @@ namespace WPFEcommerceApp
                         IsEditting = !IsEditting;
                     }
                 });
+                DoubleClickCommand = new RelayCommandWithNoParameter(() => { });
                 App.Current.Dispatcher.Invoke((Action)(() =>
                 {
                     lock (IsLoadingCheck.IsLoading as object)

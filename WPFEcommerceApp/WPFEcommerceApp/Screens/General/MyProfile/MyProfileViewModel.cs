@@ -110,6 +110,7 @@ namespace WPFEcommerceApp
         public ICommand OpenBackgroundDialog { get; set; }
         public ICommand AddAddressCommand { get; set; }
         public ICommand SavePasswordCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -138,7 +139,10 @@ namespace WPFEcommerceApp
                 bgrDialog.DataContext = new ProfileShopBackgroundDialogViewModel(ImageBackground);
                 await DialogHost.Show(bgrDialog, "Main", null, null, SaveBackground);
             });
+            DoubleClickCommand = new RelayCommandWithNoParameter(() =>
+            {
 
+            });
 
             Task.Run(async () =>
             {

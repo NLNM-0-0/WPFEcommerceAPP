@@ -123,23 +123,29 @@ namespace WPFEcommerceApp
                         }
                         promoProductBlock.IsChecked = true;
                     }
-                    NumberOfCheck = FilterPromoProductBlocks.Count;
+                    numberOfCheck = FilterPromoProductBlocks.Count;
                 }
                 else
                 {
                     if (NumberOfCheck == FilterPromoProductBlocks.Count)
                     {
-                        foreach (PromoProductBlockViewModel promoProductBlock in FilterPromoProductBlocks)
+                        for(int i = 0; i < FilterPromoProductBlocks.Count; i++)
                         {
+                            PromoProductBlockViewModel promoProductBlock = FilterPromoProductBlocks[i];
                             if (promoProductBlock.IsChecked)
                             {
                                 TotalProducts--;
                                 SelectedPromoProductBlocks.Remove(promoProductBlock);
+                                if (IsShowSelectedProductOnly)
+                                {
+                                    FilterPromoProductBlocks.Remove(promoProductBlock);
+                                    i--;
+                                }
                             }
                             promoProductBlock.IsChecked = false;
                         }
+                        numberOfCheck = 0;
                     }
-                    NumberOfCheck = 0;
                 }
             }
         }
@@ -274,8 +280,13 @@ namespace WPFEcommerceApp
                         else
                         {
                             SelectedPromoProductBlocks.Remove(promoProductBlockViewModel);
+                            if (IsShowSelectedProductOnly)
+                            {
+                                FilterPromoProductBlocks.Remove(promoProductBlockViewModel);
+                            }
                             NumberOfCheck--;
                             TotalProducts--;
+
                         }
                     }
                 });

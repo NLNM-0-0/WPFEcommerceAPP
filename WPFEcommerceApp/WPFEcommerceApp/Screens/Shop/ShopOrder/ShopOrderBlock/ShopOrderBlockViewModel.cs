@@ -93,6 +93,7 @@ namespace WPFEcommerceApp
                 OnPropertyChanged();
             }
         }
+        public ICommand DoubleClickCommand { get; set; } = new RelayCommandWithNoParameter(() => { });
         public string DateFrom
         {
             get

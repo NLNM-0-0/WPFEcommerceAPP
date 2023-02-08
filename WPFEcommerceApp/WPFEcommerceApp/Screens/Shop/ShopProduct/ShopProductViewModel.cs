@@ -27,6 +27,7 @@ namespace WPFEcommerceApp
         public ICommand OpenAddProductDialogCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand SearchProductCommand { get; set; }
+        public ICommand DoubleClickCommand { get; set; }
         #endregion
         #region DataRepository
         private GenericDataRepository<Models.Product> ProductRepository = new GenericDataRepository<Models.Product>();
@@ -331,7 +332,10 @@ namespace WPFEcommerceApp
                     MainViewModel.SetLoading(false);
                     await DialogHost.Show(addProductDialog, "Main");
                 });
-                SearchProductCommand = new RelayCommandWithNoParameter(async () =>
+                SearchProductCommand = new RelayCommand<bool?>((p) => 
+                {
+                    return p != null && p == true;
+                }, async(p)=>
                 {
                     double maxPrice = double.MaxValue;
                     double minPrice = 0;
@@ -359,8 +363,8 @@ namespace WPFEcommerceApp
                         NotificationDialog notification = new NotificationDialog();
                         notification.Header = "Error";
                         notification.ContentDialog = "Min price is bigger than max price";
-                        await DialogHost.Show(notification, "Main");
                         MainViewModel.SetLoading(false);
+                        await DialogHost.Show(notification, "Main");
                         return;
                     }
                     else if (minInStock > maxInStock)
@@ -369,8 +373,8 @@ namespace WPFEcommerceApp
                         NotificationDialog notification = new NotificationDialog();
                         notification.Header = "Error";
                         notification.ContentDialog = "Min in stock is bigger than max in stock";
-                        await DialogHost.Show(notification, "Main");
                         MainViewModel.SetLoading(false);
+                        await DialogHost.Show(notification, "Main");
                         return;
                     }
                     else
@@ -392,7 +396,8 @@ namespace WPFEcommerceApp
                     CategorySearch = null;
                     LoadProducts();
                     MainViewModel.SetLoading(false);
-                }); 
+                });
+                DoubleClickCommand = new RelayCommandWithNoParameter(() => { });
                 ProductNameSearch = "";
                 StatusAllSearch = true;
                 StatusOnSaleSearch = false;
@@ -474,7 +479,8 @@ namespace WPFEcommerceApp
             Products = new ObservableCollection<ProductViewModel>(FilterProducts.Where(p => ((p.Product.Name.ToLower().Trim().Contains(ProductNameSearch == null ? "" : ProductNameSearch.ToLower().Trim()) &&
                                                                                                         ((CategorySearch == null) ? true : p.Product.Category.Id == CategorySearch.Id) &&
                                                                                                         ((BrandSearch == null) ? true : p.Product.Brand.Id == BrandSearch.Id) &&
-                                                                                                        p.Product.Price <= maxPrice && p.Product.Price >= minPrice))));
+                                                                                                        p.Product.Price <= maxPrice && p.Product.Price >= minPrice &&
+                                                                                                        p.Product.InStock >= minInStock && p.Product.InStock <= maxInStock))));
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
                 Products = new ObservableCollection<ProductViewModel>(Products);

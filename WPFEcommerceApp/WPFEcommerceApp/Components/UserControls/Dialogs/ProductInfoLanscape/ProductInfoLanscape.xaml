@@ -163,6 +163,11 @@
                                     Margin="30 0 0 0"
                                     Width="70"
                                     Content="Change">
+                                    <Button.InputBindings>
+                                        <MouseBinding 
+                                            MouseAction="LeftDoubleClick"
+                                            Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Button.InputBindings>
                                 </Button>
                             </Grid>
                             <ScrollViewer
@@ -533,7 +538,13 @@
                             Width="170"
                             Content="Contact Us"
                             Command="{Binding ContactCommand}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
+                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                            <Button.InputBindings>
+                                <MouseBinding 
+                                    MouseAction="LeftDoubleClick"
+                                    Command="{Binding DoubleClickCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Button.InputBindings>
+                        </Button>
                         <FrameworkElement x:Name="IsHadSize">
                             <FrameworkElement.Tag>
                                 <MultiBinding Converter="{StaticResource TrueFromBooleansToFalseConverter}">
