@@ -277,7 +277,7 @@ namespace WPFEcommerceApp {
                 bool flag = false;
                 foreach(var o in ListVoucher) {
                     if(o.Code == (p as string).ToUpper()) {
-                        if(!ValidVoucherList.ContainsKey(o.Code)) {
+                        if(!ValidVoucherList.ContainsKey(o.Id)) {
                             flag = false;
                             VoucherErrorMessage = "Not meet conditions";
                             break;
@@ -316,7 +316,7 @@ namespace WPFEcommerceApp {
         public List<string> productList = new List<string>();
         public Dictionary<string, bool> ValidVoucherList = new Dictionary<string, bool>();
         public async Task Load() {
-            MainViewModel.SetLoading(true);
+            MainViewModel.SetLoading(true, haveTimeout: false);
 
             var list = await addressRepo.GetListAsync(d => d.IdUser == CurrentUser.Id && d.Status == true);
             foreach(var o in list) {
@@ -330,9 +330,9 @@ namespace WPFEcommerceApp {
             var listShop = ListOrder.Select(s => s.IDShop).ToList();
 
             var listVoucher = await promoRepo.GetListAsync(
-                d => d.DateEnd > DateTime.Now && 
-                     d.Status == 1 &&
-                     listShop.Contains(d.IdShop),
+                d => d.DateEnd > DateTime.Now &&
+                d.Status == 1 &&
+                listShop.Contains(d.IdShop),
                 d => d.Products
             );
 
@@ -378,7 +378,7 @@ namespace WPFEcommerceApp {
                     address = ListAddress[CurrentUser.DefaultAddress];
                 } catch { address = null; }
             });
-            MainViewModel.SetLoading(false);
+            MainViewModel.SetLoading(false, haveTimeout: false);
         }
         private async void PaymentAlertDialog(object p) {
 			var view = new ConfirmDialog() {

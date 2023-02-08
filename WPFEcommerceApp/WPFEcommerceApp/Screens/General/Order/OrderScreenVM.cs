@@ -98,16 +98,27 @@ namespace WPFEcommerceApp {
             OnReorder = new ImmediateCommand<object>(async p => {
                 
                 var t = await userRepo.GetSingleAsync(d => d.Id == (p as Order).IDShop);
-                if(t.StatusShop == "Banned") {
+
+                var rootOrder = p as Order;
+                bool bannedCheck = false;
+                foreach(var c in rootOrder.ProductList) {
+                    if(c.Banned) {
+                        bannedCheck = true;
+                        break;
+                    }
+                }
+
+                if(t.StatusShop == "Banned" ||
+                    t.StatusUser == "Banned" ||
+                    bannedCheck) {
                     var view = new ConfirmDialog() {
                         Header = "Oops",
-                        Content = "This shop has been banned!"
+                        Content = $"This {(t.StatusShop == "Banned" ? "shop" : "order")} has been banned!"
                     };
                     await DialogHost.Show(view, "Main");
                     return;
                 }
                 else {
-                    var rootOrder = p as Order;
                     var tempOrder = new Order(rootOrder.ProductList) {
                          DateBegin = DateTime.Now,
                          IDCustomer = rootOrder.IDCustomer,
