@@ -34,8 +34,9 @@ namespace WPFEcommerceApp {
         }
 
         static CancellationTokenSource cts = new CancellationTokenSource();
-        public static async void SetLoading(bool value, int delay = 2003, string header = null, string message = null) {
+        public static async void SetLoading(bool value, bool haveTimeout = true, int delay = 2003, string header = null, string message = null) {
             IsLoading = value;
+            if(!haveTimeout) return;
             if(value == false) {
                 cts.Cancel();
                 cts = new CancellationTokenSource();
