@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:WPFEcommerceApp"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="800">
@@ -52,12 +53,35 @@
             </Button>
 
             <Button Style="{StaticResource TransparentButton}"
+                    BorderThickness="0"
+                    material:ButtonAssist.CornerRadius="0"
                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                     Margin="10" DockPanel.Dock="Right"
                     Background="{StaticResource WhiteColorBrush}"
                     Command="{Binding ToNoteCommand}"
-                    CommandParameter="">
-                <fa:FontAwesome Icon="Bell" FontSize="20" />
+                    CommandParameter=""
+                    x:Name="NotiButton">
+                <Grid Width="{Binding Width, ElementName=NotiButton}"
+                      Height="{Binding Height, ElementName=NotiButton}" Margin="-10">
+                    <fa:FontAwesome Icon="Bell" 
+                                    FontSize="20" 
+                                    Foreground="{c:Binding '(HaveNewNoti ? &quot;Black&quot; : &quot;Gray&quot;)'}"
+                                    VerticalAlignment="Center"/>
+                    <Border Background="{DynamicResource ErrorColorBrush}"
+                            CornerRadius="3"
+                            Width="14"
+                            Height="15" 
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Margin="4 4 4 5"
+                            Opacity="0.9"
+                            Visibility="{Binding HaveNewNoti, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="{c:Binding unReadNumber}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   FontSize="9.5"
+                                   FontWeight="Medium"
+                                   Foreground="{DynamicResource BackgroundColorBrush}"/>
+                    </Border>
+                </Grid>
             </Button>
 
             <i:Interaction.Triggers>

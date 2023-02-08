@@ -325,6 +325,7 @@ namespace WPFEcommerceApp
                     IdReceiver = removeShop.Id,
                     Content = "Your shop has been unbanned. Feel free to start selling again.",
                     Date = DateTime.Now,
+                    HaveSeen = false
                 };
                 notes.Add(note);
             }
@@ -338,6 +339,7 @@ namespace WPFEcommerceApp
                     IdReceiver = removeShop.Id,
                     Content = "Your shop has been banned. Contact us for further information.",
                     Date = DateTime.Now,
+                    HaveSeen = false
                 };
                 notes.Add(note);
             }
@@ -368,6 +370,7 @@ namespace WPFEcommerceApp
                 IdReceiver = item.IdUser,
                 Content = "Your shop request has been rejected.",
                 Date = DateTime.Now,
+                HaveSeen = false
             };
 
             await requestRepo.Remove(item);
@@ -403,6 +406,7 @@ namespace WPFEcommerceApp
                 IdReceiver = item.IdUser,
                 Content = "Your request to be a shop has been accepted. Check out your shop and start selling.",
                 Date = DateTime.Now,
+                HaveSeen = false
             };
 
             await userRepo.Update(newShop);
@@ -455,6 +459,7 @@ namespace WPFEcommerceApp
                         Content = $@"Your order ID {orders[j].Id} is cancelled because the shop is banned. Please checkout other similar products
 Sorry for the inconvenience!",
                         Date = DateTime.Now,
+                        HaveSeen = false
                     };
                     await newNoteRepo.Add(cancelNote);
                 }

@@ -508,51 +508,51 @@ INSERT [dbo].[MOrder] ([Id], [IdCustomer], [IdShop], [ShipTotal], [DateBegin], [
 GO
 INSERT [dbo].[MOrder] ([Id], [IdCustomer], [IdShop], [ShipTotal], [DateBegin], [DateEnd], [OrderTotal], [Discounted], [Promo], [ShippingMethod], [ShippingSpeedMethod], [AddressIndex], [Status]) VALUES (N'MOrd57', N'shop51', N'shop50', 0, CAST(N'2023-01-17T09:00:00' AS SmallDateTime), NULL, 5137, 0, N'promo54', NULL, 1, N'20230115235733', N'Processing')
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti50', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your brand request has been accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti50', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your brand request has been accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti51', N'shop50', N'admin', CAST(N'2023-01-17T07:32:00' AS SmallDateTime), N'Your promo request is accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti51', N'shop50', N'admin', CAST(N'2023-01-17T07:32:00' AS SmallDateTime), N'Your promo request is accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti52', N'shop51', N'admin', CAST(N'2023-01-16T00:03:00' AS SmallDateTime), N'Your request to be a shop has been accepted. Check out your shop and start selling.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti52', N'shop51', N'admin', CAST(N'2023-01-16T00:03:00' AS SmallDateTime), N'Your request to be a shop has been accepted. Check out your shop and start selling.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti53', N'shop50', N'admin', CAST(N'2023-01-17T07:32:00' AS SmallDateTime), N'Your promo request is accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti53', N'shop50', N'admin', CAST(N'2023-01-17T07:32:00' AS SmallDateTime), N'Your promo request is accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti54', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your brand request has been accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti54', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your brand request has been accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti55', N'shop51', N'admin', CAST(N'2023-01-16T00:37:00' AS SmallDateTime), N'Your brand request has been accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti55', N'shop51', N'admin', CAST(N'2023-01-16T00:37:00' AS SmallDateTime), N'Your brand request has been accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti56', N'shop50', N'admin', CAST(N'2023-01-16T00:03:00' AS SmallDateTime), N'Your request to be a shop has been accepted. Check out your shop and start selling.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti56', N'shop50', N'admin', CAST(N'2023-01-16T00:03:00' AS SmallDateTime), N'Your request to be a shop has been accepted. Check out your shop and start selling.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti57', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your category request has been accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti57', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your category request has been accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti58', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your category request has been accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti58', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your category request has been accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti59', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your category request has been accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti59', N'shop50', N'admin', CAST(N'2023-01-16T00:35:00' AS SmallDateTime), N'Your category request has been accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti60', N'shop51', N'admin', CAST(N'2023-01-17T08:10:00' AS SmallDateTime), N'Your promo request is accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti60', N'shop51', N'admin', CAST(N'2023-01-17T08:10:00' AS SmallDateTime), N'Your promo request is accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti61', N'shop51', N'admin', CAST(N'2023-01-17T08:10:00' AS SmallDateTime), N'Your promo request is accepted.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'noti61', N'shop51', N'admin', CAST(N'2023-01-17T08:10:00' AS SmallDateTime), N'Your promo request is accepted.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti62', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd53 is delivering.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti62', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd53 is delivering.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti63', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd53 is delivered. Please check and notify us if something is wrong.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti63', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd53 is delivered. Please check and notify us if something is wrong.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti64', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd50 is delivering.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti64', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd50 is delivering.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti65', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd50 is delivered. Please check and notify us if something is wrong.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti65', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd50 is delivered. Please check and notify us if something is wrong.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti66', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd52 is delivering.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti66', N'shop50', N'shop51', CAST(N'2023-01-17T08:57:00' AS SmallDateTime), N'The order MOrd52 is delivering.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti67', N'shop50', N'shop51', CAST(N'2023-01-17T09:06:00' AS SmallDateTime), N'The order MOrd51 is delivering.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti67', N'shop50', N'shop51', CAST(N'2023-01-17T09:06:00' AS SmallDateTime), N'The order MOrd51 is delivering.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti68', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd55 is delivering.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti68', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd55 is delivering.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti69', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd56 is delivering.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti69', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd56 is delivering.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti70', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd54 is delivering.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti70', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd54 is delivering.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti71', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd55 is delivered. Please check and notify us if something is wrong.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti71', N'shop51', N'shop50', CAST(N'2023-01-17T09:08:00' AS SmallDateTime), N'The order MOrd55 is delivered. Please check and notify us if something is wrong.', 1)
 GO
-INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti72', N'shop51', N'shop50', CAST(N'2023-01-17T09:09:00' AS SmallDateTime), N'The order MOrd56 is delivered. Please check and notify us if something is wrong.', NULL)
+INSERT [dbo].[Notification] ([Id], [IdReceiver], [IdSender], [Date], [Content], [HaveSeen]) VALUES (N'Noti72', N'shop51', N'shop50', CAST(N'2023-01-17T09:09:00' AS SmallDateTime), N'The order MOrd56 is delivered. Please check and notify us if something is wrong.', 1)
 GO
 INSERT [dbo].[Rating] ([Id], [DateRating], [Rating], [Comment]) VALUES (N'Rati50', CAST(N'2023-01-17T09:04:00' AS SmallDateTime), 5, N'Awesome!!!
 I like it a lot.')

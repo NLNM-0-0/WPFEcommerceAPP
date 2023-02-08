@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Proxies;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using ThreadTimer = System.Threading.Timer;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using DataAccessLayer;
@@ -33,6 +34,7 @@ namespace WPFEcommerceApp
 
         private GenericDataRepository<MUser> userRepo;
         private GenericDataRepository<Models.Product> productRepo;
+        private readonly GenericDataRepository<Models.Notification> notiRepo = new GenericDataRepository<Models.Notification>();
         private bool _isSearchOpen = false;
         public bool IsSearchOpen
         {
@@ -80,8 +82,72 @@ namespace WPFEcommerceApp
             get => AccountStore.instance.CurrentAccount != null
                 && AccountStore.instance.CurrentAccount.Role == "Admin";
         }
+
+
         #endregion
 
+        #region NotiField
+        private Dictionary<bool?, Dictionary<string, Models.Notification>> ListNoti { get; set; } = new Dictionary<bool?, Dictionary<string, Models.Notification>>();
+        public bool HaveNewNoti { get; set; } = false;
+        private int unreadnumber;
+
+        public int unReadNumber {
+            get { return unreadnumber;}
+            set {
+                if(value != unreadnumber) {
+                    unreadnumber = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private ThreadTimer notiTimer;
+
+        public async void NotiListener(object o) {
+            //Noti
+            if(AccountStore.instance.CurrentAccount == null
+                || AccountStore.instance.CurrentAccount.Role == "Admin") return;
+            var notilist = await notiRepo.GetAllAsync();
+            notilist = notilist.ToList();
+            for(int i = 0; i < notilist.Count; i++) {
+                var item = notilist[i];
+                bool? flag = item.HaveSeen;
+                if(!ListNoti[flag].ContainsKey(item.Id))
+                    ListNoti[flag][item.Id] = item;
+            }
+            var count = ListNoti[false].Count;
+            if(count > 0) {
+                if(!HaveNewNoti)
+                    HaveNewNoti = true;
+                unReadNumber = count;
+            }
+        }
+
+        public void NotiStart() {
+            ListNoti[false] = new Dictionary<string, Models.Notification>();
+            ListNoti[true] = new Dictionary<string, Models.Notification>();
+            notiTimer = new ThreadTimer(NotiListener, null, new TimeSpan(0, 0, 0, 0, 1000), new TimeSpan(0, 0, 0, 0, 3000));
+        }
+
+        public void NotiReset() {
+            unReadNumber = 0;
+            HaveNewNoti = false;
+        }
+
+        public async Task NotiSeen() {
+            var UnSeenList = ListNoti[false].ToList();
+            for(int i = 0; i < UnSeenList.Count;) {
+                var temp = UnSeenList[i];
+                temp.Value.HaveSeen = true;
+                await notiRepo.Update(temp.Value);
+                ListNoti[true][temp.Value.Id] = temp.Value;
+                ListNoti[false].Remove(temp.Value.Id);
+                UnSeenList.Remove(temp);
+            }
+            HaveNewNoti = false;
+        }
+
+        #endregion
         public HeaderViewModel()
         {
             MainViewModel.SetLoading(true);
@@ -123,7 +189,8 @@ namespace WPFEcommerceApp
             ToNoteCommand = new RelayCommand<object>(p => {
                 var temp = AccountStore.instance.CurrentAccount;
                 return temp != null && temp.Role != "Admin";
-            }, p => {
+            }, async p => {
+                await NotiSeen();
                 NavigateProvider.NotificationScreen().Navigate();
             });
 
@@ -143,6 +210,7 @@ namespace WPFEcommerceApp
             while (!task.IsCompleted) ;
 
             SearchText = string.Empty;
+            NotiStart();
 
             MainViewModel.SetLoading(false);
         }
@@ -152,6 +220,7 @@ namespace WPFEcommerceApp
             OnPropertyChanged(nameof(Icon));
             OnPropertyChanged(nameof(IconTooltip));
             OnPropertyChanged(nameof(IsAdmin));
+            NotiReset();
             await Load();
         }
 
@@ -205,8 +274,9 @@ namespace WPFEcommerceApp
                 DefaultItems = null;
 
             ItemsSource = DefaultItems;
-
         }
+
+        
 
         #region Command Methods
         public void OpenSearch()
