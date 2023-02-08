@@ -1,4 +1,6 @@
 ﻿using DataAccessLayer;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -110,16 +112,34 @@ namespace WPFEcommerceApp
             OrderInfo = orderInfo;
             OrderInfo.Rating.RatingInfoes = new List<RatingInfo>(OrderInfo.Rating.RatingInfoes.OrderByDescending(ri => ri.DateReply));
             IsReplying = false;
-            OpenReplyCommand = new RelayCommandWithNoParameter(() =>
+            OpenReplyCommand = new RelayCommandWithNoParameter(async() =>
             {
-                if (!IsReplying)
+                if(AccountStore.instance.CurrentAccount!= null) 
                 {
-                    IsReplying = true;
+                    if (!IsReplying)
+                    {
+                        IsReplying = true;
+                    }
+                    else
+                    {
+                        IsReplying = false;
+                        NewRelayblockViewModel.Comment = "";
+                    }
                 }
                 else
                 {
-                    IsReplying = false;
-                    NewRelayblockViewModel.Comment = "";
+                    var dialog = new ConfirmDialog()
+                    {
+                        Header = "Oops!",
+                        Content = "You need to login to do this!",
+                        CM = new ImmediateCommand<object>(pr =>
+                        {
+                            Login login = App.serviceProvider.GetRequiredService<Login>();
+                            login.Show();
+                            App.Current.MainWindow.Hide();
+                        }),
+                    };
+                    await DialogHost.Show(dialog, "Main");
                 }    
             });
             ReplyCommand = new RelayCommand<object>((p)=>
