@@ -617,7 +617,7 @@ INSERT [dbo].[ImageProduct] ([IdProduct], [Source]) VALUES (N'prod51', N'https:/
 GO
 INSERT [dbo].[ImageProduct] ([IdProduct], [Source]) VALUES (N'prod51', N'https://firebasestorage.googleapis.com/v0/b/wano-wpf.appspot.com/o/Product%2F0%23%23HZd6c_20?alt=media&token=b7567918-be7e-4571-a154-e548aa0b5868')
 GO
-INSERT [dbo].[ImageProduct] ([IdProduct], [Source]) VALUES (N'prod52', N'https://firebasestorage.googleapis.com/v0/b/wano-wpf.appspot.com/o/Product%2Fprod52%2Fprd8-1.jpg?alt=media&token=0c469277-e2bd-4f4c-9e92-7494f1701fb4')
+INSERT [dbo].[ImageProduct] ([IdProduct], [Source]) VALUES (N'prod52', N'https://firebasestorage.googleapis.com/v0/b/wano-wpf.appspot.com/o/Product%2Fprod52%2Fprd8-1.jpg?alt=media&token=5797d3c1-77d0-433c-bdc7-e4b2eaa8fdcc')
 GO
 INSERT [dbo].[ImageProduct] ([IdProduct], [Source]) VALUES (N'prod52', N'https://firebasestorage.googleapis.com/v0/b/wano-wpf.appspot.com/o/Product%2Fprod52%2Fprd8-2.jpg?alt=media&token=960e9d49-1970-454c-b471-a3e4b2d8b7a6')
 GO
