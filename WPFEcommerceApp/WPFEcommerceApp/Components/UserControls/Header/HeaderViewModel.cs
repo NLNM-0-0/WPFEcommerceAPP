@@ -87,35 +87,62 @@ namespace WPFEcommerceApp
         #endregion
 
         #region NotiField
-        private Dictionary<bool?, List<Models.Notification>> ListNoti { get; set; } = new Dictionary<bool?, List<Models.Notification>>();
+        private Dictionary<bool?, Dictionary<string, Models.Notification>> ListNoti { get; set; } = new Dictionary<bool?, Dictionary<string, Models.Notification>>();
         public bool HaveNewNoti { get; set; } = false;
+        private int unreadnumber;
+
+        public int unReadNumber {
+            get { return unreadnumber;}
+            set {
+                if(value != unreadnumber) {
+                    unreadnumber = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private ThreadTimer notiTimer;
 
         public async void NotiListener(object o) {
             //Noti
+            if(AccountStore.instance.CurrentAccount == null
+                || AccountStore.instance.CurrentAccount.Role == "Admin") return;
             var notilist = await notiRepo.GetAllAsync();
-            if(!ListNoti.ContainsKey(false))
-                ListNoti[false] = new List<Models.Notification>();
-            if(!ListNoti.ContainsKey(true))
-                ListNoti[true] = new List<Models.Notification>();
-            foreach(var item in notilist) {
-                if(!ListNoti[item.HaveSeen].Contains(item))
-                    ListNoti[item.HaveSeen].Add(item);
+            notilist = notilist.ToList();
+            for(int i = 0; i < notilist.Count; i++) {
+                var item = notilist[i];
+                bool? flag = item.HaveSeen;
+                if(!ListNoti[flag].ContainsKey(item.Id))
+                    ListNoti[flag][item.Id] = item;
             }
-            if(ListNoti[false].Count > 0) HaveNewNoti = true;
+            var count = ListNoti[false].Count;
+            if(count > 0) {
+                if(!HaveNewNoti)
+                    HaveNewNoti = true;
+                unReadNumber = count;
+            }
         }
 
         public void NotiStart() {
-            notiTimer = new ThreadTimer(NotiListener, null, new TimeSpan(0, 0, 0, 0, 1000), new TimeSpan(0, 0, 0, 0, 1000));
+            ListNoti[false] = new Dictionary<string, Models.Notification>();
+            ListNoti[true] = new Dictionary<string, Models.Notification>();
+            notiTimer = new ThreadTimer(NotiListener, null, new TimeSpan(0, 0, 0, 0, 1000), new TimeSpan(0, 0, 0, 0, 3000));
+        }
+
+        public void NotiReset() {
+            unReadNumber = 0;
+            HaveNewNoti = false;
         }
 
         public async Task NotiSeen() {
-            for(int i = 0; i < ListNoti[false].Count;) {
-                var temp = ListNoti[false][i];
-                temp.HaveSeen = true;
-                await notiRepo.Update(temp);
-                ListNoti[true].Add(temp);
-                ListNoti[false].Remove(temp);
+            var UnSeenList = ListNoti[false].ToList();
+            for(int i = 0; i < UnSeenList.Count;) {
+                var temp = UnSeenList[i];
+                temp.Value.HaveSeen = true;
+                await notiRepo.Update(temp.Value);
+                ListNoti[true][temp.Value.Id] = temp.Value;
+                ListNoti[false].Remove(temp.Value.Id);
+                UnSeenList.Remove(temp);
             }
             HaveNewNoti = false;
         }
@@ -193,6 +220,7 @@ namespace WPFEcommerceApp
             OnPropertyChanged(nameof(Icon));
             OnPropertyChanged(nameof(IconTooltip));
             OnPropertyChanged(nameof(IsAdmin));
+            NotiReset();
             await Load();
         }
 
