@@ -3,6 +3,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -119,7 +120,6 @@ namespace WPFEcommerceApp
                 return total;
             }
         }
-
         public BagViewModel()
         {
             IsLoadingCheck.IsLoading = 2;
@@ -133,13 +133,16 @@ namespace WPFEcommerceApp
                 }, async (p) =>
                 {
                     BagBlock bagBlock = p as BagBlock;
-                    if (bagBlock.Amount > bagBlock.Product.InStock)
+                    if (bagBlock.Amount >= bagBlock.Product.InStock)
                     {
                         NotificationDialog notificationDialog = new NotificationDialog()
                         {
                             Header = "Oops",
                             ContentDialog = $"There are only {bagBlock.Product.InStock} quantity remaining for this item"
                         };
+                        bagBlock.Amount = bagBlock.Product.InStock;
+                        OnPropertyChanged(nameof(Total));
+                        await UpdateAmount(bagBlock.Product.Id, bagBlock.ProductSize, bagBlock.Amount);
                         await DialogHost.Show(notificationDialog, "Main");
                     }
                     else
@@ -215,40 +218,65 @@ namespace WPFEcommerceApp
                     return isCanBuy;
                 }, async (p) =>
                 {
+                    bool IsAmountChange = false;
+                    bool IsNeedAddMore = true;
                     Dictionary<string, Tuple<MUser, List<Product>>> prdList = new Dictionary<string, Tuple<MUser, List<Product>>>();
 
                     foreach (BagBlock bag in Bags)
                     {
-                        if (bag.IsChecked == false) continue;
-                        Product temp = new Product(bag.Product, bag.ProductSize, (int)bag.Amount);
-                        if (!prdList.ContainsKey(bag.Shop.Id))
+                        if(bag.Amount > bag.Product.InStock)
                         {
-                            prdList[bag.Shop.Id] = new Tuple<MUser, List<Product>>(bag.Shop, new List<Product>());
+                            IsNeedAddMore = false;
+                            IsAmountChange = true;
+                            bag.Amount = bag.Product.InStock;
+                            await UpdateAmount(bag.Product.Id, bag.ProductSize, bag.Amount);
+                        }    
+                        if (IsNeedAddMore)
+                        {
+                            if (bag.IsChecked == false) continue;
+                            Product temp = new Product(bag.Product, bag.ProductSize, (int)bag.Amount);
+                            if (!prdList.ContainsKey(bag.Shop.Id))
+                            {
+                                prdList[bag.Shop.Id] = new Tuple<MUser, List<Product>>(bag.Shop, new List<Product>());
+                            }
+                            prdList[bag.Shop.Id].Item2.Add(temp);
                         }
-                        prdList[bag.Shop.Id].Item2.Add(temp);
                     }
 
-                    List<Order> orderList = new List<Order>();
-
-                    var prdListConvert = prdList.Values.ToList();
-                    foreach (var list in prdListConvert)
+                    if (IsAmountChange)
                     {
-                        var id = await GenerateID.Gen(typeof(MOrder));
-                        Order o = new Order(list.Item2)
+                        OnPropertyChanged(nameof(Total));
+                        NotificationDialog notificationDialog = new NotificationDialog()
                         {
-                            ID = id,
-                            IDCustomer = AccountStore.instance.CurrentAccount.Id,
-                            IDShop = list.Item1.Id,
-                            Status = "Processing",
-                            ShipTotal = 0,
-                            DateBegin = DateTime.Now,
-                            ShopName = list.Item1.Name,
-                            ShopImage = list.Item1.SourceImageAva
+                            Header = "Oops",
+                            ContentDialog = "Your has product that has instock smaller than the amount you want to buy. We will adjust the amount as big as we can."
                         };
-                        orderList.Add(o);
+                        await DialogHost.Show(notificationDialog, "Main");
                     }
-                    DelCommand.Execute(null);
-                    NavigateProvider.CheckoutScreen().Navigate(orderList);
+                    else
+                    {
+                        List<Order> orderList = new List<Order>();
+
+                        var prdListConvert = prdList.Values.ToList();
+                        foreach (var list in prdListConvert)
+                        {
+                            var id = await GenerateID.Gen(typeof(MOrder));
+                            Order o = new Order(list.Item2)
+                            {
+                                ID = id,
+                                IDCustomer = AccountStore.instance.CurrentAccount.Id,
+                                IDShop = list.Item1.Id,
+                                Status = "Processing",
+                                ShipTotal = 0,
+                                DateBegin = DateTime.Now,
+                                ShopName = list.Item1.Name,
+                                ShopImage = list.Item1.SourceImageAva
+                            };
+                            orderList.Add(o);
+                        }
+                        DelCommand.Execute(null);
+                        NavigateProvider.CheckoutScreen().Navigate(orderList);
+                    }
                 });
                 ClickCommand = new RelayCommand<object>((p) => { return p != null; }, (p) =>
                 {
