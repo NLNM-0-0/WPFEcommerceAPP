@@ -107,7 +107,7 @@ namespace WPFEcommerceApp
             //Noti
             if(AccountStore.instance.CurrentAccount == null
                 || AccountStore.instance.CurrentAccount.Role == "Admin") return;
-            var notilist = await notiRepo.GetAllAsync();
+            var notilist = await notiRepo.GetListAsync(d => d.IdReceiver == AccountStore.instance.CurrentAccount.Id);
             notilist = notilist.ToList();
             for(int i = 0; i < notilist.Count; i++) {
                 var item = notilist[i];
